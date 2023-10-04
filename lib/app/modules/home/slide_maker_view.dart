@@ -60,7 +60,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
         leading: Obx(
           () => controller.showSlides.value
               ? GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    controller.onBackPressed();
+                  },
                   child: Icon(
                     Icons.arrow_back_ios_new,
                   ),

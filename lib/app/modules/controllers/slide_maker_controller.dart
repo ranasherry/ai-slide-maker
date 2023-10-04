@@ -44,7 +44,7 @@ class SlideMakerController extends GetxController {
   //TODO: Implement SlideMakerController
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  TextEditingController textEditingController = TextEditingController();
+  // TextEditingController textEditingController = TextEditingController();
   int initialGems = 20;
   RxInt gems = 0.obs;
   bool? firstTime = false;
@@ -562,6 +562,16 @@ class SlideMakerController extends GetxController {
   }
 
   void increment() => count.value++;
+
+  void onBackPressed() {
+    inputTextCTL.clear();
+    showSlides.value = false;
+    outlineTitleFetched.value = false;
+    show_input();
+    Future.delayed(Duration(seconds: 1), () {
+      show_create_button();
+    });
+  }
 }
 
 class Slides {
