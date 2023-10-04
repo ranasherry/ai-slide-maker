@@ -57,20 +57,19 @@ class SlideMakerView extends GetView<SlideMakerController> {
       appBar: AppBar(
         title: Text('Slide Maker'),
         centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {},
-          child: Obx(
-            () => controller.showSlides.value
-                ? Icon(
+        leading: Obx(
+          () => controller.showSlides.value
+              ? GestureDetector(
+                  onTap: () {},
+                  child: Icon(
                     Icons.arrow_back_ios_new,
-                    color: Colors.transparent,
-                  )
-                : GestureDetector(
-                    onTap: () {
-                      controller.scaffoldKey.currentState!.openDrawer();
-                    },
-                    child: Icon(Icons.menu)),
-          ),
+                  ),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    controller.scaffoldKey.currentState!.openDrawer();
+                  },
+                  child: Icon(Icons.menu)),
         ),
         actions: [
           Obx(() =>
@@ -122,67 +121,87 @@ class SlideMakerView extends GetView<SlideMakerController> {
         ],
       ),
       body: Obx(() => Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisA
-                // lignment.center,
-                children: [
-                  Center(
-                    child: Column(
-                      children: [
-                        controller.showSlides.value
-                            ? slideShow()
-                            : AnimatedContainer(
-                                width: controller.input_box_width.value,
-                                height: controller.input_box_height.value,
-                                duration: Duration(milliseconds: 500),
-                                curve: Curves.fastOutSlowIn,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border:
-                                      Border.all(color: AppColors.icon_color),
-                                ),
-                                child: controller.showInside.value
-                                    ? Padding(
-                                        padding: EdgeInsets.all(10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            outField(),
-                                            Divider(),
-                                            inputField(),
-                                          ],
-                                        ),
-                                      )
-                                    : Container(),
-                              ),
-                        SizedBox(
-                          height: SizeConfig.screenHeight * 0.05,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            createButton(),
-                            controller.outlineTitleFetched.value
-                                ? Row(
-                                    children: [
-                                      SizedBox(
-                                        width: SizeConfig.screenWidth * 0.15,
-                                      ),
-                                      NextButton(),
-                                    ],
+            child: Stack(children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    controller.showSlides.value
+                        ? slideShow()
+                        : AnimatedContainer(
+                            width: controller.input_box_width.value,
+                            height: controller.input_box_height.value,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.fastOutSlowIn,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.icon_color),
+                            ),
+                            child: controller.showInside.value
+                                ? Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        outField(),
+                                        Divider(),
+                                        inputField(),
+                                      ],
+                                    ),
                                   )
                                 : Container(),
-                          ],
-                        ),
+                          ),
+                    SizedBox(
+                      height: SizeConfig.screenHeight * 0.05,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        createButton(),
+                        controller.outlineTitleFetched.value
+                            ? Row(
+                                children: [
+                                  SizedBox(
+                                    width: SizeConfig.screenWidth * 0.15,
+                                  ),
+                                  NextButton(),
+                                ],
+                              )
+                            : Container(),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 60,
+                  color: Colors.amber,
+                  child: Center(
+                    child: MaxAdView(
+                        adUnitId: AppStrings.MAX_BANNER_ID,
+                        adFormat: AdFormat.banner,
+                        listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                          print(
+                              'Banner widget ad loaded from ' + ad.networkName);
+                        }, onAdLoadFailedCallback: (adUnitId, error) {
+                          print(
+                              'Banner widget ad failed to load with error code ' +
+                                  error.code.toString() +
+                                  ' and message: ' +
+                                  error.message);
+                        }, onAdClickedCallback: (ad) {
+                          print('Banner widget ad clicked');
+                        }, onAdExpandedCallback: (ad) {
+                          print('Banner widget ad expanded');
+                        }, onAdCollapsedCallback: (ad) {
+                          print('Banner widget ad collapsed');
+                        })),
+                  ),
+                ),
+              ),
+            ]),
           )),
     );
   }
