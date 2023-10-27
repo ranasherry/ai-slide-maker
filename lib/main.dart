@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    analytics.setAnalyticsCollectionEnabled(kReleaseMode);
+    // analytics.setAnalyticsCollectionEnabled(kReleaseMode);
+    analytics.setAnalyticsCollectionEnabled(true);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorObservers: <NavigatorObserver>[observer],

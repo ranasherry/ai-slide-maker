@@ -19,6 +19,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
   Widget build(BuildContext context) {
     // SizeConfig().init(context);
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       key: controller.scaffoldKey,
       drawer: Drawer(
         width: SizeConfig.blockSizeHorizontal * 75,
@@ -55,6 +56,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Colors.grey.shade100,
         title: Text('Slide Maker'),
         centerTitle: true,
         leading: Obx(
@@ -136,6 +138,16 @@ class SlideMakerView extends GetView<SlideMakerController> {
                             duration: Duration(milliseconds: 500),
                             curve: Curves.fastOutSlowIn,
                             decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade300, // Shadow color
+                                  spreadRadius: 2, // Spread radius
+                                  blurRadius: 10, // Blur radius
+                                  offset: Offset(
+                                      0, 5), // Offset in x and y direction
+                                ),
+                              ],
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: AppColors.icon_color),
                             ),
@@ -179,7 +191,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 60,
-                  color: Colors.amber,
+                  // color: Colors.amber,
                   child: Center(
                     child: MaxAdView(
                         adUnitId: AppStrings.MAX_BANNER_ID,
@@ -359,7 +371,20 @@ class SlideMakerView extends GetView<SlideMakerController> {
         duration: Duration(milliseconds: 500),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300, // Shadow color
+              spreadRadius: 2, // Spread radius
+              blurRadius: 10, // Blur radius
+              offset: Offset(0, 5), // Offset in x and y direction
+            ),
+          ],
+          gradient: LinearGradient(
+              colors: [Color(0xFF21B654), Color.fromARGB(255, 19, 104, 57)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter),
+          borderRadius:
+              BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
           // border: Border.all(color: AppColors.icon_color),
           color: AppColors.Green_color,
         ),
@@ -392,6 +417,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                       "Outlines of the topic",
                       style: TextStyle(
                           fontSize: SizeConfig.blockSizeHorizontal * 4,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
                     Container(
@@ -433,7 +459,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
                         Text(
                           "Create presentation about.....",
                           style: TextStyle(
-                              // fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              // fontSize: SizeConfig.blockSizeHorizontal * 3,
+                              fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
                         // Container(
@@ -465,81 +492,136 @@ class SlideMakerView extends GetView<SlideMakerController> {
 
   Widget createButton() {
     return GestureDetector(
-      onTap: () {
-        // controller.increaseOutputHeight();
-        controller.validate_user_input();
-      },
-      child: AnimatedContainer(
-        width: controller.create_box_width.value,
-        height: controller.create_box_height.value,
-        // color: AppColors.Bright_Pink_color,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.fastOutSlowIn,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          // border: Border.all(color: AppColors.icon_color),
-          color: AppColors.neonBorder,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(
-              controller.outlineTitleFetched.value ? "Recreate" : "Create",
-              style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-    );
+        onTap: () {
+          // controller.increaseOutputHeight();
+          controller.validate_user_input();
+        },
+        child: AnimatedContainer(
+            width: controller.create_box_width.value,
+            height: controller.create_box_height.value,
+            // color: AppColors.Bright_Pink_color,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn,
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300, // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 10, // Blur radius
+                    offset: Offset(0, 5), // Offset in x and y direction
+                  ),
+                ],
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
+                // border: Border.all(color: AppColors.icon_color),
+                // color: AppColors.neonBorder,
+                gradient: LinearGradient(
+                    colors: [Color(0xFF00BFDE), Color(0xFF008699)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter)),
+            child: Obx(
+              () => controller.showInside.value
+                  ? Column(
+                      children: [
+                        Text(
+                          controller.outlineTitleFetched.value
+                              ? "Recreate"
+                              : "Create",
+                          style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              color: Colors.white),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: SizeConfig.blockSizeHorizontal * 1),
+                              child: Text(
+                                "20",
+                                style: TextStyle(
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 3,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            horizontalSpace(SizeConfig.blockSizeHorizontal * 1),
+                            Image.asset(
+                              AppImages.gems,
+                              scale: 35,
+                            )
+                          ],
+                        )
+                      ],
+                    )
+                  : Container(),
+            )));
   }
 
   Widget inputField() {
     return Padding(
       padding: EdgeInsets.all(5.0),
-      child: TextField(
-        controller: controller.inputTextCTL,
-        cursorColor: Colors.black,
-        style: TextStyle(
-            fontSize: SizeConfig.blockSizeHorizontal * 4, color: Colors.black),
-        decoration: InputDecoration(
-          // hintText: text,
-          // "Product Name",
-          labelStyle: TextStyle(color: AppColors.black_color),
-          labelText: "What is the presentation about?",
-          hintText: "Example: What is AI?",
-          hintStyle: TextStyle(color: Colors.grey),
-          enabledBorder: OutlineInputBorder(
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade300, // Shadow color
+                spreadRadius: 2, // Spread radius
+                blurRadius: 10, // Blur radius
+                offset: Offset(0, 5), // Offset in x and y direction
+              ),
+            ],
             borderRadius:
-                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-            // borderSide: BorderSide(
-            //   color: Color(0xFF0095B0), // Border color
-            //   width: 1.0, // Border width
-            // ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-            borderSide: BorderSide(
-              color: Color(0xFF0095B0), // Border color when focused
-              width: 3.0, // Border width when focused
+                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 5)),
+        child: TextField(
+          controller: controller.inputTextCTL,
+          cursorColor: Colors.black,
+          style: TextStyle(
+              fontSize: SizeConfig.blockSizeHorizontal * 4,
+              color: Colors.black),
+          decoration: InputDecoration(
+            // hintText: text,
+
+            // "Product Name",
+            labelStyle: TextStyle(color: AppColors.black_color),
+            labelText: "What is the presentation about?",
+            hintText: "Example: What is AI?",
+            hintStyle: TextStyle(color: Colors.grey),
+            enabledBorder: OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+                borderSide: BorderSide.none
+                // borderSide: BorderSide(
+                //   color: Color(0xFF0095B0), // Border color
+                //   width: 1.0, // Border width
+                // ),
+                ),
+
+            focusedBorder: OutlineInputBorder(
+              borderRadius:
+                  BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+              // borderSide: BorderSide.none
+              borderSide: BorderSide(
+                color: Color(0xFF0095B0), // Border color when focused
+                // width: 3.0, // Border width when focused
+              ),
             ),
           ),
+          // cursorColor: Colors.white,
+          //               style: TextStyle(
+          //                   // fontSize: SizeConfig.blockSizeHorizontal * 4,
+          //                   color: Colors.white),
+          // decoration: InputDecoration(labelText:
+          // "Product Name",
+          // // fillColor: Colors.white
+          // // colo
+          // ),
+          onChanged: (value) {
+            print(value);
+            controller.userInput.value = value;
+          },
         ),
-        // cursorColor: Colors.white,
-        //               style: TextStyle(
-        //                   // fontSize: SizeConfig.blockSizeHorizontal * 4,
-        //                   color: Colors.white),
-        // decoration: InputDecoration(labelText:
-        // "Product Name",
-        // // fillColor: Colors.white
-        // // colo
-        // ),
-        onChanged: (value) {
-          print(value);
-          controller.userInput.value = value;
-        },
       ),
     );
   }

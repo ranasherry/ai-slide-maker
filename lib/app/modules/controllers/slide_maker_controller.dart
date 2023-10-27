@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
+import 'package:applovin_max/applovin_max.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
@@ -38,9 +39,11 @@ import 'package:http/http.dart' as http;
 // import 'package:dart_pptx/dart_pptx.dart';
 // import 'dart:typed_data';
 import 'dart:io';
+
+import 'applovin_ads_provider.dart';
 // import 'package:path_provider/path_provider.dart';
 
-class SlideMakerController extends GetxController {
+class SlideMakerController extends GetxController with WidgetsBindingObserver {
   //TODO: Implement SlideMakerController
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -103,6 +106,62 @@ class SlideMakerController extends GetxController {
     CheckUser().then((value) {
       getGems();
     });
+    ///// AppOpen Implementation
+    if (AppLovinProvider.instance.isInitialized.value) {
+      AppLovinMAX.setAppOpenAdListener(AppOpenAdListener(
+        onAdLoadedCallback: (ad) {},
+        onAdLoadFailedCallback: (adUnitId, error) {},
+        onAdDisplayedCallback: (ad) {},
+        onAdDisplayFailedCallback: (ad, error) {
+          AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+        },
+        onAdClickedCallback: (ad) {},
+        onAdHiddenCallback: (ad) {
+          AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+        },
+        onAdRevenuePaidCallback: (ad) {},
+      ));
+
+      AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+    }
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    print("AppState  : ${state}");
+    switch (state) {
+      case AppLifecycleState.resumed:
+        await showAdIfReady();
+        print("App Resume :");
+        break;
+
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+        break;
+    }
+  }
+
+  Future<void> showAdIfReady() async {
+    if (!AppLovinProvider.instance.isInitialized.value) {
+      return;
+    }
+
+    bool isReady =
+        (await AppLovinMAX.isAppOpenAdReady(AppStrings.MAX_APPOPEN_ID))!;
+    if (isReady) {
+      AppLovinMAX.showAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+    } else {
+      AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+    }
   }
 
   Future<int> getGems() async {
@@ -193,6 +252,7 @@ class SlideMakerController extends GetxController {
 
   hide_input() {
     showInside.value = false;
+
     Future.delayed(Duration(seconds: 1), () {
       // input_box_width.value = SizeConfig.screenWidth *0.8;
       input_box_width.value = 300;
@@ -202,7 +262,7 @@ class SlideMakerController extends GetxController {
   }
 
   show_create_button() {
-    create_box_width.value = 100;
+    create_box_width.value = 130;
     // create_box_height.value = SizeConfig.screenHeight *0.05;
     create_box_height.value = 50;
   }

@@ -2,8 +2,7 @@ class AppStrings {
   static var OPENAI_TOKEN =
       "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";
   static const MAX_SLIDES_TOKENS = 1000;
-  static var HOTPOT_API;
-  // "k6sv13mQAF9U2Eq2HRFFuNOj0vDZYqtx3UVIBB6cSOPxrm1TUT";
+  static var HOTPOT_API = "k6sv13mQAF9U2Eq2HRFFuNOj0vDZYqtx3UVIBB6cSOPxrm1TUT";
   static var SHOW_HOTPOT_API_IMAGES = true;
 
   // Orignal App ids
@@ -17,7 +16,7 @@ class AppStrings {
 
   static const MAX_MREC_ID = "bcf322b2e7e3c898";
 
-  // static const MAX_APPOPEN_ID = "3029feowaeqq33ir90";
+  static const MAX_APPOPEN_ID = "";
 
   static const MAX_Reward_ID = "efa63a2cafbae46f";
 
@@ -31,7 +30,7 @@ class AppStrings {
 
   static const IOS_MAX_MREC_ID = "bcf322b2e7e3c898";
 
-  // static const IOS_MAX_APPOPEN_ID = "3029feowaeqq33ir90";
+  static const IOS_MAX_APPOPEN_ID = "";
 
   static const IOS_MAX_Reward_ID = "efa63a2cafbae46f";
 }
