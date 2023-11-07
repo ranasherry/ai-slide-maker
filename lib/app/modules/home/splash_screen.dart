@@ -6,7 +6,7 @@ import '../../routes/app_pages.dart';
 import '../../utills/colors.dart';
 import '../../utills/images.dart';
 import '../../utills/size_config.dart';
-import '../controllers/applovin_ads_provider.dart';
+
 import '../controllers/splash_ctl.dart';
 
 class SplashScreen extends GetView<SplashController> {

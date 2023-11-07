@@ -4,4 +4,5 @@ class AppImages {
   static const splash = "assets/images/splash.png";
   static const drawer = "assets/images/drawer.png";
   static const mainIcon = "assets/icons/main_icon.png";
+  static const presentation = "assets/images/presentation.png";
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
-import 'package:applovin_max/applovin_max.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
@@ -19,6 +18,7 @@ import 'package:pdf/pdf.dart';
 import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_maker/app/provider/admob_ads_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/slideResponce.dart';
@@ -40,7 +40,6 @@ import 'package:http/http.dart' as http;
 // import 'dart:typed_data';
 import 'dart:io';
 
-import 'applovin_ads_provider.dart';
 // import 'package:path_provider/path_provider.dart';
 
 class SlideMakerController extends GetxController with WidgetsBindingObserver {
@@ -71,6 +70,15 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     "AI Advantages",
     "AI Disadvantages"
   ].obs;
+
+  RxList<String> slideImageList = [
+    "https://cdn.britannica.com/47/246247-050-F1021DE9/AI-text-to-image-photo-robot-with-computer.jpg",
+    "https://img.freepik.com/free-photo/ai-technology-microchip-background-digital-transformation-concept_53876-124669.jpg?w=740&t=st=1699346316~exp=1699346916~hmac=24fbcf0ba1283a72c03bd58d6edcda8888eb034768ec59597f19453b21465025",
+    "https://img.freepik.com/free-photo/3d-rendering-biorobots-concept_23-2149524396.jpg?w=740&t=st=1699348832~exp=1699349432~hmac=c7f3fab049ada70844286f1df9abc604a7b1aca13e521c438e20c02987574d00",
+    "https://img.freepik.com/free-photo/ai-technology-microchip-background-futuristic-innovation-technology-remix_53876-124727.jpg?w=740&t=st=1699346391~exp=1699346991~hmac=b411c026e9b821f1d334ae78f3ad66d1ed548243a53ded5491ca6d1b89509512",
+    "https://img.freepik.com/free-photo/ai-nuclear-energy-background-future-innovation-disruptive-technology_53876-129783.jpg?w=740&t=st=1699346627~exp=1699347227~hmac=06d2555942f19bb40c75b8de1b9f24d5299067441f8d9586a436aa34d2462215",
+    "https://img.freepik.com/free-photo/cardano-blockchain-platform_23-2150411956.jpg?w=740&t=st=1699346673~exp=1699347273~hmac=0210466243b91213fefdacc0a97ecbb6c8efc50242c7520e193bbedf537b903e"
+  ].obs;
   //  RxList <Slides> slideData = [].obs;
 
   RxBool outlineTitleFetched = false.obs;
@@ -82,10 +90,11 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
   String promptForGPT = "";
 
-  List<Uint8List> imageslist = [];
+  List<String> imageslist = [];
 
   void onInit() {
     super.onInit();
+    AdMobAdsProvider.instance.initialize();
     show_input();
     Future.delayed(Duration(seconds: 1), () {
       show_create_button();
@@ -106,62 +115,6 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     CheckUser().then((value) {
       getGems();
     });
-    ///// AppOpen Implementation
-    if (AppLovinProvider.instance.isInitialized.value) {
-      AppLovinMAX.setAppOpenAdListener(AppOpenAdListener(
-        onAdLoadedCallback: (ad) {},
-        onAdLoadFailedCallback: (adUnitId, error) {},
-        onAdDisplayedCallback: (ad) {},
-        onAdDisplayFailedCallback: (ad, error) {
-          AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-        },
-        onAdClickedCallback: (ad) {},
-        onAdHiddenCallback: (ad) {
-          AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-        },
-        onAdRevenuePaidCallback: (ad) {},
-      ));
-
-      AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-    }
-
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    print("AppState  : ${state}");
-    switch (state) {
-      case AppLifecycleState.resumed:
-        await showAdIfReady();
-        print("App Resume :");
-        break;
-
-      case AppLifecycleState.paused:
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.detached:
-        break;
-    }
-  }
-
-  Future<void> showAdIfReady() async {
-    if (!AppLovinProvider.instance.isInitialized.value) {
-      return;
-    }
-
-    bool isReady =
-        (await AppLovinMAX.isAppOpenAdReady(AppStrings.MAX_APPOPEN_ID))!;
-    if (isReady) {
-      AppLovinMAX.showAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-    } else {
-      AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-    }
   }
 
   Future<int> getGems() async {
@@ -442,6 +395,15 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  Future<Uint8List> fetchNetworkImage(String imageUrl) async {
+    final response = await http.get(Uri.parse(imageUrl));
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Failed to load network image');
+    }
+  }
+
   Future<void> generatePDF(
       // log("No valid data found in the list.");
 
@@ -454,6 +416,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
     for (int i = 0; i < slideResponseList.length; i++) {
       log("Entered into the for loop $i");
+
       // Add a page to the PDF
       pdf.addPage(
         pw.Page(
@@ -477,12 +440,52 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
                         // description
                         slideResponseList[i].slideDescription),
                 // Add the image to the PDF
-                pw.Image(pw.MemoryImage(imageslist[i])),
+
+                // pw.Image(pw.MemoryImage(imageslist[i])), //? Temporary comment
+                // pw.Image(pw.ImageProvider(NetworkImage(url))),  ///? Temporary comment
               ],
             );
           },
         ),
       );
+      // ? Share pdf Image implementation commented by jamal.
+      // await fetchNetworkImage(imageslist[i]).then((Uint8List imageBytes) {
+      //   // final image = pw.Image(pw.MemoryImage(imageBytes));
+
+      //   pdf.editPage(
+      //       i,
+      //       pw.Page(
+      //         pageFormat: PdfPageFormat.a4,
+      //         build: (pw.Context context) {
+      //           return pw.Column(
+      //             crossAxisAlignment: pw.CrossAxisAlignment.center,
+      //             children: [
+      //               // Add the title to the PDF
+      //               pw.Text(
+      //                 // title,
+      //                 slideResponseList[i].slideTitle,
+      //                 style: pw.TextStyle(
+      //                   fontSize: 24.0,
+      //                   fontWeight: pw.FontWeight.bold,
+      //                 ),
+      //               ),
+      //               // Add the description to the PDF
+      //               pw.Paragraph(
+      //                   text:
+      //                       // description
+      //                       slideResponseList[i].slideDescription),
+      //               // Add the image to the PDF
+      //               pw.Image(pw.MemoryImage(imageBytes))
+      //               // pw.Image(pw.MemoryImage(image)), //? Temporary comment
+      //               // pw.Image(pw.ImageProvider(NetworkImage(url))),  ///? Temporary comment
+      //             ],
+      //           );
+      //         },
+      //       ));
+      //   // pdf.pages[i].add(image);
+      //   // You might need to call `pdf.save()` to generate the final PDF after adding all images.
+      // });
+      //  ? -----------------End----------------
     }
 
     try {
@@ -611,6 +614,40 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  Future<String?> generateImage(String prompt) async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    if (prompt != "" && result == true) {
+      print("inside: generate image if");
+
+      try {
+        print("inside: generate image if try");
+        //? Commented By Sherry
+        final request = GenerateImage(prompt, 1,
+            size: ImageSize.size256, responseFormat: Format.url);
+        final response = await openAi.generateImage(request);
+
+        String img = "${response?.data?.last?.url}";
+        print("Downloaded for image: ${img}");
+        // response?.data?.last?.url;
+
+        print("image link: ${img}");
+        return img;
+        // return "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XKVdJA1KVr1Y1UFoZj0TtApV/user-K6qwhqxwsNyL5aAlMC8td8P2/img-kNGMI20Di8IU1Uy8IGVCkeoK.png?st=2023-10-31T07%3A27%3A23Z&se=2023-10-31T09%3A27%3A23Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-10-31T00%3A19%3A53Z&ske=2023-11-01T00%3A19%3A53Z&sks=b&skv=2021-08-06&sig=8bB1jyuPDE72oAL900SZhVGWxYFEJuoTzXHpgFhwWEo%3D";
+        // });
+      } catch (e) {
+        print("inside: generate image if catch");
+        print('Error generating image: $e');
+        print('Response error: ${e.toString()}');
+        return "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XKVdJA1KVr1Y1UFoZj0TtApV/user-K6qwhqxwsNyL5aAlMC8td8P2/img-kNGMI20Di8IU1Uy8IGVCkeoK.png?st=2023-10-31T07%3A27%3A23Z&se=2023-10-31T09%3A27%3A23Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-10-31T00%3A19%3A53Z&ske=2023-11-01T00%3A19%3A53Z&sks=b&skv=2021-08-06&sig=8bB1jyuPDE72oAL900SZhVGWxYFEJuoTzXHpgFhwWEo%3D";
+        // Handle the error appropriately, such as showing an error message to the user
+      }
+    } else {
+      print("inside: generate image else, ${prompt}, , ${result}");
+
+      return "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XKVdJA1KVr1Y1UFoZj0TtApV/user-K6qwhqxwsNyL5aAlMC8td8P2/img-kNGMI20Di8IU1Uy8IGVCkeoK.png?st=2023-10-31T07%3A27%3A23Z&se=2023-10-31T09%3A27%3A23Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-10-31T00%3A19%3A53Z&ske=2023-11-01T00%3A19%3A53Z&sks=b&skv=2021-08-06&sig=8bB1jyuPDE72oAL900SZhVGWxYFEJuoTzXHpgFhwWEo%3D";
+    }
+  }
+
   @override
   void onReady() {
     super.onReady();
@@ -632,6 +669,31 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       show_create_button();
     });
   }
+// ? commented by jamal start
+  // void tempList() {
+  //   SlideResponse slideResponse =
+  //       SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+
+  //   slideResponseList.add(slideResponse);
+
+  //   outlineTitleFetched.value = true;
+  // }
+  // ? commented by jamal end
 }
 
 class Slides {

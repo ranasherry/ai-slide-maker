@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:applovin_max/applovin_max.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:lottie/lottie.dart';
+import '../../provider/admob_ads_provider.dart';
 import '../../routes/app_pages.dart';
 import '../../utills/app_strings.dart';
 import '../../utills/colors.dart';
@@ -14,9 +16,57 @@ import '../../utills/style.dart';
 import '../controllers/slide_maker_controller.dart';
 
 class SlideMakerView extends GetView<SlideMakerController> {
-  const SlideMakerView({Key? key}) : super(key: key);
+  SlideMakerView({Key? key}) : super(key: key);
+
+  // // // Banner Ad Implementation start // // //
+
+  //  ? commented by jamal start
+
+  // late BannerAd myBanner;
+  // RxBool isBannerLoaded = false.obs;
+
+  // initBanner() {
+  //   BannerAdListener listener = BannerAdListener(
+  //     // Called when an ad is successfully received.
+  //     onAdLoaded: (Ad ad) {
+  //       print('Ad loaded.');
+  //       isBannerLoaded.value = true;
+  //     },
+  //     // Called when an ad request failed.
+  //     onAdFailedToLoad: (Ad ad, LoadAdError error) {
+  //       // Dispose the ad here to free resources.
+  //       ad.dispose();
+  //       print('Ad failed to load: $error');
+  //     },
+  //     // Called when an ad opens an overlay that covers the screen.
+  //     onAdOpened: (Ad ad) {
+  //       print('Ad opened.');
+  //     },
+  //     // Called when an ad removes an overlay that covers the screen.
+  //     onAdClosed: (Ad ad) {
+  //       print('Ad closed.');
+  //     },
+  //     // Called when an impression occurs on the ad.
+  //     onAdImpression: (Ad ad) {
+  //       print('Ad impression.');
+  //     },
+  //   );
+
+  //   myBanner = BannerAd(
+  //     adUnitId: AppStrings.ADMOB_BANNER,
+  //     size: AdSize.banner,
+  //     request: AdRequest(),
+  //     listener: listener,
+  //   );
+  //   myBanner.load();
+  // }
+
+  //  ? commented by jamal end
+
+  /// Banner Ad Implementation End ///
   @override
   Widget build(BuildContext context) {
+    // initBanner(); //  ? commented by jamal end
     // SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -63,6 +113,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
           () => controller.showSlides.value
               ? GestureDetector(
                   onTap: () {
+                    AdMobAdsProvider.instance.showInterstitialAd(() {});
                     controller.onBackPressed();
                   },
                   child: Icon(
@@ -187,34 +238,43 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   ],
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: 60,
-                  // color: Colors.amber,
-                  child: Center(
-                    child: MaxAdView(
-                        adUnitId: AppStrings.MAX_BANNER_ID,
-                        adFormat: AdFormat.banner,
-                        listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                          print(
-                              'Banner widget ad loaded from ' + ad.networkName);
-                        }, onAdLoadFailedCallback: (adUnitId, error) {
-                          print(
-                              'Banner widget ad failed to load with error code ' +
-                                  error.code.toString() +
-                                  ' and message: ' +
-                                  error.message);
-                        }, onAdClickedCallback: (ad) {
-                          print('Banner widget ad clicked');
-                        }, onAdExpandedCallback: (ad) {
-                          print('Banner widget ad expanded');
-                        }, onAdCollapsedCallback: (ad) {
-                          print('Banner widget ad collapsed');
-                        })),
-                  ),
-                ),
-              ),
+              //  ? commented by jamal start
+              // Obx(() => isBannerLoaded.value &&
+              //         AdMobAdsProvider.instance.isAdEnable.value
+              //     ? Container(
+              //         height: AdSize.banner.height.toDouble(),
+              //         child: AdWidget(ad: myBanner))
+              //     : Container()),
+              //  ? commented by jamal end
+
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: Container(
+              //     height: 60,
+              //     // color: Colors.amber,
+              //     child: Center(
+              //       child: MaxAdView(
+              //           adUnitId: AppStrings.MAX_BANNER_ID,
+              //           adFormat: AdFormat.banner,
+              //           listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+              //             print(
+              //                 'Banner widget ad loaded from ' + ad.networkName);
+              //           }, onAdLoadFailedCallback: (adUnitId, error) {
+              //             print(
+              //                 'Banner widget ad failed to load with error code ' +
+              //                     error.code.toString() +
+              //                     ' and message: ' +
+              //                     error.message);
+              //           }, onAdClickedCallback: (ad) {
+              //             print('Banner widget ad clicked');
+              //           }, onAdExpandedCallback: (ad) {
+              //             print('Banner widget ad expanded');
+              //           }, onAdCollapsedCallback: (ad) {
+              //             print('Banner widget ad collapsed');
+              //           })),
+              //     ),
+              //   ),
+              // ),
             ]),
           )),
     );
@@ -248,36 +308,40 @@ class SlideMakerView extends GetView<SlideMakerController> {
   }
 
   Widget slideShow() {
-    return SingleChildScrollView(
-      child: Container(
-        height: SizeConfig.screenHeight * 0.8,
-        child: ListView.builder(
-            itemCount: controller.outlineTitles.length,
-            cacheExtent: 99999,
-            // addAutomaticKeepAlives: true, // the number of items in the list
-            itemBuilder: (context, index) {
-              return Stack(
-                children: [
-                  singleSlide(index),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Card(
-                      color: AppColors.Green_color,
-                      child: Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Slide ${index + 1}",
-                          style: StyleSheet.Intro_Sub_heading,
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.only(top: 60),
+          height: SizeConfig.screenHeight * 0.8,
+          child: ListView.builder(
+              // padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+              itemCount: controller.outlineTitles.length,
+              cacheExtent: 99999,
+              // addAutomaticKeepAlives: true, // the number of items in the list
+              itemBuilder: (context, index) {
+                return Stack(
+                  children: [
+                    singleSlide(index),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Card(
+                        color: AppColors.Green_color,
+                        child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text(
+                            "Slide ${index + 1}",
+                            style: StyleSheet.Intro_Sub_heading,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              );
-              // ListTile(
-              //   title: Text('Item ${index + 1}'), // the title of each item
-              // );
-            }),
+                    )
+                  ],
+                );
+                // ListTile(
+                //   title: Text('Item ${index + 1}'), // the title of each item
+                // );
+              }),
+        ),
       ),
     );
     // singleSlide();
@@ -329,28 +393,45 @@ class SlideMakerView extends GetView<SlideMakerController> {
               Column(
                 // mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  // Card(
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(10.0),
+                  //   ),
+                  //   elevation: 10.0,
+                  //   child: Image.asset(
+                  //     AppImages.presentation,
+                  //     scale: 4,
+                  //   ),
+                  // )
                   // SizedBox(height: SizeConfig.screenHeight *0.1,),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          10.0), // adjust the value as you like
-                    ),
-                    elevation: 10.0, // adjust the value as you like
-                    child: SlideImageContainer(
-                        controller: controller, imagePrompt: imagePrompt),
+                  // ? commented by jamal start
+                  // Card(
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(
+                  //         10.0), // adjust the value as you like
+                  //   ),
+                  //   elevation: 10.0, // adjust the value as you like
+                  //   child: SlideImageContainer(
+                  //       controller: controller, imagePrompt: imagePrompt),
+                  // ),
+                  // ? commented by jamal end
+
+                  Obx(
+                    () => Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        elevation: 10.0,
+                        child: Container(
+                            width: SizeConfig.screenWidth * 0.3,
+                            child:
+                                Image.network(controller.slideImageList[index]))
+                        // child: Image.network("https://stackoverflow.com/questions/73336313/exception-invalid-image-data"))
+                        ),
                   ),
                 ],
               )
 
               // )
-
-              // Card(
-              //   child:
-              // Container(
-              //   width: SizeConfig.screenWidth *0.3,
-              //   child: Image.network("https://cdn.britannica.com/47/246247-050-F1021DE9/AI-text-to-image-photo-robot-with-computer.jpg"))
-              //   // child: Image.network("https://stackoverflow.com/questions/73336313/exception-invalid-image-data"))
-              // ),
             ],
           ),
         ),
@@ -494,6 +575,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return GestureDetector(
         onTap: () {
           // controller.increaseOutputHeight();
+          // controller.tempList(); //? commmented by jamal
+
           controller.validate_user_input();
         },
         child: AnimatedContainer(
@@ -642,14 +725,16 @@ class SlideImageContainer extends StatefulWidget {
 }
 
 class _SlideImageContainerState extends State<SlideImageContainer> {
-  Future<Uint8List?>? imageFuture;
+  // Future<Uint8List?>? imageFuture;
+  Future<String?>? imageUrl;
   SlideMakerController slideMakerController = Get.find();
   // image.
 
   @override
   void initState() {
     super.initState();
-    imageFuture = widget.controller.makeArtRequest(widget.imagePrompt);
+    // imageFuture = widget.controller.makeArtRequest(widget.imagePrompt);
+    imageUrl = widget.controller.generateImage(widget.imagePrompt);
   }
 
   @override
@@ -661,15 +746,17 @@ class _SlideImageContainerState extends State<SlideImageContainer> {
         height: SizeConfig.screenHeight *
             0.2, // Assuming SizeConfig is defined and screenWidth is accessible
         // height: 150, // Assuming SizeConfig is defined and screenWidth is accessible
-        child: FutureBuilder<Uint8List?>(
+        child: FutureBuilder<String?>(
           // future: widget.controller.makeArtRequest(widget.imagePrompt),
-          future: imageFuture,
+          future: imageUrl,
 
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               // While the future is running, show a loading indicator or placeholder.
               // return CircularProgressIndicator();
-              return Lottie.asset('assets/lottie/fBBmyrlUDl.json');
+              return Lottie.asset(
+                'assets/lottie/fBBmyrlUDl.json',
+              );
             } else if (snapshot.hasError) {
               // If the future encounters an error, display an error message.
               return Text('Error: ${snapshot.error}');
@@ -680,12 +767,25 @@ class _SlideImageContainerState extends State<SlideImageContainer> {
 
               // If the future completes successfully and provides imageBytes, display the image.
               return ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.memory(
-                  snapshot.data!,
-                  fit: BoxFit.cover,
-                ),
-              );
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: "${snapshot.data!}",
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeHorizontal * 6,
+                          vertical: SizeConfig.blockSizeVertical * 6),
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  )
+                  // Image.memory(
+                  //   snapshot.data!,
+                  //   fit: BoxFit.cover,
+                  // ),
+                  );
             } else {
               // If no data is available yet, you can show a placeholder or an empty container.
               return Container();
