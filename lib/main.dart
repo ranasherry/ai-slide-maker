@@ -46,38 +46,8 @@ class MyApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
-  // This widget is the root of your application.
-  // @override
-  // Widget build(BuildContext context) {
-  //   analytics.setAnalyticsCollectionEnabled(kReleaseMode);
-  //   // analytics.setAnalyticsCollectionEnabled(true);
-  //   return GestureDetector(
-  //     behavior: HitTestBehavior.opaque,
-  //     onTap: () {
-  //       FocusScopeNode currentFocus = FocusScope.of(context);
-
-  //       if (!currentFocus.hasPrimaryFocus &&
-  //           currentFocus.focusedChild != null) {
-  //         FocusManager.instance.primaryFocus!.unfocus();
-  //       }
-  //     },
-  //     child: GetMaterialApp(
-  //       debugShowCheckedModeBanner: false,
-  //       navigatorObservers: <NavigatorObserver>[observer],
-  //       theme: ThemeData(
-  //         useMaterial3: true,
-  //       ),
-  //       builder: EasyLoading.init(),
-  //       initialRoute: AppPages.INITIAL,
-  //       getPages: AppPages.routes,
-  //     ),
-  //   );
-  // }
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // analytics.setAnalyticsCollectionEnabled(kReleaseMode);
     analytics.setAnalyticsCollectionEnabled(true);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     // EasyLoading.init();
@@ -103,49 +73,7 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     ),
-          // GetMaterialApp(
-          //   navigatorObservers: <NavigatorObserver>[observer],
-
-          //   builder: EasyLoading.init(),
-
-          
-          //   theme: ThemeData.light(), // Default light theme
-
-          //   darkTheme: ThemeData(
-          //     useMaterial3: true,
-          //     appBarTheme: AppBarTheme(
-          //       color: Color(0xFF000C1A),
-          //       foregroundColor: Colors.white,
-          //     ),
-          //     scaffoldBackgroundColor: Color(0xFF000C1A),
-          //   ),
-
-          //   themeMode: themeNotifier.themeMode,
-
-          //   debugShowCheckedModeBanner: false,
-          //   initialRoute: AppPages.INITIAL,
-          //   getPages: AppPages.routes,
-          // ),
         )
-        //   theme:
-        //   ThemeData(
-
-        //     primarySwatch: Colors.blue,
-
-        //   ),
-        //   debugShowCheckedModeBanner: false,
-        //   initialRoute: AppPages.INITIAL,
-        //   getPages: AppPages.routes,
-        // ),
         );
-    // return GetMaterialApp(
-    //   theme: ThemeData(
-    //     useMaterial3: true,
-    //   ),
-    //   debugShowCheckedModeBanner: false,
-    //   builder: EasyLoading.init(),
-    //   initialRoute: AppPages.INITIAL,
-    //   getPages: AppPages.routes,
-    // );
   }
 }
