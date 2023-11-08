@@ -238,6 +238,45 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   ],
                 ),
               ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: SizeConfig.blockSizeVertical * 8,
+                    width: SizeConfig.blockSizeHorizontal * 100,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Color(0xFFD5E4FF), Color(0xFFDFEBFF)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight),
+                      // color: Color(0xFFD5E4FF),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(
+                              SizeConfig.blockSizeHorizontal * 4),
+                          bottomRight: Radius.circular(
+                              SizeConfig.blockSizeHorizontal * 4)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300, // Shadow color
+                          spreadRadius: 2, // Spread radius
+                          blurRadius: 10, // Blur radius
+                          offset: Offset(0, 5), // Offset in x and y direction
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                        child: Text(
+                      "Note: This Content is AI generated",
+                      style: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 4,
+                          fontWeight: FontWeight.bold,
+                          // color: Color(0xFF013961)
+                          color: Colors.blue.shade700),
+                    )),
+                  ),
+                ],
+              )
               //  ? commented by jamal start
               // Obx(() => isBannerLoaded.value &&
               //         AdMobAdsProvider.instance.isAdEnable.value
@@ -575,7 +614,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return GestureDetector(
         onTap: () {
           // controller.increaseOutputHeight();
-          // controller.tempList(); //? commmented by jamal
+          controller.tempList(); //? commmented by jamal
 
           controller.validate_user_input();
         },
