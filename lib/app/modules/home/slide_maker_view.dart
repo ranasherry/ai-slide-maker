@@ -107,7 +107,11 @@ class SlideMakerView extends GetView<SlideMakerController> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
-        title: Text('Slide Maker'),
+        title: Text(
+          'Slide Maker',
+          style: TextStyle(color: Colors.black),
+        ),
+        elevation: 0,
         centerTitle: true,
         leading: Obx(
           () => controller.showSlides.value
@@ -118,13 +122,17 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   },
                   child: Icon(
                     Icons.arrow_back_ios_new,
+                    color: Colors.black,
                   ),
                 )
               : GestureDetector(
                   onTap: () {
                     controller.scaffoldKey.currentState!.openDrawer();
                   },
-                  child: Icon(Icons.menu)),
+                  child: Icon(
+                    Icons.menu,
+                    color: Colors.black,
+                  )),
         ),
         actions: [
           Obx(() =>
@@ -614,7 +622,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return GestureDetector(
         onTap: () {
           // controller.increaseOutputHeight();
-          controller.tempList(); //? commmented by jamal
+          // controller.tempList(); //? commmented by jamal
 
           controller.validate_user_input();
         },

@@ -671,29 +671,29 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   }
 
 // ? commented by jamal start
-  void tempList() {
-    SlideResponse slideResponse =
-        SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+  // void tempList() {
+  //   SlideResponse slideResponse =
+  //       SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
 
-    slideResponseList.add(slideResponse);
-    slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
 
-    slideResponseList.add(slideResponse);
-    slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
 
-    slideResponseList.add(slideResponse);
-    slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
 
-    slideResponseList.add(slideResponse);
-    slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
 
-    slideResponseList.add(slideResponse);
-    slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
+  //   slideResponseList.add(slideResponse);
+  //   slideResponse = SlideResponse(slideTitle: "Hello", slideDescription: "ABC");
 
-    slideResponseList.add(slideResponse);
+  //   slideResponseList.add(slideResponse);
 
-    outlineTitleFetched.value = true;
-  }
+  //   outlineTitleFetched.value = true;
+  // }
   // ? commented by jamal end
 }
 

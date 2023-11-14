@@ -27,7 +27,7 @@ void main() async {
   );
   // runApp(const MyApp());
   runApp(
-    ChangeNotifierProvider(  
+    ChangeNotifierProvider(
       create: (context) => ThemeNotifier(),
       child: const MyApp(),
     ),
@@ -64,16 +64,23 @@ class MyApp extends StatelessWidget {
               FocusManager.instance.primaryFocus!.unfocus();
             }
           },
-          child: 
-            GetMaterialApp(
-              navigatorObservers: <NavigatorObserver>[observer],
-       builder: EasyLoading.init(),
-      // theme: ThemeData.dark(),
-      title: "Application",
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-    ),
-        )
-        );
+          child: GetMaterialApp(
+            navigatorObservers: <NavigatorObserver>[observer],
+            builder: EasyLoading.init(),
+            debugShowCheckedModeBanner: false,
+            // theme: ThemeData.dark(),
+            theme: ThemeData.light(), // Default light theme
+
+            darkTheme: ThemeData(
+              useMaterial3: true,
+            ),
+
+            themeMode: themeNotifier.themeMode,
+
+            title: "Application",
+            initialRoute: AppPages.INITIAL,
+            getPages: AppPages.routes,
+          ),
+        ));
   }
 }
