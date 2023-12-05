@@ -125,10 +125,10 @@ packages:
     dependency: "direct main"
     description:
       name: chat_gpt_sdk
-      sha256: f57dadcee67465275309e1ffd127637068cd118304770909c7bd8e3d87ee484f
+      sha256: ace2b12df876249c79b95be1dd570ea0cd3fcc45b77252f8c0bcaed3ffdaa45a
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.4"
+    version: "2.2.5"
   checked_yaml:
     dependency: transitive
     description:
