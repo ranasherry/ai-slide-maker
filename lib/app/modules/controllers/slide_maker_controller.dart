@@ -95,14 +95,16 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   void onInit() {
     super.onInit();
     AdMobAdsProvider.instance.initialize();
+
     show_input();
     Future.delayed(Duration(seconds: 1), () {
       show_create_button();
       openAi = OpenAI.instance.build(
+        enableLog: true,
         token: AppStrings.OPENAI_TOKEN,
         baseOption: HttpSetup(
-          receiveTimeout: const Duration(seconds: 20),
-          connectTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 60),
+          connectTimeout: const Duration(seconds: 60),
         ),
       );
     });
@@ -129,18 +131,20 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   }
 
   decreaseGEMS(int decrease) async {
-    print("value: $decrease");
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    gems.value = gems.value - decrease;
-    if (gems.value < 0) {
-      gems.value = 0;
-      await prefs.setInt('gems', gems.value);
-    } else {
-      await prefs.setInt('gems', gems.value);
-    }
-
-    print("inters");
-    getGems();
+//     if (kReleaseMode) {
+//   print("value: $decrease");
+//   final SharedPreferences prefs = await SharedPreferences.getInstance();
+//   gems.value = gems.value - decrease;
+//   if (gems.value < 0) {
+//     gems.value = 0;
+//     await prefs.setInt('gems', gems.value);
+//   } else {
+//     await prefs.setInt('gems', gems.value);
+//   }
+  
+//   print("inters");
+//   getGems();
+// }
   }
 
   increaseGEMS(int increase) async {
@@ -284,23 +288,42 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     EasyLoading.show(status: "Creating Outlines");
 
     // promptForGPT = 'create a presentation slide data according to following json on topic ${userInput.value}, like: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}, make a list  of 6 slides. your responce must contain JSON list without errors and slide description must be under 20 words';
+    
     // promptForGPT = 'create a presentation slide data according to following json on topic ${userInput.value}, like: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}, make a list  of 6 slides';
+    
+    print("user input: ${userInput.value}");
     promptForGPT =
-        'create a presentation slide data according to following json on topic ${userInput.value}, like: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence."}, make a list of 6 slides only in JSON formate.';
+        'create a presentation slide on topic provided by user data must be in following json format {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence."}, make a list of 6 slides only in JSON formate.';
 
-    String message = "$promptForGPT";
-    log("prompt for GPT: $message");
+    // String message = "$promptForGPT";
+    // String userReq = "Hello How are you?";
+    String userReq = "Topic: ${userInput.value}";
+    // String systemReq = "${promptForGPT}";
+    // String systemReq = 'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}Please ensure each slide has a unique title and description, keeping the description under 20 words.';
+    String systemReq = 'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "Title","slide_descr": "DISCRIPTION"} Please ensure each slide has a unique title and description, keeping the description under 20 words.';
+    log("prompt for GPT: $userReq");
+    print("prompt for GPT: $systemReq");
 
-    final userMessage = Messages(role: Role.user, content: message);
+    final userMessage = Messages(role: Role.user, content: userReq);
+    final systemMessage = Messages(role: Role.system, content: systemReq);
+
+    print("userMessage for GPT: ${userMessage.role},${userMessage.content}");
     final request = ChatCompleteText(
-      messages: [userMessage],
-      // maxToken: AppStrings.MAX_CHAT_TOKKENS,
+      // messages: [systemMessage,userMessage],
+      messages: [systemMessage],
+      // maxToken: 140,
       maxToken: AppStrings.MAX_SLIDES_TOKENS,
+      // model: GptTurbo0301ChatModel(),
       model: GptTurbo0301ChatModel(),
+      // model: Gpt4ChatModel(),
     );
+
+    print("request for GPT: ${request}");
 
     try {
       final response = await openAi.onChatCompletion(request: request);
+
+      print("response: $response");
 
       for (var element in response!.choices) {
         print("data -> ${element.message?.content}");
@@ -324,7 +347,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       ChatMessage messageReceived = ChatMessage(
           senderType: SenderType.Bot,
           message: response.choices[0].message!.content,
-          input: message);
+          input: "");
 
       /// J.
 

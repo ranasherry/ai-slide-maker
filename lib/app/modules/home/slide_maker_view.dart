@@ -162,23 +162,23 @@ class SlideMakerView extends GetView<SlideMakerController> {
                             : Container()
                         : Container(),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.GemsView);
-                    },
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          AppImages.gems,
-                          scale: 30,
-                        ),
-                        Text(" ${controller.gems.value}"),
-                        SizedBox(
-                          width: SizeConfig.screenWidth * 0.03,
-                        )
-                      ],
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Get.toNamed(Routes.GemsView);
+                  //   },
+                  //   child: Row(
+                  //     children: [
+                  //       Image.asset(
+                  //         AppImages.gems,
+                  //         scale: 30,
+                  //       ),
+                  //       Text(" ${controller.gems.value}"),
+                  //       SizedBox(
+                  //         width: SizeConfig.screenWidth * 0.03,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ))
         ],
@@ -490,6 +490,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return GestureDetector(
       onTap: () {
         // controller.increaseOutputHeight();
+        AdMobAdsProvider.instance.showInterstitialAd(() {});
         controller.hide_outlines();
       },
       child: AnimatedContainer(
@@ -623,7 +624,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
         onTap: () {
           // controller.increaseOutputHeight();
           // controller.tempList(); //? commmented by jamal
-
+          AdMobAdsProvider.instance.showInterstitialAd(() {});
           controller.validate_user_input();
         },
         child: AnimatedContainer(
@@ -652,6 +653,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
             child: Obx(
               () => controller.showInside.value
                   ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           controller.outlineTitleFetched.value
@@ -661,27 +663,27 @@ class SlideMakerView extends GetView<SlideMakerController> {
                               fontSize: SizeConfig.blockSizeHorizontal * 4,
                               color: Colors.white),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: SizeConfig.blockSizeHorizontal * 1),
-                              child: Text(
-                                "20",
-                                style: TextStyle(
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 3,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            horizontalSpace(SizeConfig.blockSizeHorizontal * 1),
-                            Image.asset(
-                              AppImages.gems,
-                              scale: 35,
-                            )
-                          ],
-                        )
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Padding(
+                        //       padding: EdgeInsets.only(
+                        //           left: SizeConfig.blockSizeHorizontal * 1),
+                        //       child: Text(
+                        //         "20",
+                        //         style: TextStyle(
+                        //             fontSize:
+                        //                 SizeConfig.blockSizeHorizontal * 3,
+                        //             color: Colors.white),
+                        //       ),
+                        //     ),
+                        //     horizontalSpace(SizeConfig.blockSizeHorizontal * 1),
+                        //     Image.asset(
+                        //       AppImages.gems,
+                        //       scale: 35,
+                        //     )
+                        //   ],
+                        // )
                       ],
                     )
                   : Container(),
