@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:applovin_max/applovin_max.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:lottie/lottie.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import '../../provider/admob_ads_provider.dart';
 import '../../routes/app_pages.dart';
 import '../../utills/app_strings.dart';
@@ -117,7 +120,12 @@ class SlideMakerView extends GetView<SlideMakerController> {
           () => controller.showSlides.value
               ? GestureDetector(
                   onTap: () {
-                    AdMobAdsProvider.instance.showInterstitialAd(() {});
+                    if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+                      MetaAdsProvider.instance.showInterstitialAd();
+                    } else {
+                      AppLovinProvider.instance.showInterstitial(() {});
+                    }
+                    // AdMobAdsProvider.instance.showInterstitialAd(() {});
                     controller.onBackPressed();
                   },
                   child: Icon(
@@ -284,7 +292,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     )),
                   ),
                 ],
-              )
+              ),
               //  ? commented by jamal start
               // Obx(() => isBannerLoaded.value &&
               //         AdMobAdsProvider.instance.isAdEnable.value
@@ -294,34 +302,34 @@ class SlideMakerView extends GetView<SlideMakerController> {
               //     : Container()),
               //  ? commented by jamal end
 
-              // Align(
-              //   alignment: Alignment.bottomCenter,
-              //   child: Container(
-              //     height: 60,
-              //     // color: Colors.amber,
-              //     child: Center(
-              //       child: MaxAdView(
-              //           adUnitId: AppStrings.MAX_BANNER_ID,
-              //           adFormat: AdFormat.banner,
-              //           listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-              //             print(
-              //                 'Banner widget ad loaded from ' + ad.networkName);
-              //           }, onAdLoadFailedCallback: (adUnitId, error) {
-              //             print(
-              //                 'Banner widget ad failed to load with error code ' +
-              //                     error.code.toString() +
-              //                     ' and message: ' +
-              //                     error.message);
-              //           }, onAdClickedCallback: (ad) {
-              //             print('Banner widget ad clicked');
-              //           }, onAdExpandedCallback: (ad) {
-              //             print('Banner widget ad expanded');
-              //           }, onAdCollapsedCallback: (ad) {
-              //             print('Banner widget ad collapsed');
-              //           })),
-              //     ),
-              //   ),
-              // ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 60,
+                  // color: Colors.amber,
+                  child: Center(
+                    child: MaxAdView(
+                        adUnitId: AppStrings.MAX_BANNER_ID,
+                        adFormat: AdFormat.banner,
+                        listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                          print(
+                              'Banner widget ad loaded from ' + ad.networkName);
+                        }, onAdLoadFailedCallback: (adUnitId, error) {
+                          print(
+                              'Banner widget ad failed to load with error code ' +
+                                  error.code.toString() +
+                                  ' and message: ' +
+                                  error.message);
+                        }, onAdClickedCallback: (ad) {
+                          print('Banner widget ad clicked');
+                        }, onAdExpandedCallback: (ad) {
+                          print('Banner widget ad expanded');
+                        }, onAdCollapsedCallback: (ad) {
+                          print('Banner widget ad collapsed');
+                        })),
+                  ),
+                ),
+              ),
             ]),
           )),
     );
@@ -358,8 +366,11 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 60),
-          height: SizeConfig.screenHeight * 0.8,
+          margin: EdgeInsets.only(
+            top: 60,
+          ),
+          // padding: EdgeInsets.only(top: 60, bottom: 60),
+          height: SizeConfig.screenHeight * 0.75,
           child: ListView.builder(
               // padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
               itemCount: controller.outlineTitles.length,
@@ -489,8 +500,14 @@ class SlideMakerView extends GetView<SlideMakerController> {
   Widget NextButton() {
     return GestureDetector(
       onTap: () {
+        if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+          MetaAdsProvider.instance.showInterstitialAd();
+        } else {
+          AppLovinProvider.instance.showInterstitial(() {});
+        }
+
         // controller.increaseOutputHeight();
-        AdMobAdsProvider.instance.showInterstitialAd(() {});
+        // AdMobAdsProvider.instance.showInterstitialAd(() {});
         controller.hide_outlines();
       },
       child: AnimatedContainer(
@@ -624,7 +641,13 @@ class SlideMakerView extends GetView<SlideMakerController> {
         onTap: () {
           // controller.increaseOutputHeight();
           // controller.tempList(); //? commmented by jamal
-          AdMobAdsProvider.instance.showInterstitialAd(() {});
+          if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+            MetaAdsProvider.instance.showInterstitialAd();
+          } else {
+            AppLovinProvider.instance.showInterstitial(() {});
+          }
+
+          // AdMobAdsProvider.instance.showInterstitialAd(() {});
           controller.validate_user_input();
         },
         child: AnimatedContainer(
@@ -653,7 +676,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
             child: Obx(
               () => controller.showInside.value
                   ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           controller.outlineTitleFetched.value

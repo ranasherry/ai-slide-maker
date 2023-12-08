@@ -19,6 +19,8 @@ import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/provider/admob_ads_provider.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/slideResponce.dart';
@@ -94,7 +96,9 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
   void onInit() {
     super.onInit();
-    AdMobAdsProvider.instance.initialize();
+    // AppLovinProvider.instance.init();
+    // MetaAdsProvider.instance.initialize();
+    // AdMobAdsProvider.instance.initialize();
 
     show_input();
     Future.delayed(Duration(seconds: 1), () {
@@ -141,7 +145,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 //   } else {
 //     await prefs.setInt('gems', gems.value);
 //   }
-  
+
 //   print("inters");
 //   getGems();
 // }
@@ -288,9 +292,9 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     EasyLoading.show(status: "Creating Outlines");
 
     // promptForGPT = 'create a presentation slide data according to following json on topic ${userInput.value}, like: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}, make a list  of 6 slides. your responce must contain JSON list without errors and slide description must be under 20 words';
-    
+
     // promptForGPT = 'create a presentation slide data according to following json on topic ${userInput.value}, like: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}, make a list  of 6 slides';
-    
+
     print("user input: ${userInput.value}");
     promptForGPT =
         'create a presentation slide on topic provided by user data must be in following json format {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence."}, make a list of 6 slides only in JSON formate.';
@@ -300,7 +304,8 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     String userReq = "Topic: ${userInput.value}";
     // String systemReq = "${promptForGPT}";
     // String systemReq = 'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}Please ensure each slide has a unique title and description, keeping the description under 20 words.';
-    String systemReq = 'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "Title","slide_descr": "DISCRIPTION"} Please ensure each slide has a unique title and description, keeping the description under 20 words.';
+    String systemReq =
+        'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "Title","slide_descr": "DISCRIPTION"} Please ensure each slide has a unique title and description, keeping the description under 40 words. your content must include creativity with no plagirism';
     log("prompt for GPT: $userReq");
     print("prompt for GPT: $systemReq");
 
@@ -309,6 +314,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
     print("userMessage for GPT: ${userMessage.role},${userMessage.content}");
     final request = ChatCompleteText(
+      temperature: 0.8,
       // messages: [systemMessage,userMessage],
       messages: [systemMessage],
       // maxToken: 140,
