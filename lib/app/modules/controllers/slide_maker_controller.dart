@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
@@ -40,13 +41,18 @@ import 'package:http/http.dart' as http;
 
 // import 'package:dart_pptx/dart_pptx.dart';
 // import 'dart:typed_data';
-import 'dart:io';
+// import 'dart:io';
 
 // import 'package:path_provider/path_provider.dart';
 
 class SlideMakerController extends GetxController with WidgetsBindingObserver {
   //TODO: Implement SlideMakerController
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // late BuildContext context;
+
+  // // pass the context to the constructor
+  // MyController({required this.context});
 
   // TextEditingController textEditingController = TextEditingController();
   int initialGems = 20;
@@ -261,6 +267,18 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       outlineTitleFetched.value = true;
     });
   }
+
+  // Alert_Box(title,dis){
+  //   AwesomeDialog(
+  //           context: Get.context,
+  //           dialogType: DialogType.info,
+  //           animType: AnimType.rightSlide,
+  //           title: 'Dialog Title',
+  //           desc: 'Dialog description here.............',
+  //           btnCancelOnPress: () {},
+  //           btnOkOnPress: () {},
+  //           ).show();
+  // }
 
   validate_user_input() async {
     if (userInput.isNotEmpty) {

@@ -641,6 +641,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
         onTap: () {
           // controller.increaseOutputHeight();
           // controller.tempList(); //? commmented by jamal
+
+          //Just for now
           if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
             MetaAdsProvider.instance.showInterstitialAd();
           } else {

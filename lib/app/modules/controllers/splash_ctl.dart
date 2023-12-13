@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_maker/app/data/platform.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/utills/app_strings.dart';
 
 import '../../routes/app_pages.dart';
 
@@ -40,6 +44,66 @@ class SplashController extends GetxController {
 
     //   print("Is First Time from Init: $isFirstTime");
     // });
+
+    checkplatform();
+    GetRemoteConfig().then((value) {
+      SetRemoteConfig();
+    });
+     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
+    
+  }
+     final remoteConfig = FirebaseRemoteConfig.instance;
+
+
+  Future GetRemoteConfig() async {
+      try {
+ 
+      await remoteConfig.setConfigSettings(RemoteConfigSettings(
+          fetchTimeout: const Duration(minutes: 1),
+          minimumFetchInterval: const Duration(seconds: 1),
+      ));
+  
+      await remoteConfig.setDefaults(const {
+    // "example_param_1": 42,
+    // "example_param_2": 3.14159,
+    // "example_param_3": true,
+    "OpenAiToken": "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",
+    "HotpotApi": "k6sv13mQAF9U2Eq2HRFFuNOj0vDZYqtx3UVIBB6cSOPxrm1TUT",
+    // "GoogleShoppingAPI": "886ff05605mshbebba3b2ff469aap1fb826jsn0b627542f3e9",
+    "isHotpotActive": false,
+    // "activeBardForShopping": true,
+  });
+
+  await remoteConfig.fetchAndActivate();
+  
+} on Exception catch (e) {
+  // TODO
+  print("Remote Config error: $e");
+}
+  }
+
+  Future SetRemoteConfig() async {
+    print('Fetched open: ${remoteConfig.getString('OpenAiToken')}');
+    print('Fetched open: ${remoteConfig.getString('HotpotApi')}');
+    print('Fetched open: ${remoteConfig.getString('isHotpotActive')}');
+
+      AppStrings.OPENAI_TOKEN = remoteConfig.getString('OpenAiToken');
+      AppStrings.HOTPOT_API = remoteConfig.getString('HotpotApi');
+      // AppStrings.GOOGLE_SHOPPING_APIKEY = remoteConfig.getString('GoogleShoppingAPI');
+      AppStrings.SHOW_HOTPOT_API_IMAGES = remoteConfig.getBool('isHotpotActive');
+      // AppStrings.ACTIVE_BARD = remoteConfig.getBool('activeBardForShopping');
+      // AppStrings.SHOW_HOTPOT_API_IMAGES = true;
+  }
+
+  checkplatform(){
+    if (Platform.isAndroid) {
+  // Android-specific code
+  print("platform: ${PlatFormType.Andriod}");
+  AppStrings.PLATFORMTYP = (PlatFormType.Andriod).toString();
+  print("platform: ${AppStrings.PLATFORMTYP}");
+} else if (Platform.isIOS) {
+  // iOS-specific code
+}
   }
 
   @override
