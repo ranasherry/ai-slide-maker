@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:applovin_max/applovin_max.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -120,10 +121,12 @@ class SlideMakerView extends GetView<SlideMakerController> {
           () => controller.showSlides.value
               ? GestureDetector(
                   onTap: () {
-                    if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-                      MetaAdsProvider.instance.showInterstitialAd();
-                    } else {
-                      AppLovinProvider.instance.showInterstitial(() {});
+                    if (kReleaseMode) {
+                      if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+                        MetaAdsProvider.instance.showInterstitialAd();
+                      } else {
+                        AppLovinProvider.instance.showInterstitial(() {});
+                      }
                     }
                     // AdMobAdsProvider.instance.showInterstitialAd(() {});
                     controller.onBackPressed();
@@ -148,8 +151,15 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // RevenueCatService().currentEntitlement.value == Entitlement.paid?
               //     Container()
               //     :
+
               Row(
                 children: [
+                  // Obx(() => Card(
+                  //     color: AppColors.foreground_color2,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(8.0),
+                  //       child: Text("Next ${controller.timerValue.value}"),
+                  //     ))),
                   GestureDetector(
                     onTap: () {
                       controller.convertToPPT();
@@ -371,9 +381,10 @@ class SlideMakerView extends GetView<SlideMakerController> {
           ),
           // padding: EdgeInsets.only(top: 60, bottom: 60),
           height: SizeConfig.screenHeight * 0.75,
-          child: ListView.builder(
+          child: Obx(() => ListView.builder(
               // padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-              itemCount: controller.outlineTitles.length,
+              // itemCount: controller.outlineTitles.length,
+              itemCount: controller.slideResponseList.length,
               cacheExtent: 99999,
               // addAutomaticKeepAlives: true, // the number of items in the list
               itemBuilder: (context, index) {
@@ -398,7 +409,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                 // ListTile(
                 //   title: Text('Item ${index + 1}'), // the title of each item
                 // );
-              }),
+              })),
         ),
       ),
     );
@@ -500,10 +511,12 @@ class SlideMakerView extends GetView<SlideMakerController> {
   Widget NextButton() {
     return GestureDetector(
       onTap: () {
-        if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-          MetaAdsProvider.instance.showInterstitialAd();
-        } else {
-          AppLovinProvider.instance.showInterstitial(() {});
+        if (kReleaseMode) {
+          if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+            MetaAdsProvider.instance.showInterstitialAd();
+          } else {
+            AppLovinProvider.instance.showInterstitial(() {});
+          }
         }
 
         // controller.increaseOutputHeight();
@@ -643,14 +656,20 @@ class SlideMakerView extends GetView<SlideMakerController> {
           // controller.tempList(); //? commmented by jamal
 
           //Just for now
-          if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-            MetaAdsProvider.instance.showInterstitialAd();
-          } else {
-            AppLovinProvider.instance.showInterstitial(() {});
-          }
-
+          // if (kReleaseMode) {
+          //   if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+          //     MetaAdsProvider.instance.showInterstitialAd();
+          //   } else {
+          //     AppLovinProvider.instance.showInterstitial(() {});
+          //   }
+          // }
           // AdMobAdsProvider.instance.showInterstitialAd(() {});
-          controller.validate_user_input();
+          if (!controller.isWaitingForTime.value || kDebugMode) {
+            // if (!controller.isWaitingForTime.value) {
+            controller.validate_user_input();
+          } else {
+            controller.showWatchRewardPrompt();
+          }
         },
         child: AnimatedContainer(
             width: controller.create_box_width.value,
@@ -680,14 +699,25 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          controller.outlineTitleFetched.value
-                              ? "Recreate"
-                              : "Create",
-                          style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 4,
-                              color: Colors.white),
-                        ),
+                        controller.isWaitingForTime.value
+                            ? Text(
+                                controller.outlineTitleFetched.value
+                                    ? "Recreate in ${controller.timerValue.value}"
+                                    : "Create in ${controller.timerValue.value}",
+                                style: TextStyle(
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 4,
+                                    color: Colors.white),
+                              )
+                            : Text(
+                                controller.outlineTitleFetched.value
+                                    ? "Recreate"
+                                    : "Create",
+                                style: TextStyle(
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 4,
+                                    color: Colors.white),
+                              ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.center,
                         //   children: [

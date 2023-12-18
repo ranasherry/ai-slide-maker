@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:file_saver/file_saver.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -22,6 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/provider/admob_ads_provider.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/slideResponce.dart';
@@ -67,6 +70,10 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
   RxDouble create_box_width = 0.0.obs;
   RxDouble create_box_height = 0.0.obs;
+  RxString timerValue = "".obs;
+  ModelType currentModel = ModelType.Bard;
+
+  RxBool isWaitingForTime = false.obs;
 
   TextEditingController inputTextCTL = TextEditingController();
   RxString userInput = "".obs;
@@ -105,7 +112,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     // AppLovinProvider.instance.init();
     // MetaAdsProvider.instance.initialize();
     // AdMobAdsProvider.instance.initialize();
-
+    initializeTimer();
     show_input();
     Future.delayed(Duration(seconds: 1), () {
       show_create_button();
@@ -281,13 +288,20 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   // }
 
   validate_user_input() async {
+    currentModel = ModelType.Bard;
     if (userInput.isNotEmpty) {
       if (gems.value > 0) {
         bool result = await InternetConnectionChecker().hasConnection;
         if (result == true) {
           // sendMessage(formattedJson);
           //  getImage(ImageSource);
-          sendMessage();
+
+          await generateContent(userInput.value).then((response) {
+            jsonOutput.value = response;
+            BaseExtractJson();
+            print("BardResponse: ${response}");
+          });
+
           print("Internet ON");
         } else {
           Toster("No internet Connection", AppColors.Lime_Green_color);
@@ -307,6 +321,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   RxString jsonOutput = "".obs;
 
   Future sendMessage() async {
+    currentModel = ModelType.OpenAPI;
     EasyLoading.show(status: "Creating Outlines");
 
     // promptForGPT = 'create a presentation slide data according to following json on topic ${userInput.value}, like: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}, make a list  of 6 slides. your responce must contain JSON list without errors and slide description must be under 20 words';
@@ -323,7 +338,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     // String systemReq = "${promptForGPT}";
     // String systemReq = 'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}Please ensure each slide has a unique title and description, keeping the description under 20 words.';
     String systemReq =
-        'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "Title","slide_descr": "DISCRIPTION"} Please ensure each slide has a unique title and description, keeping the description under 40 words. your content must include creativity with no plagirism';
+        'Create six presentation slides data in the following JSON format list, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "Title","slide_descr": "DISCRIPTION"} Please ensure each slide has a unique title and description, keeping the description under 40 words. your content must include creativity with no plagirism and I need only required data I am not demanding any visual content. and I need the list of requred json object';
     log("prompt for GPT: $userReq");
     print("prompt for GPT: $systemReq");
 
@@ -385,11 +400,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       // responseState.value=ResponseState.success;
       // print("OutPut Value: ${output.value}");
       log("output of gpt: ${jsonOutput.value}");
-      extreactJson().then((value) {
-        Future.delayed(Duration(seconds: 1), () {
-          increaseOutputHeight();
-        });
-      });
+      BaseExtractJson(); //? Commented By Sherry
       // navCTL.gems.value =navCTL.gems.value - GEMS_RATE.IMAGE_GEMS_RATE;
       // savelimit();
       // navCTL.saveGems(navCTL.gems.value);
@@ -401,31 +412,201 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       // chatList.insert(0, messageReceived);
     } catch (err) {
       EasyLoading.dismiss();
-      EasyLoading.showError("Something Went Wrong..");
+      EasyLoading.showError("Server Error Please Try Again Later..");
+
       // EasyLoading.dismiss();
       // EasyLoading.showError("Something Went Wrong");
       if (err is OpenAIAuthError) {
         print('OpenAIAuthError error ${err.data?.error?.toMap()}');
+        FirebaseAnalytics.instance.logEvent(
+            name: "Open AI Error", parameters: err.data?.error?.toMap());
       }
       if (err is OpenAIRateLimitError) {
         print('OpenAIRateLimitError error ${err.data?.error?.toMap()}');
+        FirebaseAnalytics.instance.logEvent(
+            name: "Open AI Error", parameters: err.data?.error?.toMap());
       }
       if (err is OpenAIServerError) {
         print('OpenAIServerError error ${err.data?.error?.toMap()}');
+        FirebaseAnalytics.instance.logEvent(
+            name: "Open AI Error", parameters: err.data?.error?.toMap());
       }
     }
   }
 
-  List<SlideResponse> slideResponseList = [];
+  void BaseExtractJson() {
+    extreactJson().then((value) {
+      //  if (kReleaseMode) {
 
-  Future extreactJson() async {
-    // final List<SlideResponse> slideResponseList = (jsonDecode(jsonOutput.value) as List)
-    slideResponseList = (jsonDecode(jsonOutput.value) as List<dynamic>)
-        .map((item) => SlideResponse.fromJson(item))
+      Future.delayed(Duration(seconds: 1), () {
+        if (value) {
+          increaseOutputHeight();
+          setNewTime();
+          if (true) {
+            EasyLoading.dismiss();
+            if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+              MetaAdsProvider.instance.showInterstitialAd();
+            } else {
+              AppLovinProvider.instance.showInterstitial(() {});
+            }
+          }
+          Map<String, Object?>? SuccesParameters = <String, dynamic>{
+            'Title': 'userInput.value',
+          };
+          if (currentModel == ModelType.Bard) {
+            FirebaseAnalytics.instance.logEvent(
+                name: "Successful Result Bard", parameters: SuccesParameters);
+          } else {
+            FirebaseAnalytics.instance.logEvent(
+                name: "Successful Result Open AI",
+                parameters: SuccesParameters);
+          }
+        } else {
+          if (currentModel == ModelType.Bard) {
+            sendMessage();
+          } else {
+            EasyLoading.dismiss();
+            EasyLoading.showError("Could not Create something Try again");
+          }
+          Map<String, Object?>? SuccesParameters = <String, dynamic>{
+            'Title': 'userInput.value',
+          };
+          FirebaseAnalytics.instance
+              .logEvent(name: "Wrong Json", parameters: SuccesParameters);
+        }
+      });
+    }).onError((error, stackTrace) {
+      log("Error: ${error}");
+    });
+  }
+
+  RxList<SlideResponse> slideResponseList = <SlideResponse>[].obs;
+
+  // Future extreactJson() async {
+  //   // final List<SlideResponse> slideResponseList = (jsonDecode(jsonOutput.value) as List)
+  //   slideResponseList = (jsonDecode(jsonOutput.value) as List<dynamic>)
+  //       .map((item) => SlideResponse.fromJson(item))
+  //       .toList();
+
+  //   log("data: ${slideResponseList[0].slideTitle}");
+  //   log("data: ${slideResponseList[0].slideDescription}");
+  // }
+
+  bool isRetriedJson = false;
+
+  Future<bool> extreactJson() async {
+    try {
+      // Ensure that jsonOutput.value is not null or empty
+      if (jsonOutput.value != null && jsonOutput.value.isNotEmpty) {
+        // Parse the JSON data
+        var jsonData = jsonDecode(jsonOutput.value);
+
+        log("Json Data $jsonData");
+
+        // Check if jsonData is a list; if not, wrap it in a list
+        if (jsonData is List) {
+          // Map each item in the list to SlideResponse
+          slideResponseList.value =
+              jsonData.map((item) => SlideResponse.fromJson(item)).toList();
+
+          // Log the data from the first item
+          if (slideResponseList.isNotEmpty) {
+            log("data: ${slideResponseList[0].slideTitle}");
+            log("data: ${slideResponseList[0].slideDescription}");
+            return true;
+          } else {
+            log("Error: Empty list of slide responses.");
+            return false;
+          }
+        } else {
+          // Wrap the non-list data in a list and map it to SlideResponse
+          slideResponseList.value = [SlideResponse.fromJson(jsonData)];
+
+          // Log the data from the first item
+          log("data: ${slideResponseList[0].slideTitle}");
+          log("data: ${slideResponseList[0].slideDescription}");
+          return true;
+        }
+      } else {
+        log("Error: JSON data is null or empty.");
+        return false;
+      }
+    } catch (e) {
+      log("Error: $e");
+
+      if (!isRetriedJson) {
+        isRetriedJson = true;
+        List<Map<String, String>?> result = parseJsonString(jsonOutput.value);
+        jsonOutput.value = result.toString();
+        if (result.isEmpty) {
+          log("List is empty");
+          return false;
+        } else {
+          log("List Result: ${result}");
+          return await extreactJson().then((value) {
+            return value;
+          }).onError((error, stackTrace) {
+            return false;
+          });
+        }
+      } else {
+        return false;
+      }
+
+      // return false;
+    }
+  }
+
+  List<Map<String, String>> parseJsonString(String jsonString) {
+    List<Map<String, String>> jsonList = [];
+
+    try {
+      List<String> lines = jsonString.split('\n');
+
+      for (String line in lines) {
+        if (line.isNotEmpty) {
+          int startIndex = line.indexOf('{');
+          int endIndex = line.lastIndexOf('}');
+
+          if (startIndex != -1 && endIndex != -1 && startIndex < endIndex) {
+            String jsonSubstring = line.substring(startIndex, endIndex + 1);
+            Map<String, String> jsonMap =
+                Map<String, String>.from(json.decode(jsonSubstring));
+            jsonList.add(jsonMap);
+          }
+        }
+      }
+    } catch (e) {
+      // Handle any parsing or decoding errors here
+      print('Error in Numbering parser: $e');
+    }
+
+    return jsonList;
+  }
+
+  List<Map<String, String>?> convertToListOfMaps(String input) {
+    List<String> lines = input.split('\n');
+
+    List<Map<String, String>?> result = lines
+        .map((line) {
+          try {
+            // Extract the JSON-like string
+            String jsonString = line.substring(line.indexOf('{'));
+            // Parse the JSON-like string into a map
+            Map<String, dynamic> map = json.decode(jsonString);
+            // Convert dynamic map to a map with String values
+            Map<String, String> stringMap = Map<String, String>.from(map);
+            return stringMap;
+          } catch (e) {
+            // Handle parsing errors (e.g., invalid JSON)
+            print('Error parsing line: $line  Error: $e');
+            return null;
+          }
+        })
+        .where((map) => map != null && map.isNotEmpty)
         .toList();
 
-    log("data: ${slideResponseList[0].slideTitle}");
-    log("data: ${slideResponseList[0].slideDescription}");
+    return result;
   }
 
   String extractValidJson(String input) {
@@ -717,6 +898,215 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     });
   }
 
+  Future<bool> shouldGenerateNewSlide() async {
+    try {
+      // Load last generation time from SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      DateTime lastGenerationTime =
+          DateTime.parse(prefs.getString('lastGenerationTime') ?? '');
+
+      // If lastGenerationTime is not available or more than 10 minutes ago
+      if (lastGenerationTime == null ||
+          DateTime.now().difference(lastGenerationTime).inMinutes > 10) {
+        // Update last generation time in SharedPreferences
+        // prefs.setString('lastGenerationTime', DateTime.now().toIso8601String());
+        return true; // Generate a new slide
+      }
+
+      return false; // Do not generate a new slide
+    } catch (e) {
+      print("Error in shouldGenerateNewSlide: $e");
+      return true; // Return false in case of an error
+    }
+  }
+
+  Future<void> setNewTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('lastGenerationTime', DateTime.now().toIso8601String());
+    // initializeTimer();
+  }
+
+  Future<void> setRewardUnlock() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Set the last generation time to 10 minutes before the current time
+    DateTime lastGenerationTime =
+        DateTime.now().subtract(Duration(minutes: 20));
+
+    prefs.setString('lastGenerationTime', lastGenerationTime.toIso8601String());
+    // initializeTimer();
+  }
+
+  Future<void> initializeTimer() async {
+    try {
+      // Load last generation time from SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // DateTime? lastGenerationTime =
+      //     prefs.getString('lastGenerationTime') != null
+      //         ? DateTime.parse(prefs.getString('lastGenerationTime')!)
+      //         : null;
+
+      // Start a timer to update the variable periodically
+      Timer.periodic(Duration(seconds: 1), (timer) async {
+        try {
+          DateTime? lastGenerationTime =
+              prefs.getString('lastGenerationTime') != null
+                  ? DateTime.parse(prefs.getString('lastGenerationTime')!)
+                  : null;
+          if (lastGenerationTime != null) {
+            // Calculate the difference between last generation time and current time
+            Duration difference = DateTime.now().difference(lastGenerationTime);
+
+            // Calculate the remaining time as a countdown
+            Duration countdown = Duration(minutes: 10) - difference;
+            countdown = Duration(
+                seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
+
+            // Update the RxString with the formatted time difference
+
+            // If the countdown reaches zero, stop the timer
+            if (countdown.inSeconds <= 0) {
+              // timer.cancel();
+              timerValue.value = formatDuration(countdown);
+
+              isWaitingForTime.value = false;
+            } else {
+              timerValue.value = formatDuration(countdown);
+
+              isWaitingForTime.value = true;
+            }
+
+            // print("Last Generation: $lastGenerationTime");
+            // print("Difference: $difference");
+            // print("Timer: ${timerValue.value} ");
+          } else {
+            // Handle the case when lastGenerationTime is null
+            isWaitingForTime.value = false;
+            print("No lastGenerationTime available.");
+          }
+        } catch (e) {
+          print("Error in timer execution: $e");
+          // Handle the error gracefully without stopping the timer
+        }
+      });
+    } catch (e) {
+      print("Error in initializeTimer: $e");
+    }
+  }
+
+  String formatDuration(Duration duration) {
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  //? Bard API Below
+  Future<String> generateContent(String UserInput) async {
+    EasyLoading.show(status: "Creating Outlines");
+    print("Bard API Call...");
+    final String apiKey = AppStrings.GeminiProKey;
+    // print("Bard API $apiKey");
+
+    final String apiUrl =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
+
+    try {
+      // Construct the request payload
+      Map<String, dynamic> requestBody = {
+        'contents': [
+          {
+            'parts': [
+              {
+                'text':
+                    'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction'
+                // 'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects.'
+              }
+            ]
+          }
+        ],
+        'generationConfig': {
+          'temperature': 0.9,
+          'topK': 1,
+          'topP': 1,
+          'maxOutputTokens': 2048,
+          'stopSequences': [],
+        },
+        'safetySettings': [
+          {
+            'category': 'HARM_CATEGORY_HARASSMENT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_HATE_SPEECH',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_DANGEROUS_CONTENT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+        ]
+      };
+
+      // Make the API request
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+
+      // Check if the request was successful
+      if (response.statusCode == 200) {
+        // Parse and return the response
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        log("Bard Json Body: ${jsonResponse}");
+        final contentList = jsonResponse['candidates'];
+
+        // Assuming the first item in the list is the one you want to access
+        final firstItem = contentList.first;
+
+        // Accessing the 'content' and 'parts' keys
+        final content = firstItem['content'];
+        final parts = content['parts'];
+
+        // Assuming 'parts' is a List and we're taking the first item
+        final firstPart = parts.first;
+
+        // Accessing the 'text' property
+        final text = firstPart['text'];
+
+        // Returning the text as a String
+        return text as String;
+      } else {
+        throw Exception(
+            'Failed to generate content. HTTP Status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle errors
+      print('Error: $e');
+      return ''; // You may want to handle errors more gracefully
+    }
+  }
+
+  void showWatchRewardPrompt() {
+    // EasyLoading.showError("Wait for the time");
+    showWatchAdDialog(
+      onWatchAd: () {
+        // Implement logic to handle "Watch Ad" button click
+        print("Watch Ad clicked");
+        AppLovinProvider.instance.showRewardedAd(setRewardUnlock);
+      },
+      onCancel: () {
+        // Implement logic to handle "Cancel" button click
+        print("Cancel clicked");
+      },
+      timerText: timerValue,
+    );
+  }
+
 // ? commented by jamal start
   // void tempList() {
   //   SlideResponse slideResponse =
@@ -784,4 +1174,9 @@ class ChatMessage {
 
   ChatMessage(
       {required this.senderType, required this.message, required this.input});
+}
+
+enum ModelType {
+  Bard,
+  OpenAPI,
 }

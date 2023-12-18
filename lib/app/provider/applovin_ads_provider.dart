@@ -4,6 +4,7 @@ import 'dart:math';
 // import 'package:applovin_max/applovin_max.dart';
 
 import 'package:applovin_max/applovin_max.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
@@ -51,7 +52,9 @@ class AppLovinProvider {
     // }else{
     //   print("Debug Mode");
     // }
-    initializePlugin();
+    if (kReleaseMode) {
+      initializePlugin();
+    }
   }
 
   Future<void> initializePlugin() async {
@@ -263,6 +266,8 @@ class AppLovinProvider {
         });
       },
       onAdDisplayedCallback: (ad) {
+        FirebaseAnalytics.instance
+            .logEvent(name: "AppLovin InterStital Displayed");
         print('Interstitial ad displayed');
         // AppLovinMAX.loadInterstitial(_interstitial_ad_unit_id);
         //   Future.delayed(Duration(milliseconds: 2 * 1000), () {
@@ -313,9 +318,18 @@ class AppLovinProvider {
             : AppStrings.IOS_MAX_Reward_ID) ??
         false;
     if (isReady) {
-      AppLovinMAX.showRewardedAd(Platform.isAndroid
-          ? AppStrings.MAX_Reward_ID
-          : AppStrings.IOS_MAX_Reward_ID);
+      try {
+        AppLovinMAX.showRewardedAd(Platform.isAndroid
+            ? AppStrings.MAX_Reward_ID
+            : AppStrings.IOS_MAX_Reward_ID);
+      } catch (e) {
+        print('Error showing or loading rewarded ad: $e');
+        rewardedAdLoadState = AdLoadState.loading;
+        AppLovinMAX.loadRewardedAd(Platform.isAndroid
+            ? AppStrings.MAX_Reward_ID
+            : AppStrings.IOS_MAX_Reward_ID);
+        // Handle the error as needed
+      }
     } else {
       print('Loading rewarded ad...');
       rewardedAdLoadState = AdLoadState.loading;
