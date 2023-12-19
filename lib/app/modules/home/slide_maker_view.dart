@@ -2,9 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:applovin_max/applovin_max.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:im_animations/im_animations.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:lottie/lottie.dart';
@@ -73,78 +75,60 @@ class SlideMakerView extends GetView<SlideMakerController> {
     // initBanner(); //  ? commented by jamal end
     // SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      key: controller.scaffoldKey,
-      drawer: Drawer(
-        width: SizeConfig.blockSizeHorizontal * 75,
-        child: Column(
-          children: [
-            Container(
-              width: SizeConfig.screenWidth,
-              height: SizeConfig.blockSizeVertical * 30,
-              color: AppColors.neonBorder,
-              child: Image.asset(
-                AppImages.drawer,
-                scale: 5,
-              ),
-            ),
-            GestureDetector(
-                onTap: () {
-                  LaunchReview.launch(
-                    androidAppId: "com.genius.aislides.generator",
-                  );
-                },
-                child: drawer_widget(Icons.thumb_up, "Rate Us")),
-            GestureDetector(
-                onTap: () {
-                  controller.ShareApp();
-                },
-                child: drawer_widget(Icons.share, "Share")),
-            GestureDetector(
-                onTap: () {
-                  controller
-                      .openURL("https://sites.google.com/view/appgeniusx/home");
-                },
-                child: drawer_widget(Icons.privacy_tip, "Privacy Policy"))
-          ],
-        ),
-      ),
+      backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Color(0xFFE7EBFA),
         title: Text(
           'Slide Maker',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         elevation: 0,
         centerTitle: true,
-        leading: Obx(
-          () => controller.showSlides.value
-              ? GestureDetector(
-                  onTap: () {
-                    if (kReleaseMode) {
-                      if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-                        MetaAdsProvider.instance.showInterstitialAd();
-                      } else {
-                        AppLovinProvider.instance.showInterstitial(() {});
-                      }
-                    }
-                    // AdMobAdsProvider.instance.showInterstitialAd(() {});
-                    controller.onBackPressed();
-                  },
-                  child: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.black,
-                  ),
-                )
-              : GestureDetector(
-                  onTap: () {
-                    controller.scaffoldKey.currentState!.openDrawer();
-                  },
-                  child: Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                  )),
-        ),
+        leading: GestureDetector(
+            onTap: () {
+              if (kReleaseMode) {
+                if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+                  MetaAdsProvider.instance.showInterstitialAd();
+                } else {
+                  AppLovinProvider.instance.showInterstitial(() {});
+                }
+              }
+              Get.back();
+              // AdMobAdsProvider.instance.showInterstitialAd(() {});
+              // controller.onBackPressed(); // ? Commented by jamal
+            },
+            child: Icon(Icons.arrow_back_ios_new_rounded)),
+        // ? Commented by jamal start
+        // leading: Obx(
+        //   () => controller.showSlides.value
+        //       ? GestureDetector(
+        //           onTap: () {
+        //             if (kReleaseMode) {
+        //               if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+        //                 MetaAdsProvider.instance.showInterstitialAd();
+        //               } else {
+        //                 AppLovinProvider.instance.showInterstitial(() {});
+        //               }
+        //             }
+        //             // AdMobAdsProvider.instance.showInterstitialAd(() {});
+        //             controller.onBackPressed();
+        //           },
+        //           child: Icon(
+        //             Icons.arrow_back_ios_new,
+        //             color: Colors.black,
+        //           ),
+        //         )
+        //       : GestureDetector(
+        //           onTap: () {
+        //             controller.scaffoldKey.currentState!.openDrawer();
+        //           },
+        //           child: Icon(
+        //             Icons.menu,
+        //             color: Colors.transparent, //changes by jamal
+        //           )),
+        // ),
+        // ? Commented by jamal end
+
         actions: [
           Obx(() =>
 
@@ -209,38 +193,51 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   children: [
                     controller.showSlides.value
                         ? slideShow()
-                        : AnimatedContainer(
-                            width: controller.input_box_width.value,
-                            height: controller.input_box_height.value,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastOutSlowIn,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300, // Shadow color
-                                  spreadRadius: 2, // Spread radius
-                                  blurRadius: 10, // Blur radius
-                                  offset: Offset(
-                                      0, 5), // Offset in x and y direction
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: AppColors.icon_color),
+                        : DottedBorder(
+                            borderType: BorderType.RRect,
+                            strokeCap: StrokeCap.round,
+                            padding: EdgeInsets.all(
+                                SizeConfig.blockSizeHorizontal * 3),
+                            color: Color(0xFF0049C8),
+                            // dashPattern: [19, 2, 6, 3],
+                            dashPattern: [6, 1, 8, 11],
+                            radius: Radius.circular(
+                                SizeConfig.blockSizeHorizontal * 4),
+                            strokeWidth: 2,
+                            child: AnimatedContainer(
+                              width: controller.input_box_width.value,
+                              height: controller.input_box_height.value,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.fastOutSlowIn,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade300, // Shadow color
+                                    spreadRadius: 2, // Spread radius
+                                    blurRadius: 10, // Blur radius
+                                    offset: Offset(
+                                        0, 5), // Offset in x and y direction
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.indigo),
+                              ),
+                              child: controller.showInside.value
+                                  ? Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          outField(),
+                                          Divider(),
+                                          inputField(),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(),
                             ),
-                            child: controller.showInside.value
-                                ? Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        outField(),
-                                        Divider(),
-                                        inputField(),
-                                      ],
-                                    ),
-                                  )
-                                : Container(),
                           ),
                     SizedBox(
                       height: SizeConfig.screenHeight * 0.05,
@@ -603,24 +600,24 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   ],
                 )
               : Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(5.0),
                   child: Container(
-                    height: SizeConfig.screenHeight * 0.03,
+                    height: SizeConfig.screenHeight * 0.05,
                     child: Row(
                       children: [
                         Image.asset(
-                          AppImages.slides,
-                          color: AppColors.icon_color,
+                          AppImages.drawer,
+                          color: Colors.indigo,
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
-                          "Create presentation about.....",
+                          "Create presentation about",
                           style: TextStyle(
                               // fontSize: SizeConfig.blockSizeHorizontal * 3,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                              color: Colors.indigo),
                         ),
                         // Container(
                         //   color: AppColors.greybox,
@@ -671,78 +668,80 @@ class SlideMakerView extends GetView<SlideMakerController> {
             controller.showWatchRewardPrompt();
           }
         },
-        child: AnimatedContainer(
-            width: controller.create_box_width.value,
-            height: controller.create_box_height.value,
-            // color: AppColors.Bright_Pink_color,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.fastOutSlowIn,
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade300, // Shadow color
-                    spreadRadius: 2, // Spread radius
-                    blurRadius: 10, // Blur radius
-                    offset: Offset(0, 5), // Offset in x and y direction
-                  ),
-                ],
-                borderRadius:
-                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
-                // border: Border.all(color: AppColors.icon_color),
-                // color: AppColors.neonBorder,
-                gradient: LinearGradient(
-                    colors: [Color(0xFF00BFDE), Color(0xFF008699)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter)),
-            child: Obx(
-              () => controller.showInside.value
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        controller.isWaitingForTime.value
-                            ? Text(
-                                controller.outlineTitleFetched.value
-                                    ? "Recreate in ${controller.timerValue.value}"
-                                    : "Create in ${controller.timerValue.value}",
-                                style: TextStyle(
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 4,
-                                    color: Colors.white),
-                              )
-                            : Text(
-                                controller.outlineTitleFetched.value
-                                    ? "Recreate"
-                                    : "Create",
-                                style: TextStyle(
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 4,
-                                    color: Colors.white),
-                              ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Padding(
-                        //       padding: EdgeInsets.only(
-                        //           left: SizeConfig.blockSizeHorizontal * 1),
-                        //       child: Text(
-                        //         "20",
-                        //         style: TextStyle(
-                        //             fontSize:
-                        //                 SizeConfig.blockSizeHorizontal * 3,
-                        //             color: Colors.white),
-                        //       ),
-                        //     ),
-                        //     horizontalSpace(SizeConfig.blockSizeHorizontal * 1),
-                        //     Image.asset(
-                        //       AppImages.gems,
-                        //       scale: 35,
-                        //     )
-                        //   ],
-                        // )
-                      ],
-                    )
-                  : Container(),
-            )));
+        child: HeartBeat(
+          child: AnimatedContainer(
+              width: controller.create_box_width.value,
+              height: controller.create_box_height.value,
+              // color: AppColors.Bright_Pink_color,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.fastOutSlowIn,
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300, // Shadow color
+                      spreadRadius: 2, // Spread radius
+                      blurRadius: 10, // Blur radius
+                      offset: Offset(0, 5), // Offset in x and y direction
+                    ),
+                  ],
+                  borderRadius:
+                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
+                  // border: Border.all(color: AppColors.icon_color),
+                  // color: AppColors.neonBorder,
+                  gradient: LinearGradient(
+                      colors: [Colors.indigoAccent, Colors.indigo],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter)),
+              child: Obx(
+                () => controller.showInside.value
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          controller.isWaitingForTime.value
+                              ? Text(
+                                  controller.outlineTitleFetched.value
+                                      ? "Recreate in ${controller.timerValue.value}"
+                                      : "Create in ${controller.timerValue.value}",
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 4,
+                                      color: Colors.white),
+                                )
+                              : Text(
+                                  controller.outlineTitleFetched.value
+                                      ? "Recreate"
+                                      : "Create",
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 4,
+                                      color: Colors.white),
+                                ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     Padding(
+                          //       padding: EdgeInsets.only(
+                          //           left: SizeConfig.blockSizeHorizontal * 1),
+                          //       child: Text(
+                          //         "20",
+                          //         style: TextStyle(
+                          //             fontSize:
+                          //                 SizeConfig.blockSizeHorizontal * 3,
+                          //             color: Colors.white),
+                          //       ),
+                          //     ),
+                          //     horizontalSpace(SizeConfig.blockSizeHorizontal * 1),
+                          //     Image.asset(
+                          //       AppImages.gems,
+                          //       scale: 35,
+                          //     )
+                          //   ],
+                          // )
+                        ],
+                      )
+                    : Container(),
+              )),
+        ));
   }
 
   Widget inputField() {
@@ -790,7 +789,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
               // borderSide: BorderSide.none
               borderSide: BorderSide(
-                color: Color(0xFF0095B0), // Border color when focused
+                color: Colors.indigo, // Border color when focused
                 // width: 3.0, // Border width when focused
               ),
             ),
