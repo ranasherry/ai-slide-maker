@@ -1,8 +1,10 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/bindings/history_binding.dart';
 import 'package:slide_maker/app/modules/bindings/home_view_binding.dart';
 import 'package:slide_maker/app/modules/bindings/maths_solver_binding.dart';
 import 'package:slide_maker/app/modules/bindings/slide_maker_binding.dart';
 import 'package:slide_maker/app/modules/home/gems_view_view.dart';
+import 'package:slide_maker/app/modules/home/history_view.dart';
 import 'package:slide_maker/app/modules/home/home_view.dart';
 import 'package:slide_maker/app/modules/home/maths_solver_view.dart';
 import 'package:slide_maker/app/modules/home/short_question_view.dart';
@@ -49,6 +51,11 @@ class AppPages {
       name: _Paths.ShortQuestionView,
       page: () => ShortQuestionView(),
       binding: MathsSolverBinding(),
+    ),
+    GetPage(
+      name: _Paths.HistoryView,
+      page: () => HistoryView(),
+      binding: HistoryBinding(),
     ),
   ];
 }

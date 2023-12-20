@@ -147,6 +147,85 @@ class HomeView extends GetView<HomeViewCtl> {
                 ),
               ],
             ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Get.toNamed(Routes.HistoryView);
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+              height: SizeConfig.blockSizeVertical * 12,
+              width: SizeConfig.blockSizeHorizontal * 85,
+              decoration: BoxDecoration(
+                color: Colors.cyan,
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+              ),
+              child: Padding(
+                padding:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: SizeConfig.blockSizeHorizontal * 3,
+                        top: SizeConfig.blockSizeVertical * 1,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "History",
+                            style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            "Watch over your history collection",
+                            style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 3,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                                top: SizeConfig.blockSizeVertical * 0.5),
+                            height: SizeConfig.blockSizeVertical * 3,
+                            width: SizeConfig.blockSizeHorizontal * 16,
+                            decoration: BoxDecoration(
+                              color: Colors.purple,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade400,
+                                  spreadRadius: 2,
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 1,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Check",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Image added to the right side
+                    Image.asset(
+                      AppImages.history,
+                      scale: 8,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           )
         ],
       ),

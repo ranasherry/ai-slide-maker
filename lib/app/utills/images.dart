@@ -12,4 +12,6 @@ class AppImages {
   static const MathSlider1 = "assets/math_images/Frame 5.png";
   static const gallery = "assets/images/gallery.png";
   static const pencil = "assets/images/pencil.png";
+  static const history = "assets/images/history.png";
+  static const commingSoon = "assets/images/comming_soon.png";
 }

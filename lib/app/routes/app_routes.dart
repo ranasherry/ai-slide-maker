@@ -10,6 +10,7 @@ abstract class Routes {
   static const GemsView = _Paths.GemsView;
   static const MathsSolverView = _Paths.MathsSolverView;
   static const ShortQuestionView = _Paths.ShortQuestionView;
+  static const HistoryView = _Paths.HistoryView;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const GemsView = '/GemsView';
   static const MathsSolverView = '/MathsSolverView';
   static const ShortQuestionView = '/ShortQuestionView';
+  static const HistoryView = '/HistoryView';
 }
