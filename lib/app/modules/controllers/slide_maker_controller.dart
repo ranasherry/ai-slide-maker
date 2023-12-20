@@ -236,9 +236,9 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   }
 
   show_create_button() {
-    create_box_width.value = 130;
+    create_box_width.value = 140;
     // create_box_height.value = SizeConfig.screenHeight *0.05;
-    create_box_height.value = 50;
+    create_box_height.value = 55;
   }
 
   show_slides() {
@@ -777,17 +777,17 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     // }
   }
 
-  ShareApp() {
-    Share.share(
-        "Consider downloading this exceptional app, available on the Google Play Store at the following link: https://play.google.com/store/apps/details?id=com.genius.aislides.generator.");
-  }
+  // ShareApp() {
+  //   Share.share(
+  //       "Consider downloading this exceptional app, available on the Google Play Store at the following link: https://play.google.com/store/apps/details?id=com.genius.aislides.generator.");
+  // }
 
-  Future openURL(ur) async {
-    final Uri _url = Uri.parse(ur);
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
-  }
+  // Future openURL(ur) async {
+  //   final Uri _url = Uri.parse(ur);
+  //   if (!await launchUrl(_url)) {
+  //     throw Exception('Could not launch $_url');
+  //   }
+  // }
 
   Toster(msg, color) {
     Fluttertoast.showToast(

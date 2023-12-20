@@ -7,6 +7,11 @@ class AppStrings {
   static var HOTPOT_API = "k6sv13mQAF9U2Eq2HRFFuNOj0vDZYqtx3UVIBB6cSOPxrm1TUT";
   static var SHOW_HOTPOT_API_IMAGES = true;
 
+  static var MATHPIX_APIKEY =
+      "cf7e24c5e1103c248f7f2f31f3155796d56c695dbc4383800198b6f7d6e76cd8";
+  static var MATHPIX_APPID = "netcurve_0f37db_2744a5";
+  static const MAX_MATHPIXTOKEN = 1000;
+
   static var GenerationErrorMessage =
       "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";
   //original Andriod
