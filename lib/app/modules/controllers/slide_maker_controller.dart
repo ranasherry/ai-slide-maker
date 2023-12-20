@@ -537,7 +537,8 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       if (!isRetriedJson) {
         isRetriedJson = true;
         List<Map<String, String>?> result = parseJsonString(jsonOutput.value);
-        jsonOutput.value = result.toString();
+        jsonOutput.value = jsonEncode(result);
+        // jsonOutput.value = result.toString();
         if (result.isEmpty) {
           log("List is empty");
           return false;
@@ -958,7 +959,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
             Duration difference = DateTime.now().difference(lastGenerationTime);
 
             // Calculate the remaining time as a countdown
-            Duration countdown = Duration(minutes: 10) - difference;
+            Duration countdown = Duration(minutes: 5) - difference;
             countdown = Duration(
                 seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
 
@@ -1018,8 +1019,8 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
             'parts': [
               {
                 'text':
-                    'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction'
-                // 'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects.'
+                    'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction. Note: Your Response must not contain plagirzed content'
+                // 'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION","image_link": "imageUrlHere"}] Please ensure each slide has a unique title and description and an online available image url link from unsplash. url must exist on unsplash, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction'
               }
             ]
           }
