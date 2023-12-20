@@ -82,7 +82,7 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
     );
     // checkAppToken();  //? We dont need APPTOKEN Now
     //  getlimit();
-    getGems();
+    // getGems();
 
     Future.delayed(Duration(milliseconds: 500), () {
       demo_height.value = SizeConfig.screenHeight * 0.5;
@@ -154,7 +154,7 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
   }
 
   valid(ImageSource) async {
-    if (gems.value > 0) {
+    if (gems.value > 0 || true) {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         // sendMessage(formattedJson);
@@ -594,7 +594,7 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
               Obx(() => isTextFieldFilled.value
                   ? GestureDetector(
                       onTap: () {
-                        if (gems.value > 0) {
+                        if (gems.value > 0 || true) {
                           Get.toNamed(Routes.ShortQuestionView);
                           // controller.sendMessage(controller.res.value);
                           if (gems.value < GEMS_RATE.MATH_GEMS_RATE) {

@@ -52,30 +52,30 @@ class MathsSolverView extends GetView<MathsSolverController> {
                 },
                 child: Icon(Icons.arrow_back_ios_new_rounded)),
             actions: [
-              Obx(() =>
-                  // RevenueCatService().currentEntitlement.value == Entitlement.paid?
-                  //     Container()
-                  //     :
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.GemsView);
-                    },
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          AppImages.gems,
-                          scale: 30,
-                        ),
-                        Text(
-                          " ${controller.gems.value}",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        SizedBox(
-                          width: SizeConfig.screenWidth * 0.03,
-                        )
-                      ],
-                    ),
-                  ))
+              // Obx(() =>
+              //     // RevenueCatService().currentEntitlement.value == Entitlement.paid?
+              //     //     Container()
+              //     //     :
+              //     GestureDetector(
+              //       onTap: () {
+              //         Get.toNamed(Routes.GemsView);
+              //       },
+              //       child: Row(
+              //         children: [
+              //           Image.asset(
+              //             AppImages.gems,
+              //             scale: 30,
+              //           ),
+              //           Text(
+              //             " ${controller.gems.value}",
+              //             style: TextStyle(color: Colors.black),
+              //           ),
+              //           SizedBox(
+              //             width: SizeConfig.screenWidth * 0.03,
+              //           )
+              //         ],
+              //       ),
+              //     ))
             ],
           ),
           body: SingleChildScrollView(
