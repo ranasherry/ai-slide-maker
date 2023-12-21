@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -13,6 +14,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_maker/app/modules/controllers/slide_maker_controller.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../data/mathpix_response.dart';
@@ -154,20 +157,14 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
   }
 
   valid(ImageSource) async {
-    if (gems.value > 0 || true) {
-      bool result = await InternetConnectionChecker().hasConnection;
-      if (result == true) {
-        // sendMessage(formattedJson);
-        getImage(ImageSource);
-        print("Internet ON");
-      } else {
-        Toster("No internet Connection", AppColors.Lime_Green_color);
-        print("Internet OFF");
-      }
+    bool result = await InternetConnectionChecker().hasConnection;
+    if (result == true) {
+      // sendMessage(formattedJson);
+      getImage(ImageSource);
+      print("Internet ON");
     } else {
-      // GemsFinished();
-      Toster("No More Gems Available", AppColors.Electric_Blue_color);
-      Get.toNamed(Routes.GemsView);
+      Toster("No internet Connection", AppColors.Lime_Green_color);
+      print("Internet OFF");
     }
   }
 
@@ -398,16 +395,39 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  ModelType modelType = ModelType.Bard;
+
   Future sendMessage(String text) async {
+    if (modelType == ModelType.Bard) {
+      String? bardResponse = await generateContent(text);
+      if (bardResponse == null) {
+        modelType = ModelType.OpenAPI;
+        sendMessage(text);
+      } else {
+        output.value = bardResponse;
+        questionText.value = text;
+        responseState.value = ResponseState.success;
+        AppLovinProvider.instance.showInterstitial(() {});
+        print("OutPut Value: ${output.value}");
+      }
+
+      return;
+    }
+    modelType = ModelType.Bard;
+
 // String message="try to give response using under ${AppStrings.MAX_MATHPIXTOKEN} Tokens.  Solve all Math Problem in below Text if exist. Also explain and write math notation into LaTeX notation also use latex notation if it occur in explanation sentence. Text:  $text";
-    String message =
-        "Try to give a response using under ${AppStrings.MAX_MATHPIXTOKEN} tokens. Solve all math problems in the below text if they exist. Also, explain and write math notation into LaTeX notation. Use LaTeX notation if it occurs in the explanation sentence and alway use double dollar symbol so my textview can recognize all latex notation in text in .\n\nText: $text";
+    String message = "$text";
+    // String message =
+    //     "Try to give a response using under ${AppStrings.MAX_MATHPIXTOKEN} tokens. Solve all math problems in the below text if they exist. Also, explain and write math notation into LaTeX notation. Use LaTeX notation if it occurs in the explanation sentence and alway use double dollar symbol so my textview can recognize all latex notation in text in .\n\nText: $text";
 
     print("Solve the Math Problem if Exisit in following  $text");
+    String system =
+        "Try to give a response using under ${AppStrings.MAX_MATHPIXTOKEN} tokens. Solve all math problems Given in User Message. Also, explain and write math notation into LaTeX notation. Use LaTeX notation if it occurs in the explanation sentence and alway use double dollar symbol so my textview can recognize all latex notation in text";
 
     final userMessage = Messages(role: Role.user, content: message);
+    final systemMessage = Messages(role: Role.system, content: system);
     final request = ChatCompleteText(
-      messages: [userMessage],
+      messages: [systemMessage, userMessage],
       // maxToken: AppStrings.MAX_CHAT_TOKKENS,
       maxToken: AppStrings.MAX_MATHPIXTOKEN,
       model: GptTurbo0301ChatModel(),
@@ -431,6 +451,7 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
           response.choices.first.message != null) {
         // responseState.value=ResponseState.success;
         // conversationID = response.choices.first.message!.id;
+        AppLovinProvider.instance.showInterstitial(() {});
       } else {
         responseState.value = ResponseState.failure;
       }
@@ -458,7 +479,7 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
       // navCTL.gems.value = navCTL.gems.value - GEMS_RATE.MATH_GEMS_RATE;
       // // savelimit();
       // navCTL.saveGems(navCTL.gems.value);
-      decreaseGEMS(GEMS_RATE.MATH_GEMS_RATE);
+      // decreaseGEMS(GEMS_RATE.MATH_GEMS_RATE);
     } catch (err) {
       EasyLoading.dismiss();
       EasyLoading.showError("Could not solve the problem");
@@ -594,26 +615,27 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
               Obx(() => isTextFieldFilled.value
                   ? GestureDetector(
                       onTap: () {
-                        if (gems.value > 0 || true) {
-                          Get.toNamed(Routes.ShortQuestionView);
-                          // controller.sendMessage(controller.res.value);
-                          if (gems.value < GEMS_RATE.MATH_GEMS_RATE) {
-                            //TODO: Route to Coins Page
-                            Get.toNamed(Routes.GemsView);
+                        // if (gems.value > 0 || true) {
+                        Get.toNamed(Routes.ShortQuestionView);
+                        // controller.sendMessage(controller.res.value);
+                        // if (gems.value < GEMS_RATE.MATH_GEMS_RATE) {
+                        //   //TODO: Route to Coins Page
+                        //   Get.toNamed(Routes.GemsView);
 
-                            Toster("You Dont have enough Gems",
-                                AppColors.Electric_Blue_color);
-                          } else {
-                            responseState.value = ResponseState.waiting;
-                            questionText.value =
-                                textEditingController.text.toString();
-                            sendMessage(textEditingController.text.toString());
-                            // uploadImageToFirebase(selectedImage!);
-                          }
-                        } else {
-                          Toster("No More Gems Available",
-                              AppColors.Electric_Blue_color);
-                        }
+                        //   Toster("You Dont have enough Gems",
+                        //       AppColors.Electric_Blue_color);
+                        // } else {
+                        responseState.value = ResponseState.waiting;
+                        questionText.value =
+                            textEditingController.text.toString();
+                        sendMessage(textEditingController.text.toString());
+                        // uploadImageToFirebase(selectedImage!);
+                        // }
+
+                        // } else {
+                        //   Toster("No More Gems Available",
+                        //       AppColors.Electric_Blue_color);
+                        // }
 
                         // Get.toNamed(Routes.ShortQuestionView);
                         //  EasyLoading.show(status: "Detecting Math Problems..", dismissOnTap: false);
@@ -638,6 +660,98 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  Future<String?> generateContent(String UserInput) async {
+    // EasyLoading.show(status: "Creating Outlines");
+    print("Bard API Call...");
+    final String apiKey = AppStrings.GeminiProKey;
+    // print("Bard API $apiKey");
+
+    final String apiUrl =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
+
+    try {
+      // Construct the request payload
+      Map<String, dynamic> requestBody = {
+        'contents': [
+          {
+            'parts': [
+              {
+                'text':
+                    '''Solve all Math Problem in below Text if exist. Also explain and write math notation into LaTeX notation also use latex notation if it occur in explanation sentence. 
+                        
+                        Text:  "$UserInput" '''
+                // 'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION","image_link": "imageUrlHere"}] Please ensure each slide has a unique title and description and an online available image url link from unsplash. url must exist on unsplash, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction'
+              }
+            ]
+          }
+        ],
+        'generationConfig': {
+          'temperature': 0.9,
+          'topK': 1,
+          'topP': 1,
+          'maxOutputTokens': 2048,
+          'stopSequences': [],
+        },
+        'safetySettings': [
+          {
+            'category': 'HARM_CATEGORY_HARASSMENT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_HATE_SPEECH',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_DANGEROUS_CONTENT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+        ]
+      };
+
+      // Make the API request
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+
+      // Check if the request was successful
+      if (response.statusCode == 200) {
+        // Parse and return the response
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        log("Bard Json Body: ${jsonResponse}");
+        final contentList = jsonResponse['candidates'];
+
+        // Assuming the first item in the list is the one you want to access
+        final firstItem = contentList.first;
+
+        // Accessing the 'content' and 'parts' keys
+        final content = firstItem['content'];
+        final parts = content['parts'];
+
+        // Assuming 'parts' is a List and we're taking the first item
+        final firstPart = parts.first;
+
+        // Accessing the 'text' property
+        final text = firstPart['text'];
+
+        // Returning the text as a String
+        return text as String;
+      } else {
+        throw Exception(
+            'Failed to generate content. HTTP Status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle errors
+      print('Error: $e');
+      return null; // You may want to handle errors more gracefully
+    }
   }
 }
 

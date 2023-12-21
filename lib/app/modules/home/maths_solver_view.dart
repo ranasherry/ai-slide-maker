@@ -737,23 +737,25 @@ class MathsSolverView extends GetView<MathsSolverController> {
             controller.isImageSelected.value
                 ? GestureDetector(
                     onTap: () async {
-                      if (controller.gems.value > 0) {
-                        Get.toNamed(Routes.ShortQuestionView);
-                        // controller.sendMessage(controller.res.value);
-                        if (controller.gems.value < GEMS_RATE.MATH_GEMS_RATE) {
-                          //TODO: Route to Coins Page
-                          Get.toNamed(Routes.GemsView);
+                      // if (controller.gems.value > 0) {
+                      Get.toNamed(Routes.ShortQuestionView);
+                      // controller.sendMessage(controller.res.value);
+                      // if (controller.gems.value < GEMS_RATE.MATH_GEMS_RATE) {
+                      //   //TODO: Route to Coins Page
+                      //   Get.toNamed(Routes.GemsView);
 
-                          controller.Toster("You Dont have enough Gems",
-                              AppColors.Electric_Blue_color);
-                        } else {
-                          controller
-                              .uploadImageToFirebase(controller.selectedImage!);
-                        }
-                      } else {
-                        controller.Toster("No More Gems Available",
-                            AppColors.Electric_Blue_color);
-                      }
+                      //   controller.Toster("You Dont have enough Gems",
+                      //       AppColors.Electric_Blue_color);
+                      // } else {
+                      //   controller
+                      //       .uploadImageToFirebase(controller.selectedImage!);
+                      // }
+                      controller
+                          .uploadImageToFirebase(controller.selectedImage!);
+                      // } else {
+                      //   controller.Toster("No More Gems Available",
+                      //       AppColors.Electric_Blue_color);
+                      // }
                       // AppLovinProvider.instance.showRewardedAd((){});
 
                       // }else{
@@ -771,29 +773,30 @@ class MathsSolverView extends GetView<MathsSolverController> {
                           borderRadius: BorderRadius.circular(
                               SizeConfig.blockSizeHorizontal * 10)),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                              width: SizeConfig.blockSizeHorizontal *
-                                  16), // Add some spacing between the icon and text
+                          // SizedBox(
+                          //     width: SizeConfig.blockSizeHorizontal *
+                          //         16), // Add some spacing between the icon and text
                           Text(
-                            "Solve This ( ",
+                            "Solve This Problem",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                AppImages.gems,
-                                scale: 30,
-                              ),
-                              Text(
-                                " ${GEMS_RATE.MATH_GEMS_RATE} )",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              SizedBox(
-                                width: SizeConfig.screenWidth * 0.03,
-                              )
-                            ],
-                          )
+                          // Row(
+                          //   children: [
+                          //     Image.asset(
+                          //       AppImages.gems,
+                          //       scale: 30,
+                          //     ),
+                          //     Text(
+                          //       " ${GEMS_RATE.MATH_GEMS_RATE} )",
+                          //       style: TextStyle(color: Colors.white),
+                          //     ),
+                          //     SizedBox(
+                          //       width: SizeConfig.screenWidth * 0.03,
+                          //     )
+                          //   ],
+                          // )
                         ],
                       ),
                     ),

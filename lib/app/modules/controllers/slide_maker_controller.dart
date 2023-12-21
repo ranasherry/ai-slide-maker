@@ -175,7 +175,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
   subscriptionCall() {
     // Get.toNamed(Routes.SUBSCRIPTION);
-    Get.toNamed(Routes.GemsView);
+    // Get.toNamed(Routes.GemsView);
   }
 
   // saveifsmaller(){
@@ -310,7 +310,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       } else {
         // GemsFinished();
         Toster("No More Gems Available", AppColors.Electric_Blue_color);
-        Get.toNamed(Routes.GemsView);
+        // Get.toNamed(Routes.GemsView);
       }
     } else {
       Toster("Please write somthing!", AppColors.Lime_Green_color);

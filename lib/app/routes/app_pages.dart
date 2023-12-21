@@ -37,11 +37,11 @@ class AppPages {
       page: () => SlideMakerView(),
       binding: SlideMakerBinding(),
     ),
-    GetPage(
-      name: _Paths.GemsView,
-      page: () => GemsView(),
-      binding: GemsViewBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.GemsView,
+    //   page: () => GemsView(),
+    //   binding: GemsViewBinding(),
+    // ),
     GetPage(
       name: _Paths.MathsSolverView,
       page: () => MathsSolverView(),
