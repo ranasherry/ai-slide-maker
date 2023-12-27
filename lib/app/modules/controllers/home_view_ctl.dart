@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeViewCtl extends GetxController {
@@ -9,6 +11,23 @@ class HomeViewCtl extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+  }
+  checkPermission() async {
+    
+       PermissionStatus status = await Permission.manageExternalStorage.status;
+      if (status == PermissionStatus.granted) {
+      print("Storage Granted");
+      Future.delayed(Duration(seconds: 3),(){
+      // Get.offNamed(Routes.HomeView);
+       Get.toNamed(Routes.PDF_VIEW);
+      });
+    }
+    else{
+      print("Storage Not Granted");
+      Future.delayed(Duration(seconds: 3),(){
+      Get.offNamed(Routes.PDF_PERMISSION);
+      });
+    }
   }
 
   @override

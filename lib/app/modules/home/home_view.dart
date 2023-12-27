@@ -157,8 +157,9 @@ class HomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.PDF_VIEW);
+                    // Get.toNamed(Routes.PDF_VIEW);/
                     // Get.toNamed(Routes.MathsSolverView);
+                    controller.checkPermission();
                   },
                   child: Container(
                     height: SizeConfig.blockSizeVertical * 20,
