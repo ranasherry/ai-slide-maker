@@ -63,6 +63,8 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   bool? firstTime = false;
   final pageController = PageController(initialPage: 0);
 
+  int NoOfSlides = 6;
+
   final count = 0.obs;
   @override
   RxDouble input_box_width = 0.0.obs;
@@ -106,6 +108,15 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   String promptForGPT = "";
 
   List<String> imageslist = [];
+  final List<String> suggestionsList = [
+    // "Festive Bytes: A Christmas Extravaganza",
+    "Christmas Magic",
+    "Jingle All the Way",
+    "New Year's Resolutions",
+    "New Year's Glow",
+    "2024 Tech Trends:",
+    "Tech Predictions for 2024",
+  ];
 
   void onInit() {
     super.onInit();
@@ -259,20 +270,34 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     });
   }
 
+  NeverShowOutlines() {
+    showInside.value = false;
+    input_box_width.value = 0;
+    input_box_height.value = 0;
+    create_box_height.value = 0;
+    create_box_width.value = 0;
+    show_slides();
+  }
+
   Future hide_buttons() async {
     create_box_height.value = 0;
     create_box_width.value = 0;
   }
 
   increaseOutputHeight() {
-    // input_box_width.value = SizeConfig.screenWidth *0.8;
-    input_box_width.value = 300;
-    // input_box_height.value = SizeConfig.screenHeight *0.5;
-    input_box_height.value = 450;
-    Future.delayed(Duration(seconds: 1), () {
-      // show_create_button();
+    if (NoOfSlides == 1) {
       outlineTitleFetched.value = true;
-    });
+      NeverShowOutlines();
+    } else {
+      // input_box_width.value = SizeConfig.screenWidth *0.8;
+      input_box_width.value = 300;
+      // input_box_height.value = SizeConfig.screenHeight *0.5;
+      input_box_height.value = 450;
+      Future.delayed(Duration(seconds: 1), () {
+        // show_create_button();
+        outlineTitleFetched.value = true;
+      });
+    }
   }
 
   // Alert_Box(title,dis){

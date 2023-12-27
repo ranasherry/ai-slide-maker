@@ -52,9 +52,9 @@ class AppLovinProvider {
     // }else{
     //   print("Debug Mode");
     // }
-    if (kReleaseMode) {
-      initializePlugin();
-    }
+    // if (kReleaseMode) {
+    initializePlugin();
+    // }
   }
 
   Future<void> initializePlugin() async {
@@ -74,6 +74,8 @@ class AppLovinProvider {
       AppLovinMAX.loadRewardedAd(Platform.isAndroid
           ? AppStrings.MAX_Reward_ID
           : AppStrings.IOS_MAX_Reward_ID);
+
+      AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
       //  AppLovinMAX.createMRec(AppStrings.MAX_MREC_ID, AdViewPosition.centered);
       // AppLovinMAX.createBanner(
       //     AppStrings.MAX_BANNER_ID, AdViewPosition.bottomCenter);
@@ -214,6 +216,37 @@ class AppLovinProvider {
     }, onAdCollapsedCallback: (ad) {
       print('MREC ad collapsed');
     }));
+
+    AppLovinMAX.setAppOpenAdListener(AppOpenAdListener(
+      onAdLoadedCallback: (ad) {},
+      onAdLoadFailedCallback: (adUnitId, error) {},
+      onAdDisplayedCallback: (ad) {},
+      onAdDisplayFailedCallback: (ad, error) {
+        AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+      },
+      onAdClickedCallback: (ad) {},
+      onAdHiddenCallback: (ad) {
+        AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+      },
+      onAdRevenuePaidCallback: (ad) {},
+    ));
+  }
+
+  Future<void> showAppOpenIfReady() async {
+    print("ShowAPPOpen Called..");
+    if (!isInitialized.value) {
+      return;
+    }
+
+    bool isReady =
+        (await AppLovinMAX.isAppOpenAdReady(AppStrings.MAX_APPOPEN_ID))!;
+    if (isReady) {
+      AppLovinMAX.showAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+      print("AppOpen is Ready");
+    } else {
+      AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+      print("AppOpen is Not Ready");
+    }
   }
 
   void showInterstitial(Function onInterAdWatched) async {

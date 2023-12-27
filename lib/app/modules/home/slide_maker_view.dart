@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_deck/flutter_deck.dart';
 import 'package:get/get.dart';
 import 'package:im_animations/im_animations.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -12,6 +13,8 @@ import 'package:launch_review/launch_review.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/utills/SlidesWidgets/big_fact_slides.dart';
+import 'package:slide_maker/app/utills/SlidesWidgets/flutter_deck_app.dart';
 import '../../provider/admob_ads_provider.dart';
 import '../../routes/app_pages.dart';
 import '../../utills/app_strings.dart';
@@ -187,78 +190,158 @@ class SlideMakerView extends GetView<SlideMakerController> {
       ),
       body: Obx(() => Center(
             child: Stack(children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    controller.showSlides.value
-                        ? slideShow()
-                        : DottedBorder(
-                            borderType: BorderType.RRect,
-                            strokeCap: StrokeCap.round,
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 3),
-                            color: Color(0xFF0049C8),
-                            // dashPattern: [19, 2, 6, 3],
-                            dashPattern: [6, 1, 8, 11],
-                            radius: Radius.circular(
-                                SizeConfig.blockSizeHorizontal * 4),
-                            strokeWidth: 2,
-                            child: AnimatedContainer(
-                              width: controller.input_box_width.value,
-                              height: controller.input_box_height.value,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.fastOutSlowIn,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade300, // Shadow color
-                                    spreadRadius: 2, // Spread radius
-                                    blurRadius: 10, // Blur radius
-                                    offset: Offset(
-                                        0, 5), // Offset in x and y direction
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.indigo),
-                              ),
-                              child: controller.showInside.value
-                                  ? Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          outField(),
-                                          Divider(),
-                                          inputField(),
-                                        ],
-                                      ),
-                                    )
-                                  : Container(),
-                            ),
-                          ),
-                    SizedBox(
-                      height: SizeConfig.screenHeight * 0.05,
-                    ),
-                    Row(
+              SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsets.only(
+                    top: SizeConfig.blockSizeVertical * 8,
+                  ),
+                  child: Center(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        createButton(),
                         controller.outlineTitleFetched.value
-                            ? Row(
-                                children: [
-                                  SizedBox(
-                                    width: SizeConfig.screenWidth * 0.15,
+                            ? Container()
+                            : Container(
+                                width: SizeConfig.screenWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  4),
+                                      child: Text(
+                                        'Trending Topics:',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  4),
+                                      child: Wrap(
+                                        spacing: 3.0,
+                                        runSpacing: 3.0,
+                                        children: controller.suggestionsList
+                                            .map((suggestion) {
+                                          return ActionChip(
+                                            onPressed: () {
+                                              controller.userInput.value =
+                                                  suggestion;
+                                              if (!controller
+                                                      .isWaitingForTime.value ||
+                                                  kDebugMode) {
+                                                // if (!controller.isWaitingForTime.value) {
+                                                controller
+                                                    .validate_user_input();
+                                              } else {
+                                                controller
+                                                    .showWatchRewardPrompt();
+                                              }
+
+                                              // controller.NoOfSlides = 1;
+                                            },
+                                            label: Text(
+                                              suggestion,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11),
+                                            ),
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor,
+                                            elevation: 4,
+                                            shadowColor:
+                                                Theme.of(context).cardColor,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 8),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        verticalSpace(SizeConfig.blockSizeVertical * 1),
+                        controller.showSlides.value
+                            ? slideShow()
+                            : DottedBorder(
+                                borderType: BorderType.RRect,
+                                strokeCap: StrokeCap.round,
+                                padding: EdgeInsets.all(
+                                    SizeConfig.blockSizeHorizontal * 3),
+                                color: Color(0xFF0049C8),
+                                // dashPattern: [19, 2, 6, 3],
+                                dashPattern: [6, 1, 8, 11],
+                                radius: Radius.circular(
+                                    SizeConfig.blockSizeHorizontal * 4),
+                                strokeWidth: 2,
+                                child: AnimatedContainer(
+                                  width: controller.input_box_width.value,
+                                  height: controller.input_box_height.value,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.fastOutSlowIn,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors
+                                            .grey.shade300, // Shadow color
+                                        spreadRadius: 2, // Spread radius
+                                        blurRadius: 10, // Blur radius
+                                        offset: Offset(0,
+                                            5), // Offset in x and y direction
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.indigo),
                                   ),
-                                  NextButton(),
-                                ],
-                              )
-                            : Container(),
+                                  child: controller.showInside.value
+                                      ? Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              outField(),
+                                              Divider(),
+                                              inputField(),
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                ),
+                              ),
+                        SizedBox(
+                          height: SizeConfig.screenHeight * 0.05,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            createButton(),
+                            controller.outlineTitleFetched.value
+                                ? Row(
+                                    children: [
+                                      SizedBox(
+                                        width: SizeConfig.screenWidth * 0.15,
+                                      ),
+                                      NextButton(),
+                                    ],
+                                  )
+                                : Container(),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
 
@@ -370,144 +453,153 @@ class SlideMakerView extends GetView<SlideMakerController> {
   }
 
   Widget slideShow() {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(
-            top: 60,
-          ),
-          // padding: EdgeInsets.only(top: 60, bottom: 60),
-          height: SizeConfig.screenHeight * 0.75,
-          child: Obx(() => ListView.builder(
-              // padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-              // itemCount: controller.outlineTitles.length,
-              itemCount: controller.slideResponseList.length,
-              cacheExtent: 99999,
-              // addAutomaticKeepAlives: true, // the number of items in the list
-              itemBuilder: (context, index) {
-                return Stack(
-                  children: [
-                    singleSlide(index),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Card(
-                        color: AppColors.Green_color,
-                        child: Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Text(
-                            "Slide ${index + 1}",
-                            style: StyleSheet.Intro_Sub_heading,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                );
-                // ListTile(
-                //   title: Text('Item ${index + 1}'), // the title of each item
-                // );
-              })),
-        ),
-      ),
+    return FlutterDeckExample(
+      slideResponseList: controller.slideResponseList,
+      NoOfSlides: controller.NoOfSlides,
     );
-    // singleSlide();
+
+    // Container(
+    //   // padding: EdgeInsets.only(top: 60, bottom: 60),
+    //   height: SizeConfig.screenHeight * 0.75,
+    //   child: Obx(() => ListView.builder(
+    //       // padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+    //       // itemCount: controller.outlineTitles.length,
+    //       itemCount: controller.slideResponseList.length,
+    //       cacheExtent: 99999,
+    //       // addAutomaticKeepAlives: true, // the number of items in the list
+    //       itemBuilder: (context, index) {
+    //         return Stack(
+    //           children: [
+    //             singleSlide(index),
+    //             Align(
+    //               alignment: Alignment.topRight,
+    //               child: Card(
+    //                 color: AppColors.Green_color,
+    //                 child: Padding(
+    //                   padding: EdgeInsets.all(5.0),
+    //                   child: Text(
+    //                     "Slide ${index + 1}",
+    //                     style: StyleSheet.Intro_Sub_heading,
+    //                   ),
+    //                 ),
+    //               ),
+    //             )
+    //           ],
+    //         );
+    //         // ListTile(
+    //         //   title: Text('Item ${index + 1}'), // the title of each item
+    //         // );
+    //       })),
+    // );
+    // // singleSlide();
   }
 
-  Widget singleSlide(index) {
-    String title = controller.slideResponseList[index].slideTitle;
-    String dis = controller.slideResponseList[index].slideDescription;
-    String imagePrompt = "Create an image of $title";
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Card(
-        color: AppColors.buttonColor,
-        shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(10.0), // adjust the value as you like
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Container(
-                  // width: 200,
-                  // height: 250,
-                  width: SizeConfig.screenWidth * 0.5,
-                  height: SizeConfig.screenHeight * 0.3,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          // "The Future of AI and evolving AI",
-                          "${controller.slideResponseList[index].slideTitle}",
-                          style: StyleSheet.Subscription_heading,
-                        ),
-                        Divider(),
-                        Text(
-                            // "Artificial Intelligence (AI) is a rapidly advancing field of computer science that empowers machines to mimic human intelligence, enabling them to learn from data, reason, make decisions, and solve complex problems. AI is transforming industries, from healthcare to finance, by automating tasks, improving efficiency, and driving innovation.",
-                            "${controller.slideResponseList[index].slideDescription}",
-                            style: StyleSheet.Intro_Sub_heading),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // Card(
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(10.0),
-                  //   ),
-                  //   elevation: 10.0,
-                  //   child: Image.asset(
-                  //     AppImages.presentation,
-                  //     scale: 4,
-                  //   ),
-                  // )
-                  // SizedBox(height: SizeConfig.screenHeight *0.1,),
-                  // ? commented by jamal start
-                  // Card(
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(
-                  //         10.0), // adjust the value as you like
-                  //   ),
-                  //   elevation: 10.0, // adjust the value as you like
-                  //   child: SlideImageContainer(
-                  //       controller: controller, imagePrompt: imagePrompt),
-                  // ),
-                  // ? commented by jamal end
+  // BigFactSlide singleSlide(index) {
+  //   String title = controller.slideResponseList[index].slideTitle;
+  //   String dis = controller.slideResponseList[index].slideDescription;
+  //   String imagePrompt = "Create an image of $title";
+  //   return BigFactSlide(
+  //     customData1: 'Value 1',
+  //     customData2: 'Value 2',
+  //   );
+  // }
 
-                  Obx(
-                    () => Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        elevation: 10.0,
-                        child: Container(
-                            width: SizeConfig.screenWidth * 0.3,
-                            child:
-                                Image.network(controller.slideImageList[index]))
-                        // child: Image.network("https://stackoverflow.com/questions/73336313/exception-invalid-image-data"))
-                        ),
-                  ),
-                ],
-              )
+  // Widget singleSlide(index) {
+  //   String title = controller.slideResponseList[index].slideTitle;
+  //   String dis = controller.slideResponseList[index].slideDescription;
+  //   String imagePrompt = "Create an image of $title";
+  //   return Padding(
+  //     padding: EdgeInsets.all(8.0),
+  //     child: Card(
+  //       color: AppColors.buttonColor,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius:
+  //             BorderRadius.circular(10.0), // adjust the value as you like
+  //       ),
+  //       child: Padding(
+  //         padding: EdgeInsets.all(8.0),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             Padding(
+  //               padding: EdgeInsets.all(10.0),
+  //               child: Container(
+  //                 // width: 200,
+  //                 // height: 250,
+  //                 width: SizeConfig.screenWidth * 0.5,
+  //                 height: SizeConfig.screenHeight * 0.3,
+  //                 child: SingleChildScrollView(
+  //                   child: Column(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: [
+  //                       Text(
+  //                         // "The Future of AI and evolving AI",
+  //                         "${controller.slideResponseList[index].slideTitle}",
+  //                         style: StyleSheet.Subscription_heading,
+  //                       ),
+  //                       Divider(),
+  //                       Text(
+  //                           // "Artificial Intelligence (AI) is a rapidly advancing field of computer science that empowers machines to mimic human intelligence, enabling them to learn from data, reason, make decisions, and solve complex problems. AI is transforming industries, from healthcare to finance, by automating tasks, improving efficiency, and driving innovation.",
+  //                           "${controller.slideResponseList[index].slideDescription}",
+  //                           style: StyleSheet.Intro_Sub_heading),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //             Column(
+  //               // mainAxisAlignment: MainAxisAlignment.end,
+  //               children: [
+  //                 // Card(
+  //                 //   shape: RoundedRectangleBorder(
+  //                 //     borderRadius: BorderRadius.circular(10.0),
+  //                 //   ),
+  //                 //   elevation: 10.0,
+  //                 //   child: Image.asset(
+  //                 //     AppImages.presentation,
+  //                 //     scale: 4,
+  //                 //   ),
+  //                 // )
+  //                 // SizedBox(height: SizeConfig.screenHeight *0.1,),
+  //                 // ? commented by jamal start
+  //                 // Card(
+  //                 //   shape: RoundedRectangleBorder(
+  //                 //     borderRadius: BorderRadius.circular(
+  //                 //         10.0), // adjust the value as you like
+  //                 //   ),
+  //                 //   elevation: 10.0, // adjust the value as you like
+  //                 //   child: SlideImageContainer(
+  //                 //       controller: controller, imagePrompt: imagePrompt),
+  //                 // ),
+  //                 // ? commented by jamal end
 
-              // )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //                 Obx(
+  //                   () => Card(
+  //                       shape: RoundedRectangleBorder(
+  //                           borderRadius: BorderRadius.circular(10.0)),
+  //                       elevation: 10.0,
+  //                       child: Container(
+  //                           width: SizeConfig.screenWidth * 0.3,
+  //                           child:
+  //                               Image.network(controller.slideImageList[index]))
+  //                       // child: Image.network("https://stackoverflow.com/questions/73336313/exception-invalid-image-data"))
+  //                       ),
+  //                 ),
+  //               ],
+  //             )
+
+  //             // )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget NextButton() {
     return GestureDetector(
       onTap: () {
+        print("Next Button Clicked");
         if (kReleaseMode) {
           if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
             MetaAdsProvider.instance.showInterstitialAd();

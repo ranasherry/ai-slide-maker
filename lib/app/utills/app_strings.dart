@@ -21,7 +21,7 @@ class AppStrings {
 
   // static const MAX_MREC_ID = "";
 
-  static const MAX_APPOPEN_ID = "a5c4251ccb168802";
+  static const MAX_APPOPEN_ID = "e00645e22a2aba3a";
 
   static const MAX_Reward_ID = "efa63a2cafbae46f";
 

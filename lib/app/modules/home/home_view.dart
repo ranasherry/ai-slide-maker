@@ -1,8 +1,11 @@
+import 'package:applovin_max/applovin_max.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -60,14 +63,39 @@ class HomeView extends GetView<HomeViewCtl> {
       ),
       body: Column(
         children: [
+          verticalSpace(SizeConfig.blockSizeVertical * 1),
+          Container(
+            height: 60,
+            // color: Colors.amber,
+            child: Center(
+              child: MaxAdView(
+                  adUnitId: AppStrings.MAX_BANNER_ID,
+                  adFormat: AdFormat.banner,
+                  listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                    print('Banner widget ad loaded from ' + ad.networkName);
+                  }, onAdLoadFailedCallback: (adUnitId, error) {
+                    print('Banner widget ad failed to load with error code ' +
+                        error.code.toString() +
+                        ' and message: ' +
+                        error.message);
+                  }, onAdClickedCallback: (ad) {
+                    print('Banner widget ad clicked');
+                  }, onAdExpandedCallback: (ad) {
+                    print('Banner widget ad expanded');
+                  }, onAdCollapsedCallback: (ad) {
+                    print('Banner widget ad collapsed');
+                  })),
+            ),
+          ),
           Padding(
-            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 10),
+            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(Routes.MathsSolverView);
+                    AppLovinProvider.instance.showInterstitial(() {});
                   },
                   child: Container(
                     height: SizeConfig.blockSizeVertical * 20,
@@ -108,6 +136,7 @@ class HomeView extends GetView<HomeViewCtl> {
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(Routes.SlideMakerView);
+                    AppLovinProvider.instance.showInterstitial(() {});
                   },
                   child: Container(
                     height: SizeConfig.blockSizeVertical * 20,
