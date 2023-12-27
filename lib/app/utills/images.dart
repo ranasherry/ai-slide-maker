@@ -14,4 +14,9 @@ class AppImages {
   static const pencil = "assets/images/pencil.png";
   static const history = "assets/images/history.png";
   static const commingSoon = "assets/images/comming_soon.png";
+  static const pdf = "assets/images/pdf.png";
+  static const empty = "assets/icons/no_folder.png";
+  static const doc = "assets/icons/doc.png";
+  static const pdf_edit = "assets/images/edit-file.png";
+
 }

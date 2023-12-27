@@ -22,8 +22,12 @@ class StyleSheet {
       TextStyle(fontSize: 18, fontStyle: FontStyle.italic);
   static const Intro_heading = TextStyle(
       color: AppColors.white_color, fontSize: 25, fontStyle: FontStyle.italic);
+  static const Intro_heading_black = TextStyle(
+      color: AppColors.black_color, fontSize: 25, fontStyle: FontStyle.italic);
   static const Subscription_heading = TextStyle(
       color: AppColors.white_color, fontSize: 25, fontWeight: FontWeight.bold);
+  static const Subscription_heading_black = TextStyle(
+      color: AppColors.black_color, fontSize: 25, fontWeight: FontWeight.bold);
   static const Intro_Sub_heading = TextStyle(
       color: AppColors.white_color, fontSize: 15, fontStyle: FontStyle.italic);
   static const Intro_Sub_heading_black = TextStyle(
