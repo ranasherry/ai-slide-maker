@@ -11,6 +11,9 @@ abstract class Routes {
   static const MathsSolverView = _Paths.MathsSolverView;
   static const ShortQuestionView = _Paths.ShortQuestionView;
   static const HistoryView = _Paths.HistoryView;
+  static const PDF_PERMISSION = _Paths.PDF_PERMISSION;
+  static const PDF_VIEW = _Paths.PDF_VIEW;
+  static const SHOW_P_D_F = _Paths.SHOW_P_D_F;
 }
 
 abstract class _Paths {
@@ -21,4 +24,7 @@ abstract class _Paths {
   static const MathsSolverView = '/MathsSolverView';
   static const ShortQuestionView = '/ShortQuestionView';
   static const HistoryView = '/HistoryView';
+  static const PDF_PERMISSION = '/pdf-permission';
+  static const PDF_VIEW = '/pdf-view';
+  static const SHOW_P_D_F = '/show-p-d-f';
 }

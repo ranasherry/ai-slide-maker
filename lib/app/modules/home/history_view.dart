@@ -12,7 +12,8 @@ class HistoryView extends StatelessWidget {
       backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
         title: Text(
-          "History",
+          // "History",
+          "",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

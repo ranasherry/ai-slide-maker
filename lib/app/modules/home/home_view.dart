@@ -62,7 +62,8 @@ class HomeView extends GetView<HomeViewCtl> {
         children: [
           Padding(
             padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 10),
-            child: Row(
+            child: 
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
@@ -137,6 +138,100 @@ class HomeView extends GetView<HomeViewCtl> {
                           ),
                           Text(
                             "Create slides instantly",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 3),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+            child: 
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.PDF_VIEW);
+                    // Get.toNamed(Routes.MathsSolverView);
+                  },
+                  child: Container(
+                    height: SizeConfig.blockSizeVertical * 20,
+                    width: SizeConfig.blockSizeHorizontal * 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 4),
+                      // color: Color(0xFF85C0EB),
+                      color: Color(0xFFFBAE8B),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeHorizontal * 2,
+                          vertical: SizeConfig.blockSizeVertical * 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Image.asset(
+                            AppImages.pdf,
+                            scale: 10,
+                          ),
+                          Text(
+                            "PDF Reader",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Read any type of PDF file",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 3),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Get.toNamed(Routes.);
+                    // Get.toNamed(Routes.MathsSolverView);
+                    Get.toNamed(Routes.HistoryView);
+                  },
+                  child: Container(
+                    height: SizeConfig.blockSizeVertical * 20,
+                    width: SizeConfig.blockSizeHorizontal * 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 4),
+                      // color: Color(0xFFFBAE8B),
+                      color: Color(0xFF85C0EB),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeHorizontal * 2,
+                          vertical: SizeConfig.blockSizeVertical * 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Image.asset(
+                            AppImages.pdf_edit,
+                            scale: 8,
+                          ),
+                          Text(
+                            "PDF Editor",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Edit PDF on the go",
                             style: TextStyle(
                                 fontSize: SizeConfig.blockSizeHorizontal * 3),
                           )

@@ -1,10 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
+     <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:label="AI Slide Maker"
         android:name="${applicationName}"
+        android:requestLegacyExternalStorage="true"
+        android:largeHeap="true"
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
