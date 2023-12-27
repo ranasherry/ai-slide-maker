@@ -33,8 +33,8 @@ class SplashController extends GetxController {
       percent.value += n;
       if (percent.value >= 100) {
         percent.value = 100;
-        checkPermission();
-        // Get.offNamed(Routes.HomeView);
+        // checkPermission();/
+        Get.offNamed(Routes.HomeView);
         // isLoaded.value = true;
 
         timer!.cancel();
