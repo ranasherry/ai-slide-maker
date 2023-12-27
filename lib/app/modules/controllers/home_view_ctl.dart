@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
-<<<<<<< HEAD
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
-=======
 import 'package:slide_maker/app/routes/app_pages.dart';
->>>>>>> c692888139bc2ab9231265bd0dbded8970ebaf26
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
@@ -17,20 +14,19 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
   }
+
   checkPermission() async {
-    
-       PermissionStatus status = await Permission.manageExternalStorage.status;
-      if (status == PermissionStatus.granted) {
+    PermissionStatus status = await Permission.manageExternalStorage.status;
+    if (status == PermissionStatus.granted) {
       print("Storage Granted");
-      Future.delayed(Duration(seconds: 3),(){
-      // Get.offNamed(Routes.HomeView);
-       Get.toNamed(Routes.PDF_VIEW);
+      Future.delayed(Duration(seconds: 3), () {
+        // Get.offNamed(Routes.HomeView);
+        Get.toNamed(Routes.PDF_VIEW);
       });
-    }
-    else{
+    } else {
       print("Storage Not Granted");
-      Future.delayed(Duration(seconds: 3),(){
-      Get.offNamed(Routes.PDF_PERMISSION);
+      Future.delayed(Duration(seconds: 3), () {
+        Get.offNamed(Routes.PDF_PERMISSION);
       });
     }
   }
