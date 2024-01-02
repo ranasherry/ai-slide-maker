@@ -9,14 +9,14 @@ import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.
 import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../pdfView/controllers/pdf_view_controller.dart';
 import '../controllers/show_p_d_f_controller.dart';
 
 class ShowPDFView extends GetView<PdfViewController> {
   @override
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -45,12 +45,14 @@ class ShowPDFView extends GetView<PdfViewController> {
               //       child: Icon(Icons.mode_edit_outlined)),
               // ),
               Padding(
-                padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 5),
+                padding:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 5),
                 child: GestureDetector(
                     onTap: () {
                       controller.ShareFile(controller
-                              .pdf_viewer_model[controller.selectedindex.value].path.toString());
-                       //! share file using unitlist
+                          .pdf_viewer_model[controller.selectedindex.value].path
+                          .toString());
+                      //! share file using unitlist
                       // Share.shareXFiles([
                       //   XFile.fromData(
                       //     controller
@@ -72,10 +74,10 @@ class ShowPDFView extends GetView<PdfViewController> {
         margin: EdgeInsets.only(bottom: 60),
         child: Column(
           children: [
-            Expanded(
-              child: SfPdfViewer.file(File(controller
-                        .pdf_viewer_model[controller.selectedindex.value].path)),
-            ),
+            // Expanded(
+            //   child: SfPdfViewer.file(File(controller
+            //             .pdf_viewer_model[controller.selectedindex.value].path)),
+            // ),
             // Expanded(
             //   child: Obx(
             //     () => SfPdfViewer.memory(

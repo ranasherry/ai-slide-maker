@@ -16,6 +16,7 @@ import 'package:slide_maker/app/modules/pdfView/bindings/pdf_view_binding.dart';
 import 'package:slide_maker/app/modules/pdfView/views/pdf_view_view.dart';
 import 'package:slide_maker/app/modules/showPDF/bindings/show_p_d_f_binding.dart';
 import 'package:slide_maker/app/modules/showPDF/views/show_p_d_f_view.dart';
+import 'package:slide_maker/app/modules/showppt/views/show_p_p_t_view.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/splash_binding.dart';
@@ -77,6 +78,11 @@ class AppPages {
     GetPage(
       name: _Paths.SHOW_P_D_F,
       page: () => ShowPDFView(),
+      binding: ShowPDFBinding(),
+    ),
+    GetPage(
+      name: _Paths.ShowPPTView,
+      page: () => ShowPPTView(),
       binding: ShowPDFBinding(),
     ),
   ];

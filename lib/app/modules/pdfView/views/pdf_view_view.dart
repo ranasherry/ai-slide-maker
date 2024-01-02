@@ -14,7 +14,6 @@ import 'package:slide_maker/app/utills/size_config.dart';
 import '../controllers/pdf_view_controller.dart';
 
 class PdfViewView extends GetView<PdfViewController> {
-  
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -41,7 +40,8 @@ class PdfViewView extends GetView<PdfViewController> {
                             textSelectionTheme: TextSelectionThemeData(
                                 cursorColor: Colors.white),
                             // appBarTheme: AppBarTheme(color: Color(0xFFc20000))),
-                            appBarTheme: AppBarTheme(color: AppColors.Electric_Blue_color)),
+                            appBarTheme: AppBarTheme(
+                                color: AppColors.Electric_Blue_color)),
                         onQueryUpdate: print,
                         items: controller.pdf_viewer_model,
                         searchLabel: 'Search file',
@@ -74,7 +74,9 @@ class PdfViewView extends GetView<PdfViewController> {
                       child: GestureDetector(
                     onTap: () {
                       print("App share");
-                      Share.share('https://play.google.com/store/apps/details?id=pdf.pdfreader.viewer.free.editor', subject: 'Look what I found on PlayStore!');
+                      Share.share(
+                          'https://play.google.com/store/apps/details?id=pdf.pdfreader.viewer.free.editor',
+                          subject: 'Look what I found on PlayStore!');
                       // Share.share(controller.shareApp);
                     },
                     child: Row(
@@ -117,9 +119,9 @@ class PdfViewView extends GetView<PdfViewController> {
                       GestureDetector(
                         onTap: () {
                           // controller.LaunchUrl();
-                        Uri uri = Uri.parse(controller.privacyLink);
+                          Uri uri = Uri.parse(controller.privacyLink);
 
-                      controller.launchInBrowser(uri);
+                          controller.launchInBrowser(uri);
                         },
                         child: Text(
                           "Privacy Policy",
@@ -178,7 +180,7 @@ class PdfViewView extends GetView<PdfViewController> {
           children: [
             GestureDetector(
                 onTap: () {
-                  AppLovinProvider.instance.showInterstitial((){});
+                  AppLovinProvider.instance.showInterstitial(() {});
                 },
                 child: pdfdoc())
           ],
@@ -210,7 +212,9 @@ class PdfViewView extends GetView<PdfViewController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(),
-                      SizedBox(height: SizeConfig.screenHeight *0.03,),
+                      SizedBox(
+                        height: SizeConfig.screenHeight * 0.03,
+                      ),
                       Text("Scanning PDF from your Phone")
                     ],
                   ),
@@ -249,17 +253,17 @@ class PdfViewView extends GetView<PdfViewController> {
 
   Padding _pdfdocitem(int index) {
     String date =
-    //!
+        //!
         controller.pdf_viewer_model[index].date;
-        // ?? 
-        // DateTime.now();
+    // ??
+    // DateTime.now();
 
     // String date = formatDateTime(d);
 //!
-    final namewithout = 
-    // "NAME";
-    basenameWithoutExtension(
-        controller.pdf_viewer_model[index].name.toString());
+    final namewithout =
+        // "NAME";
+        basenameWithoutExtension(
+            controller.pdf_viewer_model[index].name.toString());
 
     return Padding(
       padding: EdgeInsets.only(
@@ -272,7 +276,8 @@ class PdfViewView extends GetView<PdfViewController> {
           onTap: () {
             // openDocumentFile(controller.pdf_viewer_model[index].File.uri);
             controller.selectedindex.value = index;
-            Get.toNamed(Routes.SHOW_P_D_F);
+            // Get.toNamed(Routes.SHOW_P_D_F);
+            Get.toNamed(Routes.ShowPPTView);
           },
           child: Padding(
             padding: EdgeInsets.only(
@@ -305,8 +310,8 @@ class PdfViewView extends GetView<PdfViewController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: SizeConfig.screenWidth *0.5,
-                        height: SizeConfig.screenWidth *0.05,
+                        width: SizeConfig.screenWidth * 0.5,
+                        height: SizeConfig.screenWidth * 0.05,
                         child: Text(
                           "${namewithout}",
                           // "${controller.documentPath}",
@@ -365,36 +370,37 @@ class PdfViewView extends GetView<PdfViewController> {
                               ],
                             ),
                           )),
-                        //   PopupMenuItem(
-                        //       child: GestureDetector(
-                        //     onTap: () {
-                        //       controller.selectedindex.value = index;
-                              
-                        // //       Get.toNamed(Routes.PDF_EDITOR,arguments: "${controller
-                        // // .pdf_viewer_model[controller.selectedindex.value].path}");
-                        //     },
-                        //     child: Row(
-                        //       children: [
-                        //         Icon(
-                        //           Icons.edit,
-                        //           color: Colors.orangeAccent,
-                        //         ),
-                        //         horizontalSpace(
-                        //             SizeConfig.blockSizeHorizontal * 2),
-                        //         Text(
-                        //           "Edit",
-                        //           style: TextStyle(color: Colors.grey.shade700),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   )),
+                          //   PopupMenuItem(
+                          //       child: GestureDetector(
+                          //     onTap: () {
+                          //       controller.selectedindex.value = index;
+
+                          // //       Get.toNamed(Routes.PDF_EDITOR,arguments: "${controller
+                          // // .pdf_viewer_model[controller.selectedindex.value].path}");
+                          //     },
+                          //     child: Row(
+                          //       children: [
+                          //         Icon(
+                          //           Icons.edit,
+                          //           color: Colors.orangeAccent,
+                          //         ),
+                          //         horizontalSpace(
+                          //             SizeConfig.blockSizeHorizontal * 2),
+                          //         Text(
+                          //           "Edit",
+                          //           style: TextStyle(color: Colors.grey.shade700),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   )),
                           PopupMenuItem(
                               child: GestureDetector(
                             onTap: () {
-
-                              
-                              print("${controller.pdf_viewer_model[index].path}");
-                              controller.ShareFile(controller.pdf_viewer_model[index].path.toString());
+                              print(
+                                  "${controller.pdf_viewer_model[index].path}");
+                              controller.ShareFile(controller
+                                  .pdf_viewer_model[index].path
+                                  .toString());
                               //! share file using unitlist
                               // Share.shareXFiles([
                               //   XFile.fromData(
@@ -431,16 +437,16 @@ class PdfViewView extends GetView<PdfViewController> {
   }
 
   Padding pdfdocitem(PDFModel person) {
-    DateTime d = 
-  //!
-    // person.File.lastModified ?? 
-    DateTime.now();
+    DateTime d =
+        //!
+        // person.File.lastModified ??
+        DateTime.now();
     String date = d.toString();
     // String date = formatDateTime(d);
 //!
-    final namewithout = 
-    // "NAME";
-    basenameWithoutExtension(person.name.toString());
+    final namewithout =
+        // "NAME";
+        basenameWithoutExtension(person.name.toString());
 
     return Padding(
       padding: EdgeInsets.only(
@@ -470,7 +476,7 @@ class PdfViewView extends GetView<PdfViewController> {
                 color: Colors.white,
               ),
               child: Padding(
-                padding:  EdgeInsets.all(SizeConfig.screenWidth *0.01),
+                padding: EdgeInsets.all(SizeConfig.screenWidth * 0.01),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -491,8 +497,8 @@ class PdfViewView extends GetView<PdfViewController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                           width: SizeConfig.screenWidth *0.5,
-                          height: SizeConfig.screenWidth *0.05,
+                          width: SizeConfig.screenWidth * 0.5,
+                          height: SizeConfig.screenWidth * 0.05,
                           child: Text(
                             "${namewithout}",
                             // "${controller.documentPath}",
@@ -516,7 +522,8 @@ class PdfViewView extends GetView<PdfViewController> {
                             Text(
                               controller.getReadableFileSize(person.size),
                               style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 2.5,
+                                  fontSize:
+                                      SizeConfig.blockSizeHorizontal * 2.5,
                                   color: Colors.grey),
                             )
                           ],
@@ -532,6 +539,4 @@ class PdfViewView extends GetView<PdfViewController> {
       ]),
     );
   }
-
-
 }

@@ -14,6 +14,7 @@ abstract class Routes {
   static const PDF_PERMISSION = _Paths.PDF_PERMISSION;
   static const PDF_VIEW = _Paths.PDF_VIEW;
   static const SHOW_P_D_F = _Paths.SHOW_P_D_F;
+  static const ShowPPTView = _Paths.ShowPPTView;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const PDF_PERMISSION = '/pdf-permission';
   static const PDF_VIEW = '/pdf-view';
   static const SHOW_P_D_F = '/show-p-d-f';
+  static const ShowPPTView = '/ShowPPTView';
 }

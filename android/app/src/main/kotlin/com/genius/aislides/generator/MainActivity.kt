@@ -49,7 +49,10 @@ class MainActivity : FlutterActivity() {
             for (file in files) {
                 if (file.isDirectory) {
                     pdfFiles.addAll(getPdfFilesFromDirectory(file))
-                } else if (file.name.endsWith(".pdf")) {
+                } 
+                //else if (file.name.endsWith(".pdf")) 
+                else if (file.name.endsWith(".pptx")) 
+                {
                     pdfFiles.add(file.absolutePath)
                 }
             }
@@ -64,7 +67,10 @@ class MainActivity : FlutterActivity() {
             for (file in files) {
                 if (file.isDirectory) {
                     pdfFiles.addAll(getPdfFilesFromDirectory(file))
-                } else if (file.name.endsWith(".pdf")) {
+                } 
+                else if (file.name.endsWith(".pptx"))
+                // else if (file.name.endsWith(".pdf"))
+                 {
                     pdfFiles.add(file.absolutePath)
                 }
             }

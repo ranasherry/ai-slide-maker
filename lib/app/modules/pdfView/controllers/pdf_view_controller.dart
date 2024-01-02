@@ -14,12 +14,12 @@ import 'package:shared_storage/shared_storage.dart';
 import 'package:slide_maker/app/data/pdf_viewer_model.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
-
 ReceivePort _port = ReceivePort();
- RxList<PDFModel> pdf_viewer_model = <PDFModel>[].obs;
+RxList<PDFModel> pdf_viewer_model = <PDFModel>[].obs;
+
 class PdfViewController extends GetxController {
   static const MethodChannel channel = MethodChannel('pdf_files');
   Rx<bool> canShowPdf = false.obs;
@@ -39,13 +39,16 @@ class PdfViewController extends GetxController {
   // bool isHorizontalModeClicked = true;
   // bool isContinuousModeClicked = true;
   String? documentPath;
-  PdfInteractionMode interactionMode = PdfInteractionMode.selection;
-  PdfPageLayoutMode pageLayoutMode = PdfPageLayoutMode.continuous;
-  PdfScrollDirection scrollDirection = PdfScrollDirection.vertical;
+  // PdfInteractionMode interactionMode = PdfInteractionMode.selection;
+  // PdfPageLayoutMode pageLayoutMode = PdfPageLayoutMode.continuous;
+  // PdfScrollDirection scrollDirection = PdfScrollDirection.vertical;
+
   // final FocusNode focusNode = FocusNode()..requestFocus();
   // final GlobalKey<ToolbarState> toolbarKey = GlobalKey();
-  final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
-  final PdfViewerController pdfViewerController = PdfViewerController();
+
+  // final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
+  // final PdfViewerController pdfViewerController = PdfViewerController();
+
   // final GlobalKey<SearchToolbarState> textSearchKey = GlobalKey();
   // final GlobalKey<TextSearchOverlayState> textSearchOverlayKey = GlobalKey();
   // late bool canShowContinuousModeOptions =
@@ -67,7 +70,8 @@ class PdfViewController extends GetxController {
   // bool hasPasswordDialog = false;
   // String errorText = '';
   RxBool DoneScanning = false.obs;
-  String privacyLink="https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader";
+  String privacyLink =
+      "https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader";
 
   // String shareApp =
   //     "https://play.google.com/store/search?q=pdf.pdfreader.viewer.free.editor";
@@ -133,20 +137,20 @@ class PdfViewController extends GetxController {
     // final SendPort? send =
     //     IsolateNameServer.lookupPortByName('downloader_send_port');
     // send!.send("Hello");
-      
+
 //   for (var i = 0; i<=100; i++) {
 
-  // Future.delayed(Duration(seconds: 3),(){
-try {
-    getPdfFiles().then((value) {
-      print("GetPDFFiles Done");
-      nextPdf().then((value) => null);
-    });
-  } on Exception catch (e) {
-    print("Error:$e");
-  }
-  // });
-  
+    // Future.delayed(Duration(seconds: 3),(){
+    try {
+      getPdfFiles().then((value) {
+        print("GetPDFFiles Done");
+        nextPdf().then((value) => null);
+      });
+    } on Exception catch (e) {
+      print("Error:$e");
+    }
+    // });
+
 // }
 
 // Future.delayed(Duration(seconds: 5),(){
@@ -156,26 +160,22 @@ try {
 //   print("Error:$e");
 // }
 // });
-      // .then((value) => print("");
+    // .then((value) => print("");
     // getPermissionAndPDF();
   }
 
-  Future nextPdf()async{
-    DoneScanning.value=true;
-    for (var i = 0;i<=50; i++) {
-  getPdfFiles();
-}
+  Future nextPdf() async {
+    DoneScanning.value = true;
+    for (var i = 0; i <= 50; i++) {
+      getPdfFiles();
+    }
   }
-
-  
 
   @override
   void dispose() {
     // WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-
-  
 
   Future SavePdfPath(pdfPath) async {
     // Obtain shared preferences.
@@ -200,36 +200,35 @@ try {
     for (var eachpdfpath in pdfFiles) {
       print("each:$eachpdfpath");
       if (eachpdfpath != null) {
-          
-          File file = File(eachpdfpath);
+        File file = File(eachpdfpath);
 
-          // Get file name
-          String fileName = file.path.split('/').last;
+        // Get file name
+        String fileName = file.path.split('/').last;
 
-          // Get file size
-          int fileSize = await file.length();
+        // Get file size
+        int fileSize = await file.length();
 
-          // Get date created
-          DateTime dateCreated = await file.lastModified();
-          
-          print("Name:${fileName}");
-          print("Size: ${fileSize}");
-          print("Date: ${dateCreated}");
+        // Get date created
+        DateTime dateCreated = await file.lastModified();
 
-          PDFModel pdfFile = PDFModel(
-                  name: fileName,
-                  // file: uint8List,
-                  // File: docFile,
-                  path: eachpdfpath,
-                  date: dateCreated.toString(),
-                  // date: formatDateTime(dateCreated),
-                  size: fileSize,
+        print("Name:${fileName}");
+        print("Size: ${fileSize}");
+        print("Date: ${dateCreated}");
 
-                  // isdownloaded: false.obs
-                  );
-                  pdf_viewer_model.add(pdfFile);
-        }
-        
+        PDFModel pdfFile = PDFModel(
+          name: fileName,
+          // file: uint8List,
+          // File: docFile,
+          path: eachpdfpath,
+          date: dateCreated.toString(),
+          // date: formatDateTime(dateCreated),
+          size: fileSize,
+
+          // isdownloaded: false.obs
+        );
+        pdf_viewer_model.add(pdfFile);
+      }
+
       // final document = await FlutterAbsolutePath.getAbsolutePath(pdfpath);
       //     File tempFile = File(document);
       // // var fileName = path.basename(file.path);
@@ -243,11 +242,10 @@ try {
 
       //             // isdownloaded: false.obs
       //             );
-              // whatsapp_images.add(waImage);
-              // pdf_viewer_model.add(pdfFile);
-        // print("PDF Path: ${file.path}");
+      // whatsapp_images.add(waImage);
+      // pdf_viewer_model.add(pdfFile);
+      // print("PDF Path: ${file.path}");
       print(eachpdfpath);
-
     }
     print("After getPdfFiles");
 
@@ -264,12 +262,7 @@ try {
     // File file = File(path);
     // Uint8List fileInBytes = file.readAsBytesSync();
     // print("File Path :: ${file.path}");
-    Share.shareFiles(
-      [
-      path
-    ],
-    text: "PDF"
-    );
+    Share.shareFiles([path], text: "PDF");
     //   Share.shareXFiles([
     //   XFile.fromData(
     //     fileInBytes,
@@ -336,9 +329,9 @@ try {
 //     try {
 //       Directory rootDir = Directory(rootPath);
 //       if (await rootDir.exists()) {
-//         // pdfPaths = 
+//         // pdfPaths =
 //         Stream.fromFuture(_getPdfFilesRecursively(rootDir));
-        
+
 //         // List<FileSystemEntity> files =
 //         //     rootDir.listSync(recursive: false, followLinks: false);
 //         // for (FileSystemEntity file in files) {
@@ -385,14 +378,14 @@ try {
 
 //         if (file.path.contains("Android/obb")||file.path.contains("Android/data")||file.path.contains("Android/obj")) {
 //           print("Android: ${file.path}");
-//         } 
+//         }
 //         else {
 //           List<String> list2= await _getPdfFilesRecursively(file);
 //           pdfPaths.addAll(list2);
 //         }
 //       }
 //     }
-    
+
 //     return pdfPaths;
 //   }
   //?
@@ -466,11 +459,11 @@ try {
     super.onReady();
     print("current:");
     // for (var i = 0; i<=100; i++) {
-  // try {
-  //   getPdfFiles().then((value) => DoneScanning.value=true);
-  // } on Exception catch (e) {
-  //   print("Error:$e");
-  // }
+    // try {
+    //   getPdfFiles().then((value) => DoneScanning.value=true);
+    // } on Exception catch (e) {
+    //   print("Error:$e");
+    // }
 // }
   }
 
