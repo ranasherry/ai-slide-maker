@@ -478,7 +478,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
           children: [
             GestureDetector(
               onTap: () {
-                controller.getImage(ImageSource.camera);
+                // controller.getImage(ImageSource.camera);
                 controller.valid(ImageSource.camera);
               },
               child: Container(

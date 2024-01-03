@@ -1,10 +1,12 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import 'package:slide_maker/app/modules/bindings/history_binding.dart';
+import 'package:slide_maker/app/modules/bindings/history_slide_binding.dart';
 import 'package:slide_maker/app/modules/bindings/home_view_binding.dart';
 import 'package:slide_maker/app/modules/bindings/maths_solver_binding.dart';
 import 'package:slide_maker/app/modules/bindings/slide_maker_binding.dart';
 import 'package:slide_maker/app/modules/home/gems_view_view.dart';
+import 'package:slide_maker/app/modules/home/history_slide_view.dart';
 import 'package:slide_maker/app/modules/home/history_view.dart';
 import 'package:slide_maker/app/modules/home/home_view.dart';
 import 'package:slide_maker/app/modules/home/maths_solver_view.dart';
@@ -84,6 +86,11 @@ class AppPages {
       name: _Paths.ShowPPTView,
       page: () => ShowPPTView(),
       binding: ShowPDFBinding(),
+    ),
+    GetPage(
+      name: _Paths.HistorySlideView,
+      page: () => HistorySlideView(),
+      binding: HistorySlideBinding(),
     ),
   ];
 }

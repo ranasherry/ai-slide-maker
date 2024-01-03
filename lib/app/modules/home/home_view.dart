@@ -87,6 +87,7 @@ class HomeView extends GetView<HomeViewCtl> {
                   })),
             ),
           ),
+
           Padding(
             padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
             child: Row(

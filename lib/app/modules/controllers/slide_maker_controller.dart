@@ -21,6 +21,8 @@ import 'package:pdf/pdf.dart';
 import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_maker/app/data/slide_history.dart';
+import 'package:slide_maker/app/data/slides_history_dbhandler.dart';
 import 'package:slide_maker/app/provider/admob_ads_provider.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
@@ -465,8 +467,11 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
       Future.delayed(Duration(seconds: 1), () {
         if (value) {
+          //? Json Created SuccessFully
+
           increaseOutputHeight();
           setNewTime();
+          saveSlideInDB();
           if (true) {
             EasyLoading.dismiss();
             if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
@@ -1131,6 +1136,24 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       },
       timerText: timerValue,
     );
+  }
+
+  //? DB implementation
+  Future<void> saveSlideInDB() async {
+    SlidesHistory slidesHistory = SlidesHistory(
+        id: 0,
+        title: userInput.value,
+        timestamp: DateTime.now(),
+        slidesList: slideResponseList);
+    try {
+      // final db = await SlideHistoryDatabaseHandler.instance.database;
+      await SlideHistoryDatabaseHandler.db.insertSlideHistory(slidesHistory);
+      print('Avatar added successfully!');
+      // Choose storage approach:
+    } catch (error) {
+      print('Error saving slide in database: $error');
+      // Handle error appropriately (e.g., display error message to user)
+    }
   }
 
 // ? commented by jamal start
