@@ -45,7 +45,10 @@ class SlideHistoryDatabaseHandler {
 
   Future<List<SlidesHistory>> fetchAllSlideHistory() async {
     final database = await myDataBase;
-    final results = await database.query(_tableName);
+    final results = await database.query(
+      _tableName,
+      orderBy: 'timestamp DESC', // Order by timestamp in descending order
+    );
     return results.map((result) => SlidesHistory.fromMap(result)).toList();
   }
 

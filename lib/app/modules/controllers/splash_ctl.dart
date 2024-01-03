@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/platform.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
@@ -47,29 +47,29 @@ class SplashController extends GetxController {
     //   print("Is First Time from Init: $isFirstTime");
     // });
 
-    checkplatform();
+    // checkplatform();
     GetRemoteConfig().then((value) {
       SetRemoteConfig();
     });
     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
   }
 
-  checkPermission() async {
-    
-       PermissionStatus status = await Permission.manageExternalStorage.status;
-      if (status == PermissionStatus.granted) {
-      print("Storage Granted");
-      Future.delayed(Duration(seconds: 3),(){
-      Get.offNamed(Routes.HomeView);
-      });
-    }
-    else{
-      print("Storage Not Granted");
-      Future.delayed(Duration(seconds: 3),(){
-      Get.offNamed(Routes.PDF_PERMISSION);
-      });
-    }
-  }
+  // checkPermission() async {
+
+  //      PermissionStatus status = await Permission.manageExternalStorage.status;
+  //     if (status == PermissionStatus.granted) {
+  //     print("Storage Granted");
+  //     Future.delayed(Duration(seconds: 3),(){
+  //     Get.offNamed(Routes.HomeView);
+  //     });
+  //   }
+  //   else{
+  //     print("Storage Not Granted");
+  //     Future.delayed(Duration(seconds: 3),(){
+  //     Get.offNamed(Routes.PDF_PERMISSION);
+  //     });
+  //   }
+  // }
 
   final remoteConfig = FirebaseRemoteConfig.instance;
 

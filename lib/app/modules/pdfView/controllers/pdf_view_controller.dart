@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_storage/shared_storage.dart';
+// import 'package:shared_storage/shared_storage.dart';
 // import 'package:shared_storage/saf.dart';
 // import 'package:slide_maker/app/data/enum.dart';
 import 'package:slide_maker/app/data/pdf_viewer_model.dart';
@@ -76,8 +76,8 @@ class PdfViewController extends GetxController {
   // String shareApp =
   //     "https://play.google.com/store/search?q=pdf.pdfreader.viewer.free.editor";
   RxList<PDFModel> pdf_viewer_model = <PDFModel>[].obs;
-  RxList<DocumentFile> files = <DocumentFile>[].obs;
-  StreamSubscription<DocumentFile>? _listener;
+  // RxList<DocumentFile> files = <DocumentFile>[].obs;
+  // StreamSubscription<DocumentFile>? _listener;
   RxBool hasPermission = true.obs;
   Uri? waURI;
   bool searchPDF = true;
@@ -484,11 +484,11 @@ class PdfViewController extends GetxController {
     }
   }
 
-  Future<Uint8List?> convertDocFileToFile(DocumentFile docFile) async {
-    Uint8List? memoryFile = await getDocumentContent(docFile.uri);
+  // Future<Uint8List?> convertDocFileToFile(DocumentFile docFile) async {
+  //   Uint8List? memoryFile = await getDocumentContent(docFile.uri);
 
-    return memoryFile;
-  }
+  //   return memoryFile;
+  // }
 
   final Uri url =
       Uri.parse('https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader');
