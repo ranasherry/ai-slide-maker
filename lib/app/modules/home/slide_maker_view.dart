@@ -227,7 +227,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                       child: Wrap(
                                         spacing: 3.0,
                                         runSpacing: 3.0,
-                                        children: controller.suggestionsList
+                                        children: AppStrings.topicsList.value
                                             .map((suggestion) {
                                           return ActionChip(
                                             onPressed: () {

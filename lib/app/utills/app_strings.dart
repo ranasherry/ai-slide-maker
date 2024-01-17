@@ -1,3 +1,5 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 class AppStrings {
   static var OPENAI_TOKEN =
       "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";
@@ -14,6 +16,8 @@ class AppStrings {
 
   static var GenerationErrorMessage =
       "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";
+  static var JsonTrendTopics = "";
+
   //original Andriod
   static const MAX_BANNER_ID = "66f8c654162ca4f5";
 
@@ -24,7 +28,7 @@ class AppStrings {
   static const MAX_APPOPEN_ID = "e00645e22a2aba3a";
 
   static const MAX_Reward_ID = "efa63a2cafbae46f";
-
+  static RxList<String> topicsList = <String>[].obs;
   static const MAX_SDK =
       "eCVIa8prwGmBAEXgBN70zL66PSODmw1GcCGut4bzm5eU7ANKptVSTaGrduCvfRTGOIQWEpHoI2UwQ1corcGexv";
 

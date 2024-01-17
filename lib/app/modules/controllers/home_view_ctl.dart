@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
@@ -13,6 +17,19 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     // TODO: implement onInit
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
+
+    GetRemoteConfig().then((value) {
+      SetRemoteConfig();
+
+      remoteConfig.onConfigUpdated.listen((event) async {
+        print("Remote Updated");
+        //  await remoteConfig.activate();
+        SetRemoteConfig();
+
+        // Use the new config values here.
+      });
+    });
+    print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
   }
 
   // checkPermission() async {
@@ -65,5 +82,62 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
     }
+  }
+
+  final remoteConfig = FirebaseRemoteConfig.instance;
+
+  Future GetRemoteConfig() async {
+    try {
+      await remoteConfig.setConfigSettings(RemoteConfigSettings(
+        fetchTimeout: const Duration(minutes: 1),
+        minimumFetchInterval: const Duration(seconds: 1),
+      ));
+
+      await remoteConfig.setDefaults(const {
+        // "example_param_1": 42,
+        // "example_param_2": 3.14159,
+        // "example_param_3": true,
+        "OpenAiToken": "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",
+        "HotpotApi": "k6sv13mQAF9U2Eq2HRFFuNOj0vDZYqtx3UVIBB6cSOPxrm1TUT",
+        "GeminiProKey": "GeminiProKey",
+        // "GoogleShoppingAPI": "886ff05605mshbebba3b2ff469aap1fb826jsn0b627542f3e9",
+        "isHotpotActive": false,
+        // "activeBardForShopping": true,
+      });
+
+      await remoteConfig.fetchAndActivate();
+    } on Exception catch (e) {
+      // TODO
+      print("Remote Config error: $e");
+    }
+  }
+
+  Future SetRemoteConfig() async {
+    print('Fetched open: ${remoteConfig.getString('OpenAiToken')}');
+    print('Fetched open: ${remoteConfig.getString('HotpotApi')}');
+    print('Fetched open: ${remoteConfig.getString('isHotpotActive')}');
+
+    AppStrings.OPENAI_TOKEN = remoteConfig.getString('OpenAiToken');
+    AppStrings.HOTPOT_API = remoteConfig.getString('HotpotApi');
+    AppStrings.GeminiProKey = remoteConfig.getString('GeminiProKey');
+    // AppStrings.GOOGLE_SHOPPING_APIKEY = remoteConfig.getString('GoogleShoppingAPI');
+    AppStrings.SHOW_HOTPOT_API_IMAGES = remoteConfig.getBool('isHotpotActive');
+    AppStrings.JsonTrendTopics = remoteConfig.getString('topicslist');
+    topicListParser();
+
+    // AppStrings.ACTIVE_BARD = remoteConfig.getBool('activeBardForShopping');
+    // AppStrings.SHOW_HOTPOT_API_IMAGES = true;
+  }
+
+  void topicListParser() {
+    dynamic jsonData = jsonDecode(AppStrings.JsonTrendTopics);
+    List<String> topicsList = jsonData['topicslist'].cast<String>();
+    print(
+        topicsList); // Output: ["CES 2024 Highlights", "Volcano Erupts in Iceland"]
+
+    for (String topic in topicsList) {
+      print("TrendingTopic $topic"); // Prints each topic individually
+    }
+    AppStrings.topicsList.value = topicsList;
   }
 }

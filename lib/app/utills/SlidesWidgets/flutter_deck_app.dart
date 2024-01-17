@@ -3,7 +3,9 @@ import 'package:flutter_deck/flutter_deck.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/data/slideResponce.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/big_fact_slides.dart';
+import 'package:slide_maker/app/utills/SlidesWidgets/layout_structure_slide.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/title_slide.dart';
+import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class FlutterDeckExample extends StatelessWidget {
@@ -20,28 +22,33 @@ class FlutterDeckExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: SizeConfig.blockSizeVertical * 75,
+      decoration: BoxDecoration(color: Colors.red),
       child: FlutterDeckApp(
         themeMode: ThemeMode.light,
         // You could use the default configuration or create your own.
         configuration: FlutterDeckConfiguration(
           controls: FlutterDeckControlsConfiguration(),
           // Define a global background for the light and dark themes separately.
-          background: const FlutterDeckBackgroundConfiguration(
-            light: FlutterDeckBackground.gradient(
-              LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFFFFDEE9), Color(0xFFB5FFFC)],
+          background: FlutterDeckBackgroundConfiguration(
+              light: FlutterDeckBackground.image(Image.asset(
+            AppImages.PPT_BG2,
+            fit: BoxFit.fill,
+          ))
+              // light: FlutterDeckBackground.gradient(
+              //   LinearGradient(
+              //     begin: Alignment.topLeft,
+              //     end: Alignment.bottomRight,
+              //     colors: [Color(0xFFFFDEE9), Color(0xFFB5FFFC)],
+              //   ),
+              // ),
+              // dark: FlutterDeckBackground.gradient(
+              //   LinearGradient(
+              //     begin: Alignment.topLeft,
+              //     end: Alignment.bottomRight,
+              //     colors: [Color(0xFF16222A), Color(0xFF3A6073)],
+              //   ),
+              // ),
               ),
-            ),
-            dark: FlutterDeckBackground.gradient(
-              LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF16222A), Color(0xFF3A6073)],
-              ),
-            ),
-          ),
           // Set defaults for the footer.
           footer: const FlutterDeckFooterConfiguration(
             showSlideNumbers: true,
@@ -81,6 +88,7 @@ class FlutterDeckExample extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color(0xFFB5FFFC),
             ),
+            textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 200)),
             useMaterial3: true,
           ),
         ),
@@ -115,26 +123,14 @@ class FlutterDeckExample extends StatelessWidget {
     String dis = slideResponseList[index].slideDescription;
     String imagePrompt = "Create an image of $title";
 
-    return BigFactSlide(
-      customData1: title,
-      customData2: dis,
-      configuration: FlutterDeckSlideConfiguration(
-        route: '/big-fact/$index',
-        // route: '/$title',
-
-        // header: FlutterDeckHeaderConfiguration(
-        //   title: 'Big fact slide template',
-        // ),
-      ),
-    );
-
     // if (index == 0) {
-    //   return TitleSlide(
+    //   return LayoutStructureSlide(
     //     customData1: title,
     //     customData2: dis,
     //     configuration: FlutterDeckSlideConfiguration(
-    //       route: '/big-fact$index',
+    //       route: '/big-fact/$index',
     //       // route: '/$title',
+
     //       // header: FlutterDeckHeaderConfiguration(
     //       //   title: 'Big fact slide template',
     //       // ),
@@ -154,5 +150,18 @@ class FlutterDeckExample extends StatelessWidget {
     //     ),
     //   );
     // }
+
+    return BigFactSlide(
+      customData1: title,
+      customData2: dis,
+      configuration: FlutterDeckSlideConfiguration(
+        route: '/big-fact/$index',
+        // route: '/$title',
+
+        // header: FlutterDeckHeaderConfiguration(
+        //   title: 'Big fact slide template',
+        // ),
+      ),
+    );
   }
 }

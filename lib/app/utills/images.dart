@@ -19,4 +19,8 @@ class AppImages {
   static const doc = "assets/icons/doc.png";
   static const pdf_edit = "assets/images/edit-file.png";
 
+  //? PPT_BG
+  static const PPT_BG1 = "assets/ppt_bg/ppt_bg1.png";
+  static const PPT_BG2 = "assets/ppt_bg/ppt_bg2.png";
+  static const PPT_BG3 = "assets/ppt_bg/ppt_bg3.png";
 }

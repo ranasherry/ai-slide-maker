@@ -26,9 +26,10 @@ class BigFactSlide extends FlutterDeckSlideWidget {
       subtitle: '$customData2',
       theme: FlutterDeckTheme.of(context).copyWith(
         bigFactSlideTheme: const FlutterDeckBigFactSlideThemeData(
-            titleTextStyle: TextStyle(color: Colors.amber, fontSize: 200),
+            titleTextStyle: TextStyle(
+                color: Color.fromARGB(255, 1, 92, 196), fontSize: 150),
             subtitleTextStyle:
-                TextStyle(fontSize: 200, fontStyle: FontStyle.italic)),
+                TextStyle(fontSize: 80, fontStyle: FontStyle.italic)),
       ),
     );
   }
