@@ -31,7 +31,8 @@ class SplashScreen extends GetView<SplashController> {
                     top: SizeConfig.blockSizeVertical * 20,
                     left: SizeConfig.blockSizeHorizontal * 19),
                 child: Image.asset(
-                  AppImages.splash,
+                  AppImages.mainIcon,
+                  // AppImages.splash,
                   width: SizeConfig.blockSizeHorizontal * 60,
                   height: SizeConfig.blockSizeVertical * 30,
                   // fit: BoxFit.cover,
@@ -95,7 +96,7 @@ class SplashScreen extends GetView<SplashController> {
                               child: LinearProgressIndicator(
                                   minHeight: 6,
                                   backgroundColor: Colors.grey.shade100,
-                                  color: Color(0xFF007C8C)),
+                                  color: Color(0xFFE35E1F)),
                             ),
                           ))
                       // Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/utills/style.dart';
 
@@ -17,22 +18,25 @@ class PdfPermissionView extends GetView<PdfPermissionController> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              "PDF Reader",
+              "Documents Reader",
               style: StyleSheet.Intro_heading_black,
             ),
             Lottie.asset('assets/lottie/77323-profile-lock.json'),
             Container(
                 width: SizeConfig.screenWidth * 0.8,
                 child: Text(
-                  "To open your documents, please allow this pdf reader to access all files",
-                  style: StyleSheet.sub_heading,
+                  "Find & open any PDF on your device. Grant file access.",
+                  style: TextStyle(
+                      color: AppColors.black_color,
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic),
                 )),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // controller.checkPermission();
+                    controller.checkPermission();
                   },
                   child: Container(
                       width: SizeConfig.screenWidth * 0.8,

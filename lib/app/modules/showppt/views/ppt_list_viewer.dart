@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:search_page/search_page.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/data/pdf_viewer_model.dart';
+import 'package:slide_maker/app/modules/showppt/controllers/ppt_listview_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
@@ -13,9 +14,7 @@ import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-import '../controllers/pdf_view_controller.dart';
-
-class PdfViewView extends GetView<PdfViewController> {
+class PPTListView extends GetView<PPTListController> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -195,7 +194,7 @@ class PdfViewView extends GetView<PdfViewController> {
           ),
 
           title: Text(
-            'PDF Reader',
+            'PPT List',
             style: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 6,
             ),
@@ -240,7 +239,7 @@ class PdfViewView extends GetView<PdfViewController> {
                       SizedBox(
                         height: SizeConfig.screenHeight * 0.03,
                       ),
-                      Text("Scanning PDF from your Phone")
+                      Text("Scanning PPTx from your Phone")
                     ],
                   ),
                 ],
@@ -303,10 +302,12 @@ class PdfViewView extends GetView<PdfViewController> {
           onTap: () {
             // openDocumentFile(controller.pdf_viewer_model[index].File.uri);
             controller.selectedindex.value = index;
-            Get.toNamed(Routes.SHOW_P_D_F);
+            // Get.toNamed(Routes.SHOW_P_D_F);
             // Get.toNamed(Routes.ShowPPTView);
             print("Passing object: ${pdfModel.path}");
-            // Get.toNamed(Routes.ShowPPTView, arguments: pdfModel);
+            Get.toNamed(Routes.ShowPPTView, arguments: pdfModel);
+
+            AppLovinProvider.instance.showInterstitial(() {});
           },
           child: Padding(
             padding: EdgeInsets.only(
@@ -327,10 +328,10 @@ class PdfViewView extends GetView<PdfViewController> {
                       width: SizeConfig.blockSizeHorizontal * 16,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(13),
-                        color: Colors.red.shade100,
+                        // color: Colors.red.shade100,
                       ),
                       child: Image.asset(
-                        AppImages.doc,
+                        AppImages.ppt_ic,
                         scale: 9,
                       )),
                   horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
@@ -382,7 +383,10 @@ class PdfViewView extends GetView<PdfViewController> {
                               child: GestureDetector(
                             onTap: () {
                               controller.selectedindex.value = index;
-                              Get.toNamed(Routes.SHOW_P_D_F);
+                              // Get.toNamed(Routes.SHOW_P_D_F);
+                              Get.toNamed(Routes.ShowPPTView,
+                                  arguments:
+                                      controller.pdf_viewer_model[index]);
                             },
                             child: Row(
                               children: [
@@ -399,61 +403,6 @@ class PdfViewView extends GetView<PdfViewController> {
                               ],
                             ),
                           )),
-                          //   PopupMenuItem(
-                          //       child: GestureDetector(
-                          //     onTap: () {
-                          //       controller.selectedindex.value = index;
-
-                          // //       Get.toNamed(Routes.PDF_EDITOR,arguments: "${controller
-                          // // .pdf_viewer_model[controller.selectedindex.value].path}");
-                          //     },
-                          //     child: Row(
-                          //       children: [
-                          //         Icon(
-                          //           Icons.edit,
-                          //           color: Colors.orangeAccent,
-                          //         ),
-                          //         horizontalSpace(
-                          //             SizeConfig.blockSizeHorizontal * 2),
-                          //         Text(
-                          //           "Edit",
-                          //           style: TextStyle(color: Colors.grey.shade700),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   )),
-                          PopupMenuItem(
-                              child: GestureDetector(
-                            onTap: () {
-                              print(
-                                  "${controller.pdf_viewer_model[index].path}");
-                              controller.ShareFile(controller
-                                  .pdf_viewer_model[index].path
-                                  .toString());
-
-                              //! share file using unitlist
-                              // Share.shareXFiles([
-                              //   XFile.fromData(
-                              //     controller.pdf_viewer_model[index].file,
-                              //   )
-                              // ]);
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.share,
-                                  color: Colors.green,
-                                ),
-                                horizontalSpace(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                                Text(
-                                  "Share",
-                                  style: TextStyle(color: Colors.grey.shade700),
-                                ),
-                              ],
-                            ),
-                          )),
-
                           PopupMenuItem(
                               child: GestureDetector(
                             onTap: () {
@@ -480,6 +429,36 @@ class PdfViewView extends GetView<PdfViewController> {
                                     SizeConfig.blockSizeHorizontal * 2),
                                 Text(
                                   "Delete",
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                              ],
+                            ),
+                          )),
+                          PopupMenuItem(
+                              child: GestureDetector(
+                            onTap: () {
+                              print(
+                                  "${controller.pdf_viewer_model[index].path}");
+                              controller.ShareFile(controller
+                                  .pdf_viewer_model[index].path
+                                  .toString());
+                              //! share file using unitlist
+                              // Share.shareXFiles([
+                              //   XFile.fromData(
+                              //     controller.pdf_viewer_model[index].file,
+                              //   )
+                              // ]);
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.share,
+                                  color: Colors.green,
+                                ),
+                                horizontalSpace(
+                                    SizeConfig.blockSizeHorizontal * 2),
+                                Text(
+                                  "Share",
                                   style: TextStyle(color: Colors.grey.shade700),
                                 ),
                               ],
@@ -524,10 +503,9 @@ class PdfViewView extends GetView<PdfViewController> {
             controller.selectedindex.value =
                 controller.pdf_viewer_model.indexOf(person);
 
-            Get.toNamed(Routes.SHOW_P_D_F);
+            // Get.toNamed(Routes.SHOW_P_D_F);
             print("Passing object: ${person.path}");
-            AppLovinProvider.instance.showInterstitial(() {});
-            // Get.toNamed(Routes.ShowPPTView, arguments: person);
+            Get.toNamed(Routes.ShowPPTView, arguments: person);
           },
           child: Padding(
             padding: EdgeInsets.only(
@@ -550,10 +528,10 @@ class PdfViewView extends GetView<PdfViewController> {
                         width: SizeConfig.blockSizeHorizontal * 16,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
-                          color: Colors.red.shade100,
+                          // color: Colors.red.shade100,
                         ),
                         child: Image.asset(
-                          AppImages.doc,
+                          AppImages.ppt_ic,
                           scale: 9,
                         )),
                     horizontalSpace(SizeConfig.blockSizeHorizontal * 3),

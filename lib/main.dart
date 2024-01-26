@@ -9,6 +9,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:slide_maker/app/modules/showppt/views/ppt_viewer.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
 import 'package:slide_maker/app/utills/ThemeNotifier.dart';
 
@@ -105,8 +106,8 @@ class MyApp extends StatelessWidget {
             ),
 
             themeMode: themeNotifier.themeMode,
-
-            title: "Application",
+            // home: CustomPDFViewer(),
+            // title: "Application",
             initialRoute: AppPages.INITIAL,
             getPages: AppPages.routes,
           ),

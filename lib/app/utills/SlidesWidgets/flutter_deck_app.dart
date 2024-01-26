@@ -13,16 +13,19 @@ class FlutterDeckExample extends StatelessWidget {
   RxList<SlideResponse> slideResponseList;
   final int NoOfSlides;
 
+  // bool showExtra;
+
   FlutterDeckExample({
     required this.slideResponseList,
     required this.NoOfSlides,
+    // required this.showExtra,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.blockSizeVertical * 75,
-      decoration: BoxDecoration(color: Colors.red),
+      // height: SizeConfig.blockSizeVertical * 75,
+      // decoration: BoxDecoration(color: Colors.red),
       child: FlutterDeckApp(
         themeMode: ThemeMode.light,
         // You could use the default configuration or create your own.
@@ -104,7 +107,7 @@ class FlutterDeckExample extends StatelessWidget {
         ),
         // Presentation is build automatically from the list of slides.
         slides: List.generate(
-          NoOfSlides == 1 ? NoOfSlides : slideResponseList.length,
+          NoOfSlides,
           (index) => singleSlide(index),
         ),
         // Do not forget to introduce yourself!

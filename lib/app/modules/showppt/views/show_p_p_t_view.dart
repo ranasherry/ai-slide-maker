@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:applovin_max/applovin_max.dart';
+import 'package:easy_docs_viewer/easy_docs_viewer.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,6 +12,8 @@ import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.dart';
 import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.dart';
 import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.dart';
+import 'package:slide_maker/app/modules/showppt/controllers/show_p_p_t_controller.dart';
+import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -16,60 +21,55 @@ import 'package:slide_maker/app/utills/size_config.dart';
 
 import '../../pdfView/controllers/pdf_view_controller.dart';
 
-class ShowPPTView extends GetView<PdfViewController> {
+class ShowPPTView extends GetView<ShowPPTController> {
   // WebViewController webViewController = WebViewController();
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     // webViewController.loadRequest(Uri.parse(
     //     'https://docs.google.com/gview?embedded=true&url=${controller.pdf_viewer_model[controller.selectedindex.value].path}'));
     return Scaffold(
+      bottomNavigationBar: Container(
+        height: 60,
+        // color: Colors.amber,
+        child: Center(
+          child: MaxAdView(
+              adUnitId: AppStrings.MAX_BANNER_ID,
+              adFormat: AdFormat.banner,
+              listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                print('Banner widget ad loaded from ' + ad.networkName);
+              }, onAdLoadFailedCallback: (adUnitId, error) {
+                print('Banner widget ad failed to load with error code ' +
+                    error.code.toString() +
+                    ' and message: ' +
+                    error.message);
+              }, onAdClickedCallback: (ad) {
+                print('Banner widget ad clicked');
+              }, onAdExpandedCallback: (ad) {
+                print('Banner widget ad expanded');
+              }, onAdCollapsedCallback: (ad) {
+                print('Banner widget ad collapsed');
+              })),
+        ),
+      ),
+
       appBar: AppBar(
         backgroundColor: AppColors.Electric_Blue_color,
         title: Text(
-          "PDF Viewer",
+          "PPT Viewer",
           style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
         ),
         actions: [
-          Row(
-            children: [
-              // Padding(
-              //   padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 5),
-              //   child: GestureDetector(
-              //       onTap: () {
-              //         // Get.toNamed(Routes.PDF_EDITOR,arguments: "${controller.pdf_viewer_model[controller.selectedindex.value].path.toString()}");
-              //          //! share file using unitlist
-              //         // Share.shareXFiles([
-              //         //   XFile.fromData(
-              //         //     controller
-              //         //         .pdf_viewer_model[controller.selectedindex.value]
-              //         //         .file,
-              //         //   )
-              //         // ]);
-              //       },
-              //       child: Icon(Icons.mode_edit_outlined)),
-              // ),
-              Padding(
-                padding:
-                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 5),
-                child: GestureDetector(
-                    onTap: () {
-                      controller.ShareFile(controller
-                          .pdf_viewer_model[controller.selectedindex.value].path
-                          .toString());
-                      //! share file using unitlist
-                      // Share.shareXFiles([
-                      //   XFile.fromData(
-                      //     controller
-                      //         .pdf_viewer_model[controller.selectedindex.value]
-                      //         .file,
-                      //   )
-                      // ]);
-                    },
-                    child: Icon(Icons.share)),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Padding(
+          //       padding:
+          //           EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 5),
+          //       child: GestureDetector(onTap: () {}, child: Icon(Icons.share)),
+          //     ),
+          //   ],
+          // ),
           // Icon(Icons.print_rounded),
         ],
       ),
@@ -77,57 +77,32 @@ class ShowPPTView extends GetView<PdfViewController> {
       //     File("storage/emulated/0/Download/gis_succinctly.pdf")),
       body: Container(
         margin: EdgeInsets.only(bottom: 60),
-        child: Column(
-          children: [
-            // Expanded(
-            //     child: FutureBuilder<Uint8List>(
-            //   future: controller
-            //               .pdf_viewer_model[controller.selectedindex.value]
-            //               .path !=
-            //           null
-            //       ? convertPPTxToPDF(controller
-            //           .pdf_viewer_model[controller.selectedindex.value].path)
-            //       : null,
-            //   builder: (context, snapshot) {
-            //     if (snapshot.hasData) {
-            //       return SfPdfViewer.memory(
-            //         snapshot.data!,
-            //         controller: controller.pdfViewerController,
-            //         key: controller.pdfViewerKey,
-            //         interactionMode: controller.interactionMode,
-            //         scrollDirection: controller.scrollDirection,
-            //         pageLayoutMode: controller.pageLayoutMode,
-            //       );
-            //     } else if (snapshot.hasError) {
-            //       print("Error converting PPTX to PDF: ${snapshot.error}");
-            //       return Center(
-            //           child: Text(
-            //               'Error converting PPTX to PDF: ${snapshot.error}'));
-            //     } else {
-            //       return Center(child: CircularProgressIndicator());
-            //     }
-            //   },
-            // )
+        child: Obx(() => controller.isUploaded.value
+            ? EasyDocsViewer(
+                url: controller.uploadedUrl.value,
+              )
+            : Container(
+                // child: CircularProgressIndicator(),
+                child: _LoadingPPT(),
+              )),
+      ),
+    );
+  }
 
-            //     //    SfPdfViewer.file(File(controller
-            //     //       .pdf_viewer_model[controller.selectedindex.value].path)),
-            //     // ),
-            //     // Expanded(
-            //     //   child: Obx(
-            //     //     () => SfPdfViewer.memory(
-            //     //       controller
-            //     //           .pdf_viewer_model[controller.selectedindex.value].file,
-            //     //       controller: controller.pdfViewerController,
-            //     //       key: controller.pdfViewerKey,
-            //     //       interactionMode: controller.interactionMode,
-            //     //       scrollDirection: controller.scrollDirection,
-            //     //       pageLayoutMode: controller.pageLayoutMode,
-            //     //     ),
-            //     //   ),
-            //     // ),
-            //     )
-          ],
-        ),
+  Widget _LoadingPPT() {
+    return Container(
+      width: SizeConfig.blockSizeHorizontal * 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          verticalSpace(SizeConfig.blockSizeVertical),
+          Text(
+            "Please wait...",
+            style: TextStyle(color: Colors.black, fontSize: 16),
+          )
+        ],
       ),
     );
   }

@@ -453,9 +453,35 @@ class SlideMakerView extends GetView<SlideMakerController> {
   }
 
   Widget slideShow() {
-    return FlutterDeckExample(
-      slideResponseList: controller.slideResponseList,
-      NoOfSlides: controller.NoOfSlides,
+    // print("isShowExtraSlide: ${controller.showExtraSlides.value}");
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+            height: SizeConfig.blockSizeVertical * 40,
+            child: FlutterDeckExample(
+              slideResponseList: controller.slideResponseList,
+              NoOfSlides: controller.slideResponseList.length,
+              // showExtra: controller.showExtraSlides.value,
+            )
+
+            // Obx(() => controller.showExtraSlides.value
+            //     ?
+            //      FlutterDeckExample(
+            //         slideResponseList: controller.slideResponseList,
+            //         NoOfSlides: controller.slideResponseList.length,
+            //         showExtra: controller.showExtraSlides.value,
+            //       )
+            //     : FlutterDeckExample(
+            //         slideResponseList: controller.slideResponseList,
+            //         NoOfSlides: controller.slideResponseList.length - 2,
+            //         showExtra: controller.showExtraSlides.value,
+            //       )
+            //       ),
+            ),
+        // verticalSpace(SizeConfig.blockSizeVertical * 1.5),
+        // MoreSlidesButton(),
+      ],
     );
 
     // Container(
@@ -644,6 +670,65 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // "Recreate"
               // :
               "Next",
+              style: TextStyle(
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget MoreSlidesButton() {
+    return GestureDetector(
+      onTap: () {
+        // controller.showExtraSlides.toggle();
+        print("Next Button Clicked");
+        // if (kReleaseMode) {
+        //   if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
+        //     MetaAdsProvider.instance.showInterstitialAd();
+        //   } else {
+        //     AppLovinProvider.instance.showInterstitial(() {});
+        //   }
+        // }
+
+        // controller.increaseOutputHeight();
+        // AdMobAdsProvider.instance.showInterstitialAd(() {});
+      },
+      child: Container(
+        width: SizeConfig.blockSizeHorizontal * 60,
+        // height: 100,
+        // color: AppColors.Bright_Pink_color,
+        // duration: Duration(milliseconds: 500),
+        // curve: Curves.fastOutSlowIn,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300, // Shadow color
+              spreadRadius: 2, // Spread radius
+              blurRadius: 10, // Blur radius
+              offset: Offset(0, 5), // Offset in x and y direction
+            ),
+          ],
+          gradient: LinearGradient(colors: [
+            Color.fromARGB(255, 2, 199, 183),
+            Color.fromARGB(255, 1, 146, 122)
+          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+          borderRadius:
+              BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
+          // border: Border.all(color: AppColors.icon_color),
+          color: AppColors.Green_color,
+        ),
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 2),
+          child: Center(
+            child: Text(
+              // controller.outlineTitleFetched.value?
+              // "Recreate"
+              // :
+              "Generate 2 Extra slides",
               style: TextStyle(
                   fontSize: SizeConfig.blockSizeHorizontal * 4,
                   color: Colors.white),

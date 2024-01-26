@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
@@ -32,21 +34,25 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
   }
 
-  // checkPermission() async {
-  //   PermissionStatus status = await Permission.manageExternalStorage.status;
-  //   if (status == PermissionStatus.granted) {
-  //     print("Storage Granted");
-  //     Future.delayed(Duration(seconds: 3), () {
-  //       // Get.offNamed(Routes.HomeView);
-  //       Get.toNamed(Routes.PDF_VIEW);
-  //     });
-  //   } else {
-  //     print("Storage Not Granted");
-  //     Future.delayed(Duration(seconds: 3), () {
-  //       Get.offNamed(Routes.PDF_PERMISSION);
-  //     });
-  //   }
-  // }
+  checkPermission(String page) async {
+    EasyLoading.show(status: "Checking Permission..");
+    PermissionStatus status = await Permission.manageExternalStorage.status;
+    if (status == PermissionStatus.granted) {
+      print("Storage Granted");
+      Future.delayed(Duration(seconds: 3), () {
+        EasyLoading.dismiss();
+        // Get.offNamed(Routes.HomeView);
+        Get.toNamed(page);
+      });
+    } else {
+      print("Storage Not Granted");
+      Future.delayed(Duration(seconds: 3), () {
+        EasyLoading.dismiss();
+
+        Get.offNamed(Routes.PDF_PERMISSION, arguments: page);
+      });
+    }
+  }
 
   @override
   void onClose() {

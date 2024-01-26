@@ -18,6 +18,7 @@ class AppImages {
   static const empty = "assets/icons/no_folder.png";
   static const doc = "assets/icons/doc.png";
   static const pdf_edit = "assets/images/edit-file.png";
+  static const ppt_ic = "assets/images/ppt_ic.png";
 
   //? PPT_BG
   static const PPT_BG1 = "assets/ppt_bg/ppt_bg1.png";

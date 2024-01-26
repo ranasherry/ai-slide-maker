@@ -67,6 +67,7 @@ class HistorySlideView extends GetView<HistorySlideCTL> {
         ? FlutterDeckExample(
             slideResponseList: controller.slideResponseList,
             NoOfSlides: controller.slideResponseList.length,
+            // showExtra: true,
           )
         : Container());
   }

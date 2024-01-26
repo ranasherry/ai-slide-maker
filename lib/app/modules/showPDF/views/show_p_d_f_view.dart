@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
@@ -74,9 +75,37 @@ class ShowPDFView extends GetView<PdfViewController> {
         margin: EdgeInsets.only(bottom: 60),
         child: Column(
           children: [
+            Expanded(
+              child: PDFView(
+                filePath: controller
+                    .pdf_viewer_model[controller.selectedindex.value].path,
+                enableSwipe: true,
+                swipeHorizontal: true,
+                autoSpacing: false,
+                pageFling: false,
+                onRender: (_pages) {
+                  // setState(() {
+                  //   pages = _pages;
+                  //   isReady = true;
+                  // });
+                },
+                onError: (error) {
+                  print(error.toString());
+                },
+                onPageError: (page, error) {
+                  print('$page: ${error.toString()}');
+                },
+                onViewCreated: (PDFViewController pdfViewController) {
+                  // _controller.complete(pdfViewController);
+                },
+                onPageChanged: (int? page, int? total) {
+                  print('page change: $page/$total');
+                },
+              ),
+            ),
             // Expanded(
             //   child: SfPdfViewer.file(File(controller
-            //             .pdf_viewer_model[controller.selectedindex.value].path)),
+            //       .pdf_viewer_model[controller.selectedindex.value].path)),
             // ),
             // Expanded(
             //   child: Obx(

@@ -16,6 +16,8 @@ abstract class Routes {
   static const SHOW_P_D_F = _Paths.SHOW_P_D_F;
   static const ShowPPTView = _Paths.ShowPPTView;
   static const HistorySlideView = _Paths.HistorySlideView;
+  static const PPT_UPLOADER = _Paths.PPT_UPLOADER;
+  static const PPTListView = _Paths.PPTListView;
 }
 
 abstract class _Paths {
@@ -31,4 +33,6 @@ abstract class _Paths {
   static const SHOW_P_D_F = '/show-p-d-f';
   static const ShowPPTView = '/ShowPPTView';
   static const HistorySlideView = '/HistorySlideView';
+  static const PPT_UPLOADER = '/ppt-uploader';
+  static const PPTListView = '/PPTListView';
 }

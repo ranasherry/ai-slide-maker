@@ -518,37 +518,8 @@ class MathsSolverView extends GetView<MathsSolverController> {
               ),
             ),
 
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // controller.getImage(ImageSource.gallery);
-            //     controller.valid(ImageSource.gallery);
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(10.0),
-            //         side: BorderSide(
-            //             color: AppColors.icon_color,
-            //             width: 1.0), // Add blue border
-            //       ),
-            //       elevation: 5.0,
-            //       // shadowColor: Colors.grey,
-            //       primary: Colors.transparent),
-            //   child: Padding(
-            //     padding: EdgeInsets.all(SizeConfig.screenWidth * 0.03),
-            //     child: Column(
-            //       children: [
-            //         Icon(
-            //           Icons.image,
-            //           color: AppColors.icon_color,
-            //         ),
-            //         Text(
-            //           'Gallery',
-            //           style: TextStyle(color: AppColors.icon_color),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
+           
+           
             GestureDetector(
               onTap: () {
                 controller.getImage(ImageSource.gallery);

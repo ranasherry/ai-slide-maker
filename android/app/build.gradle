@@ -8,6 +8,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
+
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
@@ -24,6 +25,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
   def keystoreProperties = new Properties()
@@ -59,6 +61,7 @@ android {
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        
     }
 
    signingConfigs {
@@ -71,7 +74,9 @@ android {
    }
    buildTypes {
        release {
-           signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
+            // shrinkresources false
+            // minifyenabled false
        }
    }
 

@@ -1,28 +1,32 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-
-import 'package:slide_maker/app/modules/bindings/history_binding.dart';
-import 'package:slide_maker/app/modules/bindings/history_slide_binding.dart';
-import 'package:slide_maker/app/modules/bindings/home_view_binding.dart';
-import 'package:slide_maker/app/modules/bindings/maths_solver_binding.dart';
-import 'package:slide_maker/app/modules/bindings/slide_maker_binding.dart';
-import 'package:slide_maker/app/modules/home/gems_view_view.dart';
-import 'package:slide_maker/app/modules/home/history_slide_view.dart';
-import 'package:slide_maker/app/modules/home/history_view.dart';
-import 'package:slide_maker/app/modules/home/home_view.dart';
-import 'package:slide_maker/app/modules/home/maths_solver_view.dart';
-import 'package:slide_maker/app/modules/home/short_question_view.dart';
-import 'package:slide_maker/app/modules/home/slide_maker_view.dart';
-import 'package:slide_maker/app/modules/pdfPermission/bindings/pdf_permission_binding.dart';
-import 'package:slide_maker/app/modules/pdfPermission/views/pdf_permission_view.dart';
-import 'package:slide_maker/app/modules/pdfView/bindings/pdf_view_binding.dart';
-import 'package:slide_maker/app/modules/pdfView/views/pdf_view_view.dart';
-import 'package:slide_maker/app/modules/showPDF/bindings/show_p_d_f_binding.dart';
-import 'package:slide_maker/app/modules/showPDF/views/show_p_d_f_view.dart';
-import 'package:slide_maker/app/modules/showppt/views/show_p_p_t_view.dart';
+import 'package:slide_maker/app/modules/showppt/bindings/ppt_list_binding.dart';
+import 'package:slide_maker/app/modules/showppt/bindings/show_ppt_binding.dart';
+import 'package:slide_maker/app/modules/showppt/views/ppt_list_viewer.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
+import '../modules/bindings/history_binding.dart';
+import '../modules/bindings/history_slide_binding.dart';
+import '../modules/bindings/home_view_binding.dart';
+import '../modules/bindings/maths_solver_binding.dart';
+import '../modules/bindings/slide_maker_binding.dart';
 import '../modules/bindings/splash_binding.dart';
+import '../modules/home/gems_view_view.dart';
+import '../modules/home/history_slide_view.dart';
+import '../modules/home/history_view.dart';
+import '../modules/home/home_view.dart';
+import '../modules/home/maths_solver_view.dart';
+import '../modules/home/short_question_view.dart';
+import '../modules/home/slide_maker_view.dart';
 import '../modules/home/splash_screen.dart';
+import '../modules/pdfPermission/bindings/pdf_permission_binding.dart';
+import '../modules/pdfPermission/views/pdf_permission_view.dart';
+import '../modules/pdfView/bindings/pdf_view_binding.dart';
+import '../modules/pdfView/views/pdf_view_view.dart';
+import '../modules/ppt_uploader/bindings/ppt_uploader_binding.dart';
+import '../modules/ppt_uploader/views/ppt_uploader_view.dart';
+import '../modules/showPDF/bindings/show_p_d_f_binding.dart';
+import '../modules/showPDF/views/show_p_d_f_view.dart';
+import '../modules/showppt/views/show_p_p_t_view.dart';
 
 part 'app_routes.dart';
 
@@ -30,6 +34,8 @@ class AppPages {
   AppPages._();
 
   static const INITIAL = Routes.SplashScreen;
+  // static const INITIAL = Routes.SHOW_P_D_F;
+  // static const INITIAL = Routes.PPT_UPLOADER;
 
   static final routes = [
     GetPage(
@@ -85,12 +91,22 @@ class AppPages {
     GetPage(
       name: _Paths.ShowPPTView,
       page: () => ShowPPTView(),
-      binding: ShowPDFBinding(),
+      binding: ShowPPTBinding(),
     ),
     GetPage(
       name: _Paths.HistorySlideView,
       page: () => HistorySlideView(),
       binding: HistorySlideBinding(),
+    ),
+    GetPage(
+      name: _Paths.PPT_UPLOADER,
+      page: () => PptUploaderView(),
+      binding: PptUploaderBinding(),
+    ),
+    GetPage(
+      name: _Paths.PPTListView,
+      page: () => PPTListView(),
+      binding: PPTListBinding(),
     ),
   ];
 }

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
-import 'package:file_saver/file_saver.dart';
+// import 'package:file_saver/file_saver.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,9 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   bool? firstTime = false;
   final pageController = PageController(initialPage: 0);
 
-  int NoOfSlides = 6;
+  String NoOfSlides = "Six";
+  // RxBool showExtraSlides = false.obs;
+  // int NoOfSlides = 6;
 
   final count = 0.obs;
   @override
@@ -287,19 +289,28 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   }
 
   increaseOutputHeight() {
-    if (NoOfSlides == 1) {
+    input_box_width.value = 300;
+    // input_box_height.value = SizeConfig.screenHeight *0.5;
+    input_box_height.value = 450;
+    Future.delayed(Duration(seconds: 1), () {
+      // show_create_button();
       outlineTitleFetched.value = true;
-      NeverShowOutlines();
-    } else {
-      // input_box_width.value = SizeConfig.screenWidth *0.8;
-      input_box_width.value = 300;
-      // input_box_height.value = SizeConfig.screenHeight *0.5;
-      input_box_height.value = 450;
-      Future.delayed(Duration(seconds: 1), () {
-        // show_create_button();
-        outlineTitleFetched.value = true;
-      });
-    }
+    });
+    // if (NoOfSlides == 1) {
+    //   outlineTitleFetched.value = true;
+    //   NeverShowOutlines();
+    // } else {
+    //   // input_box_width.value = SizeConfig.screenWidth *0.8;
+    //   input_box_width.value = 300;
+    //   // input_box_height.value = SizeConfig.screenHeight *0.5;
+    //   input_box_height.value = 450;
+    //   Future.delayed(Duration(seconds: 1), () {
+    //     // show_create_button();
+    //     outlineTitleFetched.value = true;
+    //   })
+
+    //   ;
+    // }
   }
 
   // Alert_Box(title,dis){
@@ -314,6 +325,30 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   //           ).show();
   // }
 
+  String removeQuotesIfExists(String jsonString) {
+    // if (hasExtraQuotes(jsonString)) {
+    if (true) {
+      log("Has Extra String: $jsonString");
+      // String str = "This string has '''single quotes'''";
+      // String replacedStr = jsonString.replaceAll(RegExp(r"'{3}"), "");
+      jsonString.trim();
+      String replacedStr = jsonString.replaceFirst(RegExp(r"^```json\n"), "");
+      replacedStr = jsonString.replaceFirst(RegExp(r"^```JSON\n"), "");
+      // replacedStr = jsonString.replaceFirst(RegExp(r"^```\n"), "");
+      replacedStr = jsonString.replaceAll(RegExp(r"^```\n"), "");
+      return replacedStr;
+      print(replacedStr);
+      // return jsonString.replaceAll(RegExp(r"^'''|'''$"), '');
+    } else {
+      log("Dont have Extra String: $jsonString");
+      return jsonString;
+    }
+  }
+
+  bool hasExtraQuotes(String jsonString) {
+    return jsonString.startsWith("\'\'\'") || jsonString.endsWith("\'\'\'");
+  }
+
   validate_user_input() async {
     currentModel = ModelType.Bard;
     if (userInput.isNotEmpty) {
@@ -324,7 +359,10 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
           //  getImage(ImageSource);
 
           await generateContent(userInput.value).then((response) {
+            response = removeQuotesIfExists(response);
+            log("RemovedExtra String: $response");
             jsonOutput.value = response;
+
             BaseExtractJson();
             print("BardResponse: ${response}");
           });
@@ -567,6 +605,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       if (!isRetriedJson) {
         isRetriedJson = true;
         List<Map<String, String>?> result = parseJsonString(jsonOutput.value);
+
         jsonOutput.value = jsonEncode(result);
         // jsonOutput.value = result.toString();
         if (result.isEmpty) {
@@ -1049,7 +1088,8 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
             'parts': [
               {
                 'text':
-                    'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 100 words.Discription must be in markdown format. add bullets points if needed. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction. Note: Your Response must not contain plagirzed content'
+                    "Create a JSON list of presentation slides based on the following instructions:\n\n- Topic: ${UserInput}\n- Number of slides: ${NoOfSlides}\n\n**Required format:**\n- Each slide must have a unique title and description in Markdown format.\n- Titles should be engaging, informative and concise (strictly under 4 words).\n- Descriptions should be concise (strictly under 25 words) and use bullet points if needed.\n- Content must be original and plagiarism-free.\n- No visual content or slide numbering is required.\n\n**Example:**\n[{\"slide_title\": \"Unlocking the Potential of ${UserInput}\", \"slide_descr\": \"Dive into the world of ${UserInput} and discover its groundbreaking opportunities. From [key benefit 1] to [key benefit 2], it's transforming [relevant field]. Let's explore its impact and future potential.\"}, ...].  Note: Reponse must not contain any extra words other then json. it must be json parsable"
+                // 'Create $NoOfSlides presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 100 words.Discription must be in markdown format. add bullets points if needed. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction. Note: Your Response must not contain plagirzed content'
                 // 'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION","image_link": "imageUrlHere"}] Please ensure each slide has a unique title and description and an online available image url link from unsplash. url must exist on unsplash, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction'
               }
             ]
