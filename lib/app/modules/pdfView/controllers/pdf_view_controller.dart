@@ -9,6 +9,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_storage/shared_storage.dart';
 // import 'package:shared_storage/shared_storage.dart';
 // import 'package:shared_storage/saf.dart';
 // import 'package:slide_maker/app/data/enum.dart';
@@ -32,44 +33,11 @@ class PdfViewController extends GetxController {
   // Color? contextMenuColor;
   // Color? copyTextColor;
   OverlayEntry? textSearchOverlayEntry;
-  // OverlayEntry? chooseFileOverlayEntry;
-  // OverlayEntry? zoomPercentageOverlay;
-  // OverlayEntry? settingsOverlayEntry;
-  // LocalHistoryEntry? historyEntry;
-  // bool needToMaximize = false;
-  // bool isHorizontalModeClicked = true;
-  // bool isContinuousModeClicked = true;
+
   String? documentPath;
-  // PdfInteractionMode interactionMode = PdfInteractionMode.selection;
-  // PdfPageLayoutMode pageLayoutMode = PdfPageLayoutMode.continuous;
-  // PdfScrollDirection scrollDirection = PdfScrollDirection.vertical;
+  RxList<DocumentFile> files = <DocumentFile>[].obs;
+  StreamSubscription<DocumentFile>? _listener;
 
-  // final FocusNode focusNode = FocusNode()..requestFocus();
-  // final GlobalKey<ToolbarState> toolbarKey = GlobalKey();
-
-  // final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
-  // final PdfViewerController pdfViewerController = PdfViewerController();
-
-  // final GlobalKey<SearchToolbarState> textSearchKey = GlobalKey();
-  // final GlobalKey<TextSearchOverlayState> textSearchOverlayKey = GlobalKey();
-  // late bool canShowContinuousModeOptions =
-  //     pageLayoutMode == PdfPageLayoutMode.continuous;
-  // late bool isLight;
-  // late bool isDesktopWeb;
-  // final double kWebContextMenuHeight = 32;
-  // final double kMobileContextMenuHeight = 48;
-  // final double kContextMenuBottom = 55;
-  // final double kContextMenuWidth = 100;
-  // final double kSearchOverlayWidth = 412;
-  // Color? fillColor;
-  // Orientation? deviceOrientation;
-  // final TextEditingController textFieldController = TextEditingController();
-  // final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  // final FocusNode passwordDialogFocusNode = FocusNode();
-  // bool passwordVisible = true;
-  // String? password;
-  // bool hasPasswordDialog = false;
-  // String errorText = '';
   RxBool DoneScanning = false.obs;
   String privacyLink =
       "https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader";
@@ -128,41 +96,77 @@ class PdfViewController extends GetxController {
       AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
     }
 
-    // WidgetsBinding.instance.addObserver(this);
-    //!
-    // Future.delayed(Duration(seconds: 1),(){
-    //   AppLovinProvider.instance.showInterstitial();
-    // });
-    //!
-    // _bindBackgroundIsolate();
-    // final SendPort? send =
-    //     IsolateNameServer.lookupPortByName('downloader_send_port');
-    // send!.send("Hello");
+    // try {
+    //   getPdfFiles().then((value) {
+    //     print("GetPDFFiles Done");
+    //     nextPdf().then((value) => null);
+    //   });
+    // } on Exception catch (e) {
+    //   print("Error:$e");
+    // }
+  }
 
-//   for (var i = 0; i<=100; i++) {
+  openSafFolder() async {
+    final uri = await openDocumentTree(
+      initialUri: Uri.parse(kWppStatusFolderAccessed),
+    );
+// kWppStatusFolder=url.toString();
+    // waURI = uri;
+    // print("URL: $waURI");
 
-    // Future.delayed(Duration(seconds: 3),(){
-    try {
-      getPdfFiles().then((value) {
-        print("GetPDFFiles Done");
-        nextPdf().then((value) => null);
-      });
-    } on Exception catch (e) {
-      print("Error:$e");
+    if (uri == null) return;
+
+    // files = null;
+    files.clear();
+
+    loadFiles(uri);
+  }
+
+  void loadFiles(Uri uri) async {
+    hasPermission.value = await canRead(uri) ?? false;
+
+    if (!hasPermission.value) {
+      return;
     }
-    // });
+    final folderUri = Uri.parse(kWppStatusFolderAccessed);
 
-// }
+    const columns = [
+      DocumentFileColumn.displayName,
+      DocumentFileColumn.size,
+      DocumentFileColumn.lastModified,
+      DocumentFileColumn.mimeType,
+      // The column below is a optional column
+      // you can wether include or not here and
+      // it will be always available on the results
+      DocumentFileColumn.id,
+    ];
+    final fileListStream = listFiles(uri, columns: columns);
 
-// Future.delayed(Duration(seconds: 5),(){
-//         try {
-//   getPdfFiles().then((value) => DoneScanning.value=true);
-// } on Exception catch (e) {
-//   print("Error:$e");
-// }
-// });
-    // .then((value) => print("");
-    // getPermissionAndPDF();
+    _listener = fileListStream.listen((docFile) async {
+      print("File Name: ${docFile.name} ");
+
+      // Uint8List? FileToStoreInList = await convertDocFileToFile(docFile);
+
+      // if (FileToStoreInList != null) {
+      if (docFile.name!.endsWith(".pdf")) {
+        print("Image: ${docFile.name}");
+        PDFModel pdf = PDFModel(
+            name: docFile.name!,
+            date: docFile.size!.toString(),
+            path: docFile.uri.toString(),
+            size: docFile.size!);
+        pdf_viewer_model.add(pdf);
+        // ImageFiles.add(FileToStoreInList);
+      }
+
+      //? Add Video List
+
+      // }
+    }, onDone: () {
+      // files.value = [...?files];
+      // _files.
+      print("Files1: ${pdf_viewer_model.length}");
+    });
   }
 
   Future nextPdf() async {
@@ -260,198 +264,8 @@ class PdfViewController extends GetxController {
   // }
 
   ShareFile(String path) async {
-    // File file = File(path);
-    // Uint8List fileInBytes = file.readAsBytesSync();
-    // print("File Path :: ${file.path}");
     Share.shareFiles([path], text: "PDF");
-    //   Share.shareXFiles([
-    //   XFile.fromData(
-    //     fileInBytes,
-    //   )
-    // ]);
-    // Share
-    // Share.
   }
-
-//       Future<void> getPermissionAndPDF() async{
-// PermissionStatus status = await Permission.manageExternalStorage.request();
-
-//     if (status == PermissionStatus.granted) {
-//       print("Storage Granted");
-//       //         var d =
-//       // await Environment.getExternalStorageDirectory();
-//       // print("Directory $d");
-//       List<Directory> storages = (await getExternalStorageDirectories())!;
-//       storages = storages.map((Directory e) {
-//         final List<String> splitedPath = e.path.split("/");
-//         return Directory(splitedPath
-//             .sublist(
-//                 0, splitedPath.indexWhere((element) => element == "Android"))
-//             .join("/"));
-//       }).toList();
-
-//       print("1st path: ${storages[0]}");
-
-//       // Directory root = Directory(storages[0]);
-//       List<String> pdfFiles = await getPdfFiles(storages[0].path);
-//     }
-
-//   }
-
-  //! new code
-
-//     Future<void> getPermissionAndPDF() async{
-// PermissionStatus status = await Permission.manageExternalStorage.request();
-
-//     if (status == PermissionStatus.granted) {
-//       print("Storage Granted");
-//       //         var d =
-//       // await Environment.getExternalStorageDirectory();
-//       // print("Directory $d");
-//       List<Directory> storages = (await getExternalStorageDirectories())!;
-//       storages = storages.map((Directory e) {
-//         final List<String> splitedPath = e.path.split("/");
-//         return Directory(splitedPath
-//             .sublist(
-//                 0, splitedPath.indexWhere((element) => element == "Android"))
-//             .join("/"));
-//       }).toList();
-
-//       print("1st path: ${storages[0]}");
-
-//       // Directory root = Directory(storages[0]);
-//       List<String> pdfFiles = await getPdfFiles(storages[0].path);
-//     }
-
-//   }
-
-//   Future<List<String>> getPdfFiles(String rootPath) async {
-//     List<String> pdfPaths = [];
-//     try {
-//       Directory rootDir = Directory(rootPath);
-//       if (await rootDir.exists()) {
-//         // pdfPaths =
-//         Stream.fromFuture(_getPdfFilesRecursively(rootDir));
-
-//         // List<FileSystemEntity> files =
-//         //     rootDir.listSync(recursive: false, followLinks: false);
-//         // for (FileSystemEntity file in files) {
-//         //   //Check if file is directory then again search recursively for pdf files
-
-//         // }
-//       }
-//     } catch (e) {
-//       print(e);
-//     }
-//     return pdfPaths;
-//   }
-
-//   Future <List<String>> _getPdfFilesRecursively(Directory dir) async {
-//     List<String> pdfPaths = [];
-//     List<FileSystemEntity> files =
-//         dir.listSync(recursive: false, followLinks: false);
-//     for (FileSystemEntity file in files) {
-//       // print("PDF Path: ${file.path}");
-
-//       if (file is File && file.path.endsWith('.pdf')) {
-//         pdfPaths.add(file.path);
-//         //! getting all pdf flies here
-//         // var file1 = File('example.txt');
-//         var bytes = file.readAsBytesSync();
-//         var uint8List = Uint8List.fromList(bytes);
-//         var fileName = path.basename(file.path);
-//         PDFModel pdfFile = PDFModel(
-//                   name: fileName,
-//                   // file: uint8List,
-//                   // File: docFile,
-//                   path: Uri.parse(file.path),
-//                   date: "",
-//                   size: 123
-
-//                   // isdownloaded: false.obs
-//                   );
-//               // whatsapp_images.add(waImage);
-//               pdf_viewer_model.add(pdfFile);
-//         print("PDF Path: ${file.path}");
-//         //!
-//       } else if (file is Directory) {
-//         // print("Directory");
-
-//         if (file.path.contains("Android/obb")||file.path.contains("Android/data")||file.path.contains("Android/obj")) {
-//           print("Android: ${file.path}");
-//         }
-//         else {
-//           List<String> list2= await _getPdfFilesRecursively(file);
-//           pdfPaths.addAll(list2);
-//         }
-//       }
-//     }
-
-//     return pdfPaths;
-//   }
-  //?
-  //?
-  //?
-
-// Future<List<String>> getPdfFiles(String rootPath) async {
-//   ReceivePort receivePort = ReceivePort();
-//   await Isolate.spawn(_getPdfFilesIsolate, receivePort.sendPort);
-//   SendPort sendPort = await receivePort.first;
-//   // var pdf_viewer_model = List<PDFModel>();
-//   List<String> pdfPaths = await sendReceive(sendPort, [rootPath, pdf_viewer_model]);
-//   receivePort.close();
-//   return pdfPaths;
-// }
-
-// void _getPdfFilesIsolate(SendPort sendPort) {
-//   ReceivePort receivePort = ReceivePort();
-//   sendPort.send(receivePort.sendPort);
-//   receivePort.listen((data) {
-//     String rootPath = data[0];
-//     var pdf_viewer_model = data[1];
-//     List<String> pdfPaths = _getPdfFilesRecursively(Directory(rootPath), pdf_viewer_model);
-//     sendPort.send(pdfPaths);
-//   });
-// }
-
-// List<String> _getPdfFilesRecursively(Directory dir, var pdf_viewer_model) {
-//     List<String> pdfPaths = [];
-//     List<FileSystemEntity> files =
-//         dir.listSync(recursive: false, followLinks: false);
-//     for (FileSystemEntity file in files) {
-//       if (file is File && file.path.endsWith('.pdf')) {
-//         pdfPaths.add(file.path);
-//         var bytes = file.readAsBytesSync();
-//         var uint8List = Uint8List.fromList(bytes);
-//         var fileName = path.basename(file.path);
-//         PDFModel pdfFile = PDFModel(
-//                   name: fileName,
-//                   // file: uint8List,
-//                   // File: docFile,
-//                   path: Uri.parse(file.path),
-//                   date: "",
-//                   size: 123
-
-//                   // isdownloaded: false.obs
-//                   );
-//               pdf_viewer_model.add(pdfFile);
-//         print("PDF Path: ${file.path}");
-//       } else if (file is Directory) {
-//         if (file.path.contains("Android/obb")||file.path.contains("Android/data")||file.path.contains("Android/obj")) {
-//           print("Android: ${file.path}");
-//         } else {
-//           pdfPaths.addAll(_getPdfFilesRecursively(file, pdf_viewer_model));
-//         }
-//       }
-//     }
-//     return pdfPaths;
-//   }
-
-// Future<List<String>> sendReceive(SendPort port, List<dynamic> data) {
-//   ReceivePort response = ReceivePort();
-//   port.send([data, response.sendPort]);
-//   return response.first.then((dynamic value) => value as List<String>);
-// }
 
   //! new code
 

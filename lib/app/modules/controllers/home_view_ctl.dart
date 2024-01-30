@@ -35,23 +35,26 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   }
 
   checkPermission(String page) async {
-    EasyLoading.show(status: "Checking Permission..");
-    PermissionStatus status = await Permission.manageExternalStorage.status;
-    if (status == PermissionStatus.granted) {
-      print("Storage Granted");
-      Future.delayed(Duration(seconds: 3), () {
-        EasyLoading.dismiss();
-        // Get.offNamed(Routes.HomeView);
-        Get.toNamed(page);
-      });
-    } else {
-      print("Storage Not Granted");
-      Future.delayed(Duration(seconds: 3), () {
-        EasyLoading.dismiss();
+    // EasyLoading.show(status: "Checking Permission..");
+    // Get.offNamed(Routes.PDF_PERMISSION, arguments: page);
+    Get.toNamed(page);
 
-        Get.offNamed(Routes.PDF_PERMISSION, arguments: page);
-      });
-    }
+    // PermissionStatus status = await Permission.manageExternalStorage.status;
+    // if (status == PermissionStatus.granted) {
+    //   print("Storage Granted");
+    //   Future.delayed(Duration(seconds: 3), () {
+    //     EasyLoading.dismiss();
+    //     // Get.offNamed(Routes.HomeView);
+    //     Get.toNamed(page);
+    //   });
+    // } else {
+    //   print("Storage Not Granted");
+    //   Future.delayed(Duration(seconds: 3), () {
+    //     EasyLoading.dismiss();
+
+    //     Get.offNamed(Routes.PDF_PERMISSION, arguments: page);
+    //   });
+    // }
   }
 
   @override

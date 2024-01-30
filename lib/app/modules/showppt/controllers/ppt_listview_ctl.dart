@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_storage/shared_storage.dart';
 // import 'package:shared_storage/shared_storage.dart';
 // import 'package:shared_storage/saf.dart';
 // import 'package:slide_maker/app/data/enum.dart';
@@ -27,49 +29,13 @@ class PPTListController extends GetxController {
   Rx<bool> canShowToast = false.obs;
   Rx<bool> canShowToolbar = true.obs;
   Rx<bool> canShowScrollHead = true.obs;
-  // OverlayEntry? selectionOverlayEntry;
-  // PdfTextSelectionChangedDetails? textSelectionDetails;
-  // Color? contextMenuColor;
-  // Color? copyTextColor;
+
   OverlayEntry? textSearchOverlayEntry;
-  // OverlayEntry? chooseFileOverlayEntry;
-  // OverlayEntry? zoomPercentageOverlay;
-  // OverlayEntry? settingsOverlayEntry;
-  // LocalHistoryEntry? historyEntry;
-  // bool needToMaximize = false;
-  // bool isHorizontalModeClicked = true;
-  // bool isContinuousModeClicked = true;
-  String? documentPath;
-  // PdfInteractionMode interactionMode = PdfInteractionMode.selection;
-  // PdfPageLayoutMode pageLayoutMode = PdfPageLayoutMode.continuous;
-  // PdfScrollDirection scrollDirection = PdfScrollDirection.vertical;
 
-  // final FocusNode focusNode = FocusNode()..requestFocus();
-  // final GlobalKey<ToolbarState> toolbarKey = GlobalKey();
+  // String? documentPath;
+  RxList<DocumentFile> files = <DocumentFile>[].obs;
+  StreamSubscription<DocumentFile>? _listener;
 
-  // final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
-  // final PdfViewerController pdfViewerController = PdfViewerController();
-
-  // final GlobalKey<SearchToolbarState> textSearchKey = GlobalKey();
-  // final GlobalKey<TextSearchOverlayState> textSearchOverlayKey = GlobalKey();
-  // late bool canShowContinuousModeOptions =
-  //     pageLayoutMode == PdfPageLayoutMode.continuous;
-  // late bool isLight;
-  // late bool isDesktopWeb;
-  // final double kWebContextMenuHeight = 32;
-  // final double kMobileContextMenuHeight = 48;
-  // final double kContextMenuBottom = 55;
-  // final double kContextMenuWidth = 100;
-  // final double kSearchOverlayWidth = 412;
-  // Color? fillColor;
-  // Orientation? deviceOrientation;
-  // final TextEditingController textFieldController = TextEditingController();
-  // final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  // final FocusNode passwordDialogFocusNode = FocusNode();
-  // bool passwordVisible = true;
-  // String? password;
-  // bool hasPasswordDialog = false;
-  // String errorText = '';
   RxBool DoneScanning = false.obs;
   String privacyLink =
       "https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader";
@@ -80,7 +46,7 @@ class PPTListController extends GetxController {
   // RxList<DocumentFile> files = <DocumentFile>[].obs;
   // StreamSubscription<DocumentFile>? _listener;
   RxBool hasPermission = true.obs;
-  Uri? waURI;
+
   bool searchPDF = true;
   Directory? tempDir;
   List<String> alreadyDownloadedFileName = [];
@@ -128,31 +94,72 @@ class PPTListController extends GetxController {
       AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
     }
 
-    // WidgetsBinding.instance.addObserver(this);
-    //!
-    // Future.delayed(Duration(seconds: 1),(){
-    //   AppLovinProvider.instance.showInterstitial();
-    // });
-    //!
-    // _bindBackgroundIsolate();
-    // final SendPort? send =
-    //     IsolateNameServer.lookupPortByName('downloader_send_port');
-    // send!.send("Hello");
-
-//   for (var i = 0; i<=100; i++) {
-
-    // Future.delayed(Duration(seconds: 3),(){
-    try {
-      getPdfFiles().then((value) {
-        print("GetPDFFiles Done: ${pdf_viewer_model.length}");
-        nextPdf().then((value) => null);
-      });
-    } on Exception catch (e) {
+    try {} on Exception catch (e) {
       print("Error:$e");
     }
-    // });
+  }
 
-// }
+  openSafFolder() async {
+    final uri = await openDocumentTree(
+      initialUri: Uri.parse(kWppStatusFolderAccessed),
+    );
+// kWppStatusFolder=url.toString();
+    // waURI = uri;
+    // print("URL: $waURI");
+
+    if (uri == null) return;
+
+    // files = null;
+    files.clear();
+
+    loadFiles(uri);
+  }
+
+  void loadFiles(Uri uri) async {
+    hasPermission.value = await canRead(uri) ?? false;
+
+    if (!hasPermission.value) {
+      return;
+    }
+    final folderUri = Uri.parse(kWppStatusFolderAccessed);
+
+    const columns = [
+      DocumentFileColumn.displayName,
+      DocumentFileColumn.size,
+      DocumentFileColumn.lastModified,
+      DocumentFileColumn.mimeType,
+      // The column below is a optional column
+      // you can wether include or not here and
+      // it will be always available on the results
+      DocumentFileColumn.id,
+    ];
+    final fileListStream = listFiles(uri, columns: columns);
+
+    _listener = fileListStream.listen((docFile) async {
+      print("File Name: ${docFile.name} ");
+
+      // Uint8List? FileToStoreInList = await convertDocFileToFile(docFile);
+
+      // if (FileToStoreInList != null) {
+      if (docFile.name!.endsWith("pptx")) {
+        print("Image: ${docFile.name}");
+        PDFModel pdf = PDFModel(
+            name: docFile.name!,
+            date: docFile.size!.toString(),
+            path: docFile.uri.toString(),
+            size: docFile.size!);
+        pdf_viewer_model.add(pdf);
+        // ImageFiles.add(FileToStoreInList);
+      }
+
+      //? Add Video List
+
+      // }
+    }, onDone: () {
+      // files.value = [...?files];
+      // _files.
+      print("Files1: ${pdf_viewer_model.length}");
+    });
   }
 
   Future nextPdf() async {

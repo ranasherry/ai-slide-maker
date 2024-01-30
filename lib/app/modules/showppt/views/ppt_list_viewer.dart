@@ -215,7 +215,7 @@ class PPTListView extends GetView<PPTListController> {
 
   Container pdfdoc() {
     return Container(
-      child: Obx(() => controller.DoneScanning.value
+      child: Obx(() => !controller.pdf_viewer_model.isEmpty
           ? Container(
               child: Obx(() => controller.pdf_viewer_model.isEmpty
                   ? Container(
@@ -228,25 +228,63 @@ class PPTListView extends GetView<PPTListController> {
                   : _pdfdoclist()),
             )
           : Container(
-              margin: EdgeInsets.only(bottom: 60),
-              child: Row(
+              height: SizeConfig.screenHeight,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(
-                        height: SizeConfig.screenHeight * 0.03,
-                      ),
-                      Text("Scanning PPTx from your Phone")
-                    ],
+                  Container(
+                    child: Center(
+                        child: Image.asset(
+                      AppImages.empty,
+                      scale: 5,
+                    )),
                   ),
+                  verticalSpace(SizeConfig.blockSizeVertical * 2),
+                  ElevatedButton(
+                      onPressed: () {
+                        controller.openSafFolder();
+                      },
+                      child: Text("Grant Permission"))
                 ],
               ),
             )),
     );
   }
+
+  // Container pdfdoc() {
+  //   return Container(
+  //     child: Obx(() => controller.DoneScanning.value
+  //         ? Container(
+  //             child: Obx(() => controller.pdf_viewer_model.isEmpty
+  //                 ? Container(
+  //                     child: Center(
+  //                         child: Image.asset(
+  //                       AppImages.empty,
+  //                       scale: 5,
+  //                     )),
+  //                   )
+  //                 : _pdfdoclist()),
+  //           )
+  //         : Container(
+  //             margin: EdgeInsets.only(bottom: 60),
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 Column(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   children: [
+  //                     CircularProgressIndicator(),
+  //                     SizedBox(
+  //                       height: SizeConfig.screenHeight * 0.03,
+  //                     ),
+  //                     Text("Scanning PPTx from your Phone")
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //           )),
+  //   );
+  // }
 
   Obx _pdfdoclist() {
     return Obx(
@@ -370,104 +408,105 @@ class PPTListView extends GetView<PPTListController> {
                     ],
                   ),
                   Spacer(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: SizeConfig.blockSizeHorizontal * 5),
-                    child: PopupMenuButton(
-                      icon: Icon(
-                        Icons.more_horiz_outlined,
-                      ),
-                      itemBuilder: (BuildContext) {
-                        return [
-                          PopupMenuItem(
-                              child: GestureDetector(
-                            onTap: () {
-                              controller.selectedindex.value = index;
-                              // Get.toNamed(Routes.SHOW_P_D_F);
-                              Get.toNamed(Routes.ShowPPTView,
-                                  arguments:
-                                      controller.pdf_viewer_model[index]);
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.folder_open_outlined,
-                                  color: Colors.blue,
-                                ),
-                                horizontalSpace(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                                Text(
-                                  "Open",
-                                  style: TextStyle(color: Colors.grey.shade700),
-                                ),
-                              ],
-                            ),
-                          )),
-                          PopupMenuItem(
-                              child: GestureDetector(
-                            onTap: () {
-                              controller.selectedindex.value = index;
 
-                              controller.deleteFile(
-                                  controller
-                                      .pdf_viewer_model[
-                                          controller.selectedindex.value]
-                                      .path,
-                                  index);
-                              Get.back();
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //       top: SizeConfig.blockSizeHorizontal * 5),
+                  //   child: PopupMenuButton(
+                  //     icon: Icon(
+                  //       Icons.more_horiz_outlined,
+                  //     ),
+                  //     itemBuilder: (BuildContext) {
+                  //       return [
+                  //         PopupMenuItem(
+                  //             child: GestureDetector(
+                  //           onTap: () {
+                  //             controller.selectedindex.value = index;
+                  //             // Get.toNamed(Routes.SHOW_P_D_F);
+                  //             Get.toNamed(Routes.ShowPPTView,
+                  //                 arguments:
+                  //                     controller.pdf_viewer_model[index]);
+                  //           },
+                  //           child: Row(
+                  //             children: [
+                  //               Icon(
+                  //                 Icons.folder_open_outlined,
+                  //                 color: Colors.blue,
+                  //               ),
+                  //               horizontalSpace(
+                  //                   SizeConfig.blockSizeHorizontal * 2),
+                  //               Text(
+                  //                 "Open",
+                  //                 style: TextStyle(color: Colors.grey.shade700),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         )),
+                  //         PopupMenuItem(
+                  //             child: GestureDetector(
+                  //           onTap: () {
+                  //             controller.selectedindex.value = index;
 
-                              //       Get.toNamed(Routes.PDF_EDITOR,arguments: "${controller
-                              // .pdf_viewer_model[controller.selectedindex.value].path}");
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.orangeAccent,
-                                ),
-                                horizontalSpace(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                                Text(
-                                  "Delete",
-                                  style: TextStyle(color: Colors.grey.shade700),
-                                ),
-                              ],
-                            ),
-                          )),
-                          PopupMenuItem(
-                              child: GestureDetector(
-                            onTap: () {
-                              print(
-                                  "${controller.pdf_viewer_model[index].path}");
-                              controller.ShareFile(controller
-                                  .pdf_viewer_model[index].path
-                                  .toString());
-                              //! share file using unitlist
-                              // Share.shareXFiles([
-                              //   XFile.fromData(
-                              //     controller.pdf_viewer_model[index].file,
-                              //   )
-                              // ]);
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.share,
-                                  color: Colors.green,
-                                ),
-                                horizontalSpace(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                                Text(
-                                  "Share",
-                                  style: TextStyle(color: Colors.grey.shade700),
-                                ),
-                              ],
-                            ),
-                          )),
-                        ];
-                      },
-                    ),
-                  ),
+                  //             controller.deleteFile(
+                  //                 controller
+                  //                     .pdf_viewer_model[
+                  //                         controller.selectedindex.value]
+                  //                     .path,
+                  //                 index);
+                  //             Get.back();
+
+                  //             //       Get.toNamed(Routes.PDF_EDITOR,arguments: "${controller
+                  //             // .pdf_viewer_model[controller.selectedindex.value].path}");
+                  //           },
+                  //           child: Row(
+                  //             children: [
+                  //               Icon(
+                  //                 Icons.delete,
+                  //                 color: Colors.orangeAccent,
+                  //               ),
+                  //               horizontalSpace(
+                  //                   SizeConfig.blockSizeHorizontal * 2),
+                  //               Text(
+                  //                 "Delete",
+                  //                 style: TextStyle(color: Colors.grey.shade700),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         )),
+                  //         PopupMenuItem(
+                  //             child: GestureDetector(
+                  //           onTap: () {
+                  //             print(
+                  //                 "${controller.pdf_viewer_model[index].path}");
+                  //             controller.ShareFile(controller
+                  //                 .pdf_viewer_model[index].path
+                  //                 .toString());
+                  //             //! share file using unitlist
+                  //             // Share.shareXFiles([
+                  //             //   XFile.fromData(
+                  //             //     controller.pdf_viewer_model[index].file,
+                  //             //   )
+                  //             // ]);
+                  //           },
+                  //           child: Row(
+                  //             children: [
+                  //               Icon(
+                  //                 Icons.share,
+                  //                 color: Colors.green,
+                  //               ),
+                  //               horizontalSpace(
+                  //                   SizeConfig.blockSizeHorizontal * 2),
+                  //               Text(
+                  //                 "Share",
+                  //                 style: TextStyle(color: Colors.grey.shade700),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         )),
+                  //       ];
+                  //     },
+                  //   ),
+                  // ),
                 ],
               ),
             ),

@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:get/get.dart';
+import 'package:shared_storage/shared_storage.dart';
 import 'package:slide_maker/app/data/pdf_viewer_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -39,15 +41,20 @@ class ShowPPTController extends GetxController {
   void increment() => count.value++;
 
   uploadFileToFirebase(String path) async {
-    print("FileUploading Start");
+    print("FileUploading Start Path: $path");
+    Uri uri = Uri.parse(path);
+    Uint8List? memoryFile = await getDocumentContent(uri);
+
+    // return;
 
     try {
       firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
           .ref()
           .child(
               'ppt_files/${DateTime.now().millisecondsSinceEpoch}.pptx'); // Adjust path as needed
-
-      firebase_storage.UploadTask uploadTask = ref.putFile(File(path));
+      // ref.putData(memoryFile!);
+      // firebase_storage.UploadTask uploadTask = ref.putFile(File(path));
+      firebase_storage.UploadTask uploadTask = ref.putData(memoryFile!);
       print("FileUploading Put File");
 
       firebase_storage.TaskSnapshot snapshot = await uploadTask;

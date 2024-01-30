@@ -23,7 +23,8 @@ class MetaAdsProvider {
   }
 
   void _loadInterstitialAd() {
-    final interstitialAd = InterstitialAd("761881782463826_761883592463645");
+    final interstitialAd = InterstitialAd("736179708664268_736180885330817");
+
     interstitialAd.listener = InterstitialAdListener(
       onLoaded: () {
         isInterstitialAdLoaded = true;
