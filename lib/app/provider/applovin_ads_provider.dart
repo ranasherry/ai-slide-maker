@@ -52,9 +52,9 @@ class AppLovinProvider {
     // }else{
     //   print("Debug Mode");
     // }
-    if (kReleaseMode) {
-      initializePlugin();
-    }
+    // if (kReleaseMode) {
+    initializePlugin();
+    // }
   }
 
   Future<void> initializePlugin() async {

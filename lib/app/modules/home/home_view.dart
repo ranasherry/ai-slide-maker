@@ -1,4 +1,5 @@
 import 'package:applovin_max/applovin_max.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
@@ -61,7 +62,7 @@ class HomeView extends GetView<HomeViewCtl> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Column(
+      body: ListView(
         children: [
           verticalSpace(SizeConfig.blockSizeVertical * 1),
           Container(
@@ -273,85 +274,113 @@ class HomeView extends GetView<HomeViewCtl> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Get.toNamed(Routes.HistoryView);
-            },
-            child: Container(
-              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-              height: SizeConfig.blockSizeVertical * 12,
-              width: SizeConfig.blockSizeHorizontal * 85,
-              decoration: BoxDecoration(
-                color: Colors.cyan,
-                borderRadius:
-                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-              ),
-              child: Padding(
-                padding:
-                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: SizeConfig.blockSizeHorizontal * 3,
-                        top: SizeConfig.blockSizeVertical * 1,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "History",
-                            style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                              fontWeight: FontWeight.bold,
+          verticalSpace(SizeConfig.blockSizeVertical),
+          MaxAdView(
+              adUnitId: AppStrings.MAX_Mrec_ID,
+              adFormat: AdFormat.mrec,
+              listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                FirebaseAnalytics.instance.logAdImpression(
+                  adFormat: "Mrec",
+                  adSource: ad.networkName,
+                  value: ad.revenue,
+                );
+                print('Mrec widget ad loaded from ' + ad.networkName);
+              }, onAdLoadFailedCallback: (adUnitId, error) {
+                print('Mrec widget ad failed to load with error code ' +
+                    error.code.toString() +
+                    ' and message: ' +
+                    error.message);
+              }, onAdClickedCallback: (ad) {
+                print('Mrec widget ad clicked');
+              }, onAdExpandedCallback: (ad) {
+                print('Mrec widget ad expanded');
+              }, onAdCollapsedCallback: (ad) {
+                print('Mrec widget ad collapsed');
+              })),
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 5),
+            child: GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.HistoryView);
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+                height: SizeConfig.blockSizeVertical * 12,
+                width: SizeConfig.blockSizeHorizontal * 85,
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius:
+                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      right: SizeConfig.blockSizeHorizontal * 3),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: SizeConfig.blockSizeHorizontal * 3,
+                          top: SizeConfig.blockSizeVertical * 1,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "History",
+                              style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "Watch over your history collection",
-                            style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 3,
+                            Text(
+                              "Watch over your history collection",
+                              style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 3,
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: SizeConfig.blockSizeVertical * 0.5),
-                            height: SizeConfig.blockSizeVertical * 3,
-                            width: SizeConfig.blockSizeHorizontal * 16,
-                            decoration: BoxDecoration(
-                              color: Colors.purple,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade400,
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  offset: Offset(0, 5),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 0.5),
+                              height: SizeConfig.blockSizeVertical * 3,
+                              width: SizeConfig.blockSizeHorizontal * 16,
+                              decoration: BoxDecoration(
+                                color: Colors.purple,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade400,
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    offset: Offset(0, 5),
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 1,
                                 ),
-                              ],
-                              borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 1,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Check",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
-                            child: Center(
-                              child: Text(
-                                "Check",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    // Image added to the right side
-                    Image.asset(
-                      AppImages.history,
-                      scale: 8,
-                    ),
-                  ],
+                      // Image added to the right side
+                      Image.asset(
+                        AppImages.history,
+                        scale: 8,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          )
+          ),
+          verticalSpace(SizeConfig.blockSizeVertical)
         ],
       ),
     );

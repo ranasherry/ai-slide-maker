@@ -20,6 +20,7 @@ class AppStrings {
 
   //original Andriod
   static const MAX_BANNER_ID = "66f8c654162ca4f5";
+  static const MAX_Mrec_ID = "bcf322b2e7e3c898";
 
   static const MAX_INTER_ID = "a5c4251ccb168802";
 

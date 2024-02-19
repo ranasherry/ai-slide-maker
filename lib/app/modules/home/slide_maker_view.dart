@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:applovin_max/applovin_max.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
@@ -11,10 +13,13 @@ import 'package:im_animations/im_animations.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:lottie/lottie.dart';
+
+import 'package:slide_maker/app/data/slideResponce.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/big_fact_slides.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/flutter_deck_app.dart';
+import 'package:slide_maker/packages/slick_slides/slick_slides.dart';
 import '../../provider/admob_ads_provider.dart';
 import '../../routes/app_pages.dart';
 import '../../utills/app_strings.dart';
@@ -23,6 +28,10 @@ import '../../utills/images.dart';
 import '../../utills/size_config.dart';
 import '../../utills/style.dart';
 import '../controllers/slide_maker_controller.dart';
+
+const _defaultTransition = SlickFadeTransition(
+  color: Colors.white,
+);
 
 class SlideMakerView extends GetView<SlideMakerController> {
   SlideMakerView({Key? key}) : super(key: key);
@@ -193,7 +202,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
               SingleChildScrollView(
                 child: Container(
                   margin: EdgeInsets.only(
-                    top: SizeConfig.blockSizeVertical * 8,
+                    top: SizeConfig.blockSizeVertical * 6,
                   ),
                   child: Center(
                     child: Column(
@@ -238,7 +247,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                                   kDebugMode) {
                                                 // if (!controller.isWaitingForTime.value) {
                                                 controller
-                                                    .validate_user_input();
+                                                    .validate_user_input("Six");
                                               } else {
                                                 controller
                                                     .showWatchRewardPrompt();
@@ -349,7 +358,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: SizeConfig.blockSizeVertical * 8,
+                    height: SizeConfig.blockSizeVertical * 6,
                     width: SizeConfig.blockSizeHorizontal * 100,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -457,30 +466,43 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-            height: SizeConfig.blockSizeVertical * 40,
-            child: FlutterDeckExample(
-              slideResponseList: controller.slideResponseList,
-              NoOfSlides: controller.slideResponseList.length,
-              // showExtra: controller.showExtraSlides.value,
-            )
+        // Container(
+        //     height: SizeConfig.blockSizeVertical * 40,
+        //     child: FlutterDeckExample(
+        //       slideResponseList: controller.slideResponseList,
+        //       NoOfSlides: controller.slideResponseList.length,
+        //       // showExtra: controller.showExtraSlides.value,
+        //     )
 
-            // Obx(() => controller.showExtraSlides.value
-            //     ?
-            //      FlutterDeckExample(
-            //         slideResponseList: controller.slideResponseList,
-            //         NoOfSlides: controller.slideResponseList.length,
-            //         showExtra: controller.showExtraSlides.value,
-            //       )
-            //     : FlutterDeckExample(
-            //         slideResponseList: controller.slideResponseList,
-            //         NoOfSlides: controller.slideResponseList.length - 2,
-            //         showExtra: controller.showExtraSlides.value,
-            //       )
-            //       ),
-            ),
-        // verticalSpace(SizeConfig.blockSizeVertical * 1.5),
-        // MoreSlidesButton(),
+        //     ),
+
+        _slickSlide(controller.slideResponseList),
+        verticalSpace(SizeConfig.blockSizeVertical * 1.5),
+        MoreSlidesButton(),
+        verticalSpace(SizeConfig.blockSizeVertical * 1),
+
+        MaxAdView(
+            adUnitId: AppStrings.MAX_Mrec_ID,
+            adFormat: AdFormat.mrec,
+            listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+              FirebaseAnalytics.instance.logAdImpression(
+                adFormat: "Mrec",
+                adSource: ad.networkName,
+                value: ad.revenue,
+              );
+              print('Mrec widget ad loaded from ' + ad.networkName);
+            }, onAdLoadFailedCallback: (adUnitId, error) {
+              print('Mrec widget ad failed to load with error code ' +
+                  error.code.toString() +
+                  ' and message: ' +
+                  error.message);
+            }, onAdClickedCallback: (ad) {
+              print('Mrec widget ad clicked');
+            }, onAdExpandedCallback: (ad) {
+              print('Mrec widget ad expanded');
+            }, onAdCollapsedCallback: (ad) {
+              print('Mrec widget ad collapsed');
+            })),
       ],
     );
 
@@ -518,6 +540,38 @@ class SlideMakerView extends GetView<SlideMakerController> {
     //       })),
     // );
     // // singleSlide();
+  }
+
+  Container _slickSlide(List<SlideResponse> slideResponseList) {
+    return Container(
+        // height: SizeConfig.blockSizeVertical * 20,
+        // width: SizeConfig.screenWidth,
+        child: SlideDeck(
+            // presenterView: true,
+            theme: SlideThemeData.light(
+                backgroundBuilder: (context) {
+                  return Image.asset(AppImages.PPT_BG2);
+                },
+                textTheme: SlideTextThemeData.light(
+                    body: TextStyle(
+                        fontFamily: 'Inter',
+                        color: Colors.black,
+                        fontSize: 55.0,
+                        fontWeight: FontWeight.w600,
+                        fontVariations: [FontVariation('wght', 400)]))),
+            slides: List.generate(
+              slideResponseList.length,
+              (index) {
+                List<String> _bullets =
+                    slideResponseList[index].slideDescription.split(".");
+                return BulletsSlide(
+                  title: slideResponseList[index].slideTitle,
+                  bulletByBullet: true,
+                  bullets: _bullets,
+                  transition: _defaultTransition,
+                );
+              },
+            )));
   }
 
   // BigFactSlide singleSlide(index) {
@@ -684,6 +738,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return GestureDetector(
       onTap: () {
         // controller.showExtraSlides.toggle();
+        controller.generateExtraSlides();
         print("Next Button Clicked");
         // if (kReleaseMode) {
         //   if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
@@ -697,7 +752,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
         // AdMobAdsProvider.instance.showInterstitialAd(() {});
       },
       child: Container(
-        width: SizeConfig.blockSizeHorizontal * 60,
+        width: SizeConfig.blockSizeHorizontal * 70,
         // height: 100,
         // color: AppColors.Bright_Pink_color,
         // duration: Duration(milliseconds: 500),
@@ -728,7 +783,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // controller.outlineTitleFetched.value?
               // "Recreate"
               // :
-              "Generate 2 Extra slides",
+              "Regenerate with 2 Extra slides",
               style: TextStyle(
                   fontSize: SizeConfig.blockSizeHorizontal * 4,
                   color: Colors.white),
@@ -840,7 +895,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
           // AdMobAdsProvider.instance.showInterstitialAd(() {});
           if (!controller.isWaitingForTime.value || kDebugMode) {
             // if (!controller.isWaitingForTime.value) {
-            controller.validate_user_input();
+            controller.validate_user_input("Six");
           } else {
             controller.showWatchRewardPrompt();
           }

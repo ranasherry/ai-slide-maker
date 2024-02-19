@@ -18,6 +18,7 @@ abstract class Routes {
   static const HistorySlideView = _Paths.HistorySlideView;
   static const PPT_UPLOADER = _Paths.PPT_UPLOADER;
   static const PPTListView = _Paths.PPTListView;
+  static const INTRO_SCREENS = _Paths.INTRO_SCREENS;
 }
 
 abstract class _Paths {
@@ -35,4 +36,5 @@ abstract class _Paths {
   static const HistorySlideView = '/HistorySlideView';
   static const PPT_UPLOADER = '/ppt-uploader';
   static const PPTListView = '/PPTListView';
+  static const INTRO_SCREENS = '/intro-screens';
 }

@@ -1,7 +1,4 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:slide_maker/app/modules/showppt/bindings/ppt_list_binding.dart';
-import 'package:slide_maker/app/modules/showppt/bindings/show_ppt_binding.dart';
-import 'package:slide_maker/app/modules/showppt/views/ppt_list_viewer.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/history_binding.dart';
@@ -18,6 +15,8 @@ import '../modules/home/maths_solver_view.dart';
 import '../modules/home/short_question_view.dart';
 import '../modules/home/slide_maker_view.dart';
 import '../modules/home/splash_screen.dart';
+import '../modules/intro_screens/bindings/intro_screens_binding.dart';
+import '../modules/intro_screens/views/intro_screens_view.dart';
 import '../modules/pdfPermission/bindings/pdf_permission_binding.dart';
 import '../modules/pdfPermission/views/pdf_permission_view.dart';
 import '../modules/pdfView/bindings/pdf_view_binding.dart';
@@ -26,6 +25,9 @@ import '../modules/ppt_uploader/bindings/ppt_uploader_binding.dart';
 import '../modules/ppt_uploader/views/ppt_uploader_view.dart';
 import '../modules/showPDF/bindings/show_p_d_f_binding.dart';
 import '../modules/showPDF/views/show_p_d_f_view.dart';
+import '../modules/showppt/bindings/ppt_list_binding.dart';
+import '../modules/showppt/bindings/show_ppt_binding.dart';
+import '../modules/showppt/views/ppt_list_viewer.dart';
 import '../modules/showppt/views/show_p_p_t_view.dart';
 
 part 'app_routes.dart';
@@ -107,6 +109,11 @@ class AppPages {
       name: _Paths.PPTListView,
       page: () => PPTListView(),
       binding: PPTListBinding(),
+    ),
+    GetPage(
+      name: _Paths.INTRO_SCREENS,
+      page: () => const IntroScreensView(),
+      binding: IntroScreensBinding(),
     ),
   ];
 }

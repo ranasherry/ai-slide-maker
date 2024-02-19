@@ -295,6 +295,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     Future.delayed(Duration(seconds: 1), () {
       // show_create_button();
       outlineTitleFetched.value = true;
+      show_create_button();
     });
     // if (NoOfSlides == 1) {
     //   outlineTitleFetched.value = true;
@@ -345,11 +346,31 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  String removeExtraText(String response) {
+    // Find the start of the actual JSON data
+    int startIndex = response.indexOf('[');
+    if (startIndex == -1) {
+      throw Exception('Invalid JSON format: missing [ character');
+    }
+
+    // Find the end of the actual JSON data
+    int endIndex = response.lastIndexOf(']');
+    if (endIndex == -1) {
+      throw Exception('Invalid JSON format: missing ] character');
+    }
+
+    // Extract the JSON string
+    String json = response.substring(startIndex, endIndex + 1);
+
+    return json;
+  }
+
   bool hasExtraQuotes(String jsonString) {
     return jsonString.startsWith("\'\'\'") || jsonString.endsWith("\'\'\'");
   }
 
-  validate_user_input() async {
+  validate_user_input(String noOfSlides) async {
+    NoOfSlides = noOfSlides;
     currentModel = ModelType.Bard;
     if (userInput.isNotEmpty) {
       if (gems.value > 0) {
@@ -359,7 +380,8 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
           //  getImage(ImageSource);
 
           await generateContent(userInput.value).then((response) {
-            response = removeQuotesIfExists(response);
+            // response = removeQuotesIfExists(response);
+            response = removeExtraText(response);
             log("RemovedExtra String: $response");
             jsonOutput.value = response;
 
@@ -403,7 +425,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     // String systemReq = "${promptForGPT}";
     // String systemReq = 'Create six presentation slides in the following JSON format, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "What is AI?","slide_descr": "AI, or Artificial Intelligence, refers to computer systems designed to mimic human intelligence. It encompasses machine learning, neural networks, and data analysis to make decisions, solve problems, and adapt to new information. AI applications range from speech recognition and self-driving cars to healthcare diagnostics, transforming various industries."}Please ensure each slide has a unique title and description, keeping the description under 20 words.';
     String systemReq =
-        'Create six presentation slides data in the following JSON format list, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "Title","slide_descr": "DISCRIPTION"} Please ensure each slide has a unique title and description, keeping the description under 40 words. your content must include creativity with no plagirism and I need only required data I am not demanding any visual content. and I need the list of requred json object';
+        'Create ${NoOfSlides} presentation slides data in the following JSON format list, based on the topic "${userInput.value}". Here is an example of the format I need: {"slide_title": "Title","slide_descr": "DISCRIPTION"} Please ensure each slide has a unique title and description, keeping the description under 40 words. your content must include creativity with no plagirism and I need only required data I am not demanding any visual content. and I need the list of requred json object';
     log("prompt for GPT: $userReq");
     print("prompt for GPT: $systemReq");
 
@@ -958,6 +980,16 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
   void increment() => count.value++;
 
+  // void onBackPressed() {
+  //   inputTextCTL.clear();
+  //   showSlides.value = false;
+  //   outlineTitleFetched.value = false;
+  //   show_input();
+  //   Future.delayed(Duration(seconds: 1), () {
+  //     show_create_button();
+  //   });
+  // }
+
   void onBackPressed() {
     inputTextCTL.clear();
     showSlides.value = false;
@@ -1088,7 +1120,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
             'parts': [
               {
                 'text':
-                    "Create a JSON list of presentation slides based on the following instructions:\n\n- Topic: ${UserInput}\n- Number of slides: ${NoOfSlides}\n\n**Required format:**\n- Each slide must have a unique title and description in Markdown format.\n- Titles should be engaging, informative and concise (strictly under 4 words).\n- Descriptions should be concise (strictly under 25 words) and use bullet points if needed.\n- Content must be original and plagiarism-free.\n- No visual content or slide numbering is required.\n\n**Example:**\n[{\"slide_title\": \"Unlocking the Potential of ${UserInput}\", \"slide_descr\": \"Dive into the world of ${UserInput} and discover its groundbreaking opportunities. From [key benefit 1] to [key benefit 2], it's transforming [relevant field]. Let's explore its impact and future potential.\"}, ...].  Note: Reponse must not contain any extra words other then json. it must be json parsable"
+                    "Create a JSON list of presentation slides based on the following instructions:\n\n- Topic: ${UserInput}\n- Number of slides: ${NoOfSlides}\n\n**Required format:**\n- Each slide must have a unique title and description in Markdown format.\n- Titles should be engaging, informative and concise (strictly under 4 words).\n- Descriptions should be concise (strictly under 100 words) and use bullet points if needed.\n- Content must be original and plagiarism-free.\n- No visual content or slide numbering is required.\n\n**Example:**\n[{\"slide_title\": \"Unlocking the Potential of ${UserInput}\", \"slide_descr\": \"Dive into the world of ${UserInput} and discover its groundbreaking opportunities. From [key benefit 1] to [key benefit 2], it's transforming [relevant field]. Let's explore its impact and future potential.\"}, ...].  Note: Reponse must not contain any extra words other then json. complete response must be json parsable"
                 // 'Create $NoOfSlides presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION"}] Please ensure each slide has a unique title and description, keeping the description under 100 words.Discription must be in markdown format. add bullets points if needed. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction. Note: Your Response must not contain plagirzed content'
                 // 'Create six presentation slides data in the following JSON format list, based on the topic "${UserInput}". Here is an example of the format I need: [{"slide_title": "Title","slide_descr": "DISCRIPTION","image_link": "imageUrlHere"}] Please ensure each slide has a unique title and description and an online available image url link from unsplash. url must exist on unsplash, keeping the description under 40 words. Your content must include creativity with no plagiarism and I need only required data. I am not demanding any visual content, and I need the list of required JSON objects. It must not contain extra content or numbering to the slides, Strictly follow the required json instruction'
               }
@@ -1194,6 +1226,15 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
       print('Error saving slide in database: $error');
       // Handle error appropriately (e.g., display error message to user)
     }
+  }
+
+  void generateExtraSlides() {
+    showSlides.value = false;
+    outlineTitleFetched.value = false;
+    showInside.value = false;
+    show_input();
+
+    validate_user_input("Eight");
   }
 
 // ? commented by jamal start
