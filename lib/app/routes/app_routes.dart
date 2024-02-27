@@ -19,6 +19,8 @@ abstract class Routes {
   static const PPT_UPLOADER = _Paths.PPT_UPLOADER;
   static const PPTListView = _Paths.PPTListView;
   static const INTRO_SCREENS = _Paths.INTRO_SCREENS;
+  static const INVITATION_MAKER = _Paths.INVITATION_MAKER;
+  static const WeddingInvitationView = _Paths.WeddingInvitationView;
 }
 
 abstract class _Paths {
@@ -37,4 +39,6 @@ abstract class _Paths {
   static const PPT_UPLOADER = '/ppt-uploader';
   static const PPTListView = '/PPTListView';
   static const INTRO_SCREENS = '/intro-screens';
+  static const INVITATION_MAKER = '/invitation-maker';
+  static const WeddingInvitationView = '/WeddingInvitationView';
 }

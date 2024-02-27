@@ -1,4 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/invitation_maker/bindings/weddinginvitation_binding.dart';
+import 'package:slide_maker/app/modules/invitation_maker/views/wedding_invite_view.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/history_binding.dart';
@@ -17,6 +19,8 @@ import '../modules/home/slide_maker_view.dart';
 import '../modules/home/splash_screen.dart';
 import '../modules/intro_screens/bindings/intro_screens_binding.dart';
 import '../modules/intro_screens/views/intro_screens_view.dart';
+import '../modules/invitation_maker/bindings/invitation_maker_binding.dart';
+import '../modules/invitation_maker/views/invitation_maker_view.dart';
 import '../modules/pdfPermission/bindings/pdf_permission_binding.dart';
 import '../modules/pdfPermission/views/pdf_permission_view.dart';
 import '../modules/pdfView/bindings/pdf_view_binding.dart';
@@ -114,6 +118,16 @@ class AppPages {
       name: _Paths.INTRO_SCREENS,
       page: () => const IntroScreensView(),
       binding: IntroScreensBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVITATION_MAKER,
+      page: () => const InvitationMakerView(),
+      binding: InvitationMakerBinding(),
+    ),
+    GetPage(
+      name: _Paths.WeddingInvitationView,
+      page: () => const WeddingInvitationView(),
+      binding: WeddingInvitationBinding(),
     ),
   ];
 }

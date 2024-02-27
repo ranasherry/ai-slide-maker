@@ -171,7 +171,11 @@ class _BulletsState extends State<Bullets> with SingleTickerProviderStateMixin {
 
     return Padding(
       padding: widget.padding,
-      child: DefaultTextStyle(
+      child:
+          // TextFormField(
+          //   controller: TextEditingController(text: "widget.bullets"),
+          // )
+          DefaultTextStyle(
         style: theme.textTheme.body,
         child: AutoSizeText.rich(joinedBullets),
       ),

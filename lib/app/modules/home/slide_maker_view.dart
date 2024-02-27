@@ -1,7 +1,9 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:ui' as dartui;
 import 'package:applovin_max/applovin_max.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -20,6 +22,7 @@ import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/big_fact_slides.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/flutter_deck_app.dart';
 import 'package:slide_maker/packages/slick_slides/slick_slides.dart';
+import 'package:slide_maker/packages/slick_slides/src/deck/deck_controls.dart';
 import '../../provider/admob_ads_provider.dart';
 import '../../routes/app_pages.dart';
 import '../../utills/app_strings.dart';
@@ -476,7 +479,90 @@ class SlideMakerView extends GetView<SlideMakerController> {
 
         //     ),
 
-        _slickSlide(controller.slideResponseList),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Obx(() => AnimatedButton(
+                  width: SizeConfig.blockSizeHorizontal * 30,
+                  text: controller.isEditable.value ? "Save" : "Edit",
+                  icon: controller.isEditable.value ? Icons.check : Icons.edit,
+                  color: controller.isEditable.value
+                      ? dartui.Color.fromARGB(255, 67, 167, 105)
+                      : dartui.Color.fromARGB(255, 139, 44, 44),
+                  pressEvent: () {
+                    print("You pressed Icon Elevated Button");
+                    controller.isEditable.value = !controller.isEditable.value;
+                    // final tempList = controller.slideResponseList.toList();
+                    // controller.editableSlideResponseList.clear();
+                    // controller.editableSlideResponseList.value = tempList;
+                    // print(
+                    //     "Slide Respinse Length: ${controller.editableSlideResponseList.length}");
+                    //   controller.editableSlideResponseList.value = tempList;
+                    if (controller.isEditable.value) {
+                      final tempList = controller.slideResponseList.toList();
+                      controller.editableSlideResponseList.clear();
+                      controller.editableSlideResponseList.value =
+                          tempList.toList();
+                      print("is Editable true");
+                    } else {
+                      final tempList =
+                          controller.editableSlideResponseList.toList();
+                      controller.slideResponseList.clear();
+                      controller.slideResponseList.value = tempList.toList();
+                      AppLovinProvider.instance.showInterstitial(() {});
+                      print("is Editable false");
+                    }
+                  },
+                )),
+            // Obx(() => ElevatedButton.icon(
+            //           onPressed: () {
+            //             print("You pressed Icon Elevated Button");
+            //             controller.isEditable.value =
+            //                 !controller.isEditable.value;
+            //             // final tempList = controller.slideResponseList.toList();
+            //             // controller.editableSlideResponseList.clear();
+            //             // controller.editableSlideResponseList.value = tempList;
+            //             // print(
+            //             //     "Slide Respinse Length: ${controller.editableSlideResponseList.length}");
+            //             //   controller.editableSlideResponseList.value = tempList;
+            //             if (controller.isEditable.value) {
+            //               final tempList =
+            //                   controller.slideResponseList.toList();
+            //               controller.editableSlideResponseList.clear();
+            //               controller.editableSlideResponseList.value =
+            //                   tempList.toList();
+            //               print("is Editable true");
+            //             } else {
+            //               final tempList =
+            //                   controller.editableSlideResponseList.toList();
+            //               controller.slideResponseList.clear();
+            //               controller.slideResponseList.value =
+            //                   tempList.toList();
+            //               print("is Editable false");
+            //             }
+            //           },
+            //           style: ElevatedButton.styleFrom(
+            //               primary: controller.isEditable.value
+            //                   ? dartui.Color.fromARGB(255, 67, 167, 105)
+            //                   : dartui.Color.fromARGB(255, 139, 44, 44),
+            //               onPrimary: Colors.white),
+            //           icon: AnimatedIcon(icon: AnimatedIcons.ed, progress: null,), //icon data for elevated button
+            //           label: Text(controller.isEditable.value
+            //               ? "Save"
+            //               : "Edit"), //label text
+            //         )
+
+            //     ),
+
+            horizontalSpace(SizeConfig.blockSizeHorizontal * 2)
+          ],
+        ),
+        verticalSpace(SizeConfig.blockSizeVertical * 0.2),
+
+        Obx(() => controller.isEditable.value
+            ? EditSlideContent(controller: controller)
+            : _slickSlide(controller.slideResponseList)),
+        // EditSlideContent(controller: controller),
         verticalSpace(SizeConfig.blockSizeVertical * 1.5),
         MoreSlidesButton(),
         verticalSpace(SizeConfig.blockSizeVertical * 1),
@@ -558,7 +644,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                         color: Colors.black,
                         fontSize: 55.0,
                         fontWeight: FontWeight.w600,
-                        fontVariations: [FontVariation('wght', 400)]))),
+                        fontVariations: [dartui.FontVariation('wght', 400)]))),
             slides: List.generate(
               slideResponseList.length,
               (index) {
@@ -1040,6 +1126,163 @@ class SlideMakerView extends GetView<SlideMakerController> {
             controller.userInput.value = value;
           },
         ),
+      ),
+    );
+  }
+}
+
+class EditSlideContent extends StatelessWidget {
+  EditSlideContent({
+    super.key,
+    required this.controller,
+    this.size = const dartui.Size(1920, 1080),
+  });
+
+  final dartui.Size size;
+  final SlideMakerController controller;
+  RxInt currentSelectedIndex = 0.obs;
+  FocusNode titleFocusNode = FocusNode();
+  FocusNode descriptionFocusNode = FocusNode();
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: size.aspectRatio,
+      child: Stack(
+        children: [
+          Container(
+            child: Image.asset(AppImages.PPT_BG1),
+          ),
+          Column(
+            children: [
+              Obx(() => Container(
+                    padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                    child: EditableText(
+                        controller: TextEditingController(
+                            text: controller
+                                .editableSlideResponseList[
+                                    currentSelectedIndex.value]
+                                .slideTitle),
+                        focusNode: titleFocusNode,
+                        onChanged: (value) {
+                          controller
+                              .editableSlideResponseList[
+                                  currentSelectedIndex.value]
+                              .slideTitle = value;
+                        },
+                        style: TextStyle(
+                            color:
+                                const dartui.Color.fromARGB(255, 194, 59, 59),
+                            fontSize: 20),
+                        cursorColor: Colors.black,
+                        backgroundCursorColor: Colors.red),
+                  )),
+              Obx(() => Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeHorizontal * 3),
+                    child: EditableText(
+                        controller: TextEditingController(
+                            text: controller
+                                .editableSlideResponseList[
+                                    currentSelectedIndex.value]
+                                .slideDescription),
+                        maxLines: 5,
+                        focusNode: descriptionFocusNode,
+                        onChanged: (value) {
+                          controller
+                              .editableSlideResponseList[
+                                  currentSelectedIndex.value]
+                              .slideDescription = value;
+                        },
+                        style: TextStyle(
+                            color: dartui.Color.fromARGB(255, 29, 21, 21),
+                            fontSize: 12),
+                        cursorColor: Colors.black,
+                        backgroundCursorColor: Colors.red),
+                  )),
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 3,
+                  vertical: SizeConfig.blockSizeVertical),
+              width: SizeConfig.blockSizeHorizontal * 40,
+              child: DeckControls(
+                visible: true,
+                onPrevious: () {
+                  if (currentSelectedIndex.value > 0) {
+                    currentSelectedIndex.value--;
+                    descriptionFocusNode.requestFocus();
+                  }
+                },
+                onNext: () {
+                  if (currentSelectedIndex.value <
+                      controller.editableSlideResponseList.length - 1) {
+                    currentSelectedIndex.value++;
+                    descriptionFocusNode.requestFocus();
+                  }
+                },
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SingleSlideContent extends StatelessWidget {
+  SingleSlideContent({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.image,
+    this.size = const dartui.Size(1920, 1080),
+  });
+
+  final dartui.Size size;
+
+  // RxInt currentSelectedIndex = 0.obs;
+
+  String title, description, image;
+  FocusNode titleFocusNode = FocusNode();
+  FocusNode descriptionFocusNode = FocusNode();
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: size.aspectRatio,
+      child: Stack(
+        children: [
+          Container(
+            child: Image.asset(AppImages.PPT_BG1),
+          ),
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      color: const dartui.Color.fromARGB(255, 194, 59, 59),
+                      fontSize: 20),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  description,
+                  style: TextStyle(
+                      color: dartui.Color.fromARGB(255, 29, 21, 21),
+                      fontSize: 12),
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

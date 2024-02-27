@@ -9,6 +9,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_pptx/flutter_pptx.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:flutter_pptx/flutter_pptx.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,10 +24,13 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/slide_history.dart';
 import 'package:slide_maker/app/data/slides_history_dbhandler.dart';
+import 'package:slide_maker/app/modules/home/slide_maker_view.dart';
 import 'package:slide_maker/app/provider/admob_ads_provider.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
+import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/packages/slick_slides/slick_slides.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/slideResponce.dart';
@@ -43,7 +47,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
 import 'package:http/http.dart' as http;
-
+import 'package:dart_pptx/dart_pptx.dart' as pp;
 // import 'package:dart_pptx/dart_pptx.dart';
 // import 'dart:typed_data';
 // import 'dart:io';
@@ -70,6 +74,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   // int NoOfSlides = 6;
 
   final count = 0.obs;
+  RxBool isEditable = false.obs;
   @override
   RxDouble input_box_width = 0.0.obs;
   RxDouble input_box_height = 0.0.obs;
@@ -571,6 +576,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   }
 
   RxList<SlideResponse> slideResponseList = <SlideResponse>[].obs;
+  RxList<SlideResponse> editableSlideResponseList = <SlideResponse>[].obs;
 
   // Future extreactJson() async {
   //   // final List<SlideResponse> slideResponseList = (jsonDecode(jsonOutput.value) as List)
@@ -856,7 +862,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   saveFile() {}
 
   convertToPPT() async {
-    // final pres = await createPresentation();
+    createPresentation();
     //           await downloadPresentation(pres);
     // Check and request permission for writing external storage
     // var status = await Permission.storage.status;
@@ -864,7 +870,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     //   log("permission");
     //   await Permission.storage.request();
     // }else{
-    generatePDF();
+    // generatePDF();
     // }
   }
 
@@ -1235,6 +1241,53 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     show_input();
 
     validate_user_input("Eight");
+  }
+
+  void createPresentation() async {
+    final pres = FlutterPowerPoint();
+
+    // final slides = await slideResponseList.map((element) async {
+    //   final slide = await pres.addWidgetSlide((size) => Center(
+    //         child: SingleSlideContent(
+    //           title: element.slideTitle,
+    //           description: element.slideDescription,
+    //           image: AppImages.PPT_BG2,
+    //           size: size,
+    //         ),
+    //       ));
+    //   pres.addSlide(slide);
+    //   return slide;
+    // }).toList();
+
+    // print("Slides Length: ${slides.length}");
+    slideResponseList.forEach((element) {
+      List<String> _bullets = element.slideDescription.split(".");
+      pres
+          .addTitleAndBulletsSlide(
+            title: element.slideTitle.toTextValue(),
+            bullets: _bullets.map((e) => e.toTextValue()).toList(),
+          )
+          .background
+          .image = ImageReference(path: AppImages.PPT_BG1, name: "");
+    });
+
+    final bytes = await pres.save();
+    // final file = File('my_presentation.pptx');
+    // await file.writeAsBytes(bytes);
+
+    Share.shareXFiles(
+      [
+        XFile.fromData(
+          bytes!,
+          name: 'presentation.pptx',
+          mimeType:
+              'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+          lastModified: DateTime.now(),
+          length: bytes.length,
+        )
+      ],
+      text: 'Presentation',
+    );
   }
 
 // ? commented by jamal start

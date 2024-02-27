@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/packages/slick_slides/slick_slides.dart';
 
 /// The position of an image in a [BulletsSlide].
@@ -38,6 +40,10 @@ class BulletsSlide extends Slide {
                 animateLastVisibleBullet: bulletByBullet,
                 numVisibleBullets: bulletByBullet ? index : null,
               );
+              // content = TextField(
+              //   style: TextStyle(fontSize: 40),
+              //   controller: TextEditingController(text: bullets.toString()),
+              // );
             } else {
               content = Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,6 +114,7 @@ class BulletsSlide extends Slide {
     Source? audioSource,
   }) : super.withSubSlides(
           builder: (context, index) {
+            // return Text("Hello");
             Widget content;
             if (image == null) {
               content = Bullets.rich(

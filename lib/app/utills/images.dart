@@ -24,4 +24,7 @@ class AppImages {
   static const PPT_BG1 = "assets/ppt_bg/ppt_bg1.png";
   static const PPT_BG2 = "assets/ppt_bg/ppt_bg2.png";
   static const PPT_BG3 = "assets/ppt_bg/ppt_bg3.png";
+
+  static const invitation_template1 =
+      "assets/invitation/invitation_template1.png";
 }

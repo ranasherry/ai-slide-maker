@@ -6,10 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_maker/app/modules/showppt/views/ppt_viewer.dart';
+import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
 import 'package:slide_maker/app/utills/ThemeNotifier.dart';
 
@@ -19,14 +21,37 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // MobileAds.instance.initialize();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  //? Push Notification Implementation
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('User granted permission');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('User granted provisional permission');
+  } else {
+    print('User declined or has not accepted permission');
+  }
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  LocalNotificationService.initialize();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     // DeviceOrientation.landscapeRight,
   ]);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
   // runApp(const MyApp());
 
   const fatalError = true;
@@ -65,7 +90,7 @@ void main() async {
 }
 
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print("Message Title: ${message.notification!.title.toString()}");
   print("Message body: ${message.notification!.body.toString()}");
@@ -94,23 +119,28 @@ class MyApp extends StatelessWidget {
               FocusManager.instance.primaryFocus!.unfocus();
             }
           },
-          child: GetMaterialApp(
-            navigatorObservers: <NavigatorObserver>[observer],
-            builder: EasyLoading.init(),
-            debugShowCheckedModeBanner: false,
-            // theme: ThemeData.dark(),
-            theme: ThemeData.light(), // Default light theme
+          child: ScreenUtilInit(
+              minTextAdapt: true,
+              designSize: const Size(1428, 2000),
+              builder: (BuildContext context, Widget? child) {
+                return GetMaterialApp(
+                  navigatorObservers: <NavigatorObserver>[observer],
+                  builder: EasyLoading.init(),
+                  debugShowCheckedModeBanner: false,
+                  // theme: ThemeData.dark(),
+                  theme: ThemeData.light(), // Default light theme
 
-            darkTheme: ThemeData(
-              useMaterial3: true,
-            ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,
+                  ),
 
-            themeMode: themeNotifier.themeMode,
-            // home: CustomPDFViewer(),
-            // title: "Application",
-            initialRoute: AppPages.INITIAL,
-            getPages: AppPages.routes,
-          ),
+                  themeMode: themeNotifier.themeMode,
+                  // home: CustomPDFViewer(),
+                  // title: "Application",
+                  initialRoute: AppPages.INITIAL,
+                  getPages: AppPages.routes,
+                );
+              }),
         ));
   }
 }

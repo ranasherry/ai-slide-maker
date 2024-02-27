@@ -1,6 +1,6 @@
 class SlideResponse {
-  final String slideTitle;
-  final String slideDescription;
+  String slideTitle;
+  String slideDescription;
 
   SlideResponse({
     required this.slideTitle,
