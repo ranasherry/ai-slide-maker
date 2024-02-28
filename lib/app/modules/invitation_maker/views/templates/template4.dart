@@ -1,74 +1,20 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_box_transform/flutter_box_transform.dart';
-// import 'package:slide_maker/app/utills/images.dart';
-
-// class Template1 extends StatefulWidget {
-//   const Template1({super.key});
-
-//   @override
-//   State<Template1> createState() => _Template1State();
-// }
-
-// class _Template1State extends State<Template1> {
-//   late Rect rect = Rect.fromCenter(
-//     center: MediaQuery.of(context).size.center(Offset.zero),
-//     width: 100,
-//     height: 100,
-//   );
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         fit: StackFit.expand,
-//         children: [
-//           TransformableBox(
-//             rect: rect,
-//             clampingRect: Offset.zero & MediaQuery.sizeOf(context),
-//             onChanged: (result, event) {
-//               setState(() {
-//                 rect = result.rect;
-//               });
-//             },
-//             contentBuilder: (context, rect, flip) {
-//               return DecoratedBox(
-//                 decoration: BoxDecoration(
-//                   border: Border.all(
-//                     color: Theme.of(context).colorScheme.primary,
-//                   ),
-//                   image: const DecorationImage(
-//                     image: AssetImage(AppImages.PPT_BG1),
-//                     fit: BoxFit.fill,
-//                   ),
-//                 ),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_box_transform/flutter_box_transform.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_maker/app/modules/invitation_maker/controllers/weddinginvitation_controller.dart';
-import 'package:slide_maker/app/modules/invitation_maker/views/helping_widgets/draggable_text.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-class Template1 extends StatefulWidget {
-  Template1({super.key, required this.controller});
+class Template4 extends StatefulWidget {
+  Template4({super.key, required this.controller});
   WeddingInvitationController controller;
   @override
-  State<Template1> createState() => _Template1State();
+  State<Template4> createState() => _Template4State();
 }
 
-class _Template1State extends State<Template1> {
+class _Template4State extends State<Template4> {
   String groomName = "";
   String brideName = "";
   String MonthName = "";
@@ -79,7 +25,8 @@ class _Template1State extends State<Template1> {
   String address = "";
   String contact = "";
 
-  TextStyle mainText = TextStyle(fontSize: 60.sp, fontWeight: FontWeight.bold);
+  TextStyle mainText = TextStyle(
+      fontSize: 60.sp, fontWeight: FontWeight.bold, color: Colors.white);
 
   @override
   void initState() {
@@ -123,29 +70,43 @@ class _Template1State extends State<Template1> {
               height: SizeConfig.screenHeight,
               child: CachedNetworkImage(
                 imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/ai-slide-generator.appspot.com/o/cards%2FFrame%2011.png?alt=media&token=0741b55a-fc7c-4aac-9036-71a706cb6104",
+                    "https://firebasestorage.googleapis.com/v0/b/ai-slide-generator.appspot.com/o/cards%2FFrame%2017.png?alt=media&token=8157ef99-ee07-4727-a064-d398d165e55a",
                 errorWidget: (context, url, error) {
-                  return Container(child: Image.asset(AppImages.PPT_BG1));
+                  return Container(child: Image.asset(AppImages.PPT_BG2));
                 },
               )),
           Column(
             children: [
-              verticalSpace(SizeConfig.blockSizeVertical * 20),
+              verticalSpace(SizeConfig.blockSizeVertical * 16),
               Text(
                 groomName,
                 style: mainText,
               ),
               verticalSpace(SizeConfig.blockSizeVertical * 1),
               Text(
-                "&",
-                style: mainText,
+                "AND",
+                style: TextStyle(
+                    fontSize: 60.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFC29409)),
               ),
               verticalSpace(SizeConfig.blockSizeVertical * 1),
               Text(
                 brideName,
                 style: mainText,
               ),
-              verticalSpace(SizeConfig.blockSizeVertical * 4.2),
+              verticalSpace(SizeConfig.blockSizeVertical * 2.1),
+              Text("INVITE YOU TO JOIN IN THEIR",
+                  style: GoogleFonts.raleway(
+                      textStyle: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 3,
+                          color: Color(0xFFC29409)))),
+              Text("WEDDING CELEBERATION",
+                  style: GoogleFonts.raleway(
+                      textStyle: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 3,
+                          color: Color(0xFFC29409)))),
+              verticalSpace(SizeConfig.blockSizeVertical * 2.1),
               Text(
                 MonthName,
                 style: mainText,
@@ -153,24 +114,26 @@ class _Template1State extends State<Template1> {
               verticalSpace(SizeConfig.blockSizeVertical * 1),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeHorizontal * 22),
+                    horizontal: SizeConfig.blockSizeHorizontal * 0),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       day,
                       style: mainText,
                     ),
-                    Spacer(),
+                    // Spacer(),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 3),
+                          left: SizeConfig.blockSizeHorizontal * 9,
+                          right: SizeConfig.blockSizeHorizontal * 6),
                       child: Text(
                         date,
                         style: mainText,
                       ),
                     ),
-                    Spacer(),
+                    // Spacer(),
+
                     Text(
                       time,
                       style: mainText,
@@ -188,11 +151,11 @@ class _Template1State extends State<Template1> {
                 address,
                 style: mainText,
               ),
-              verticalSpace(SizeConfig.blockSizeVertical * 5),
-              Text(
-                contact,
-                style: mainText,
-              ),
+              verticalSpace(SizeConfig.blockSizeVertical * 1),
+              Text("Contact: ${contact}",
+                  style: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 3,
+                      color: Colors.white)),
             ],
           )
         ],

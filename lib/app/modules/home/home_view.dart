@@ -95,47 +95,6 @@ class HomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.MathsSolverView);
-                    AppLovinProvider.instance.showInterstitial(() {});
-                  },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 20,
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 4),
-                      color: Color(0xFF85C0EB),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.blockSizeHorizontal * 2,
-                          vertical: SizeConfig.blockSizeVertical * 1),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            AppImages.scan,
-                            scale: 10,
-                          ),
-                          Text(
-                            "Scan & Solve",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Scan the text to solve the question",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
                     Get.toNamed(Routes.SlideMakerView);
                     AppLovinProvider.instance.showInterstitial(() {});
                   },
@@ -162,8 +121,9 @@ class HomeView extends GetView<HomeViewCtl> {
                           Text(
                             "Slide Maker",
                             style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
+                              fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Text(
                             "Create slides instantly",
@@ -175,19 +135,10 @@ class HomeView extends GetView<HomeViewCtl> {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
                 GestureDetector(
                   onTap: () {
-                    // Get.toNamed(Routes.PDF_VIEW);/
-                    // Get.toNamed(Routes.MathsSolverView);
-                    controller.checkPermission(Routes.PDF_VIEW);
+                    Get.toNamed(Routes.INVITATION_MAKER);
+                    AppLovinProvider.instance.showInterstitial(() {});
                   },
                   child: Container(
                     height: SizeConfig.blockSizeVertical * 20,
@@ -195,51 +146,6 @@ class HomeView extends GetView<HomeViewCtl> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                           SizeConfig.blockSizeHorizontal * 4),
-                      // color: Color(0xFF85C0EB),
-                      color: Color(0xFFFBAE8B),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.blockSizeHorizontal * 2,
-                          vertical: SizeConfig.blockSizeVertical * 1),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            AppImages.pdf,
-                            scale: 10,
-                          ),
-                          Text(
-                            "PDF Reader",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Read any type of PDF file",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // Get.toNamed(Routes.);
-                    // Get.toNamed(Routes.MathsSolverView);
-                    // Get.toNamed(Routes.HistoryView);
-                    controller.checkPermission(Routes.PPTListView);
-                  },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 20,
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 4),
-                      // color: Color(0xFFFBAE8B),
                       color: Color(0xFF85C0EB),
                     ),
                     child: Padding(
@@ -251,20 +157,21 @@ class HomeView extends GetView<HomeViewCtl> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Image.asset(
-                            AppImages.ppt_ic,
-                            // color: Colors.transparent,
-                            scale: 8,
+                            AppImages.invitation,
+                            scale: 10,
                           ),
                           Text(
-                            "PPT Viewer",
+                            "Card Maker",
                             style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
+                              fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Text(
-                            "Edit PDF on the go",
+                            "Create Invitation Cards",
                             style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3),
+                              fontSize: SizeConfig.blockSizeHorizontal * 3,
+                            ),
                           )
                         ],
                       ),
@@ -272,6 +179,89 @@ class HomeView extends GetView<HomeViewCtl> {
                   ),
                 ),
               ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 5),
+            child: GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.SubHomeView);
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+                height: SizeConfig.blockSizeVertical * 12,
+                width: SizeConfig.blockSizeHorizontal * 85,
+                decoration: BoxDecoration(
+                  color: Color(0xFF9DB0EC),
+                  borderRadius:
+                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      right: SizeConfig.blockSizeHorizontal * 3),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: SizeConfig.blockSizeHorizontal * 3,
+                          top: SizeConfig.blockSizeVertical * 1,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "More Features",
+                              style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Maths, PDF, PPT, History",
+                              style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 3,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 0.5),
+                              height: SizeConfig.blockSizeVertical * 3,
+                              width: SizeConfig.blockSizeHorizontal * 16,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF284D79),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.white70,
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    offset: Offset(0, 5),
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Check",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Image added to the right side
+                      Image.asset(
+                        AppImages.more_features,
+                        scale: 8,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
           verticalSpace(SizeConfig.blockSizeVertical),
@@ -297,173 +287,7 @@ class HomeView extends GetView<HomeViewCtl> {
               }, onAdCollapsedCallback: (ad) {
                 print('Mrec widget ad collapsed');
               })),
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 5),
-            child: GestureDetector(
-              onTap: () {
-                Get.toNamed(Routes.HistoryView);
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-                height: SizeConfig.blockSizeVertical * 12,
-                width: SizeConfig.blockSizeHorizontal * 85,
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius:
-                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      right: SizeConfig.blockSizeHorizontal * 3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 3,
-                          top: SizeConfig.blockSizeVertical * 1,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "History",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "Watch over your history collection",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: SizeConfig.blockSizeVertical * 0.5),
-                              height: SizeConfig.blockSizeVertical * 3,
-                              width: SizeConfig.blockSizeHorizontal * 16,
-                              decoration: BoxDecoration(
-                                color: Colors.purple,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade400,
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 5),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 1,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Check",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Image added to the right side
-                      Image.asset(
-                        AppImages.history,
-                        scale: 8,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 5),
-            child: GestureDetector(
-              onTap: () {
-                Get.toNamed(Routes.INVITATION_MAKER);
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-                height: SizeConfig.blockSizeVertical * 12,
-                width: SizeConfig.blockSizeHorizontal * 85,
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius:
-                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      right: SizeConfig.blockSizeHorizontal * 3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 3,
-                          top: SizeConfig.blockSizeVertical * 1,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Card Maker",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "Create Invitation Cards",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: SizeConfig.blockSizeVertical * 0.5),
-                              height: SizeConfig.blockSizeVertical * 3,
-                              width: SizeConfig.blockSizeHorizontal * 16,
-                              decoration: BoxDecoration(
-                                color: Colors.purple,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade400,
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 5),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 1,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Check",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Image added to the right side
-                      Image.asset(
-                        AppImages.history,
-                        scale: 8,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          verticalSpace(SizeConfig.blockSizeVertical)
+          verticalSpace(SizeConfig.blockSizeVertical),
         ],
       ),
     );

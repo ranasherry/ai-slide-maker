@@ -1,23 +1,13 @@
-import 'package:applovin_max/applovin_max.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/invitation_maker/controllers/weddinginvitation_controller.dart';
-import 'package:slide_maker/app/modules/invitation_maker/views/templates/tamplate1.dart';
-import 'package:slide_maker/app/modules/invitation_maker/views/templates/template2.dart';
-import 'package:slide_maker/app/modules/invitation_maker/views/templates/template3.dart';
-import 'package:slide_maker/app/modules/invitation_maker/views/templates/template4.dart';
-import 'package:slide_maker/app/modules/invitation_maker/views/templates/template5.dart';
+import 'package:slide_maker/app/modules/invitation_maker/views/b.templates/b_template1.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/templates/template6.dart';
-import 'package:slide_maker/app/routes/app_pages.dart';
-import 'package:slide_maker/app/utills/app_strings.dart';
-import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:widget_screenshot/widget_screenshot.dart';
 
-class WeddingInvitationView extends GetView<WeddingInvitationController> {
-  const WeddingInvitationView({Key? key}) : super(key: key);
+class BirthdayInvitationView extends GetView<WeddingInvitationController> {
+  const BirthdayInvitationView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return PopScope(

@@ -19,7 +19,10 @@ class AppImages {
   static const doc = "assets/icons/doc.png";
   static const pdf_edit = "assets/images/edit-file.png";
   static const ppt_ic = "assets/images/ppt_ic.png";
-
+  static const wedding = "assets/images/wedding_invitation.png";
+  static const birthday = "assets/images/birthday_invitation.png";
+  static const invitation = "assets/images/invitation.png";
+  static const more_features = "assets/images/more_features.png";
   //? PPT_BG
   static const PPT_BG1 = "assets/ppt_bg/ppt_bg1.png";
   static const PPT_BG2 = "assets/ppt_bg/ppt_bg2.png";

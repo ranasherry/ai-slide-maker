@@ -16,8 +16,15 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
         title: const Text('Invitation Maker'),
+        leading: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Icon(Icons.arrow_back_ios_new_rounded)),
+        backgroundColor: Color(0xFFE7EBFA),
         centerTitle: true,
       ),
       body: ListView(
@@ -53,16 +60,16 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
               children: [
                 MyContainer(
                     color: Color(0xFF85C0EB),
-                    image: AppImages.scan,
+                    image: AppImages.wedding,
                     title: "Wedding Invitations",
                     desc: "Create Wedding Invitation Cards instantly",
                     routes: Routes.WeddingInvitationView),
                 MyContainer(
                     color: Color(0xFFFBAE8B),
-                    image: AppImages.scan,
+                    image: AppImages.birthday,
                     title: "Birthday Invitations",
                     desc: "Create Birthday Invitation Cards instantly",
-                    routes: Routes.WeddingInvitationView),
+                    routes: Routes.BirthdayTemplate),
               ],
             ),
           ),

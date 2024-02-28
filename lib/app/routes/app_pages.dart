@@ -1,5 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/home/sub_home_view.dart';
 import 'package:slide_maker/app/modules/invitation_maker/bindings/weddinginvitation_binding.dart';
+import 'package:slide_maker/app/modules/invitation_maker/views/b.templates/b_template1.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/wedding_invite_view.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
@@ -47,6 +49,11 @@ class AppPages {
     GetPage(
       name: _Paths.HomeView,
       page: () => HomeView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.SubHomeView,
+      page: () => SubHomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -128,6 +135,11 @@ class AppPages {
       name: _Paths.WeddingInvitationView,
       page: () => const WeddingInvitationView(),
       binding: WeddingInvitationBinding(),
+    ),
+    GetPage(
+      name: _Paths.BirthdayTemplate,
+      page: () => const BirthdayTemplate(),
+      // binding: ,
     ),
   ];
 }

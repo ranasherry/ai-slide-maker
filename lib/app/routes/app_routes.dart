@@ -5,6 +5,7 @@ abstract class Routes {
   Routes._();
 
   static const HomeView = _Paths.HomeView;
+  static const SubHomeView = _Paths.SubHomeView;
   static const SplashScreen = _Paths.SplashScreen;
   static const SlideMakerView = _Paths.SlideMakerView;
   // static const GemsView = _Paths.GemsView;
@@ -21,10 +22,12 @@ abstract class Routes {
   static const INTRO_SCREENS = _Paths.INTRO_SCREENS;
   static const INVITATION_MAKER = _Paths.INVITATION_MAKER;
   static const WeddingInvitationView = _Paths.WeddingInvitationView;
+  static const BirthdayTemplate = _Paths.BirthdayTemplate;
 }
 
 abstract class _Paths {
   static const HomeView = '/HomeView';
+  static const SubHomeView = '/SubHomeView';
   static const SplashScreen = '/SplashScreen';
   static const SlideMakerView = '/SlideMakerView';
   // static const GemsView = '/GemsView';
@@ -41,4 +44,5 @@ abstract class _Paths {
   static const INTRO_SCREENS = '/intro-screens';
   static const INVITATION_MAKER = '/invitation-maker';
   static const WeddingInvitationView = '/WeddingInvitationView';
+  static const BirthdayTemplate = '/BirthdayTemplate';
 }
