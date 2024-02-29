@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:slide_maker/app/modules/invitation_maker/controllers/weddinginvitation_controller.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/templates/tamplate1.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/templates/template2.dart';
@@ -89,8 +90,8 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                         onPressed: () {
                           controller.saveCard();
                         },
-                        icon: Icon(Icons.save),
-                        label: Text("Save"))
+                        icon: Icon(Icons.share),
+                        label: Text("Share"))
                   ],
                 ),
               )
@@ -230,7 +231,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
             verticalSpace(SizeConfig.blockSizeVertical * 1.5),
             ElevatedButton(
               onPressed: () async {
-                final selectedDate = await showDatePicker(
+                final selectedDate = await showOmniDateTimePicker(
                   context: context,
                   initialDate: controller.dateTime,
                   firstDate: DateTime(2020),

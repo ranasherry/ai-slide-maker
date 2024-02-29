@@ -112,6 +112,7 @@ dependencies:
   widget_screenshot: ^0.0.9
   google_fonts: ^6.1.0
   palette_generator: ^0.3.3+3
+  omni_datetime_picker: ^1.0.9
 
 dev_dependencies:
   flutter_test:
