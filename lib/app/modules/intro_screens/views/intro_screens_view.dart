@@ -1,6 +1,7 @@
 import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/introscreen_onboarding.dart';
@@ -27,16 +28,19 @@ class IntroScreensView extends GetView<IntroScreensController> {
             subTitle:
                 'Let AI craft your killer slides. Own your next on demand presentation.',
             imageUrl: AppImages.PPT_BG1,
+            titleTextStyle: TextStyle(fontSize: 100.sp),
           ),
           MyIntroduction(
             title: 'Your Math Problem Solver',
             subTitle: 'Unlock the power of AI to conquer any math challenge.',
             imageUrl: AppImages.PPT_BG1,
+            titleTextStyle: TextStyle(fontSize: 100.sp),
           ),
           MyIntroduction(
             title: 'Document Viewer',
             subTitle: 'Open Any Document in the app as an add on',
             imageUrl: AppImages.PPT_BG1,
+            titleTextStyle: TextStyle(fontSize: 100.sp),
           ),
         ],
         onTapSkipButton: () {
@@ -60,7 +64,7 @@ class MyIntroduction extends StatefulWidget {
     required this.imageUrl,
     required this.title,
     required this.subTitle,
-    this.titleTextStyle = const TextStyle(fontSize: 30),
+    this.titleTextStyle = const TextStyle(fontSize: 20),
     this.subTitleTextStyle = const TextStyle(fontSize: 20),
     this.imageWidth = 360,
     this.imageHeight = 360,

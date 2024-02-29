@@ -119,7 +119,7 @@ class _Template2State extends State<Template2> {
               verticalSpace(SizeConfig.blockSizeVertical * 1),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeHorizontal * 0),
+                    horizontal: SizeConfig.blockSizeHorizontal * 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -130,7 +130,7 @@ class _Template2State extends State<Template2> {
                     Spacer(),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 3),
+                          left: SizeConfig.blockSizeHorizontal * 0),
                       child: Text(
                         date,
                         style: mainText,
