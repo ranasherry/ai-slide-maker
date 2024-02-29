@@ -40,7 +40,13 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
           backgroundColor: Color(0xFFE7EBFA),
           leading: GestureDetector(
               onTap: () {
-                Get.back();
+                if (controller.isOnTemplates.value) {
+                  controller.isOnTemplates.value = false;
+                } else {
+                  print("Back");
+                  Get.back();
+                }
+                // Get.back();
               },
               child: Icon(Icons.arrow_back_ios_new_rounded)),
 
@@ -65,34 +71,36 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                   ],
                 ))),
         body: Obx(() => controller.isOnTemplates.value
-            ? Container(
-                child: Column(
-                  children: [
-                    Container(
-                        height: SizeConfig.screenHeight * 0.7,
-                        child: WidgetShot(
-                          key: controller.shotKey,
-                          child: Obx(() => IndexedStack(
-                                index: controller.selectedIndex.value,
-                                children: [
-                                  Template1(controller: controller),
-                                  Template2(controller: controller),
-                                  Template3(controller: controller),
-                                  Template4(controller: controller),
-                                  Template5(controller: controller),
-                                  Template6(controller: controller),
-                                ],
-                              )),
-                        )),
-                    designSelector(),
-                    verticalSpace(SizeConfig.blockSizeVertical * 1),
-                    ElevatedButton.icon(
-                        onPressed: () {
-                          controller.saveCard();
-                        },
-                        icon: Icon(Icons.share),
-                        label: Text("Share"))
-                  ],
+            ? SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: [
+                      Container(
+                          height: SizeConfig.screenHeight * 0.7,
+                          child: WidgetShot(
+                            key: controller.shotKey,
+                            child: Obx(() => IndexedStack(
+                                  index: controller.selectedIndex.value,
+                                  children: [
+                                    Template1(controller: controller),
+                                    Template2(controller: controller),
+                                    Template3(controller: controller),
+                                    Template4(controller: controller),
+                                    Template5(controller: controller),
+                                    Template6(controller: controller),
+                                  ],
+                                )),
+                          )),
+                      designSelector(),
+                      verticalSpace(SizeConfig.blockSizeVertical * 1),
+                      ElevatedButton.icon(
+                          onPressed: () {
+                            controller.saveCard();
+                          },
+                          icon: Icon(Icons.share),
+                          label: Text("Share"))
+                    ],
+                  ),
                 ),
               )
             : _inputFieldView(context)),

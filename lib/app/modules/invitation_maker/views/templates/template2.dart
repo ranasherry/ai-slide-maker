@@ -56,6 +56,7 @@ class _Template2State extends State<Template2> {
     // Format time if needed (replace with your desired format)
     time =
         DateFormat('hh:mm a').format(selectedDate); // 12-hour format with AM/PM
+    day = DateFormat('EEEE').format(selectedDate);
   }
 
   @override
