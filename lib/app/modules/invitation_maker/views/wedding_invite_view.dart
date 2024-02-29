@@ -1,4 +1,5 @@
 import 'package:applovin_max/applovin_max.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
@@ -69,8 +70,21 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     Container(
                         height: SizeConfig.screenHeight * 0.7,
                         child: WidgetShot(
-                            key: controller.shotKey,
-                            child: Template6(controller: controller))),
+                          key: controller.shotKey,
+                          child: Obx(() => IndexedStack(
+                                index: controller.selectedIndex.value,
+                                children: [
+                                  Template1(controller: controller),
+                                  Template2(controller: controller),
+                                  Template3(controller: controller),
+                                  Template4(controller: controller),
+                                  Template5(controller: controller),
+                                  Template6(controller: controller),
+                                ],
+                              )),
+                        )),
+                    designSelector(),
+                    verticalSpace(SizeConfig.blockSizeVertical * 1),
                     ElevatedButton.icon(
                         onPressed: () {
                           controller.saveCard();
@@ -83,6 +97,58 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
             : _inputFieldView(context)),
       ),
     );
+  }
+
+  Widget designSelector() {
+    return Container(
+        height: SizeConfig.blockSizeVertical * 5,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.NetworkImages.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 2),
+                child: GestureDetector(
+                  onTap: () {
+                    controller.selectedIndex.value = index;
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: SizeConfig.blockSizeVertical * 5,
+                        height: SizeConfig.blockSizeVertical * 5,
+                        decoration: BoxDecoration(
+                          // color: AppColors.cardBackground_color,
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 5),
+                          // Apply the border radius to the image itself
+                          image: DecorationImage(
+                            fit: BoxFit.fill, // Fill the entire container
+                            image: CachedNetworkImageProvider(
+                                controller.NetworkImages[index]),
+                          ),
+                        ),
+                      ),
+                      Obx(() => controller.selectedIndex.value == index
+                          ? Container(
+                              width: SizeConfig.blockSizeVertical * 5,
+                              height: SizeConfig.blockSizeVertical * 5,
+                              decoration: BoxDecoration(
+                                // color: AppColors.cardBackground_color,
+                                borderRadius: BorderRadius.circular(
+                                    SizeConfig.blockSizeHorizontal * 5),
+                                // Apply the border radius to the image itself
+                                color: Color.fromARGB(96, 68, 62, 62),
+                              ),
+                              child: Center(child: Icon(Icons.check)),
+                            )
+                          : Container())
+                    ],
+                  ),
+                ),
+              );
+            }));
   }
 
   SingleChildScrollView _inputFieldView(BuildContext context) {
