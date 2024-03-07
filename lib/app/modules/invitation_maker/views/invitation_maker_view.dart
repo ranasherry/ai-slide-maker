@@ -73,6 +73,30 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
               ],
             ),
           ),
+          verticalSpace(SizeConfig.blockSizeVertical * 2),
+          Container(
+            // height: 60,
+            // color: Colors.amber,
+            child: Center(
+              child: MaxAdView(
+                  adUnitId: AppStrings.MAX_Mrec_ID,
+                  adFormat: AdFormat.mrec,
+                  listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                    print('Banner widget ad loaded from ' + ad.networkName);
+                  }, onAdLoadFailedCallback: (adUnitId, error) {
+                    print('Banner widget ad failed to load with error code ' +
+                        error.code.toString() +
+                        ' and message: ' +
+                        error.message);
+                  }, onAdClickedCallback: (ad) {
+                    print('Banner widget ad clicked');
+                  }, onAdExpandedCallback: (ad) {
+                    print('Banner widget ad expanded');
+                  }, onAdCollapsedCallback: (ad) {
+                    print('Banner widget ad collapsed');
+                  })),
+            ),
+          ),
         ],
       ),
     );
