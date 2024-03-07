@@ -113,6 +113,7 @@ dependencies:
   google_fonts: ^6.1.0
   palette_generator: ^0.3.3+3
   omni_datetime_picker: ^1.0.9
+  facebook_app_events: ^0.19.0
 
 dev_dependencies:
   flutter_test:

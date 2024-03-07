@@ -1,3 +1,4 @@
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -101,9 +102,16 @@ class MyApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+
+  static final facebookAppEvents = FacebookAppEvents();
   @override
   Widget build(BuildContext context) {
+    // facebookAppEvents.lo
+    facebookAppEvents.setAutoLogAppEventsEnabled(true);
+    facebookAppEvents.setAdvertiserTracking(enabled: true);
+
     analytics.setAnalyticsCollectionEnabled(true);
+    facebookAppEvents.logStartTrial(orderId: "1234");
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     // EasyLoading.init();
     observer.analytics.setAnalyticsCollectionEnabled(kReleaseMode);

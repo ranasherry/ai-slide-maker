@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- <string name="facebook_app_id">EAAP3BGyMIK0BOZBZB1DJ7nKbhYEdoUHKFea2ZAOYPUZCrq82VNzDUyIV7amBiFLNoZApUyUOZAZCyDtecnXZCponVBJz7RhRp0VXvYuI5lkpDfKeSbTdxnRnFOf82Ur4TTlwiRLVhsJp2qsBWa9wd7mHbzfnpignAPFZC4sS6ZAGXKxPzgbCZA4XiBqn5kRTNqzHPEyAwZDZD</string> -->
+<string name="facebook_app_id">1546954002514059</string>
+<!-- <string name="facebook_client_token">1546954002514059</string> -->
+<string name="facebook_client_token">595f24d4e98971d28d331d1b5b4e52bc</string>
+    
+</resources>
+
+
