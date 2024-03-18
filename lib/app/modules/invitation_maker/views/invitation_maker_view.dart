@@ -18,7 +18,12 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
     return Scaffold(
       backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
-        title: const Text('Invitation Maker'),
+        title: Text(
+          'Invitation Maker',
+          style: TextStyle(
+              fontSize: SizeConfig.blockSizeHorizontal * 6,
+              fontWeight: FontWeight.bold),
+        ),
         leading: GestureDetector(
             onTap: () {
               Get.back();

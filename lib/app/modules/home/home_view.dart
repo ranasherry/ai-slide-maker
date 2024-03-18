@@ -102,10 +102,15 @@ class HomeView extends GetView<HomeViewCtl> {
                     height: SizeConfig.blockSizeVertical * 20,
                     width: SizeConfig.blockSizeHorizontal * 40,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 4),
-                      color: Color(0xFFFBAE8B),
-                    ),
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeHorizontal * 4),
+                        gradient: LinearGradient(
+                            colors: [Color(0xFFC5401D), Color(0xFFFF8B69)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter)
+                        // color: Color(0xFFFF7642),
+                        // Color(0xFFFBAE8B),
+                        ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: SizeConfig.blockSizeHorizontal * 2,
@@ -161,7 +166,7 @@ class HomeView extends GetView<HomeViewCtl> {
                             scale: 10,
                           ),
                           Text(
-                            "Card Maker",
+                            "Invitation Maker",
                             style: TextStyle(
                               fontSize: SizeConfig.blockSizeHorizontal * 4.5,
                               fontWeight: FontWeight.bold,

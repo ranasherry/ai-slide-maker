@@ -14,6 +14,7 @@ import 'package:slide_maker/app/modules/invitation_maker/views/templates/templat
 import 'package:slide_maker/app/modules/invitation_maker/views/templates/template6.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:widget_screenshot/widget_screenshot.dart';
@@ -36,7 +37,12 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
       child: Scaffold(
         backgroundColor: Color(0xFFE7EBFA),
         appBar: AppBar(
-          title: Text('Wedding Invitation Maker'),
+          title: Text(
+            'Wedding Invitation Maker',
+            style: TextStyle(
+                fontSize: SizeConfig.blockSizeHorizontal * 6,
+                fontWeight: FontWeight.bold),
+          ),
           backgroundColor: Color(0xFFE7EBFA),
           leading: GestureDetector(
               onTap: () {
@@ -55,6 +61,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
         floatingActionButton: Obx(() => controller.isOnTemplates.value
             ? Container()
             : FloatingActionButton.extended(
+                backgroundColor: Colors.blue,
                 onPressed: () {
                   // Perform validation before submission
 
@@ -62,11 +69,15 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                 },
                 label: Row(
                   children: [
-                    Text("Next"),
+                    Text(
+                      "Next",
+                      style: TextStyle(color: Colors.white),
+                    ),
                     horizontalSpace(SizeConfig.blockSizeHorizontal),
                     Icon(
                       Icons.arrow_forward,
                       size: 20,
+                      color: Colors.white,
                     )
                   ],
                 ))),
@@ -92,13 +103,51 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                                 )),
                           )),
                       designSelector(),
-                      verticalSpace(SizeConfig.blockSizeVertical * 1),
-                      ElevatedButton.icon(
-                          onPressed: () {
-                            controller.saveCard();
-                          },
-                          icon: Icon(Icons.share),
-                          label: Text("Share"))
+                      verticalSpace(SizeConfig.blockSizeVertical * 2),
+                      GestureDetector(
+                        onTap: () {
+                          controller.saveCard();
+                        },
+                        child: Container(
+                          height: SizeConfig.blockSizeVertical * 5.5,
+                          width: SizeConfig.blockSizeHorizontal * 40,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Colors.indigo,
+                                    Colors.indigoAccent.shade200
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                              // color: Colors.indigo,
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 6)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.share,
+                                color: Colors.white,
+                              ),
+                              horizontalSpace(
+                                  SizeConfig.blockSizeHorizontal * 2),
+                              Text(
+                                "Share",
+                                style: TextStyle(
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 4.5,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // ElevatedButton.icon(
+                      //     onPressed: () {
+                      //       controller.saveCard();
+                      //     },
+                      //     icon: Icon(Icons.share),
+                      //     label: Text("Share"))
                     ],
                   ),
                 ),
@@ -168,77 +217,214 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
           children: [
             // Groom Name Input
             verticalSpace(SizeConfig.blockSizeVertical * 2),
-            TextFormField(
-              controller: controller.groomNameTextController,
-              decoration: InputDecoration(
-                labelText: 'Groom Name',
-                labelStyle: TextStyle(color: Colors.grey),
-                hintText: 'Enter the groom\'s name',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade200, // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 10, // Blur radius
+                    offset: Offset(0, 5), // Offset in x and y direction
+                  ),
+                ],
               ),
-              validator: (value) =>
-                  value!.isEmpty ? 'Please enter the groom\'s name' : null,
+              child: TextFormField(
+                controller: controller.groomNameTextController,
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  labelText: 'Groom Name',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  hintText: 'Enter the groom\'s name',
+                  hintStyle: TextStyle(color: Colors.grey.shade400),
+                  fillColor: Colors.white,
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 4),
+                      borderSide: BorderSide.none
+                      // borderSide: BorderSide(
+                      //   color: Color(0xFF0095B0), // Border color
+                      //   width: 1.0, // Border width
+                      // ),
+                      ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 8),
+                    borderSide: BorderSide(
+                      color: Colors.indigo,
+                      // Color(0xFF0095B0), // Border color when focused
+                      width: 1.0, // Border width when focused
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter the groom\'s name' : null,
+              ),
             ),
             SizedBox(height: 20),
 
             // Bride Name Input
-            TextFormField(
-              controller: controller.brideNameTextController,
-              decoration: InputDecoration(
-                labelText: 'Bride Name',
-                labelStyle: TextStyle(color: Colors.grey),
-                hintText: 'Enter the bride\'s name',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade200, // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 10, // Blur radius
+                    offset: Offset(0, 5), // Offset in x and y direction
+                  ),
+                ],
               ),
-              validator: (value) =>
-                  value!.isEmpty ? 'Please enter the bride\'s name' : null,
+              child: TextFormField(
+                controller: controller.brideNameTextController,
+                decoration: InputDecoration(
+                  labelText: 'Bride Name',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  hintText: 'Enter the bride\'s name',
+                  hintStyle: TextStyle(color: Colors.grey.shade400),
+                  fillColor: Colors.white,
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 4),
+                      borderSide: BorderSide.none
+                      // borderSide: BorderSide(
+                      //   color: Color(0xFF0095B0), // Border color
+                      //   width: 1.0, // Border width
+                      // ),
+                      ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 8),
+                    borderSide: BorderSide(
+                      color: Colors.indigo,
+                      // Color(0xFF0095B0), // Border color when focused
+                      width: 1.0, // Border width when focused
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter the bride\'s name' : null,
+              ),
             ),
 
             SizedBox(height: 20),
 
             // Contact Number Input
-            TextFormField(
-              controller: controller.contactNoController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: 'Contact Number',
-                labelStyle: TextStyle(color: Colors.grey),
-                hintText: 'Enter the contact number',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade200, // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 10, // Blur radius
+                    offset: Offset(0, 5), // Offset in x and y direction
+                  ),
+                ],
               ),
-              validator: (value) => !value!.isPhoneNumber
-                  ? 'Please enter a valid phone number'
-                  : null,
+              child: TextFormField(
+                controller: controller.contactNoController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  labelText: 'Contact Number',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  hintText: 'Enter the contact number',
+                  hintStyle: TextStyle(color: Colors.grey.shade400),
+                  fillColor: Colors.white,
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 4),
+                      borderSide: BorderSide.none
+                      // borderSide: BorderSide(
+                      //   color: Color(0xFF0095B0), // Border color
+                      //   width: 1.0, // Border width
+                      // ),
+                      ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 8),
+                    borderSide: BorderSide(
+                      color: Colors.indigo,
+                      // Color(0xFF0095B0), // Border color when focused
+                      width: 1.0, // Border width when focused
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                validator: (value) => !value!.isPhoneNumber
+                    ? 'Please enter a valid phone number'
+                    : null,
+              ),
             ),
             SizedBox(height: SizeConfig.blockSizeVertical * 2),
-            TextFormField(
-              controller: controller.addressTextController,
-              decoration: InputDecoration(
-                labelText: 'Venue',
-                labelStyle: TextStyle(color: Colors.grey),
-                hintText: 'Enter Venue Address',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade200, // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 10, // Blur radius
+                    offset: Offset(0, 5), // Offset in x and y direction
+                  ),
+                ],
               ),
-              validator: (value) =>
-                  value!.isEmpty ? 'Please enter the bride\'s name' : null,
+              child: TextFormField(
+                controller: controller.addressTextController,
+                decoration: InputDecoration(
+                  labelText: 'Venue',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  hintText: 'Enter Venue Address',
+                  hintStyle: TextStyle(color: Colors.grey.shade400),
+                  fillColor: Colors.white,
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 4),
+                      borderSide: BorderSide.none
+                      // borderSide: BorderSide(
+                      //   color: Color(0xFF0095B0), // Border color
+                      //   width: 1.0, // Border width
+                      // ),
+                      ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 8),
+                    borderSide: BorderSide(
+                      color: Colors.indigo,
+                      // Color(0xFF0095B0), // Border color when focused
+                      width: 1.0, // Border width when focused
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter the bride\'s name' : null,
+              ),
             ),
 
             // Wedding Date Selection
-            verticalSpace(SizeConfig.blockSizeVertical * 1.5),
-            ElevatedButton(
-              onPressed: () async {
+            verticalSpace(SizeConfig.blockSizeVertical * 3),
+            GestureDetector(
+              onTap: () async {
                 final selectedDate = await showOmniDateTimePicker(
                   context: context,
                   initialDate: controller.dateTime,
@@ -249,10 +435,41 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                   controller.dateTime = selectedDate;
                 }
               },
-              child: Text(
-                'Select Wedding Date: ${controller.dateTime.day}-${controller.dateTime.month}-${controller.dateTime.year}',
+              child: Container(
+                height: SizeConfig.blockSizeVertical * 6,
+                width: SizeConfig.blockSizeHorizontal * 60,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colors.indigo, Colors.indigoAccent.shade200],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
+                    // color: Colors.indigo,
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 6)),
+                child: Center(
+                  child: Text(
+                    'Select Wedding Date: ${controller.dateTime.day}-${controller.dateTime.month}-${controller.dateTime.year}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
             ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     final selectedDate = await showOmniDateTimePicker(
+            //       context: context,
+            //       initialDate: controller.dateTime,
+            //       firstDate: DateTime(2020),
+            //       lastDate: DateTime(2050),
+            //     );
+            //     if (selectedDate != null) {
+            //       controller.dateTime = selectedDate;
+            //     }
+            //   },
+            //   child: Text(
+            //     'Select Wedding Date: ${controller.dateTime.day}-${controller.dateTime.month}-${controller.dateTime.year}',
+            //   ),
+            // ),
 
             verticalSpace(SizeConfig.blockSizeVertical * 1.5),
           ],

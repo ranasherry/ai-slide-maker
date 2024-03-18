@@ -21,6 +21,7 @@ class PPTListView extends GetView<PPTListController> {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
+        backgroundColor: Color(0xFFE7EBFA),
         bottomNavigationBar: Container(
           height: 60,
           // color: Colors.amber,
@@ -107,7 +108,7 @@ class PPTListView extends GetView<PPTListController> {
                       children: [
                         Icon(
                           Icons.share,
-                          color: Colors.redAccent,
+                          color: Colors.indigo,
                         ),
                         horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                         Text(
@@ -137,7 +138,7 @@ class PPTListView extends GetView<PPTListController> {
                     children: [
                       Icon(
                         Icons.privacy_tip,
-                        color: Colors.redAccent,
+                        color: Colors.indigo,
                       ),
                       horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                       GestureDetector(
@@ -161,37 +162,38 @@ class PPTListView extends GetView<PPTListController> {
             // Icon(Icons.more_vert_outlined)
           ],
           backgroundColor: Colors.transparent,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(15)),
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.icon_color,
-                    AppColors.Electric_Blue_color
-                    // Color(0xFFC20000),
-                    // Colors.redAccent,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                )),
-          ),
+          // flexibleSpace: Container(
+          //   decoration: BoxDecoration(
+          //       borderRadius:
+          //           BorderRadius.vertical(bottom: Radius.circular(15)),
+          //       gradient: LinearGradient(
+          //         colors: [
+          //           AppColors.icon_color,
+          //           AppColors.Electric_Blue_color
+          //           // Color(0xFFC20000),
+          //           // Colors.redAccent,
+          //         ],
+          //         begin: Alignment.topCenter,
+          //         end: Alignment.bottomCenter,
+          //       )
+          //       ),
+          // ),
 
-          bottom: TabBar(
-            overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
-            splashFactory: NoSplash.splashFactory,
-            indicatorColor: AppColors.Electric_Blue_color,
-            // indicatorColor: Colors.redAccent,
-            indicatorSize: TabBarIndicatorSize.label,
-            tabs: [
-              Tab(
-                child: Text(
-                  "",
-                ),
-                // text: "",
-              ),
-            ],
-          ),
+          // bottom: TabBar(
+          //   overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
+          //   splashFactory: NoSplash.splashFactory,
+          //   indicatorColor: AppColors.Electric_Blue_color,
+          //   // indicatorColor: Colors.redAccent,
+          //   indicatorSize: TabBarIndicatorSize.label,
+          //   tabs: [
+          //     Tab(
+          //       child: Text(
+          //         "",
+          //       ),
+          //       // text: "",
+          //     ),
+          //   ],
+          // ),
 
           title: Text(
             'PPT List',

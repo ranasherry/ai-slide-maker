@@ -23,6 +23,7 @@ class PdfViewView extends GetView<PdfViewController> {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
+        backgroundColor: Color(0xFFE7EBFA),
         bottomNavigationBar: Container(
           height: 60,
           // color: Colors.amber,
@@ -50,6 +51,7 @@ class PdfViewView extends GetView<PdfViewController> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))),
           shadowColor: Colors.grey,
+          elevation: 0,
           // leading: Icon(Icons.adf_scanner_outlined),
           actions: [
             GestureDetector(
@@ -101,7 +103,7 @@ class PdfViewView extends GetView<PdfViewController> {
                     onTap: () {
                       print("App share");
                       Share.share(
-                          'https://play.google.com/store/apps/details?id=pdf.pdfreader.viewer.free.editor',
+                          'https://play.google.com/store/apps/details?id=com.genius.aislides.generator',
                           subject: 'Look what I found on PlayStore!');
                       // Share.share(controller.shareApp);
                     },
@@ -109,7 +111,7 @@ class PdfViewView extends GetView<PdfViewController> {
                       children: [
                         Icon(
                           Icons.share,
-                          color: Colors.redAccent,
+                          color: Colors.indigo,
                         ),
                         horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                         Text(
@@ -139,7 +141,7 @@ class PdfViewView extends GetView<PdfViewController> {
                     children: [
                       Icon(
                         Icons.privacy_tip,
-                        color: Colors.redAccent,
+                        color: Colors.indigo,
                       ),
                       horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                       GestureDetector(
@@ -165,35 +167,35 @@ class PdfViewView extends GetView<PdfViewController> {
           backgroundColor: Colors.transparent,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(15)),
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.icon_color,
-                    AppColors.Electric_Blue_color
-                    // Color(0xFFC20000),
-                    // Colors.redAccent,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                )),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+              // gradient: LinearGradient(
+              //   colors: [
+              //     AppColors.icon_color,
+              //     AppColors.Electric_Blue_color
+              //     // Color(0xFFC20000),
+              //     // Colors.redAccent,
+              //   ],
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              // )
+            ),
           ),
 
-          bottom: TabBar(
-            overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
-            splashFactory: NoSplash.splashFactory,
-            indicatorColor: AppColors.Electric_Blue_color,
-            // indicatorColor: Colors.redAccent,
-            indicatorSize: TabBarIndicatorSize.label,
-            tabs: [
-              Tab(
-                child: Text(
-                  "",
-                ),
-                // text: "",
-              ),
-            ],
-          ),
+          // bottom: TabBar(
+          //   overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
+          //   splashFactory: NoSplash.splashFactory,
+          //   indicatorColor: AppColors.Electric_Blue_color,
+          //   // indicatorColor: Colors.redAccent,
+          //   indicatorSize: TabBarIndicatorSize.label,
+          //   tabs: [
+          //     Tab(
+          //       child: Text(
+          //         "",
+          //       ),
+          //       // text: "",
+          //     ),
+          //   ],
+          // ),
 
           title: Text(
             'PDF Reader',

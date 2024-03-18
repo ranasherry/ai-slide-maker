@@ -11,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:slide_maker/app/modules/showppt/views/ppt_viewer.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
 import 'package:slide_maker/app/utills/ThemeNotifier.dart';
@@ -111,7 +110,7 @@ class MyApp extends StatelessWidget {
     facebookAppEvents.setAdvertiserTracking(enabled: true);
 
     analytics.setAnalyticsCollectionEnabled(true);
-    facebookAppEvents.logStartTrial(orderId: "1234");
+    // facebookAppEvents.logStartTrial(orderId: "1234");
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     // EasyLoading.init();
     observer.analytics.setAnalyticsCollectionEnabled(kReleaseMode);
