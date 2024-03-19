@@ -65,7 +65,7 @@ dependencies:
   url_launcher: ^6.1.12
   firebase_core: ^2.17.0
   firebase_analytics: ^10.5.1
-  applovin_max: ^3.4.1
+  applovin_max: ^3.8.1
 
   firebase_messaging: ^14.7.3
   firebase_auth: ^4.12.1
@@ -89,7 +89,7 @@ dependencies:
 
   path: ^1.8.2
 
-  open_filez: ^4.1.5
+  # open_filez: ^4.1.5
   file_picker: ^5.2.5
   sqflite: ^2.3.0
   # slick_slides: ^0.2.1
