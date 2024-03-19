@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +88,7 @@ class HomeView extends GetView<HomeViewCtl> {
             // color: Colors.amber,
             child: Center(
               child: MaxAdView(
-                  adUnitId: AppStrings.MAX_BANNER_ID,
+                  adUnitId: Platform.isAndroid ? AppStrings.MAX_BANNER_ID: AppStrings.IOS_MAX_BANNER_ID,
                   adFormat: AdFormat.banner,
                   listener: AdViewAdListener(onAdLoadedCallback: (ad) {
                     print('Banner widget ad loaded from ' + ad.networkName);
