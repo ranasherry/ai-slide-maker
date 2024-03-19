@@ -1,4 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/bindings/settings_view_binding.dart';
+import 'package:slide_maker/app/modules/home/settings_screen_view.dart';
 import 'package:slide_maker/app/modules/home/sub_home_view.dart';
 import 'package:slide_maker/app/modules/invitation_maker/bindings/weddinginvitation_binding.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/b.templates/b_template1.dart';
@@ -140,6 +142,11 @@ class AppPages {
       name: _Paths.BirthdayTemplate,
       page: () => const BirthdayTemplate(),
       // binding: ,
+    ),
+    GetPage(
+      name: _Paths.SettingsView,
+      page: () => const SettingsView(),
+      binding: SettingsViewbinding(),
     ),
   ];
 }

@@ -18,47 +18,63 @@ class HomeView extends GetView<HomeViewCtl> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE7EBFA),
-      key: controller.scaffoldKey,
-      drawer: Drawer(
-        width: SizeConfig.blockSizeHorizontal * 75,
-        child: Column(
-          children: [
-            Container(
-              width: SizeConfig.screenWidth,
-              height: SizeConfig.blockSizeVertical * 30,
-              color: AppColors.neonBorder,
-              child: Image.asset(
-                AppImages.drawer,
-                scale: 5,
-              ),
-            ),
-            GestureDetector(
-                onTap: () {
-                  LaunchReview.launch(
-                    androidAppId: "com.genius.aislides.generator",
-                  );
-                },
-                child: drawer_widget(Icons.thumb_up, "Rate Us")),
-            GestureDetector(
-                onTap: () {
-                  controller.ShareApp();
-                },
-                child: drawer_widget(Icons.share, "Share")),
-            GestureDetector(
-                onTap: () {
-                  controller
-                      .openURL("https://sites.google.com/view/appgeniusx/home");
-                },
-                child: drawer_widget(Icons.privacy_tip, "Privacy Policy"))
-          ],
-        ),
-      ),
+      // key: controller.scaffoldKey,
+      // drawer: Drawer(
+      //   width: SizeConfig.blockSizeHorizontal * 75,
+      //   child: Column(
+      //     children: [
+      //       Container(
+      //         width: SizeConfig.screenWidth,
+      //         height: SizeConfig.blockSizeVertical * 30,
+      //         color: AppColors.neonBorder,
+      //         child: Image.asset(
+      //           AppImages.drawer,
+      //           scale: 5,
+      //         ),
+      //       ),
+      //       GestureDetector(
+      //           onTap: () {
+      //             LaunchReview.launch(
+      //               androidAppId: "com.genius.aislides.generator",
+      //             );
+      //           },
+      //           child: drawer_widget(Icons.thumb_up, "Rate Us")),
+      //       GestureDetector(
+      //           onTap: () {
+      //             controller.ShareApp();
+      //           },
+      //           child: drawer_widget(Icons.share, "Share")),
+      //       GestureDetector(
+      //           onTap: () {
+      //             controller
+      //                 .openURL("https://sites.google.com/view/appgeniusx/home");
+      //           },
+      //           child: drawer_widget(Icons.privacy_tip, "Privacy Policy"))
+      //     ],
+      //   ),
+      // ),
       appBar: AppBar(
         backgroundColor: Color(0xFFE7EBFA),
         title: Text(
           'Slide Maker',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          Padding(
+              padding:
+                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 2),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.SettingsView);
+                },
+                child: Image.asset(
+                  AppImages.setting,
+                  color: Colors.grey.shade900,
+                  scale: 2.8,
+                ),
+              ))
+        ],
+        automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: true,
       ),

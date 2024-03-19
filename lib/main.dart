@@ -135,9 +135,10 @@ class MyApp extends StatelessWidget {
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   // theme: ThemeData.dark(),
+
                   theme: ThemeData.light(), // Default light theme
 
-                  darkTheme: ThemeData(
+                  darkTheme: ThemeData.dark(
                     useMaterial3: true,
                   ),
 

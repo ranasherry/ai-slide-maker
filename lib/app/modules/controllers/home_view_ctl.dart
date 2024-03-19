@@ -85,17 +85,17 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     }
   }
 
-  ShareApp() {
-    Share.share(
-        "Consider downloading this exceptional app, available on the Google Play Store at the following link: https://play.google.com/store/apps/details?id=com.genius.aislides.generator.");
-  }
+  // ShareApp() {
+  //   Share.share(
+  //       "Consider downloading this exceptional app, available on the Google Play Store at the following link: https://play.google.com/store/apps/details?id=com.genius.aislides.generator.");
+  // }
 
-  Future openURL(ur) async {
-    final Uri _url = Uri.parse(ur);
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
-  }
+  // Future openURL(ur) async {
+  //   final Uri _url = Uri.parse(ur);
+  //   if (!await launchUrl(_url)) {
+  //     throw Exception('Could not launch $_url');
+  //   }
+  // }
 
   final remoteConfig = FirebaseRemoteConfig.instance;
 

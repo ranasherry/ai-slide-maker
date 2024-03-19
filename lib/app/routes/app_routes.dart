@@ -23,6 +23,7 @@ abstract class Routes {
   static const INVITATION_MAKER = _Paths.INVITATION_MAKER;
   static const WeddingInvitationView = _Paths.WeddingInvitationView;
   static const BirthdayTemplate = _Paths.BirthdayTemplate;
+  static const SettingsView = _Paths.SettingsView;
 }
 
 abstract class _Paths {
@@ -45,4 +46,5 @@ abstract class _Paths {
   static const INVITATION_MAKER = '/invitation-maker';
   static const WeddingInvitationView = '/WeddingInvitationView';
   static const BirthdayTemplate = '/BirthdayTemplate';
+  static const SettingsView = '/SettingsView';
 }

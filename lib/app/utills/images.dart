@@ -23,6 +23,7 @@ class AppImages {
   static const birthday = "assets/images/birthday_invitation.png";
   static const invitation = "assets/images/invitation.png";
   static const more_features = "assets/images/more_features.png";
+  static const setting = "assets/images/settings.png";
   //? PPT_BG
   static const PPT_BG1 = "assets/ppt_bg/ppt_bg1.png";
   static const PPT_BG2 = "assets/ppt_bg/ppt_bg2.png";
