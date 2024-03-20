@@ -412,7 +412,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   height: 60,
                   // color: Colors.amber,
                   child: Center(
-                    child: MaxAdView(
+                    child: !AppLovinProvider.instance.isAdsEnable
+              ? Container()
+              :MaxAdView(
                         adUnitId: Platform.isAndroid
                             ? AppStrings.MAX_BANNER_ID
                             : AppStrings.IOS_MAX_BANNER_ID,
@@ -577,7 +579,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
         MoreSlidesButton(),
         verticalSpace(SizeConfig.blockSizeVertical * 1),
 
-        MaxAdView(
+       !AppLovinProvider.instance.isAdsEnable
+              ? Container()
+              : MaxAdView(
             adUnitId: Platform.isAndroid
                 ? AppStrings.MAX_Mrec_ID
                 : AppStrings.IOS_MAX_MREC_ID,

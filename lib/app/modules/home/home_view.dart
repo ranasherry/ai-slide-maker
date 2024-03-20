@@ -88,7 +88,9 @@ class HomeView extends GetView<HomeViewCtl> {
             height: 60,
             // color: Colors.amber,
             child: Center(
-              child: MaxAdView(
+              child: !AppLovinProvider.instance.isAdsEnable
+              ? Container()
+              : MaxAdView(
                   adUnitId: Platform.isAndroid
                       ? AppStrings.MAX_BANNER_ID
                       : AppStrings.IOS_MAX_BANNER_ID,
