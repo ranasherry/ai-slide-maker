@@ -63,11 +63,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBbCH83nJ7_5-9QChBmUleCOK6pPJP5uZA',
-    appId: '1:980994258161:ios:3126eb2335ee919204e550',
+    appId: '1:980994258161:ios:7a679d7db6f3a14504e550',
     messagingSenderId: '980994258161',
     projectId: 'ai-slide-generator',
     storageBucket: 'ai-slide-generator.appspot.com',
-    iosBundleId: 'com.example.slideMaker',
+    iosBundleId: 'com.genius.aislides.generator',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
