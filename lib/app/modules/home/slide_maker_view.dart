@@ -413,7 +413,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   // color: Colors.amber,
                   child: Center(
                     child: MaxAdView(
-                        adUnitId: AppStrings.MAX_BANNER_ID,
+                        adUnitId: Platform.isAndroid
+                            ? AppStrings.MAX_BANNER_ID
+                            : AppStrings.IOS_MAX_BANNER_ID,
                         adFormat: AdFormat.banner,
                         listener: AdViewAdListener(onAdLoadedCallback: (ad) {
                           print(
@@ -576,7 +578,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
         verticalSpace(SizeConfig.blockSizeVertical * 1),
 
         MaxAdView(
-            adUnitId: AppStrings.MAX_Mrec_ID,
+            adUnitId: Platform.isAndroid
+                ? AppStrings.MAX_Mrec_ID
+                : AppStrings.IOS_MAX_MREC_ID,
             adFormat: AdFormat.mrec,
             listener: AdViewAdListener(onAdLoadedCallback: (ad) {
               FirebaseAnalytics.instance.logAdImpression(

@@ -289,7 +289,7 @@ class HomeView extends GetView<HomeViewCtl> {
           ),
           verticalSpace(SizeConfig.blockSizeVertical),
           MaxAdView(
-              adUnitId: AppStrings.MAX_Mrec_ID,
+              adUnitId: Platform.isAndroid ? AppStrings.MAX_Mrec_ID : AppStrings.IOS_MAX_MREC_ID,
               adFormat: AdFormat.mrec,
               listener: AdViewAdListener(onAdLoadedCallback: (ad) {
                 FirebaseAnalytics.instance.logAdImpression(

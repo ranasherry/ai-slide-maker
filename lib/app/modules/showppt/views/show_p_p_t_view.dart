@@ -35,7 +35,9 @@ class ShowPPTView extends GetView<ShowPPTController> {
         // color: Colors.amber,
         child: Center(
           child: MaxAdView(
-              adUnitId: AppStrings.MAX_BANNER_ID,
+              adUnitId: Platform.isAndroid
+                  ? AppStrings.MAX_BANNER_ID
+                  : AppStrings.IOS_MAX_BANNER_ID,
               adFormat: AdFormat.banner,
               listener: AdViewAdListener(onAdLoadedCallback: (ad) {
                 print('Banner widget ad loaded from ' + ad.networkName);

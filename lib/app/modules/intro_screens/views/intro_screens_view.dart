@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +118,9 @@ class MyIntroductionState extends State<MyIntroduction> {
           verticalSpace(SizeConfig.blockSizeVertical * 2),
 
           MaxAdView(
-              adUnitId: AppStrings.MAX_Mrec_ID,
+              adUnitId: Platform.isAndroid
+                  ? AppStrings.MAX_Mrec_ID
+                  : AppStrings.IOS_MAX_MREC_ID,
               adFormat: AdFormat.mrec,
               listener: AdViewAdListener(onAdLoadedCallback: (ad) {
                 FirebaseAnalytics.instance.logAdImpression(

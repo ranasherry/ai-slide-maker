@@ -38,7 +38,7 @@ class AppStrings {
 
   static const IOS_MAX_INTER_ID = "66f8c654162ca4f5";
 
-  // static const IOS_MAX_MREC_ID = "";
+  static const IOS_MAX_MREC_ID = "66f8c654162ca4f5";
 
   static const IOS_MAX_APPOPEN_ID = "66f8c654162ca4f5";
 
