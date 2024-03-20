@@ -89,26 +89,27 @@ class HomeView extends GetView<HomeViewCtl> {
             // color: Colors.amber,
             child: Center(
               child: !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              : MaxAdView(
-                  adUnitId: Platform.isAndroid
-                      ? AppStrings.MAX_BANNER_ID
-                      : AppStrings.IOS_MAX_BANNER_ID,
-                  adFormat: AdFormat.banner,
-                  listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                    print('Banner widget ad loaded from ' + ad.networkName);
-                  }, onAdLoadFailedCallback: (adUnitId, error) {
-                    print('Banner widget ad failed to load with error code ' +
-                        error.code.toString() +
-                        ' and message: ' +
-                        error.message);
-                  }, onAdClickedCallback: (ad) {
-                    print('Banner widget ad clicked');
-                  }, onAdExpandedCallback: (ad) {
-                    print('Banner widget ad expanded');
-                  }, onAdCollapsedCallback: (ad) {
-                    print('Banner widget ad collapsed');
-                  })),
+                  ? Container()
+                  : MaxAdView(
+                      adUnitId: Platform.isAndroid
+                          ? AppStrings.MAX_BANNER_ID
+                          : AppStrings.IOS_MAX_BANNER_ID,
+                      adFormat: AdFormat.banner,
+                      listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                        print('Banner widget ad loaded from ' + ad.networkName);
+                      }, onAdLoadFailedCallback: (adUnitId, error) {
+                        print(
+                            'Banner widget ad failed to load with error code ' +
+                                error.code.toString() +
+                                ' and message: ' +
+                                error.message);
+                      }, onAdClickedCallback: (ad) {
+                        print('Banner widget ad clicked');
+                      }, onAdExpandedCallback: (ad) {
+                        print('Banner widget ad expanded');
+                      }, onAdCollapsedCallback: (ad) {
+                        print('Banner widget ad collapsed');
+                      })),
             ),
           ),
           Padding(
@@ -209,89 +210,95 @@ class HomeView extends GetView<HomeViewCtl> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 5),
-            child: GestureDetector(
-              onTap: () {
-                Get.toNamed(Routes.SubHomeView);
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-                height: SizeConfig.blockSizeVertical * 12,
-                width: SizeConfig.blockSizeHorizontal * 85,
-                decoration: BoxDecoration(
-                  color: Color(0xFF9DB0EC),
-                  borderRadius:
-                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      right: SizeConfig.blockSizeHorizontal * 3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
+          Platform.isAndroid
+              ? Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 5),
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.SubHomeView);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          top: SizeConfig.blockSizeVertical * 3),
+                      height: SizeConfig.blockSizeVertical * 12,
+                      width: SizeConfig.blockSizeHorizontal * 85,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF9DB0EC),
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeHorizontal * 4),
+                      ),
+                      child: Padding(
                         padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 3,
-                          top: SizeConfig.blockSizeVertical * 1,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                            right: SizeConfig.blockSizeHorizontal * 3),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "More Features",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.blockSizeHorizontal * 3,
+                                top: SizeConfig.blockSizeVertical * 1,
                               ),
-                            ),
-                            Text(
-                              "Maths, PDF, PPT, History",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: SizeConfig.blockSizeVertical * 0.5),
-                              height: SizeConfig.blockSizeVertical * 3,
-                              width: SizeConfig.blockSizeHorizontal * 16,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF284D79),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white70,
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "More Features",
+                                    style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 4.5,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Maths, PDF, PPT, History",
+                                    style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 3,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top:
+                                            SizeConfig.blockSizeVertical * 0.5),
+                                    height: SizeConfig.blockSizeVertical * 3,
+                                    width: SizeConfig.blockSizeHorizontal * 16,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF284D79),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white70,
+                                          spreadRadius: 2,
+                                          blurRadius: 10,
+                                          offset: Offset(0, 5),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(
+                                        SizeConfig.blockSizeHorizontal * 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Check",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ],
-                                borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 1,
-                                ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  "Check",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
+                            ),
+                            // Image added to the right side
+                            Image.asset(
+                              AppImages.more_features,
+                              scale: 8,
                             ),
                           ],
                         ),
                       ),
-                      // Image added to the right side
-                      Image.asset(
-                        AppImages.more_features,
-                        scale: 8,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                )
+              : Container(),
           verticalSpace(SizeConfig.blockSizeVertical),
           !AppLovinProvider.instance.isAdsEnable
               ? Container()

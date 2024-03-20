@@ -34,13 +34,13 @@ class AppStrings {
       "eCVIa8prwGmBAEXgBN70zL66PSODmw1GcCGut4bzm5eU7ANKptVSTaGrduCvfRTGOIQWEpHoI2UwQ1corcGexv";
 
   //original IOS
-  static const IOS_MAX_BANNER_ID = "66f8c654162ca4f5";
+  static const IOS_MAX_BANNER_ID = "e93a331eab24801d";
 
-  static const IOS_MAX_INTER_ID = "66f8c654162ca4f5";
+  static const IOS_MAX_INTER_ID = "fff1006ac2be05f3";
 
-  static const IOS_MAX_MREC_ID = "66f8c654162ca4f5";
+  static const IOS_MAX_MREC_ID = "2f4203836eb99370";
 
-  static const IOS_MAX_APPOPEN_ID = "66f8c654162ca4f5";
+  static const IOS_MAX_APPOPEN_ID = "d151a6b9d21d0f63";
 
   static const IOS_MAX_Reward_ID = "66f8c654162ca4f5";
 
