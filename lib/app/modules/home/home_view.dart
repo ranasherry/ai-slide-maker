@@ -291,7 +291,7 @@ class HomeView extends GetView<HomeViewCtl> {
             ),
           ),
           verticalSpace(SizeConfig.blockSizeVertical),
-          kDebugMode
+          !AppLovinProvider.instance.isAdsEnable
               ? Container()
               : MaxAdView(
                   adUnitId: Platform.isAndroid
