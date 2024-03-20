@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:applovin_max/applovin_max.dart';
@@ -33,7 +34,9 @@ class HistorySlideView extends GetView<HistorySlideCTL> {
         // color: Colors.amber,
         child: Center(
           child: MaxAdView(
-              adUnitId: AppStrings.MAX_BANNER_ID,
+              adUnitId: Platform.isAndroid
+                  ? AppStrings.MAX_BANNER_ID
+                  : AppStrings.IOS_MAX_BANNER_ID,
               adFormat: AdFormat.banner,
               listener: AdViewAdListener(onAdLoadedCallback: (ad) {
                 print('Banner widget ad loaded from ' + ad.networkName);
@@ -103,7 +106,9 @@ class HistorySlideView extends GetView<HistorySlideCTL> {
         // MoreSlidesButton(),
 
         MaxAdView(
-            adUnitId: AppStrings.MAX_Mrec_ID,
+            adUnitId: Platform.isAndroid
+                ? AppStrings.MAX_Mrec_ID
+                : AppStrings.IOS_MAX_MREC_ID,
             adFormat: AdFormat.mrec,
             listener: AdViewAdListener(onAdLoadedCallback: (ad) {
               FirebaseAnalytics.instance.logAdImpression(
