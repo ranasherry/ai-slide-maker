@@ -13,6 +13,7 @@ import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.
 import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.dart';
 import 'package:slide_maker/app/modules/pdfView/controllers/pdf_view_controller.dart';
 import 'package:slide_maker/app/modules/showppt/controllers/show_p_p_t_controller.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -34,25 +35,27 @@ class ShowPPTView extends GetView<ShowPPTController> {
         height: 60,
         // color: Colors.amber,
         child: Center(
-          child: MaxAdView(
-              adUnitId: Platform.isAndroid
-                  ? AppStrings.MAX_BANNER_ID
-                  : AppStrings.IOS_MAX_BANNER_ID,
-              adFormat: AdFormat.banner,
-              listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                print('Banner widget ad loaded from ' + ad.networkName);
-              }, onAdLoadFailedCallback: (adUnitId, error) {
-                print('Banner widget ad failed to load with error code ' +
-                    error.code.toString() +
-                    ' and message: ' +
-                    error.message);
-              }, onAdClickedCallback: (ad) {
-                print('Banner widget ad clicked');
-              }, onAdExpandedCallback: (ad) {
-                print('Banner widget ad expanded');
-              }, onAdCollapsedCallback: (ad) {
-                print('Banner widget ad collapsed');
-              })),
+          child: !AppLovinProvider.instance.isAdsEnable
+              ? Container()
+              : MaxAdView(
+                  adUnitId: Platform.isAndroid
+                      ? AppStrings.MAX_BANNER_ID
+                      : AppStrings.IOS_MAX_BANNER_ID,
+                  adFormat: AdFormat.banner,
+                  listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                    print('Banner widget ad loaded from ' + ad.networkName);
+                  }, onAdLoadFailedCallback: (adUnitId, error) {
+                    print('Banner widget ad failed to load with error code ' +
+                        error.code.toString() +
+                        ' and message: ' +
+                        error.message);
+                  }, onAdClickedCallback: (ad) {
+                    print('Banner widget ad clicked');
+                  }, onAdExpandedCallback: (ad) {
+                    print('Banner widget ad expanded');
+                  }, onAdCollapsedCallback: (ad) {
+                    print('Banner widget ad collapsed');
+                  })),
         ),
       ),
 

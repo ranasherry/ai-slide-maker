@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:applovin_max/applovin_max.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class SettingsView extends GetView<SettingsViewCTL> {
@@ -30,6 +36,37 @@ class SettingsView extends GetView<SettingsViewCTL> {
       body: Container(
         child: Column(
           children: [
+            verticalSpace(SizeConfig.blockSizeVertical * 1),
+            Container(
+              height: 60,
+              color: Colors.amber,
+              child: Center(
+                child: !AppLovinProvider.instance.isAdsEnable
+                    ? Container()
+                    : MaxAdView(
+                        adUnitId: Platform.isAndroid
+                            ? AppStrings.MAX_BANNER_ID
+                            : AppStrings.IOS_MAX_BANNER_ID,
+                        adFormat: AdFormat.banner,
+                        listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                          print(
+                              'Banner widget ad loaded from ' + ad.networkName);
+                        }, onAdLoadFailedCallback: (adUnitId, error) {
+                          print(
+                              'Banner widget ad failed to load with error code ' +
+                                  error.code.toString() +
+                                  ' and message: ' +
+                                  error.message);
+                        }, onAdClickedCallback: (ad) {
+                          print('Banner widget ad clicked');
+                        }, onAdExpandedCallback: (ad) {
+                          print('Banner widget ad expanded');
+                        }, onAdCollapsedCallback: (ad) {
+                          print('Banner widget ad collapsed');
+                        })),
+              ),
+            ),
+            verticalSpace(SizeConfig.blockSizeVertical),
             GestureDetector(
               onTap: () {
                 LaunchReview.launch(
@@ -53,6 +90,34 @@ class SettingsView extends GetView<SettingsViewCTL> {
                 },
                 child: settings_btn(
                     "Privacy Policy", Icons.privacy_tip, "Rights of user")),
+            verticalSpace(SizeConfig.blockSizeVertical * 1),
+            !AppLovinProvider.instance.isAdsEnable
+                ? Container()
+                : MaxAdView(
+                    adUnitId: Platform.isAndroid
+                        ? AppStrings.MAX_Mrec_ID
+                        : AppStrings.IOS_MAX_MREC_ID,
+                    adFormat: AdFormat.mrec,
+                    listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                      FirebaseAnalytics.instance.logAdImpression(
+                        adFormat: "Mrec",
+                        adSource: ad.networkName,
+                        value: ad.revenue,
+                      );
+                      print('Mrec widget ad loaded from ' + ad.networkName);
+                    }, onAdLoadFailedCallback: (adUnitId, error) {
+                      print('Mrec widget ad failed to load with error code ' +
+                          error.code.toString() +
+                          ' and message: ' +
+                          error.message);
+                    }, onAdClickedCallback: (ad) {
+                      print('Mrec widget ad clicked');
+                    }, onAdExpandedCallback: (ad) {
+                      print('Mrec widget ad expanded');
+                    }, onAdCollapsedCallback: (ad) {
+                      print('Mrec widget ad collapsed');
+                    })),
+            verticalSpace(SizeConfig.blockSizeVertical),
           ],
         ),
       ),

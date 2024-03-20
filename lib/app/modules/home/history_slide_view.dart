@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:slide_maker/app/data/slideResponce.dart';
 import 'package:slide_maker/app/modules/controllers/history_ctl.dart';
 import 'package:slide_maker/app/modules/controllers/history_slide_ctl.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/flutter_deck_app.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -33,25 +34,27 @@ class HistorySlideView extends GetView<HistorySlideCTL> {
         height: 60,
         // color: Colors.amber,
         child: Center(
-          child: MaxAdView(
-              adUnitId: Platform.isAndroid
-                  ? AppStrings.MAX_BANNER_ID
-                  : AppStrings.IOS_MAX_BANNER_ID,
-              adFormat: AdFormat.banner,
-              listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                print('Banner widget ad loaded from ' + ad.networkName);
-              }, onAdLoadFailedCallback: (adUnitId, error) {
-                print('Banner widget ad failed to load with error code ' +
-                    error.code.toString() +
-                    ' and message: ' +
-                    error.message);
-              }, onAdClickedCallback: (ad) {
-                print('Banner widget ad clicked');
-              }, onAdExpandedCallback: (ad) {
-                print('Banner widget ad expanded');
-              }, onAdCollapsedCallback: (ad) {
-                print('Banner widget ad collapsed');
-              })),
+          child: !AppLovinProvider.instance.isAdsEnable
+              ? Container()
+              : MaxAdView(
+                  adUnitId: Platform.isAndroid
+                      ? AppStrings.MAX_BANNER_ID
+                      : AppStrings.IOS_MAX_BANNER_ID,
+                  adFormat: AdFormat.banner,
+                  listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                    print('Banner widget ad loaded from ' + ad.networkName);
+                  }, onAdLoadFailedCallback: (adUnitId, error) {
+                    print('Banner widget ad failed to load with error code ' +
+                        error.code.toString() +
+                        ' and message: ' +
+                        error.message);
+                  }, onAdClickedCallback: (ad) {
+                    print('Banner widget ad clicked');
+                  }, onAdExpandedCallback: (ad) {
+                    print('Banner widget ad expanded');
+                  }, onAdCollapsedCallback: (ad) {
+                    print('Banner widget ad collapsed');
+                  })),
         ),
       ),
       appBar: AppBar(
