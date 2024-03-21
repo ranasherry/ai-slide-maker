@@ -257,6 +257,9 @@ class AppLovinProvider {
     //   print(object)
     //   return;
     // }
+
+    if(!isAdsEnable)
+      return;
     interCounter++;
     // if(interCounter<4){
     //   return;
