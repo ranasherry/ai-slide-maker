@@ -42,6 +42,7 @@ class AppLovinProvider {
 
   bool isAdsEnable = false;
 
+
   void init() {
     _interstitial_ad_unit_id = Platform.isAndroid
         ? AppStrings.MAX_INTER_ID
