@@ -42,7 +42,6 @@ class AppLovinProvider {
 
   bool isAdsEnable = true;
 
-
   void init() {
     _interstitial_ad_unit_id = Platform.isAndroid
         ? AppStrings.MAX_INTER_ID
@@ -57,7 +56,7 @@ class AppLovinProvider {
     //   print("Debug Mode");
     // }
     // if (kReleaseMode) {
-      initializePlugin();
+    initializePlugin();
     // }
   }
 
@@ -259,12 +258,11 @@ class AppLovinProvider {
     //   return;
     // }
 
-    if(!isAdsEnable)
-      return;
+    if (!isAdsEnable) return;
     interCounter++;
-    // if(interCounter<4){
-    //   return;
-    // }
+    if (interCounter < 4 && Platform.isIOS) {
+      return;
+    }
     interCounter = 1;
     // if (RevenueCatService().currentEntitlement.value == Entitlement.free) {
     print("Interstitial ad is show is called");

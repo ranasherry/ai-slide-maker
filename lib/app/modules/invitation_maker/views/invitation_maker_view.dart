@@ -91,7 +91,7 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
             // height: 60,
             // color: Colors.amber,
             child: Center(
-              child: !AppLovinProvider.instance.isAdsEnable
+              child: !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
                   ? Container()
                   : MaxAdView(
                       adUnitId: Platform.isAndroid

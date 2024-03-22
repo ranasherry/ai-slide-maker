@@ -9,6 +9,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:im_animations/im_animations.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -413,28 +414,29 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   // color: Colors.amber,
                   child: Center(
                     child: !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              :MaxAdView(
-                        adUnitId: Platform.isAndroid
-                            ? AppStrings.MAX_BANNER_ID
-                            : AppStrings.IOS_MAX_BANNER_ID,
-                        adFormat: AdFormat.banner,
-                        listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                          print(
-                              'Banner widget ad loaded from ' + ad.networkName);
-                        }, onAdLoadFailedCallback: (adUnitId, error) {
-                          print(
-                              'Banner widget ad failed to load with error code ' +
-                                  error.code.toString() +
-                                  ' and message: ' +
-                                  error.message);
-                        }, onAdClickedCallback: (ad) {
-                          print('Banner widget ad clicked');
-                        }, onAdExpandedCallback: (ad) {
-                          print('Banner widget ad expanded');
-                        }, onAdCollapsedCallback: (ad) {
-                          print('Banner widget ad collapsed');
-                        })),
+                        ? Container()
+                        : MaxAdView(
+                            adUnitId: Platform.isAndroid
+                                ? AppStrings.MAX_BANNER_ID
+                                : AppStrings.IOS_MAX_BANNER_ID,
+                            adFormat: AdFormat.banner,
+                            listener:
+                                AdViewAdListener(onAdLoadedCallback: (ad) {
+                              print('Banner widget ad loaded from ' +
+                                  ad.networkName);
+                            }, onAdLoadFailedCallback: (adUnitId, error) {
+                              print(
+                                  'Banner widget ad failed to load with error code ' +
+                                      error.code.toString() +
+                                      ' and message: ' +
+                                      error.message);
+                            }, onAdClickedCallback: (ad) {
+                              print('Banner widget ad clicked');
+                            }, onAdExpandedCallback: (ad) {
+                              print('Banner widget ad expanded');
+                            }, onAdCollapsedCallback: (ad) {
+                              print('Banner widget ad collapsed');
+                            })),
                   ),
                 ),
               ),
@@ -579,32 +581,32 @@ class SlideMakerView extends GetView<SlideMakerController> {
         MoreSlidesButton(),
         verticalSpace(SizeConfig.blockSizeVertical * 1),
 
-       !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              : MaxAdView(
-            adUnitId: Platform.isAndroid
-                ? AppStrings.MAX_Mrec_ID
-                : AppStrings.IOS_MAX_MREC_ID,
-            adFormat: AdFormat.mrec,
-            listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-              FirebaseAnalytics.instance.logAdImpression(
-                adFormat: "Mrec",
-                adSource: ad.networkName,
-                value: ad.revenue,
-              );
-              print('Mrec widget ad loaded from ' + ad.networkName);
-            }, onAdLoadFailedCallback: (adUnitId, error) {
-              print('Mrec widget ad failed to load with error code ' +
-                  error.code.toString() +
-                  ' and message: ' +
-                  error.message);
-            }, onAdClickedCallback: (ad) {
-              print('Mrec widget ad clicked');
-            }, onAdExpandedCallback: (ad) {
-              print('Mrec widget ad expanded');
-            }, onAdCollapsedCallback: (ad) {
-              print('Mrec widget ad collapsed');
-            })),
+        !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
+            ? Container()
+            : MaxAdView(
+                adUnitId: Platform.isAndroid
+                    ? AppStrings.MAX_Mrec_ID
+                    : AppStrings.IOS_MAX_MREC_ID,
+                adFormat: AdFormat.mrec,
+                listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                  FirebaseAnalytics.instance.logAdImpression(
+                    adFormat: "Mrec",
+                    adSource: ad.networkName,
+                    value: ad.revenue,
+                  );
+                  print('Mrec widget ad loaded from ' + ad.networkName);
+                }, onAdLoadFailedCallback: (adUnitId, error) {
+                  print('Mrec widget ad failed to load with error code ' +
+                      error.code.toString() +
+                      ' and message: ' +
+                      error.message);
+                }, onAdClickedCallback: (ad) {
+                  print('Mrec widget ad clicked');
+                }, onAdExpandedCallback: (ad) {
+                  print('Mrec widget ad expanded');
+                }, onAdCollapsedCallback: (ad) {
+                  print('Mrec widget ad collapsed');
+                })),
       ],
     );
 
@@ -828,8 +830,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
               "Next",
               style: TextStyle(
                   // fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontSize: SizeConfig.blockSizeHorizontal * 2,
-
+                  // fontSize: SizeConfig.blockSizeHorizontal * 2,
+                  fontSize: 64.sp,
                   color: Colors.white),
             ),
           ),
@@ -891,8 +893,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
               "Regenerate with 2 Extra slides",
               style: TextStyle(
                   // fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontSize: SizeConfig.blockSizeHorizontal * 1.2,
-
+                  // fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+                  fontSize: SizeConfig.blockSizeHorizontal * 12.sp,
                   color: Colors.white),
             ),
           ),
@@ -912,8 +914,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
                       "Outlines of the topic",
                       style: TextStyle(
                           // fontSize: SizeConfig.blockSizeHorizontal * 4,
-                          fontSize: SizeConfig.blockSizeHorizontal * 1.3,
-
+                          // fontSize: SizeConfig.blockSizeHorizontal * 1.3,
+                          fontSize: 74.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
@@ -933,9 +935,10 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                 title: Text(
                                   "${controller.slideResponseList[index].slideTitle}",
                                   style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 1.2,
-                                          // SizeConfig.blockSizeHorizontal * 4,
+                                      fontSize: 54.sp,
+                                      // SizeConfig.blockSizeHorizontal * 1.2,
+
+                                      // SizeConfig.blockSizeHorizontal * 4,
 
                                       color: Colors.black),
                                 ));
@@ -1056,10 +1059,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                       ? "Recreate"
                                       : "Create",
                                   style: TextStyle(
-                                      fontSize:
-                                          // SizeConfig.blockSizeHorizontal * 4,
-                                          SizeConfig.blockSizeHorizontal * 2,
-
+                                      fontSize: 54.sp,
+                                      // SizeConfig.blockSizeHorizontal * 4,
+                                      // SizeConfig.blockSizeHorizontal * 2,
                                       color: Colors.white),
                                 ),
                           // Row(
@@ -1111,8 +1113,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
           cursorColor: Colors.black,
           style: TextStyle(
               // fontSize: SizeConfig.blockSizeHorizontal * 4,
-              fontSize: SizeConfig.blockSizeHorizontal * 1.2,
-
+              // fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+              fontSize: 54.sp,
               color: Colors.black),
           decoration: InputDecoration(
             // hintText: text,

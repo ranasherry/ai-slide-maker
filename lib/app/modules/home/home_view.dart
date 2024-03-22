@@ -63,19 +63,21 @@ class HomeView extends GetView<HomeViewCtl> {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         actions: [
-         Platform.isIOS?Container() :Padding(
-              padding:
-                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 2),
-              child: GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.SettingsView);
-                },
-                child: Image.asset(
-                  AppImages.setting,
-                  color: Colors.grey.shade900,
-                  scale: 2.8,
-                ),
-              ))
+          Platform.isIOS
+              ? Container()
+              : Padding(
+                  padding: EdgeInsets.only(
+                      right: SizeConfig.blockSizeHorizontal * 2),
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.SettingsView);
+                    },
+                    child: Image.asset(
+                      AppImages.setting,
+                      color: Colors.grey.shade900,
+                      scale: 2.8,
+                    ),
+                  ))
         ],
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -300,7 +302,7 @@ class HomeView extends GetView<HomeViewCtl> {
                 )
               : Container(),
           verticalSpace(SizeConfig.blockSizeVertical),
-          !AppLovinProvider.instance.isAdsEnable
+          !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
               ? Container()
               : MaxAdView(
                   adUnitId: Platform.isAndroid
