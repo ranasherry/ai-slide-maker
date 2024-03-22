@@ -63,7 +63,7 @@ class HomeView extends GetView<HomeViewCtl> {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         actions: [
-          Padding(
+         Platform.isIOS?Container() :Padding(
               padding:
                   EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 2),
               child: GestureDetector(

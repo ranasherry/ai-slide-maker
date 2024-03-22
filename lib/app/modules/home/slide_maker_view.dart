@@ -827,7 +827,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // :
               "Next",
               style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  // fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontSize: SizeConfig.blockSizeHorizontal * 2,
+
                   color: Colors.white),
             ),
           ),
@@ -888,7 +890,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // :
               "Regenerate with 2 Extra slides",
               style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  // fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+
                   color: Colors.white),
             ),
           ),
@@ -907,12 +911,15 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     Text(
                       "Outlines of the topic",
                       style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 4,
+                          // fontSize: SizeConfig.blockSizeHorizontal * 4,
+                          fontSize: SizeConfig.blockSizeHorizontal * 1.3,
+
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
                     Container(
                       // height: SizeConfig.screenHeight*0.32,
+                      // color: Colors.yellow,
                       height: 290,
                       child: ListView.builder(
                           itemCount: controller.slideResponseList.length,
@@ -927,7 +934,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                   "${controller.slideResponseList[index].slideTitle}",
                                   style: TextStyle(
                                       fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4,
+                                          SizeConfig.blockSizeHorizontal * 1.2,
+                                          // SizeConfig.blockSizeHorizontal * 4,
+
                                       color: Colors.black),
                                 ));
                           }),
@@ -1048,7 +1057,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                       : "Create",
                                   style: TextStyle(
                                       fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4,
+                                          // SizeConfig.blockSizeHorizontal * 4,
+                                          SizeConfig.blockSizeHorizontal * 2,
+
                                       color: Colors.white),
                                 ),
                           // Row(
@@ -1099,7 +1110,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
           controller: controller.inputTextCTL,
           cursorColor: Colors.black,
           style: TextStyle(
-              fontSize: SizeConfig.blockSizeHorizontal * 4,
+              // fontSize: SizeConfig.blockSizeHorizontal * 4,
+              fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+
               color: Colors.black),
           decoration: InputDecoration(
             // hintText: text,

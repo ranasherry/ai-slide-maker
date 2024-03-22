@@ -40,7 +40,7 @@ class AppLovinProvider {
   var isWidgetMRecShowing = false;
   int interCounter = 2;
 
-  bool isAdsEnable = false;
+  bool isAdsEnable = true;
 
   void init() {
     _interstitial_ad_unit_id = Platform.isAndroid
@@ -55,9 +55,9 @@ class AppLovinProvider {
     // }else{
     //   print("Debug Mode");
     // }
-    if (kReleaseMode) {
+    // if (kReleaseMode) {
       initializePlugin();
-    }
+    // }
   }
 
   Future<void> initializePlugin() async {
