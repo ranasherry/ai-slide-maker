@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -8,6 +10,11 @@ class LocalNotificationService {
 
   static void initialize() {
     // initializationSettings  for Android
+
+    if(Platform.isAndroid)
+    {
+
+    
     const InitializationSettings initializationSettings =
         InitializationSettings(
       android: AndroidInitializationSettings("@mipmap/ic_launcher"),
@@ -31,6 +38,8 @@ class LocalNotificationService {
       //   }
       // },
     );
+
+  }
   }
 
   static void createanddisplaynotification(RemoteMessage message) async {

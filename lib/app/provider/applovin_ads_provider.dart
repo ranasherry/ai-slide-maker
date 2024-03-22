@@ -40,7 +40,7 @@ class AppLovinProvider {
   var isWidgetMRecShowing = false;
   int interCounter = 2;
 
-  bool isAdsEnable = false;
+  bool isAdsEnable = true;
 
 
   void init() {
@@ -56,9 +56,9 @@ class AppLovinProvider {
     // }else{
     //   print("Debug Mode");
     // }
-    if (kReleaseMode) {
+    // if (kReleaseMode) {
       initializePlugin();
-    }
+    // }
   }
 
   Future<void> initializePlugin() async {
@@ -258,6 +258,9 @@ class AppLovinProvider {
     //   print(object)
     //   return;
     // }
+
+    if(!isAdsEnable)
+      return;
     interCounter++;
     // if(interCounter<4){
     //   return;

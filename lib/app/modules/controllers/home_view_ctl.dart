@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -35,7 +36,9 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
       });
     });
     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
-    handlePushNotification();
+
+    if(Platform.isAndroid)
+      handlePushNotification();
   }
 
   checkPermission(String page) async {
@@ -59,6 +62,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     //     Get.offNamed(Routes.PDF_PERMISSION, arguments: page);
     //   });
     // }
+    
   }
 
   @override
