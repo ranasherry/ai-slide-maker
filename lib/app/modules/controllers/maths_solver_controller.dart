@@ -575,14 +575,16 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
     isTextFieldFilled.value = text.isNotEmpty;
   }
 
-  void showDialogBox() {
+  void showDialogBox(BuildContext context) {
     Get.defaultDialog(
       title: "Short Question",
       titleStyle: TextStyle(
-          color: Color(0xFF202965),
+          color: Theme.of(context).colorScheme.primary,
+          // Color(0xFF202965),
           fontSize: SizeConfig.blockSizeHorizontal * 5,
           fontWeight: FontWeight.bold),
-      backgroundColor: Color(0xFFE7EBFA),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      // Color(0xFFE7EBFA),
       content: Container(
         height: SizeConfig.blockSizeVertical * 8,
         width: SizeConfig.blockSizeHorizontal * 65,
@@ -590,7 +592,8 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
           borderType: BorderType.RRect,
           strokeCap: StrokeCap.round,
           padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
-          color: Color(0xFF202965),
+          color: Theme.of(context).colorScheme.primary,
+          // Color(0xFF202965),
           // dashPattern: [19, 2, 6, 3],
           dashPattern: [6, 1, 8, 11],
           radius: Radius.circular(SizeConfig.blockSizeHorizontal * 4),
@@ -601,7 +604,8 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
                 child: TextField(
                   controller: textEditingController,
                   onChanged: onTextChanged,
-                  cursorColor: Color(0xFF202965),
+                  cursorColor: Theme.of(context).colorScheme.primary,
+                  // Color(0xFF202965),
                   textDirection: TextDirection.ltr,
                   textAlign: TextAlign.left,
                   decoration: InputDecoration(
@@ -644,16 +648,19 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
                           height: SizeConfig.blockSizeVertical * 10,
                           width: SizeConfig.blockSizeHorizontal * 12,
                           decoration: BoxDecoration(
-                              color: Color(0xFF202965), shape: BoxShape.circle),
+                              color: Theme.of(context).colorScheme.secondary,
+                              // Color(0xFF202965),
+                              shape: BoxShape.circle),
                           child: Icon(
                             Icons.arrow_forward,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.primary,
                           )),
                     )
                   : Image.asset(
                       AppImages.pencil,
                       scale: 12,
-                      color: Color(0xFF00598D),
+                      color: Theme.of(context).colorScheme.primary,
+                      // Color(0xFF00598D),
                     ))
             ],
           ),

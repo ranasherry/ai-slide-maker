@@ -23,32 +23,32 @@ class PPTListView extends GetView<PPTListController> {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        backgroundColor: Color(0xFFE7EBFA),
+        // backgroundColor: Color(0xFFE7EBFA),
         bottomNavigationBar: Container(
           height: 60,
           // color: Colors.amber,
           child: Center(
             child: !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              :MaxAdView(
-                adUnitId: Platform.isAndroid
-                    ? AppStrings.MAX_BANNER_ID
-                    : AppStrings.IOS_MAX_BANNER_ID,
-                adFormat: AdFormat.banner,
-                listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                  print('Banner widget ad loaded from ' + ad.networkName);
-                }, onAdLoadFailedCallback: (adUnitId, error) {
-                  print('Banner widget ad failed to load with error code ' +
-                      error.code.toString() +
-                      ' and message: ' +
-                      error.message);
-                }, onAdClickedCallback: (ad) {
-                  print('Banner widget ad clicked');
-                }, onAdExpandedCallback: (ad) {
-                  print('Banner widget ad expanded');
-                }, onAdCollapsedCallback: (ad) {
-                  print('Banner widget ad collapsed');
-                })),
+                ? Container()
+                : MaxAdView(
+                    adUnitId: Platform.isAndroid
+                        ? AppStrings.MAX_BANNER_ID
+                        : AppStrings.IOS_MAX_BANNER_ID,
+                    adFormat: AdFormat.banner,
+                    listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                      print('Banner widget ad loaded from ' + ad.networkName);
+                    }, onAdLoadFailedCallback: (adUnitId, error) {
+                      print('Banner widget ad failed to load with error code ' +
+                          error.code.toString() +
+                          ' and message: ' +
+                          error.message);
+                    }, onAdClickedCallback: (ad) {
+                      print('Banner widget ad clicked');
+                    }, onAdExpandedCallback: (ad) {
+                      print('Banner widget ad expanded');
+                    }, onAdCollapsedCallback: (ad) {
+                      print('Banner widget ad collapsed');
+                    })),
           ),
         ),
         appBar: AppBar(
@@ -67,16 +67,25 @@ class PPTListView extends GetView<PPTListController> {
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
                                         BorderSide(color: Colors.transparent)),
-                                hintStyle: TextStyle(color: Colors.white)),
+                                hintStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                )),
                             textSelectionTheme: TextSelectionThemeData(
-                                cursorColor: Colors.white),
+                              cursorColor:
+                                  Theme.of(context).colorScheme.primary,
+                            ),
                             // appBarTheme: AppBarTheme(color: Color(0xFFc20000))),
                             appBarTheme: AppBarTheme(
-                                color: AppColors.Electric_Blue_color)),
+                                color: Theme.of(context).colorScheme.background,
+                                iconTheme: IconThemeData(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ))),
                         onQueryUpdate: print,
                         items: controller.pdf_viewer_model,
                         searchLabel: 'Search file',
-                        searchStyle: TextStyle(color: Colors.white),
+                        searchStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                         suggestion: Center(
                           child: Text('Search file by name'),
                         ),
@@ -114,12 +123,15 @@ class PPTListView extends GetView<PPTListController> {
                       children: [
                         Icon(
                           Icons.share,
-                          color: Colors.indigo,
+                          color: Theme.of(context).colorScheme.primary,
+                          // color: Colors.indigo,
                         ),
                         horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                         Text(
                           "Share",
-                          style: TextStyle(color: Colors.grey.shade700),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ],
                     ),
@@ -144,7 +156,7 @@ class PPTListView extends GetView<PPTListController> {
                     children: [
                       Icon(
                         Icons.privacy_tip,
-                        color: Colors.indigo,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                       GestureDetector(
@@ -156,7 +168,9 @@ class PPTListView extends GetView<PPTListController> {
                         },
                         child: Text(
                           "Privacy Policy",
-                          style: TextStyle(color: Colors.grey.shade700),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     ],
@@ -306,8 +320,8 @@ class PPTListView extends GetView<PPTListController> {
             itemCount: controller.pdf_viewer_model.length,
             itemBuilder: (BuildContext, int index) {
               return Container(
-                  child:
-                      _pdfdocitem(index, controller.pdf_viewer_model[index]));
+                  child: _pdfdocitem(
+                      index, controller.pdf_viewer_model[index], BuildContext));
             },
             separatorBuilder: (BuildContext context, int index) {
               return Divider();
@@ -323,7 +337,7 @@ class PPTListView extends GetView<PPTListController> {
   //   return formattedDate;
   // }
 
-  Padding _pdfdocitem(int index, pdfModel) {
+  Padding _pdfdocitem(int index, pdfModel, BuildContext context) {
     String date =
         //!
         controller.pdf_viewer_model[index].date;
@@ -364,7 +378,7 @@ class PPTListView extends GetView<PPTListController> {
               width: SizeConfig.blockSizeHorizontal * 99,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -374,7 +388,7 @@ class PPTListView extends GetView<PPTListController> {
                       width: SizeConfig.blockSizeHorizontal * 16,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(13),
-                        // color: Colors.red.shade100,
+                        color: Colors.blue.shade100,
                       ),
                       child: Image.asset(
                         AppImages.ppt_ic,
@@ -395,7 +409,7 @@ class PPTListView extends GetView<PPTListController> {
                           // controller.pdf_viewer_model[index].name,
                           style: TextStyle(
                               fontSize: SizeConfig.blockSizeHorizontal * 4,
-                              color: Color(0xFF1E1E1E)),
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
                       // verticalSpace(SizeConfig.blockSizeVertical * 0),

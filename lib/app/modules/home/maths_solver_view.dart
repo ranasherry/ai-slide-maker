@@ -37,20 +37,24 @@ class MathsSolverView extends GetView<MathsSolverController> {
         return true;
       },
       child: Scaffold(
-          backgroundColor: Color(0xFFE7EBFA), // ? Commented by jamal
+          // backgroundColor: Color(0xFFE7EBFA), // ? Commented by jamal
           appBar: AppBar(
-            title: const Text(
+            title: Text(
               'AI Maths Solver',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold),
             ),
-            backgroundColor: Color(0xFFE7EBFA), // ? Commented by jamal
+            // backgroundColor: Color(0xFFE7EBFA), // ? Commented by jamal
             centerTitle: true,
             leading: GestureDetector(
                 onTap: () {
                   Get.back();
                 },
-                child: Icon(Icons.arrow_back_ios_new_rounded)),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                )),
             actions: [
               // Obx(() =>
               //     // RevenueCatService().currentEntitlement.value == Entitlement.paid?
@@ -152,7 +156,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
                   child: SingleChildScrollView(
                       child:
                           // controller.responseState.value == ResponseState.idle
-                          _imagePickerView()),
+                          _imagePickerView(context)),
                 ),
               ],
             ),
@@ -395,7 +399,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
         highlightColor: Colors.white);
   }
 
-  Column _imagePickerView() {
+  Column _imagePickerView(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -432,7 +436,8 @@ class MathsSolverView extends GetView<MathsSolverController> {
                     strokeCap: StrokeCap.round,
                     padding: EdgeInsets.symmetric(
                         horizontal: SizeConfig.blockSizeHorizontal * 4),
-                    color: Color(0xFF0049C8),
+                    color: Theme.of(context).colorScheme.primary,
+                    // Color(0xFF0049C8),
                     // dashPattern: [19, 2, 6, 3],
                     dashPattern: [6, 1, 8, 11],
                     radius: Radius.circular(SizeConfig.blockSizeHorizontal * 4),
@@ -566,13 +571,14 @@ class MathsSolverView extends GetView<MathsSolverController> {
 
         GestureDetector(
           onTap: () {
-            controller.showDialogBox();
+            controller.showDialogBox(context);
           },
           child: DottedBorder(
               borderType: BorderType.RRect,
               strokeCap: StrokeCap.round,
               padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
-              color: Color(0xFF91B6D8),
+              color: Theme.of(context).colorScheme.primary,
+              // Color(0xFF91B6D8),
               // dashPattern: [19, 2, 6, 3],
               dashPattern: [6, 1, 8, 11],
               radius: Radius.circular(SizeConfig.blockSizeHorizontal * 4),
@@ -581,7 +587,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
                 height: SizeConfig.blockSizeVertical * 18,
                 width: SizeConfig.blockSizeHorizontal * 85,
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 4)),
                 child: Padding(
@@ -594,7 +600,8 @@ class MathsSolverView extends GetView<MathsSolverController> {
                       Text(
                         "Short Question",
                         style: TextStyle(
-                            color: Color(0xFF202965),
+                            color: Theme.of(context).colorScheme.primary,
+                            // Color(0xFF202965),
                             fontSize: SizeConfig.blockSizeHorizontal * 5,
                             fontWeight: FontWeight.bold),
                       ),
@@ -607,7 +614,8 @@ class MathsSolverView extends GetView<MathsSolverController> {
                                 child: Container(
                                   height: 1.5,
                                   width: SizeConfig.blockSizeHorizontal * 66,
-                                  color: Color(0xFFCBCCDB),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  // Color(0xFFCBCCDB),
                                 ),
                               ),
                               verticalSpace(SizeConfig.blockSizeVertical * 3),
@@ -615,7 +623,8 @@ class MathsSolverView extends GetView<MathsSolverController> {
                                 child: Container(
                                   height: 1.5,
                                   width: SizeConfig.blockSizeHorizontal * 60,
-                                  color: Color(0xFFCBCCDB),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  // Color(0xFFCBCCDB),
                                 ),
                               )
                             ],
@@ -623,7 +632,8 @@ class MathsSolverView extends GetView<MathsSolverController> {
                           Image.asset(
                             AppImages.pencil,
                             scale: 10,
-                            color: Color(0xFF00598D),
+                            color: Theme.of(context).colorScheme.primary,
+                            // Color(0xFF00598D),
                           )
                         ],
                       )
@@ -681,7 +691,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
                           //         16), // Add some spacing between the icon and text
                           Text(
                             "Solve This Problem",
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 16),
                           ),
                           // Row(
                           //   children: [

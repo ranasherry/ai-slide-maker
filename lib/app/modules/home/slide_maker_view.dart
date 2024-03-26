@@ -89,12 +89,12 @@ class SlideMakerView extends GetView<SlideMakerController> {
     // initBanner(); //  ? commented by jamal end
     // SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Color(0xFFE7EBFA),
+      // backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
-        backgroundColor: Color(0xFFE7EBFA),
+        // backgroundColor: Color(0xFFE7EBFA),
         title: Text(
           'Slide Maker',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
         centerTitle: true,
@@ -270,7 +270,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                             // Theme.of(context).primaryColor,
                                             elevation: 4,
                                             shadowColor:
-                                                Theme.of(context).cardColor,
+                                                Theme.of(context).shadowColor,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 12, vertical: 8),
                                             shape: RoundedRectangleBorder(
@@ -286,13 +286,14 @@ class SlideMakerView extends GetView<SlideMakerController> {
                               ),
                         verticalSpace(SizeConfig.blockSizeVertical * 2),
                         controller.showSlides.value
-                            ? slideShow()
+                            ? slideShow(context)
                             : DottedBorder(
                                 borderType: BorderType.RRect,
                                 strokeCap: StrokeCap.round,
                                 padding: EdgeInsets.all(
                                     SizeConfig.blockSizeHorizontal * 3),
-                                color: Color(0xFF0049C8),
+                                color: Theme.of(context).colorScheme.primary,
+                                // Color(0xFF0049C8),
                                 // dashPattern: [19, 2, 6, 3],
                                 dashPattern: [6, 1, 8, 11],
                                 radius: Radius.circular(
@@ -304,11 +305,14 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                   duration: Duration(milliseconds: 500),
                                   curve: Curves.fastOutSlowIn,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors
-                                            .grey.shade300, // Shadow color
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .shadow,
+                                        // Colors.grey.shade300, // Shadow color
                                         spreadRadius: 2, // Spread radius
                                         blurRadius: 10, // Blur radius
                                         offset: Offset(0,
@@ -316,7 +320,10 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: Colors.indigo),
+                                    border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
                                   ),
                                   child: controller.showInside.value
                                       ? Padding(
@@ -325,9 +332,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              outField(),
+                                              outField(context),
                                               Divider(),
-                                              inputField(),
+                                              inputField(context),
                                             ],
                                           ),
                                         )
@@ -340,14 +347,14 @@ class SlideMakerView extends GetView<SlideMakerController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            createButton(),
+                            createButton(context),
                             controller.outlineTitleFetched.value
                                 ? Row(
                                     children: [
                                       SizedBox(
                                         width: SizeConfig.screenWidth * 0.15,
                                       ),
-                                      NextButton(),
+                                      NextButton(context),
                                     ],
                                   )
                                 : Container(),
@@ -378,7 +385,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                               SizeConfig.blockSizeHorizontal * 4)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.shade300, // Shadow color
+                          color: Theme.of(context)
+                              .colorScheme
+                              .shadow, // Shadow color
                           spreadRadius: 2, // Spread radius
                           blurRadius: 10, // Blur radius
                           offset: Offset(0, 5), // Offset in x and y direction
@@ -392,7 +401,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                           fontSize: SizeConfig.blockSizeHorizontal * 4,
                           fontWeight: FontWeight.bold,
                           // color: Color(0xFF013961)
-                          color: Colors.blue.shade700),
+                          color: Colors.indigo.shade700),
                     )),
                   ),
                 ],
@@ -413,28 +422,29 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   // color: Colors.amber,
                   child: Center(
                     child: !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              :MaxAdView(
-                        adUnitId: Platform.isAndroid
-                            ? AppStrings.MAX_BANNER_ID
-                            : AppStrings.IOS_MAX_BANNER_ID,
-                        adFormat: AdFormat.banner,
-                        listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                          print(
-                              'Banner widget ad loaded from ' + ad.networkName);
-                        }, onAdLoadFailedCallback: (adUnitId, error) {
-                          print(
-                              'Banner widget ad failed to load with error code ' +
-                                  error.code.toString() +
-                                  ' and message: ' +
-                                  error.message);
-                        }, onAdClickedCallback: (ad) {
-                          print('Banner widget ad clicked');
-                        }, onAdExpandedCallback: (ad) {
-                          print('Banner widget ad expanded');
-                        }, onAdCollapsedCallback: (ad) {
-                          print('Banner widget ad collapsed');
-                        })),
+                        ? Container()
+                        : MaxAdView(
+                            adUnitId: Platform.isAndroid
+                                ? AppStrings.MAX_BANNER_ID
+                                : AppStrings.IOS_MAX_BANNER_ID,
+                            adFormat: AdFormat.banner,
+                            listener:
+                                AdViewAdListener(onAdLoadedCallback: (ad) {
+                              print('Banner widget ad loaded from ' +
+                                  ad.networkName);
+                            }, onAdLoadFailedCallback: (adUnitId, error) {
+                              print(
+                                  'Banner widget ad failed to load with error code ' +
+                                      error.code.toString() +
+                                      ' and message: ' +
+                                      error.message);
+                            }, onAdClickedCallback: (ad) {
+                              print('Banner widget ad clicked');
+                            }, onAdExpandedCallback: (ad) {
+                              print('Banner widget ad expanded');
+                            }, onAdCollapsedCallback: (ad) {
+                              print('Banner widget ad collapsed');
+                            })),
                   ),
                 ),
               ),
@@ -470,7 +480,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     );
   }
 
-  Widget slideShow() {
+  Widget slideShow(BuildContext context) {
     // print("isShowExtraSlide: ${controller.showExtraSlides.value}");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -576,35 +586,35 @@ class SlideMakerView extends GetView<SlideMakerController> {
             : _slickSlide(controller.slideResponseList)),
         // EditSlideContent(controller: controller),
         verticalSpace(SizeConfig.blockSizeVertical * 2),
-        MoreSlidesButton(),
+        MoreSlidesButton(context),
         verticalSpace(SizeConfig.blockSizeVertical * 1),
 
-       !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              : MaxAdView(
-            adUnitId: Platform.isAndroid
-                ? AppStrings.MAX_Mrec_ID
-                : AppStrings.IOS_MAX_MREC_ID,
-            adFormat: AdFormat.mrec,
-            listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-              FirebaseAnalytics.instance.logAdImpression(
-                adFormat: "Mrec",
-                adSource: ad.networkName,
-                value: ad.revenue,
-              );
-              print('Mrec widget ad loaded from ' + ad.networkName);
-            }, onAdLoadFailedCallback: (adUnitId, error) {
-              print('Mrec widget ad failed to load with error code ' +
-                  error.code.toString() +
-                  ' and message: ' +
-                  error.message);
-            }, onAdClickedCallback: (ad) {
-              print('Mrec widget ad clicked');
-            }, onAdExpandedCallback: (ad) {
-              print('Mrec widget ad expanded');
-            }, onAdCollapsedCallback: (ad) {
-              print('Mrec widget ad collapsed');
-            })),
+        !AppLovinProvider.instance.isAdsEnable
+            ? Container()
+            : MaxAdView(
+                adUnitId: Platform.isAndroid
+                    ? AppStrings.MAX_Mrec_ID
+                    : AppStrings.IOS_MAX_MREC_ID,
+                adFormat: AdFormat.mrec,
+                listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                  FirebaseAnalytics.instance.logAdImpression(
+                    adFormat: "Mrec",
+                    adSource: ad.networkName,
+                    value: ad.revenue,
+                  );
+                  print('Mrec widget ad loaded from ' + ad.networkName);
+                }, onAdLoadFailedCallback: (adUnitId, error) {
+                  print('Mrec widget ad failed to load with error code ' +
+                      error.code.toString() +
+                      ' and message: ' +
+                      error.message);
+                }, onAdClickedCallback: (ad) {
+                  print('Mrec widget ad clicked');
+                }, onAdExpandedCallback: (ad) {
+                  print('Mrec widget ad expanded');
+                }, onAdCollapsedCallback: (ad) {
+                  print('Mrec widget ad collapsed');
+                })),
       ],
     );
 
@@ -778,7 +788,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
   //   );
   // }
 
-  Widget NextButton() {
+  Widget NextButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
         print("Next Button Clicked");
@@ -803,7 +813,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade300, // Shadow color
+              color: Theme.of(context).colorScheme.shadow, // Shadow color
               spreadRadius: 2, // Spread radius
               blurRadius: 10, // Blur radius
               offset: Offset(0, 5), // Offset in x and y direction
@@ -836,7 +846,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     );
   }
 
-  Widget MoreSlidesButton() {
+  Widget MoreSlidesButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
         // controller.showExtraSlides.toggle();
@@ -862,7 +872,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade300, // Shadow color
+              color: Theme.of(context).colorScheme.shadow, // Shadow color
               spreadRadius: 2, // Spread radius
               blurRadius: 10, // Blur radius
               offset: Offset(0, 5), // Offset in x and y direction
@@ -897,7 +907,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     );
   }
 
-  Widget outField() {
+  Widget outField(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -907,13 +917,15 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     Text(
                       "Outlines of the topic",
                       style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 4,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                        fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                     Container(
                       // height: SizeConfig.screenHeight*0.32,
                       height: 290,
+
                       child: ListView.builder(
                           itemCount: controller.slideResponseList.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -926,9 +938,11 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                 title: Text(
                                   "${controller.slideResponseList[index].slideTitle}",
                                   style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4,
-                                      color: Colors.black),
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 4,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
                                 ));
                           }),
                     ),
@@ -940,10 +954,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     height: SizeConfig.screenHeight * 0.05,
                     child: Row(
                       children: [
-                        Image.asset(
-                          AppImages.drawer,
-                          color: Colors.indigo,
-                        ),
+                        Image.asset(AppImages.drawer,
+                            color: Colors.indigoAccent),
                         SizedBox(
                           width: 10,
                         ),
@@ -952,7 +964,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                           style: TextStyle(
                               // fontSize: SizeConfig.blockSizeHorizontal * 3,
                               fontWeight: FontWeight.bold,
-                              color: Colors.indigo),
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                         // Container(
                         //   color: AppColors.greybox,
@@ -981,7 +993,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return Container();
   }
 
-  Widget createButton() {
+  Widget createButton(BuildContext context) {
     return GestureDetector(
         onTap: () {
           // controller.increaseOutputHeight();
@@ -1013,7 +1025,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.shade300, // Shadow color
+                      color:
+                          Theme.of(context).colorScheme.shadow, // Shadow color
                       spreadRadius: 2, // Spread radius
                       blurRadius: 10, // Blur radius
                       offset: Offset(0, 5), // Offset in x and y direction
@@ -1079,15 +1092,15 @@ class SlideMakerView extends GetView<SlideMakerController> {
         ));
   }
 
-  Widget inputField() {
+  Widget inputField(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(5.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.tertiary,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.shade300, // Shadow color
+                color: Theme.of(context).colorScheme.shadow, // Shadow color
                 spreadRadius: 2, // Spread radius
                 blurRadius: 10, // Blur radius
                 offset: Offset(0, 5), // Offset in x and y direction
@@ -1097,15 +1110,15 @@ class SlideMakerView extends GetView<SlideMakerController> {
                 BorderRadius.circular(SizeConfig.blockSizeHorizontal * 5)),
         child: TextField(
           controller: controller.inputTextCTL,
-          cursorColor: Colors.black,
+          cursorColor: Theme.of(context).colorScheme.primary,
           style: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 4,
-              color: Colors.black),
+              color: Theme.of(context).colorScheme.primary),
           decoration: InputDecoration(
             // hintText: text,
 
             // "Product Name",
-            labelStyle: TextStyle(color: AppColors.black_color),
+            labelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
             labelText: "What is the presentation about?",
             hintText: "Example: What is AI?",
             hintStyle: TextStyle(color: Colors.grey),

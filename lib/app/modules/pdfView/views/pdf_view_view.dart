@@ -25,32 +25,32 @@ class PdfViewView extends GetView<PdfViewController> {
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        backgroundColor: Color(0xFFE7EBFA),
+        // backgroundColor: Color(0xFFE7EBFA),
         bottomNavigationBar: Container(
           height: 60,
           // color: Colors.amber,
           child: Center(
             child: !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              :MaxAdView(
-                adUnitId: Platform.isAndroid
-                    ? AppStrings.MAX_BANNER_ID
-                    : AppStrings.IOS_MAX_BANNER_ID,
-                adFormat: AdFormat.banner,
-                listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                  print('Banner widget ad loaded from ' + ad.networkName);
-                }, onAdLoadFailedCallback: (adUnitId, error) {
-                  print('Banner widget ad failed to load with error code ' +
-                      error.code.toString() +
-                      ' and message: ' +
-                      error.message);
-                }, onAdClickedCallback: (ad) {
-                  print('Banner widget ad clicked');
-                }, onAdExpandedCallback: (ad) {
-                  print('Banner widget ad expanded');
-                }, onAdCollapsedCallback: (ad) {
-                  print('Banner widget ad collapsed');
-                })),
+                ? Container()
+                : MaxAdView(
+                    adUnitId: Platform.isAndroid
+                        ? AppStrings.MAX_BANNER_ID
+                        : AppStrings.IOS_MAX_BANNER_ID,
+                    adFormat: AdFormat.banner,
+                    listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                      print('Banner widget ad loaded from ' + ad.networkName);
+                    }, onAdLoadFailedCallback: (adUnitId, error) {
+                      print('Banner widget ad failed to load with error code ' +
+                          error.code.toString() +
+                          ' and message: ' +
+                          error.message);
+                    }, onAdClickedCallback: (ad) {
+                      print('Banner widget ad clicked');
+                    }, onAdExpandedCallback: (ad) {
+                      print('Banner widget ad expanded');
+                    }, onAdCollapsedCallback: (ad) {
+                      print('Banner widget ad collapsed');
+                    })),
           ),
         ),
         appBar: AppBar(
@@ -70,21 +70,43 @@ class PdfViewView extends GetView<PdfViewController> {
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
                                         BorderSide(color: Colors.transparent)),
-                                hintStyle: TextStyle(color: Colors.white)),
+                                hintStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                )),
                             textSelectionTheme: TextSelectionThemeData(
-                                cursorColor: Colors.white),
+                              cursorColor:
+                                  Theme.of(context).colorScheme.primary,
+                            ),
                             // appBarTheme: AppBarTheme(color: Color(0xFFc20000))),
                             appBarTheme: AppBarTheme(
-                                color: AppColors.Electric_Blue_color)),
+                              color: Theme.of(context).colorScheme.background,
+                              iconTheme: IconThemeData(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary, // Change back button color here
+                              ),
+                            )),
                         onQueryUpdate: print,
                         items: controller.pdf_viewer_model,
                         searchLabel: 'Search file',
-                        searchStyle: TextStyle(color: Colors.white),
+                        searchStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                         suggestion: Center(
-                          child: Text('Search file by name'),
+                          child: Text(
+                            'Search file by name',
+                            // style: TextStyle(
+                            //   color: Theme.of(context).colorScheme.primary,
+                            // ),
+                          ),
                         ),
                         failure: Center(
-                          child: Text('No file found'),
+                          child: Text(
+                            'No file found',
+                            // style: TextStyle(
+                            //   color: Theme.of(context).colorScheme.primary,
+                            // ),
+                          ),
                         ),
                         filter: (file) => [
                               file.name
@@ -96,11 +118,15 @@ class PdfViewView extends GetView<PdfViewController> {
                         builder: (person) => pdfdocitem(person)),
                   );
                 },
-                child: Icon(Icons.search)),
+                child: Icon(
+                  Icons.search,
+                  color: Theme.of(context).colorScheme.primary,
+                )),
             horizontalSpace(SizeConfig.blockSizeHorizontal * 5),
             PopupMenuButton(
               icon: Icon(
                 Icons.more_vert_outlined,
+                color: Theme.of(context).colorScheme.primary,
               ),
               itemBuilder: (BuildContext) {
                 return [
@@ -115,14 +141,13 @@ class PdfViewView extends GetView<PdfViewController> {
                     },
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.share,
-                          color: Colors.indigo,
-                        ),
+                        Icon(Icons.share,
+                            color: Theme.of(context).colorScheme.primary),
                         horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                         Text(
                           "Share",
-                          style: TextStyle(color: Colors.grey.shade700),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                       ],
                     ),
@@ -145,10 +170,8 @@ class PdfViewView extends GetView<PdfViewController> {
                   PopupMenuItem(
                       child: Row(
                     children: [
-                      Icon(
-                        Icons.privacy_tip,
-                        color: Colors.indigo,
-                      ),
+                      Icon(Icons.privacy_tip,
+                          color: Theme.of(context).colorScheme.primary),
                       horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                       GestureDetector(
                         onTap: () {
@@ -159,7 +182,8 @@ class PdfViewView extends GetView<PdfViewController> {
                         },
                         child: Text(
                           "Privacy Policy",
-                          style: TextStyle(color: Colors.grey.shade700),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
                     ],
@@ -170,10 +194,11 @@ class PdfViewView extends GetView<PdfViewController> {
 
             // Icon(Icons.more_vert_outlined)
           ],
-          backgroundColor: Colors.transparent,
+          backgroundColor: Theme.of(context).colorScheme.background,
           flexibleSpace: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+
               // gradient: LinearGradient(
               //   colors: [
               //     AppColors.icon_color,
@@ -207,6 +232,7 @@ class PdfViewView extends GetView<PdfViewController> {
             'PDF Reader',
             style: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 6,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ),
@@ -308,8 +334,8 @@ class PdfViewView extends GetView<PdfViewController> {
             itemCount: controller.pdf_viewer_model.length,
             itemBuilder: (BuildContext, int index) {
               return Container(
-                  child:
-                      _pdfdocitem(index, controller.pdf_viewer_model[index]));
+                  child: _pdfdocitem(
+                      BuildContext, index, controller.pdf_viewer_model[index]));
             },
             separatorBuilder: (BuildContext context, int index) {
               return Divider();
@@ -325,7 +351,7 @@ class PdfViewView extends GetView<PdfViewController> {
   //   return formattedDate;
   // }
 
-  Padding _pdfdocitem(int index, pdfModel) {
+  Padding _pdfdocitem(BuildContext context, int index, pdfModel) {
     String date =
         //!
         controller.pdf_viewer_model[index].date;
@@ -364,7 +390,7 @@ class PdfViewView extends GetView<PdfViewController> {
               width: SizeConfig.blockSizeHorizontal * 99,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -395,7 +421,7 @@ class PdfViewView extends GetView<PdfViewController> {
                           // controller.pdf_viewer_model[index].name,
                           style: TextStyle(
                               fontSize: SizeConfig.blockSizeHorizontal * 4,
-                              color: Color(0xFF1E1E1E)),
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
                       // verticalSpace(SizeConfig.blockSizeVertical * 0),

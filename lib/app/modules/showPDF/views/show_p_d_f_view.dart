@@ -21,7 +21,7 @@ class ShowPDFView extends GetView<PdfViewController> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFE7EBFA),
+        // backgroundColor: Color(0xFFE7EBFA),
         elevation: 0,
         title: Text(
           "PDF Viewer",

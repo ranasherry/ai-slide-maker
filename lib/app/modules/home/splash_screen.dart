@@ -23,7 +23,7 @@ class SplashScreen extends GetView<SplashController> {
         child: Container(
           width: SizeConfig.screenWidth,
           height: SizeConfig.screenHeight,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
           child: Stack(
             children: [
               Padding(
@@ -58,14 +58,14 @@ class SplashScreen extends GetView<SplashController> {
                           top: SizeConfig.blockSizeVertical * 15),
                       child: Text("AI Slide Maker",
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: SizeConfig.blockSizeHorizontal * 6,
                               fontWeight: FontWeight.bold)),
                     ),
                     verticalSpace(SizeConfig.blockSizeVertical * 1),
                     Text("Create your slide in one click",
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Theme.of(context).colorScheme.primary,
                             fontSize: SizeConfig.blockSizeHorizontal * 3,
                             fontWeight: FontWeight.bold)),
                   ],

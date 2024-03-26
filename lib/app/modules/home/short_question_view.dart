@@ -17,13 +17,15 @@ class ShortQuestionView extends GetView<MathsSolverController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE7EBFA),
+      // backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
         title: Text(
           'Solved Question',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Color(0xFF85C0EB),
+        // backgroundColor: Color(0xFF85C0EB),
         centerTitle: true,
         leading: GestureDetector(
             onTap: () {
@@ -37,7 +39,7 @@ class ShortQuestionView extends GetView<MathsSolverController> {
             },
             child: Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.primary,
             )),
       ),
       body: ListView(
@@ -74,7 +76,7 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                 borderType: BorderType.RRect,
                 strokeCap: StrokeCap.round,
                 padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
-                color: Color(0xFF0049C8),
+                color: Theme.of(context).colorScheme.primary,
                 // dashPattern: [19, 2, 6, 3],
                 dashPattern: [6, 1, 8, 11],
                 radius: Radius.circular(SizeConfig.blockSizeHorizontal * 4),
@@ -86,7 +88,7 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                       // height: SizeConfig.blockSizeVertical * 10,
                       width: SizeConfig.blockSizeHorizontal * 85,
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(
                               SizeConfig.blockSizeHorizontal * 4)),
                       child: Column(
@@ -99,9 +101,11 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                             child: Text(
                               "Question",
                               style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF202F55)),
+                                fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary,
+                                // Color(0xFF202F55)
+                              ),
                             ),
                           ),
                           Padding(
@@ -118,7 +122,9 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                                         softWrap: true,
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.black,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
                                         ),
                                       ),
                                     )
@@ -133,7 +139,7 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                       // height: SizeConfig.blockSizeVertical * 15,
                       width: SizeConfig.blockSizeHorizontal * 85,
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(
                               SizeConfig.blockSizeHorizontal * 4)),
                       child: Column(
@@ -149,10 +155,13 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                                 child: Text(
                                   "Answers",
                                   style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 6,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF0051E3)),
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 6,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    // Color(0xFF0051E3)
+                                  ),
                                 ),
                               ),
                               GestureDetector(
@@ -169,7 +178,8 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                                       top: SizeConfig.blockSizeVertical * 2),
                                   child: Icon(
                                     Icons.copy,
-                                    color: Color(0xFF85C0EB),
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ),
@@ -190,7 +200,9 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                                         softWrap: true,
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.black,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
                                         ),
                                       ),
                                     ),
@@ -251,8 +263,9 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                   child: Text(
                     "Other question",
                     style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                        color: Colors.white),
+                      fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 ),
               ),

@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsViewCTL extends GetxController {
+  RxBool isDarkMode = false.obs;
   @override
   void onInit() {
     // TODO: implement onInit

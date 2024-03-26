@@ -11,9 +11,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
 import 'package:slide_maker/app/utills/ThemeNotifier.dart';
+import 'package:slide_maker/theme/app_theme.dart';
 
 import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
@@ -134,15 +136,19 @@ class MyApp extends StatelessWidget {
                   navigatorObservers: <NavigatorObserver>[observer],
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
+
                   // theme: ThemeData.dark(),
 
-                  theme: ThemeData.light(), // Default light theme
+                  // theme: ThemeData.light(), // Default light theme
+                  theme: lightMode,
+                  darkTheme: darkMode,
 
-                  darkTheme: ThemeData(
-                    useMaterial3: true,
-                  ),
+                  // darkTheme: ThemeData(
+                  //   useMaterial3: true,
+                  // ),
 
-                  themeMode: themeNotifier.themeMode,
+                  themeMode: ThemeMode.system,
+                  // themeMode: themeNotifier.themeMode,
                   // home: CustomPDFViewer(),
                   // title: "Application",
                   initialRoute: AppPages.INITIAL,
