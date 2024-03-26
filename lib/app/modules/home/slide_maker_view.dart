@@ -9,6 +9,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:im_animations/im_animations.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -589,7 +590,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
         MoreSlidesButton(context),
         verticalSpace(SizeConfig.blockSizeVertical * 1),
 
-        !AppLovinProvider.instance.isAdsEnable
+        !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
             ? Container()
             : MaxAdView(
                 adUnitId: Platform.isAndroid
@@ -837,8 +838,10 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // :
               "Next",
               style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  color: Colors.white),
+                  // fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  // fontSize: SizeConfig.blockSizeHorizontal * 2,
+                  fontSize: 64.sp,
+                  color: Theme.of(context).colorScheme.primary),
             ),
           ),
         ),
@@ -898,7 +901,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // :
               "Regenerate with 2 Extra slides",
               style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  // fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  // fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+                  fontSize: SizeConfig.blockSizeHorizontal * 12.sp,
                   color: Colors.white),
             ),
           ),
@@ -917,13 +922,15 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     Text(
                       "Outlines of the topic",
                       style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 4,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                          // fontSize: SizeConfig.blockSizeHorizontal * 4,
+                          // fontSize: SizeConfig.blockSizeHorizontal * 1.3,
+                          fontSize: 74.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary),
                     ),
                     Container(
                       // height: SizeConfig.screenHeight*0.32,
+                      // color: Colors.yellow,
                       height: 290,
 
                       child: ListView.builder(
@@ -938,11 +945,12 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                 title: Text(
                                   "${controller.slideResponseList[index].slideTitle}",
                                   style: TextStyle(
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 4,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
+                                      fontSize: 54.sp,
+                                      // SizeConfig.blockSizeHorizontal * 1.2,
+
+                                      // SizeConfig.blockSizeHorizontal * 4,
+
+                                      color: Theme.of(context).colorScheme.primary),
                                 ));
                           }),
                     ),
@@ -1060,8 +1068,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                       ? "Recreate"
                                       : "Create",
                                   style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4,
+                                      fontSize: 54.sp,
+                                      // SizeConfig.blockSizeHorizontal * 4,
+                                      // SizeConfig.blockSizeHorizontal * 2,
                                       color: Colors.white),
                                 ),
                           // Row(
@@ -1112,7 +1121,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
           controller: controller.inputTextCTL,
           cursorColor: Theme.of(context).colorScheme.primary,
           style: TextStyle(
-              fontSize: SizeConfig.blockSizeHorizontal * 4,
+              // fontSize: SizeConfig.blockSizeHorizontal * 4,
+              // fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+              fontSize: 54.sp,
               color: Theme.of(context).colorScheme.primary),
           decoration: InputDecoration(
             // hintText: text,
