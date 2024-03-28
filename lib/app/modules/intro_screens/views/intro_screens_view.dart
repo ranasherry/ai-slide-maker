@@ -24,31 +24,34 @@ class IntroScreensView extends GetView<IntroScreensController> {
       //   title:  Text('IntroScreensView'),
       //   centerTitle: true,
       // ),
-      body: IntroScreenOnboarding(
-        introductionList: [
-          MyIntroduction(
-            title: 'Create AI Presentation',
-            subTitle:
-                'Let AI craft your killer slides. Own your next on demand presentation.',
-            imageUrl: AppImages.PPT_BG1,
-            titleTextStyle: TextStyle(fontSize: 100.sp),
-          ),
-          MyIntroduction(
-            title: 'Your Math Problem Solver',
-            subTitle: 'Unlock the power of AI to conquer any math challenge.',
-            imageUrl: AppImages.PPT_BG1,
-            titleTextStyle: TextStyle(fontSize: 100.sp),
-          ),
-          MyIntroduction(
-            title: 'Document Viewer',
-            subTitle: 'Open Any Document in the app as an add on',
-            imageUrl: AppImages.PPT_BG1,
-            titleTextStyle: TextStyle(fontSize: 100.sp),
-          ),
-        ],
-        onTapSkipButton: () {
-          controller.goToHomePage();
-        },
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*3),
+        child: IntroScreenOnboarding(
+          introductionList: [
+            MyIntroduction(
+              title: 'Create AI Presentation',
+              subTitle:
+                  'Let AI craft your killer slides. Own your next on demand presentation.',
+              imageUrl: AppImages.PPT_BG1,
+              titleTextStyle: TextStyle(fontSize: 100.sp),
+            ),
+            MyIntroduction(
+              title: 'Your Math Problem Solver',
+              subTitle: 'Unlock the power of AI to conquer any math challenge.',
+              imageUrl: AppImages.PPT_BG1,
+              titleTextStyle: TextStyle(fontSize: 100.sp),
+            ),
+            MyIntroduction(
+              title: 'Document Viewer',
+              subTitle: 'Open Any Document in the app as an add on',
+              imageUrl: AppImages.PPT_BG1,
+              titleTextStyle: TextStyle(fontSize: 100.sp),
+            ),
+          ],
+          onTapSkipButton: () {
+            controller.goToHomePage();
+          },
+        ),
       ),
     );
   }
@@ -84,7 +87,7 @@ class MyIntroductionState extends State<MyIntroduction> {
   Widget build(BuildContext context) {
     return Container(
       padding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3),
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3, vertical: SizeConfig.blockSizeVertical*3),
       child: Column(
         //crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,

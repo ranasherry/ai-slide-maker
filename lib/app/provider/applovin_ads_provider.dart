@@ -40,14 +40,14 @@ class AppLovinProvider {
   var isWidgetMRecShowing = false;
   int interCounter = 2;
 
-  bool isAdsEnable = true;
+  bool isAdsEnable = false;
 
   void init() {
     _interstitial_ad_unit_id = Platform.isAndroid
         ? AppStrings.MAX_INTER_ID
         : AppStrings.IOS_MAX_INTER_ID;
 
-    isAdsEnable = kReleaseMode;
+    // isAdsEnable = kReleaseMode;
     // if(kReleaseMode){
 
     // initializePlugin();
@@ -56,7 +56,10 @@ class AppLovinProvider {
     //   print("Debug Mode");
     // }
     // if (kReleaseMode) {
-    initializePlugin();
+      if(!isAdsEnable){
+      initializePlugin();
+
+      }
     // }
   }
 

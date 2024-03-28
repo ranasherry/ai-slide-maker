@@ -355,12 +355,17 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     // Find the start of the actual JSON data
     int startIndex = response.indexOf('[');
     if (startIndex == -1) {
+      EasyLoading.showError("We are at our limit please try again later");
+      EasyLoading.dismiss();
+
       throw Exception('Invalid JSON format: missing [ character');
     }
 
     // Find the end of the actual JSON data
     int endIndex = response.lastIndexOf(']');
     if (endIndex == -1) {
+      EasyLoading.showError("We are at our limit please try again later");
+      EasyLoading.dismiss();
       throw Exception('Invalid JSON format: missing ] character');
     }
 
@@ -386,6 +391,8 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
           await generateContent(userInput.value).then((response) {
             // response = removeQuotesIfExists(response);
+            log("Raw Bard Response: $response");
+
             response = removeExtraText(response);
             log("RemovedExtra String: $response");
             jsonOutput.value = response;
