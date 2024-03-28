@@ -19,7 +19,6 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
         title: Text(
           'Invitation Maker',
@@ -32,7 +31,6 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
               Get.back();
             },
             child: Icon(Icons.arrow_back_ios_new_rounded)),
-        backgroundColor: Color(0xFFE7EBFA),
         centerTitle: true,
       ),
       body: ListView(

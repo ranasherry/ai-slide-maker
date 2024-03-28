@@ -20,7 +20,7 @@ class HomeView extends GetView<HomeViewCtl> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE7EBFA),
+      // backgroundColor: Color(0xFFE7EBFA),
       // key: controller.scaffoldKey,
       // drawer: Drawer(
       //   width: SizeConfig.blockSizeHorizontal * 75,
@@ -57,10 +57,12 @@ class HomeView extends GetView<HomeViewCtl> {
       //   ),
       // ),
       appBar: AppBar(
-        backgroundColor: Color(0xFFE7EBFA),
+        // backgroundColor: Color(0xFFE7EBFA),
         title: Text(
           'Slide Maker',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold),
         ),
         actions: [
           Platform.isIOS

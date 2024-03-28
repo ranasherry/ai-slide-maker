@@ -60,7 +60,7 @@ class ShowPPTView extends GetView<ShowPPTController> {
       ),
 
       appBar: AppBar(
-        backgroundColor: AppColors.Electric_Blue_color,
+        // backgroundColor: AppColors.Electric_Blue_color,
         title: Text(
           "PPT Viewer",
           style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),

@@ -4,12 +4,15 @@ import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
+import 'package:slide_maker/theme/app_theme.dart';
 
 class SettingsView extends GetView<SettingsViewCTL> {
   const SettingsView({super.key});
@@ -17,14 +20,17 @@ class SettingsView extends GetView<SettingsViewCTL> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE7EBFA),
+      // backgroundColor: Theme.of(context).colorScheme.background,
+      // Color(0xFFE7EBFA),
       appBar: AppBar(
-        backgroundColor: Color(0xFFE7EBFA),
+        // backgroundColor: Theme.of(context).colorScheme.background,
+        // Color(0xFFE7EBFA),
         title: Text(
           "Settings",
           style: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 6,
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.primary),
         ),
         centerTitle: true,
         leading: GestureDetector(
@@ -38,8 +44,8 @@ class SettingsView extends GetView<SettingsViewCTL> {
           children: [
             verticalSpace(SizeConfig.blockSizeVertical * 1),
             Container(
-              height: 60,
-              color: Colors.amber,
+              // height: 60,
+              // color: Colors.amber,
               child: Center(
                 child: !AppLovinProvider.instance.isAdsEnable
                     ? Container()
@@ -67,29 +73,80 @@ class SettingsView extends GetView<SettingsViewCTL> {
               ),
             ),
             verticalSpace(SizeConfig.blockSizeVertical),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: SizeConfig.blockSizeHorizontal * 7,
+                  right: SizeConfig.blockSizeHorizontal * 4),
+              child: Row(
+                children: [
+                  Icon(
+                      controller.isDarkMode.value
+                          ? Icons.light_mode
+                          : Icons.dark_mode,
+                      color: Colors.blue),
+                  horizontalSpace(SizeConfig.blockSizeHorizontal * 6),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Theme Mode",
+                        style: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "Light / Dark Theme",
+                        style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 3,
+                            color: Colors.blue),
+                      )
+                    ],
+                  ),
+                  Spacer(),
+                  Obx(
+                    () => Switch(
+                      value: !controller.isDarkMode.value,
+                      onChanged: (value) {
+                        print("Is dark mode:  ${Get.isDarkMode}");
+                        Get.changeThemeMode(
+                            Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                        controller.isDarkMode.value = Get.isDarkMode;
+                      },
+                      activeColor: Colors.blue,
+                      inactiveThumbColor: Colors.blueGrey,
+                      activeTrackColor: Colors.grey.shade800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             GestureDetector(
               onTap: () {
                 LaunchReview.launch(
                   androidAppId: "com.genius.aislides.generator",
                 );
               },
-              child: settings_btn("Rate Us", CupertinoIcons.hand_thumbsup_fill,
-                  "Help us to grow with your 5 star"),
+              child: settings_btn(
+                  "Rate Us",
+                  CupertinoIcons.hand_thumbsup_fill,
+                  "Help us to grow with your 5 star",
+                  Theme.of(context).colorScheme.primary),
             ),
             GestureDetector(
               onTap: () {
                 controller.ShareApp();
               },
               child: settings_btn("Invite your friends", Icons.person_add_alt_1,
-                  "Spread the World"),
+                  "Spread the World", Theme.of(context).colorScheme.primary),
             ),
             GestureDetector(
                 onTap: () {
                   controller
                       .openURL("https://sites.google.com/view/appgeniusx/home");
                 },
-                child: settings_btn(
-                    "Privacy Policy", Icons.privacy_tip, "Rights of user")),
+                child: settings_btn("Privacy Policy", Icons.privacy_tip,
+                    "Rights of user", Theme.of(context).colorScheme.primary)),
             verticalSpace(SizeConfig.blockSizeVertical * 1),
             !AppLovinProvider.instance.isAdsEnable
                 ? Container()
@@ -125,10 +182,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
   }
 
   Padding settings_btn(
-    String text1,
-    IconData icon1,
-    String text2,
-  ) {
+      String text1, IconData icon1, String text2, Color color) {
     return Padding(
       padding: EdgeInsets.only(
           top: SizeConfig.blockSizeVertical * 4,
@@ -150,7 +204,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
                 style: TextStyle(
                     fontSize: SizeConfig.blockSizeHorizontal * 5,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade900),
+                    color: color),
               ),
               Text(
                 text2,

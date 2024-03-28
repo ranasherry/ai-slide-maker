@@ -16,18 +16,23 @@ class SubHomeView extends GetView<HomeViewCtl> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE7EBFA),
+      // backgroundColor: Color(0xFFE7EBFA),
       appBar: AppBar(
-        backgroundColor: Color(0xFFE7EBFA),
+        // backgroundColor: Color(0xFFE7EBFA),
         title: Text(
           'More Features',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
             onTap: () {
               Get.back();
             },
-            child: Icon(Icons.arrow_back_ios_rounded)),
+            child: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Theme.of(context).colorScheme.primary,
+            )),
         elevation: 0,
         centerTitle: true,
       ),
@@ -252,7 +257,7 @@ class SubHomeView extends GetView<HomeViewCtl> {
             // height: 60,
             // color: Colors.amber,
             child: Center(
-              child: !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
+              child: !AppLovinProvider.instance.isAdsEnable
                   ? Container()
                   : MaxAdView(
                       adUnitId: Platform.isAndroid

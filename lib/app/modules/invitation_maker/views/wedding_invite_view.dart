@@ -35,7 +35,6 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
         }
       },
       child: Scaffold(
-        backgroundColor: Color(0xFFE7EBFA),
         appBar: AppBar(
           title: Text(
             'Wedding Invitation Maker',
@@ -43,7 +42,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                 fontSize: SizeConfig.blockSizeHorizontal * 6,
                 fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Color(0xFFE7EBFA),
+
           leading: GestureDetector(
               onTap: () {
                 if (controller.isOnTemplates.value) {
@@ -61,7 +60,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
         floatingActionButton: Obx(() => controller.isOnTemplates.value
             ? Container()
             : FloatingActionButton.extended(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.green,
                 onPressed: () {
                   // Perform validation before submission
 
@@ -223,7 +222,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.shade200, // Shadow color
+                    color: Theme.of(context).colorScheme.shadow, // Shadow color
                     spreadRadius: 2, // Spread radius
                     blurRadius: 10, // Blur radius
                     offset: Offset(0, 5), // Offset in x and y direction
@@ -232,13 +231,13 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
               ),
               child: TextFormField(
                 controller: controller.groomNameTextController,
-                cursorColor: Colors.black,
+                cursorColor: Theme.of(context).colorScheme.primary,
                 decoration: InputDecoration(
                   labelText: 'Groom Name',
                   labelStyle: TextStyle(color: Colors.grey),
                   hintText: 'Enter the groom\'s name',
                   hintStyle: TextStyle(color: Colors.grey.shade400),
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(
@@ -253,7 +252,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 8),
                     borderSide: BorderSide(
-                      color: Colors.indigo,
+                      color: Theme.of(context).colorScheme.primary,
                       // Color(0xFF0095B0), // Border color when focused
                       width: 1.0, // Border width when focused
                     ),
@@ -275,7 +274,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.shade200, // Shadow color
+                    color: Theme.of(context).colorScheme.shadow, // Shadow color
                     spreadRadius: 2, // Spread radius
                     blurRadius: 10, // Blur radius
                     offset: Offset(0, 5), // Offset in x and y direction
@@ -289,7 +288,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                   labelStyle: TextStyle(color: Colors.grey),
                   hintText: 'Enter the bride\'s name',
                   hintStyle: TextStyle(color: Colors.grey.shade400),
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(
@@ -304,7 +303,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 8),
                     borderSide: BorderSide(
-                      color: Colors.indigo,
+                      color: Theme.of(context).colorScheme.primary,
                       // Color(0xFF0095B0), // Border color when focused
                       width: 1.0, // Border width when focused
                     ),
@@ -327,7 +326,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.shade200, // Shadow color
+                    color: Theme.of(context).colorScheme.shadow, // Shadow color
                     spreadRadius: 2, // Spread radius
                     blurRadius: 10, // Blur radius
                     offset: Offset(0, 5), // Offset in x and y direction
@@ -342,7 +341,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                   labelStyle: TextStyle(color: Colors.grey),
                   hintText: 'Enter the contact number',
                   hintStyle: TextStyle(color: Colors.grey.shade400),
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(
@@ -357,7 +356,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 8),
                     borderSide: BorderSide(
-                      color: Colors.indigo,
+                      color: Theme.of(context).colorScheme.primary,
                       // Color(0xFF0095B0), // Border color when focused
                       width: 1.0, // Border width when focused
                     ),
@@ -378,7 +377,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.shade200, // Shadow color
+                    color: Theme.of(context).colorScheme.shadow, // Shadow color
                     spreadRadius: 2, // Spread radius
                     blurRadius: 10, // Blur radius
                     offset: Offset(0, 5), // Offset in x and y direction
@@ -392,7 +391,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                   labelStyle: TextStyle(color: Colors.grey),
                   hintText: 'Enter Venue Address',
                   hintStyle: TextStyle(color: Colors.grey.shade400),
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(
@@ -407,7 +406,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 8),
                     borderSide: BorderSide(
-                      color: Colors.indigo,
+                      color: Theme.of(context).colorScheme.primary,
                       // Color(0xFF0095B0), // Border color when focused
                       width: 1.0, // Border width when focused
                     ),
