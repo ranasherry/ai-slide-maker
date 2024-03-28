@@ -65,9 +65,7 @@ class HomeView extends GetView<HomeViewCtl> {
               fontWeight: FontWeight.bold),
         ),
         actions: [
-          Platform.isIOS
-              ? Container()
-              : Padding(
+          Padding(
                   padding: EdgeInsets.only(
                       right: SizeConfig.blockSizeHorizontal * 2),
                   child: GestureDetector(
@@ -76,7 +74,7 @@ class HomeView extends GetView<HomeViewCtl> {
                     },
                     child: Image.asset(
                       AppImages.setting,
-                      color: Colors.grey.shade900,
+                      color: Theme.of(context).colorScheme.primary,
                       scale: 2.8,
                     ),
                   ))
