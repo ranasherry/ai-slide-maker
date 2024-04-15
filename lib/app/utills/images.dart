@@ -26,6 +26,8 @@ class AppImages {
   static const setting = "assets/images/settings.png";
   static const light_mode = "assets/images/light_mode.png";
   static const dark_mode = "assets/images/dark_mode.png";
+  static const chatbot = "assets/images/chatbot.png";
+  static const bot = "assets/images/bot.png";
   //? PPT_BG
   static const PPT_BG1 = "assets/ppt_bg/ppt_bg1.png";
   static const PPT_BG2 = "assets/ppt_bg/ppt_bg2.png";

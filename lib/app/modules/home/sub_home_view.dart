@@ -97,13 +97,13 @@ class SubHomeView extends GetView<HomeViewCtl> {
                             scale: 10,
                           ),
                           Text(
-                            "Scan & Solve",
+                            "AI Maths Solver",
                             style: TextStyle(
                                 fontSize: SizeConfig.blockSizeHorizontal * 4.5,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "Scan the text to solve the question",
+                            "Simplify math complexities effortlessly",
                             style: TextStyle(
                                 fontSize: SizeConfig.blockSizeHorizontal * 3),
                           )

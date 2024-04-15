@@ -5,6 +5,7 @@ class AppStrings {
       "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";
   static var GeminiProKey = "GeminiProKey";
   static const MAX_SLIDES_TOKENS = 1000;
+  static const MAX_CHAT_TOKKENS = 400;
   static var PLATFORMTYP = "none";
   static var HOTPOT_API = "k6sv13mQAF9U2Eq2HRFFuNOj0vDZYqtx3UVIBB6cSOPxrm1TUT";
   static var SHOW_HOTPOT_API_IMAGES = true;
