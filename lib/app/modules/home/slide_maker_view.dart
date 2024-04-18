@@ -663,7 +663,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
             // presenterView: true,
             theme: SlideThemeData.light(
                 backgroundBuilder: (context) {
-                  return Image.asset(AppImages.PPT_BG2);
+                  return Image.asset(AppImages.PPT_BG3);
                 },
                 textTheme: SlideTextThemeData.light(
                     body: TextStyle(
@@ -950,7 +950,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
 
                                       // SizeConfig.blockSizeHorizontal * 4,
 
-                                      color: Theme.of(context).colorScheme.primary),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
                                 ));
                           }),
                     ),
