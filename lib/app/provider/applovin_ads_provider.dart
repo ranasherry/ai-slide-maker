@@ -40,7 +40,7 @@ class AppLovinProvider {
   var isWidgetMRecShowing = false;
   int interCounter = 2;
 
-  bool isAdsEnable = false;
+  bool isAdsEnable = true;
 
   void init() {
     _interstitial_ad_unit_id = Platform.isAndroid
@@ -56,10 +56,9 @@ class AppLovinProvider {
     //   print("Debug Mode");
     // }
     // if (kReleaseMode) {
-      if(!isAdsEnable){
+    if (isAdsEnable) {
       initializePlugin();
-
-      }
+    }
     // }
   }
 
@@ -260,6 +259,7 @@ class AppLovinProvider {
     //   print(object)
     //   return;
     // }
+    print("Interstitial ad is show is called");
 
     if (!isAdsEnable) return;
     interCounter++;
@@ -268,7 +268,7 @@ class AppLovinProvider {
     }
     interCounter = 1;
     // if (RevenueCatService().currentEntitlement.value == Entitlement.free) {
-    print("Interstitial ad is show is called");
+    print("Interstitial ad is show is called 2");
     bool? isInterstitialReady =
         await AppLovinMAX.isInterstitialReady(_interstitial_ad_unit_id);
     print("return: $isInterstitialReady");
