@@ -259,6 +259,7 @@ class AppLovinProvider {
     //   print(object)
     //   return;
     // }
+    print("Interstitial ad is show is called");
 
     if (!isAdsEnable) return;
     interCounter++;
@@ -267,7 +268,7 @@ class AppLovinProvider {
     }
     interCounter = 1;
     // if (RevenueCatService().currentEntitlement.value == Entitlement.free) {
-    print("Interstitial ad is show is called");
+    print("Interstitial ad is show is called 2");
     bool? isInterstitialReady =
         await AppLovinMAX.isInterstitialReady(_interstitial_ad_unit_id);
     print("return: $isInterstitialReady");

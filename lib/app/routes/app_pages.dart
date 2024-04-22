@@ -1,7 +1,10 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:slide_maker/app/modules/bindings/settings_view_binding.dart';
+import 'package:slide_maker/app/modules/bindings/slide_assistant_binding.dart';
 import 'package:slide_maker/app/modules/home/settings_screen_view.dart';
+import 'package:slide_maker/app/modules/home/slide_assistant.dart';
 import 'package:slide_maker/app/modules/home/sub_home_view.dart';
+import 'package:slide_maker/app/modules/home/sub_slide_maker_view.dart';
 import 'package:slide_maker/app/modules/invitation_maker/bindings/weddinginvitation_binding.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/b.templates/b_template1.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/wedding_invite_view.dart';
@@ -147,6 +150,17 @@ class AppPages {
       name: _Paths.SettingsView,
       page: () => const SettingsView(),
       binding: SettingsViewbinding(),
+    ),
+
+    GetPage(
+      name: _Paths.SubSlideView,
+      page: () => const SubSlideView(),
+      // binding: ,
+    ),
+    GetPage(
+      name: _Paths.AiSlideAssistant,
+      page: () => const AiSlideAssistant(),
+      binding: AiSlideAssistantBinding(),
     ),
   ];
 }

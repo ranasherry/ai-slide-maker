@@ -66,18 +66,18 @@ class HomeView extends GetView<HomeViewCtl> {
         ),
         actions: [
           Padding(
-                  padding: EdgeInsets.only(
-                      right: SizeConfig.blockSizeHorizontal * 2),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.SettingsView);
-                    },
-                    child: Image.asset(
-                      AppImages.setting,
-                      color: Theme.of(context).colorScheme.primary,
-                      scale: 2.8,
-                    ),
-                  ))
+              padding:
+                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 2),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.SettingsView);
+                },
+                child: Image.asset(
+                  AppImages.setting,
+                  color: Theme.of(context).colorScheme.primary,
+                  scale: 2.8,
+                ),
+              ))
         ],
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -121,7 +121,7 @@ class HomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.SlideMakerView);
+                    Get.toNamed(Routes.SubSlideView);
                     AppLovinProvider.instance.showInterstitial(() {});
                   },
                   child: Container(

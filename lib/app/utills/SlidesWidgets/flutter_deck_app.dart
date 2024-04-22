@@ -34,7 +34,7 @@ class FlutterDeckExample extends StatelessWidget {
           // Define a global background for the light and dark themes separately.
           background: FlutterDeckBackgroundConfiguration(
               light: FlutterDeckBackground.image(Image.asset(
-            AppImages.PPT_BG2,
+            AppImages.PPT_BG3,
             fit: BoxFit.fill,
           ))
               // light: FlutterDeckBackground.gradient(

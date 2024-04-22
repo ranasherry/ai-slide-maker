@@ -24,6 +24,8 @@ abstract class Routes {
   static const WeddingInvitationView = _Paths.WeddingInvitationView;
   static const BirthdayTemplate = _Paths.BirthdayTemplate;
   static const SettingsView = _Paths.SettingsView;
+  static const SubSlideView = _Paths.SubSlideView;
+  static const AiSlideAssistant = _Paths.AiSlideAssistant;
 }
 
 abstract class _Paths {
@@ -47,4 +49,6 @@ abstract class _Paths {
   static const WeddingInvitationView = '/WeddingInvitationView';
   static const BirthdayTemplate = '/BirthdayTemplate';
   static const SettingsView = '/SettingsView';
+  static const SubSlideView = '/SubSlideView';
+  static const AiSlideAssistant = '/AiSlideAssistant';
 }
