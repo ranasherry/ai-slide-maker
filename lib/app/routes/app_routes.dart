@@ -26,6 +26,7 @@ abstract class Routes {
   static const SettingsView = _Paths.SettingsView;
   static const SubSlideView = _Paths.SubSlideView;
   static const AiSlideAssistant = _Paths.AiSlideAssistant;
+  static const NEWSLIDE_GENERATOR = _Paths.NEWSLIDE_GENERATOR;
 }
 
 abstract class _Paths {
@@ -51,4 +52,5 @@ abstract class _Paths {
   static const SettingsView = '/SettingsView';
   static const SubSlideView = '/SubSlideView';
   static const AiSlideAssistant = '/AiSlideAssistant';
+  static const NEWSLIDE_GENERATOR = '/newslide-generator';
 }
