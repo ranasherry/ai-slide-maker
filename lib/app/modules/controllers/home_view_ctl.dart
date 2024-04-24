@@ -4,24 +4,21 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 // import 'package:permission_handler/permission_handler.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
-import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/main.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
     WidgetsBinding.instance.addObserver(this);
 
     GetRemoteConfig().then((value) {
@@ -37,8 +34,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     });
     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
 
-    if(Platform.isAndroid)
-      handlePushNotification();
+    if (Platform.isAndroid) handlePushNotification();
   }
 
   checkPermission(String page) async {
@@ -62,7 +58,6 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     //     Get.offNamed(Routes.PDF_PERMISSION, arguments: page);
     //   });
     // }
-    
   }
 
   @override

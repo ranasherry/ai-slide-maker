@@ -35,4 +35,11 @@ class AppImages {
 
   static const invitation_template1 =
       "assets/invitation/invitation_template1.png";
+
+  // new images
+  static const invite = "assets/images/invite.png";
+  static const more = "assets/images/more.png";
+  static const history1 = "assets/images/history1.png";
+  static const history2 = "assets/images/history2.png";
+  static const book = "assets/images/book.png";
 }
