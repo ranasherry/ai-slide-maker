@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
@@ -48,10 +49,16 @@ class SubSlideView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
-                    AppImages.presentation, "AI Slide Maker"),
-                card_widgets(
-                    Color(0xFF), Color(0xFF), AppImages.chatbot, "AI Assistant")
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.SlideMakerView);
+                    AppLovinProvider.instance.showInterstitial(() {});
+                  },
+                  child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
+                      AppImages.presentation, "AI Slide Maker"),
+                ),
+                card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
+                    AppImages.chatbot, "AI Assistant")
                 // GestureDetector(
                 //   onTap: () {
                 //     Get.toNamed(Routes.SlideMakerView);
