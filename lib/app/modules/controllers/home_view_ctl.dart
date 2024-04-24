@@ -37,8 +37,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     });
     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
 
-    if(Platform.isAndroid)
-      handlePushNotification();
+    if (Platform.isAndroid) handlePushNotification();
   }
 
   checkPermission(String page) async {
@@ -62,7 +61,6 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     //     Get.offNamed(Routes.PDF_PERMISSION, arguments: page);
     //   });
     // }
-    
   }
 
   @override
