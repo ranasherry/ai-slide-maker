@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:slide_maker/app/utills/size_config.dart';
 
 class WatchAdDialog extends StatefulWidget {
   final Function onWatchAd;
@@ -104,6 +105,34 @@ void showWatchAdDialog({
       onWatchAd: onWatchAd,
       onCancel: onCancel,
       timerText: timerText,
+    ),
+  );
+}
+
+Container card_widgets(Color color1, Color color2, String image, String text) {
+  return Container(
+    height: SizeConfig.blockSizeVertical * 18,
+    width: SizeConfig.blockSizeHorizontal * 42,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 3),
+        gradient: LinearGradient(
+            colors: [color1, color2],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft)),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Image.asset(
+          image,
+        ),
+        Text(
+          text,
+          style: TextStyle(
+              fontSize: SizeConfig.blockSizeHorizontal * 4,
+              fontWeight: FontWeight.bold,
+              color: Colors.black),
+        )
+      ],
     ),
   );
 }

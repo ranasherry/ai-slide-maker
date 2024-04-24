@@ -55,8 +55,8 @@ class AppLovinProvider {
     // }else{
     //   print("Debug Mode");
     // }
-    // if (kReleaseMode) {
-    if (isAdsEnable) {
+    if (kReleaseMode) {
+      // if (isAdsEnable) {
       initializePlugin();
     }
     // }
