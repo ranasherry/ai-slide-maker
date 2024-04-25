@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/size_config.dart';
 
 class BirthdayTemplate extends StatelessWidget {
   const BirthdayTemplate({super.key});
@@ -15,6 +16,15 @@ class BirthdayTemplate extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.bold),
         ),
+        bottom: PreferredSize(
+            child: Container(
+              margin: EdgeInsets.only(
+                  right: SizeConfig.blockSizeHorizontal * 3,
+                  left: SizeConfig.blockSizeHorizontal * 3),
+              color: Theme.of(context).colorScheme.primary,
+              height: 1.5,
+            ),
+            preferredSize: Size.fromHeight(6.0)),
         centerTitle: true,
         leading: GestureDetector(
             onTap: () {

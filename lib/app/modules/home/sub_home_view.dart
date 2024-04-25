@@ -7,6 +7,7 @@ import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -25,6 +26,15 @@ class SubHomeView extends GetView<HomeViewCtl> {
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.bold),
         ),
+        bottom: PreferredSize(
+            child: Container(
+              margin: EdgeInsets.only(
+                  right: SizeConfig.blockSizeHorizontal * 3,
+                  left: SizeConfig.blockSizeHorizontal * 3),
+              color: Theme.of(context).colorScheme.primary,
+              height: 1.5,
+            ),
+            preferredSize: Size.fromHeight(6.0)),
         leading: GestureDetector(
             onTap: () {
               Get.back();
@@ -74,85 +84,99 @@ class SubHomeView extends GetView<HomeViewCtl> {
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(Routes.MathsSolverView);
-                    AppLovinProvider.instance.showInterstitial(() {});
                   },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 20,
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 4),
-                      color: Color(0xFF85C0EB),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.blockSizeHorizontal * 2,
-                          vertical: SizeConfig.blockSizeVertical * 1),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            AppImages.scan,
-                            scale: 10,
-                          ),
-                          Text(
-                            "AI Maths Solver",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Simplify math complexities effortlessly",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
+                      AppImages.scan, "AI Maths Solver"),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.HistoryView);
-                    AppLovinProvider.instance.showInterstitial(() {});
+                    controller.checkPermission(Routes.PPTListView);
                   },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 20,
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 4),
-                      color: Color(0xFFFBAE8B),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.blockSizeHorizontal * 2,
-                          vertical: SizeConfig.blockSizeVertical * 1),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            AppImages.history,
-                            scale: 10,
-                          ),
-                          Text(
-                            "History",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Watch over your history collection",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                  child: card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
+                      AppImages.ppt_ic, "PPT Viewer"),
+                )
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.toNamed(Routes.MathsSolverView);
+                //     AppLovinProvider.instance.showInterstitial(() {});
+                //   },
+                //   child: Container(
+                //     height: SizeConfig.blockSizeVertical * 20,
+                //     width: SizeConfig.blockSizeHorizontal * 40,
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(
+                //           SizeConfig.blockSizeHorizontal * 4),
+                //       color: Color(0xFF85C0EB),
+                //     ),
+                //     child: Padding(
+                //       padding: EdgeInsets.symmetric(
+                //           horizontal: SizeConfig.blockSizeHorizontal * 2,
+                //           vertical: SizeConfig.blockSizeVertical * 1),
+                //       child: Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: [
+                //           Image.asset(
+                //             AppImages.scan,
+                //             scale: 10,
+                //           ),
+                //           Text(
+                //             "AI Maths Solver",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                //                 fontWeight: FontWeight.bold),
+                //           ),
+                //           Text(
+                //             "Simplify math complexities effortlessly",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 3),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.toNamed(Routes.HistoryView);
+                //     AppLovinProvider.instance.showInterstitial(() {});
+                //   },
+                //   child: Container(
+                //     height: SizeConfig.blockSizeVertical * 20,
+                //     width: SizeConfig.blockSizeHorizontal * 40,
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(
+                //           SizeConfig.blockSizeHorizontal * 4),
+                //       color: Color(0xFFFBAE8B),
+                //     ),
+                //     child: Padding(
+                //       padding: EdgeInsets.symmetric(
+                //           horizontal: SizeConfig.blockSizeHorizontal * 2,
+                //           vertical: SizeConfig.blockSizeVertical * 1),
+                //       child: Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: [
+                //           Image.asset(
+                //             AppImages.history,
+                //             scale: 10,
+                //           ),
+                //           Text(
+                //             "History",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                //                 fontWeight: FontWeight.bold),
+                //           ),
+                //           Text(
+                //             "Watch over your history collection",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 3),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -163,92 +187,106 @@ class SubHomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    // Get.toNamed(Routes.PDF_VIEW);/
-                    // Get.toNamed(Routes.MathsSolverView);
                     controller.checkPermission(Routes.PDF_VIEW);
                   },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 20,
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 4),
-                      // color: Color(0xFF85C0EB),
-                      color: Color(0xFFFBAE8B),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.blockSizeHorizontal * 2,
-                          vertical: SizeConfig.blockSizeVertical * 1),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            AppImages.pdf,
-                            scale: 10,
-                          ),
-                          Text(
-                            "PDF Reader",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Read any type of PDF file",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: card_widgets(Color(0xFFCFFFDA), Color(0xFF84F99E),
+                      AppImages.pdf, "PDF Reader"),
                 ),
                 GestureDetector(
                   onTap: () {
-                    // Get.toNamed(Routes.);
-                    // Get.toNamed(Routes.MathsSolverView);
-                    // Get.toNamed(Routes.HistoryView);
-                    controller.checkPermission(Routes.PPTListView);
+                    Get.toNamed(Routes.HistoryView);
                   },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 20,
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 4),
-                      // color: Color(0xFFFBAE8B),
-                      color: Color(0xFF85C0EB),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.blockSizeHorizontal * 2,
-                          vertical: SizeConfig.blockSizeVertical * 1),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            AppImages.ppt_ic,
-                            // color: Colors.transparent,
-                            scale: 8,
-                          ),
-                          Text(
-                            "PPT Viewer",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Edit PDF on the go",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 3),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                  child: card_widgets(Color(0xFFFFFBEB), Color(0xFFFCDC96),
+                      AppImages.history, "History"),
+                )
+                // GestureDetector(
+                //   onTap: () {
+                //     // Get.toNamed(Routes.PDF_VIEW);/
+                //     // Get.toNamed(Routes.MathsSolverView);
+                //     controller.checkPermission(Routes.PDF_VIEW);
+                //   },
+                //   child: Container(
+                //     height: SizeConfig.blockSizeVertical * 20,
+                //     width: SizeConfig.blockSizeHorizontal * 40,
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(
+                //           SizeConfig.blockSizeHorizontal * 4),
+                //       // color: Color(0xFF85C0EB),
+                //       color: Color(0xFFFBAE8B),
+                //     ),
+                //     child: Padding(
+                //       padding: EdgeInsets.symmetric(
+                //           horizontal: SizeConfig.blockSizeHorizontal * 2,
+                //           vertical: SizeConfig.blockSizeVertical * 1),
+                //       child: Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: [
+                //           Image.asset(
+                //             AppImages.pdf,
+                //             scale: 10,
+                //           ),
+                //           Text(
+                //             "PDF Reader",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                //                 fontWeight: FontWeight.bold),
+                //           ),
+                //           Text(
+                //             "Read any type of PDF file",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 3),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // GestureDetector(
+                //   onTap: () {
+                //     // Get.toNamed(Routes.);
+                //     // Get.toNamed(Routes.MathsSolverView);
+                //     // Get.toNamed(Routes.HistoryView);
+                //     controller.checkPermission(Routes.PPTListView);
+                //   },
+                //   child: Container(
+                //     height: SizeConfig.blockSizeVertical * 20,
+                //     width: SizeConfig.blockSizeHorizontal * 40,
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(
+                //           SizeConfig.blockSizeHorizontal * 4),
+                //       // color: Color(0xFFFBAE8B),
+                //       color: Color(0xFF85C0EB),
+                //     ),
+                //     child: Padding(
+                //       padding: EdgeInsets.symmetric(
+                //           horizontal: SizeConfig.blockSizeHorizontal * 2,
+                //           vertical: SizeConfig.blockSizeVertical * 1),
+                //       child: Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: [
+                //           Image.asset(
+                //             AppImages.ppt_ic,
+                //             // color: Colors.transparent,
+                //             scale: 8,
+                //           ),
+                //           Text(
+                //             "PPT Viewer",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                //                 fontWeight: FontWeight.bold),
+                //           ),
+                //           Text(
+                //             "Edit PDF on the go",
+                //             style: TextStyle(
+                //                 fontSize: SizeConfig.blockSizeHorizontal * 3),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

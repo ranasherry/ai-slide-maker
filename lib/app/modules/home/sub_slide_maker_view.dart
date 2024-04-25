@@ -57,8 +57,13 @@ class SubSlideView extends StatelessWidget {
                   child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
                       AppImages.presentation, "AI Slide Maker"),
                 ),
-                card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
-                    AppImages.chatbot, "AI Assistant")
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.AiSlideAssistant);
+                  },
+                  child: card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
+                      AppImages.chatbot, "AI Assistant"),
+                )
                 // GestureDetector(
                 //   onTap: () {
                 //     Get.toNamed(Routes.SlideMakerView);

@@ -42,6 +42,15 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                 fontSize: SizeConfig.blockSizeHorizontal * 6,
                 fontWeight: FontWeight.bold),
           ),
+          bottom: PreferredSize(
+              child: Container(
+                margin: EdgeInsets.only(
+                    right: SizeConfig.blockSizeHorizontal * 3,
+                    left: SizeConfig.blockSizeHorizontal * 3),
+                color: Theme.of(context).colorScheme.primary,
+                height: 1.5,
+              ),
+              preferredSize: Size.fromHeight(6.0)),
 
           leading: GestureDetector(
               onTap: () {
@@ -112,10 +121,7 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                           width: SizeConfig.blockSizeHorizontal * 40,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                  colors: [
-                                    Colors.indigo,
-                                    Colors.indigoAccent.shade200
-                                  ],
+                                  colors: [Colors.indigoAccent, Colors.indigo],
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter),
                               // color: Colors.indigo,

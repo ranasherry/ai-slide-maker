@@ -171,7 +171,9 @@ class HomeView extends GetView<HomeViewCtl> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(Routes.BookGeneratorView);
+                    },
                     child: card_widgets(Color(0xFFCFFFDA), Color(0xFF84F99E),
                         AppImages.book, "Book Generator")),
                 GestureDetector(

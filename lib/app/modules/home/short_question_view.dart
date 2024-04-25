@@ -25,6 +25,16 @@ class ShortQuestionView extends GetView<MathsSolverController> {
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.bold),
         ),
+        bottom: PreferredSize(
+            child: Container(
+              margin: EdgeInsets.only(
+                  right: SizeConfig.blockSizeHorizontal * 3,
+                  left: SizeConfig.blockSizeHorizontal * 3),
+              color: Theme.of(context).colorScheme.primary,
+              height: 1.5,
+            ),
+            preferredSize: Size.fromHeight(6.0)),
+
         // backgroundColor: Color(0xFF85C0EB),
         centerTitle: true,
         leading: GestureDetector(
@@ -254,7 +264,7 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                 width: SizeConfig.blockSizeHorizontal * 80,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [Color(0xFF00C3EC), Color(0xFF0097C6)],
+                        colors: [Colors.indigoAccent, Colors.indigo],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter),
                     borderRadius: BorderRadius.circular(

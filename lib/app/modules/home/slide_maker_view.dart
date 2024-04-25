@@ -97,6 +97,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
           'Slide Maker',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+
         elevation: 0,
         centerTitle: true,
         leading: GestureDetector(

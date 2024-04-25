@@ -9,6 +9,7 @@ import 'package:slide_maker/app/modules/invitation_maker/views/templates/tamplat
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -26,6 +27,15 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
               fontSize: SizeConfig.blockSizeHorizontal * 6,
               fontWeight: FontWeight.bold),
         ),
+        bottom: PreferredSize(
+            child: Container(
+              margin: EdgeInsets.only(
+                  right: SizeConfig.blockSizeHorizontal * 3,
+                  left: SizeConfig.blockSizeHorizontal * 3),
+              color: Theme.of(context).colorScheme.primary,
+              height: 1.5,
+            ),
+            preferredSize: Size.fromHeight(6.0)),
         leading: GestureDetector(
             onTap: () {
               Get.back();
@@ -69,18 +79,32 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                MyContainer(
-                    color: Color(0xFF85C0EB),
-                    image: AppImages.wedding,
-                    title: "Wedding Invitations",
-                    desc: "Create Wedding Invitation Cards instantly",
-                    routes: Routes.WeddingInvitationView),
-                MyContainer(
-                    color: Color(0xFFFBAE8B),
-                    image: AppImages.birthday,
-                    title: "Birthday Invitations",
-                    desc: "Create Birthday Invitation Cards instantly",
-                    routes: Routes.BirthdayTemplate),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.WeddingInvitationView);
+                  },
+                  child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
+                      AppImages.wedding, "Wedding Invitation"),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.BirthdayTemplate);
+                  },
+                  child: card_widgets(Color(0xFFFFFBEB), Color(0xFFFCDC96),
+                      AppImages.birthday, "Birthday Invitation"),
+                ),
+                // MyContainer(
+                //     color: Color(0xFF85C0EB),
+                //     image: AppImages.wedding,
+                //     title: "Wedding Invitations",
+                //     desc: "Create Wedding Invitation Cards instantly",
+                //     routes: Routes.WeddingInvitationView),
+                // MyContainer(
+                //     color: Color(0xFFFBAE8B),
+                //     image: AppImages.birthday,
+                //     title: "Birthday Invitations",
+                //     desc: "Create Birthday Invitation Cards instantly",
+                //     routes: Routes.BirthdayTemplate),
               ],
             ),
           ),

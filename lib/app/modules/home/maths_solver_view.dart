@@ -11,6 +11,7 @@ import 'package:latext/latext.dart';
 import 'package:launch_review/launch_review.dart';
 
 import 'package:shimmer/shimmer.dart';
+import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import '../../data/response_state.dart';
 import '../../routes/app_pages.dart';
@@ -45,6 +46,15 @@ class MathsSolverView extends GetView<MathsSolverController> {
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold),
             ),
+            bottom: PreferredSize(
+                child: Container(
+                  margin: EdgeInsets.only(
+                      right: SizeConfig.blockSizeHorizontal * 3,
+                      left: SizeConfig.blockSizeHorizontal * 3),
+                  color: Theme.of(context).colorScheme.primary,
+                  height: 1.5,
+                ),
+                preferredSize: Size.fromHeight(6.0)),
             // backgroundColor: Color(0xFFE7EBFA), // ? Commented by jamal
             centerTitle: true,
             leading: GestureDetector(
@@ -483,86 +493,101 @@ class MathsSolverView extends GetView<MathsSolverController> {
           children: [
             GestureDetector(
               onTap: () {
-                // controller.getImage(ImageSource.camera);
                 controller.valid(ImageSource.camera);
               },
-              child: Container(
-                height: SizeConfig.blockSizeVertical * 20,
-                width: SizeConfig.blockSizeHorizontal * 40,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-                  color: Color(0xFF85C0EB),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 2,
-                      vertical: SizeConfig.blockSizeVertical * 1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.asset(
-                        AppImages.scan,
-                        scale: 10,
-                      ),
-                      Text(
-                        "Scan & Solve",
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Scan the text to solve the question",
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 3),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
+                  AppImages.scan, "Scan & Solve"),
             ),
             GestureDetector(
               onTap: () {
                 controller.getImage(ImageSource.gallery);
                 controller.valid(ImageSource.gallery);
               },
-              child: Container(
-                height: SizeConfig.blockSizeVertical * 20,
-                width: SizeConfig.blockSizeHorizontal * 40,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-                  color: Color(0xFFFBAE8B),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 2,
-                      vertical: SizeConfig.blockSizeVertical * 1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.asset(
-                        AppImages.gallery,
-                        scale: 10,
-                      ),
-                      Text(
-                        "Gallery",
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 4.5,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Pick image from gallery",
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 3),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
+              child: card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
+                  AppImages.gallery, "Gallery"),
+            )
+            // GestureDetector(
+            //   onTap: () {
+            //     // controller.getImage(ImageSource.camera);
+            //     controller.valid(ImageSource.camera);
+            //   },
+            //   child: Container(
+            //     height: SizeConfig.blockSizeVertical * 20,
+            //     width: SizeConfig.blockSizeHorizontal * 40,
+            //     decoration: BoxDecoration(
+            //       borderRadius:
+            //           BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+            //       color: Color(0xFF85C0EB),
+            //     ),
+            //     child: Padding(
+            //       padding: EdgeInsets.symmetric(
+            //           horizontal: SizeConfig.blockSizeHorizontal * 2,
+            //           vertical: SizeConfig.blockSizeVertical * 1),
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         children: [
+            //           Image.asset(
+            //             AppImages.scan,
+            //             scale: 10,
+            //           ),
+            //           Text(
+            //             "Scan & Solve",
+            //             style: TextStyle(
+            //                 fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+            //                 fontWeight: FontWeight.bold),
+            //           ),
+            //           Text(
+            //             "Scan the text to solve the question",
+            //             style: TextStyle(
+            //                 fontSize: SizeConfig.blockSizeHorizontal * 3),
+            //           )
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // GestureDetector(
+            //   onTap: () {
+            //     controller.getImage(ImageSource.gallery);
+            //     controller.valid(ImageSource.gallery);
+            //   },
+            //   child: Container(
+            //     height: SizeConfig.blockSizeVertical * 20,
+            //     width: SizeConfig.blockSizeHorizontal * 40,
+            //     decoration: BoxDecoration(
+            //       borderRadius:
+            //           BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
+            //       color: Color(0xFFFBAE8B),
+            //     ),
+            //     child: Padding(
+            //       padding: EdgeInsets.symmetric(
+            //           horizontal: SizeConfig.blockSizeHorizontal * 2,
+            //           vertical: SizeConfig.blockSizeVertical * 1),
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         children: [
+            //           Image.asset(
+            //             AppImages.gallery,
+            //             scale: 10,
+            //           ),
+            //           Text(
+            //             "Gallery",
+            //             style: TextStyle(
+            //                 fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+            //                 fontWeight: FontWeight.bold),
+            //           ),
+            //           Text(
+            //             "Pick image from gallery",
+            //             style: TextStyle(
+            //                 fontSize: SizeConfig.blockSizeHorizontal * 3),
+            //           )
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
         SizedBox(
@@ -678,7 +703,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
                       width: SizeConfig.blockSizeHorizontal * 70,
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
-                              colors: [Color(0xFF00C3EC), Color(0xFF0097C6)],
+                              colors: [Colors.indigoAccent, Colors.indigo],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter),
                           borderRadius: BorderRadius.circular(

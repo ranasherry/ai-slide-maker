@@ -170,6 +170,7 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                           ),
                         )),
                   ),
+
                   // Obx(() => GestureDetector(
                   //       onTap: () {
                   //         Get.toNamed(Routes.GemsView);

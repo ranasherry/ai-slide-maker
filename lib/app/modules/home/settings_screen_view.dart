@@ -32,6 +32,15 @@ class SettingsView extends GetView<SettingsViewCTL> {
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.primary),
         ),
+        bottom: PreferredSize(
+            child: Container(
+              margin: EdgeInsets.only(
+                  right: SizeConfig.blockSizeHorizontal * 3,
+                  left: SizeConfig.blockSizeHorizontal * 3),
+              color: Theme.of(context).colorScheme.primary,
+              height: 1.5,
+            ),
+            preferredSize: Size.fromHeight(6.0)),
         centerTitle: true,
         leading: GestureDetector(
             onTap: () {

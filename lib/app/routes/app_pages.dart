@@ -1,4 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/bindings/book_generator_binding.dart';
+import 'package:slide_maker/app/modules/home/book_generator_view.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/history_binding.dart';
@@ -168,6 +170,11 @@ class AppPages {
       name: _Paths.NEWSLIDE_GENERATOR,
       page: () => const NewslideGeneratorView(),
       binding: NewslideGeneratorBinding(),
+    ),
+    GetPage(
+      name: _Paths.BookGeneratorView,
+      page: () => const BookGeneratorView(),
+      binding: BookGeneratorBinding(),
     ),
   ];
 }
