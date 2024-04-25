@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:slide_maker/app/modules/controllers/book_generator_ctl.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-class BookGeneratorView extends GetView<BookGeneratorCTL> {
-  const BookGeneratorView({super.key});
+import '../controllers/book_writer_controller.dart';
 
+class BookWriterView extends GetView<BookWriterController> {
+  const BookWriterView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +88,6 @@ class BookGeneratorView extends GetView<BookGeneratorCTL> {
             ),
           ),
         ));
- 
   }
 
   Widget createTextField(BuildContext context, TextEditingController controller,
@@ -136,5 +136,4 @@ class BookGeneratorView extends GetView<BookGeneratorCTL> {
       keyboardType: TextInputType.multiline, // Enable multiline input
     );
   }
-
 }
