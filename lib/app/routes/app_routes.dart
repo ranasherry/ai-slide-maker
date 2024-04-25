@@ -28,6 +28,7 @@ abstract class Routes {
   static const AiSlideAssistant = _Paths.AiSlideAssistant;
   static const NEWSLIDE_GENERATOR = _Paths.NEWSLIDE_GENERATOR;
   static const BookGeneratorView = _Paths.BookGeneratorView;
+  static const BOOK_WRITER = _Paths.BOOK_WRITER;
 }
 
 abstract class _Paths {
@@ -55,4 +56,5 @@ abstract class _Paths {
   static const AiSlideAssistant = '/AiSlideAssistant';
   static const NEWSLIDE_GENERATOR = '/newslide-generator';
   static const BookGeneratorView = '/BookGeneratorView';
+  static const BOOK_WRITER = '/book-writer';
 }
