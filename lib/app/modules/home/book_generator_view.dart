@@ -55,10 +55,11 @@ class BookGeneratorView extends GetView<BookGeneratorCTL> {
                 createTextField(context, controller.topicController, 50,
                     "Topic Name", null),
                 // // //  Add Stlye UI Designs // // //
-                Text("Style",style: TextStyle(
+                Text("Style",
+                    style: TextStyle(
                         fontSize: SizeConfig.blockSizeHorizontal * 5,
                         fontWeight: FontWeight.bold)),
-                        Chip(label: Text("Ref"))
+                Chip(label: Text("Ref")),
                 Text("Author Name",
                     style: TextStyle(
                         fontSize: SizeConfig.blockSizeHorizontal * 5,
