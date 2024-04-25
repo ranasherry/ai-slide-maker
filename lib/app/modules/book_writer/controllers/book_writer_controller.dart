@@ -11,6 +11,18 @@ class BookWriterController extends GetxController {
   var authorController = TextEditingController();
   var pagesController = TextEditingController();
   var descriptionController = TextEditingController();
+
+  var selectedChips = <String>[].obs;
+
+  var nameSelectedOptions = <String>[].obs;
+
+  final List<String> chipLabels = [
+    'Reflective',
+    'Persuasive',
+    'Scientific',
+    'Expository',
+    'Descriptive',
+  ];
   @override
   void onInit() {
     super.onInit();
@@ -26,5 +38,25 @@ class BookWriterController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  // Method to toggle chip selection
+  void toggleChip(String chipLabel) {
+    if (selectedChips.contains(chipLabel)) {
+      selectedChips.remove(chipLabel);
+    } else {
+      selectedChips.add(chipLabel);
+    }
+  }
+
+  void selectChip(String chipLabel) {
+    if (!selectedChips.contains(chipLabel)) {
+      selectedChips.add(chipLabel);
+    }
+
+    // Method to check if a chip is selected
+    bool isChipSelected(String chipLabel) {
+      return selectedChips.contains(chipLabel);
+    }
+
+    void increment() => count.value++;
+  }
 }

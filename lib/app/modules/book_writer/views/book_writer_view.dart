@@ -60,7 +60,67 @@ class BookWriterView extends GetView<BookWriterController> {
                     style: TextStyle(
                         fontSize: SizeConfig.blockSizeHorizontal * 5,
                         fontWeight: FontWeight.bold)),
-                Chip(label: Text("Ref")),
+                Obx(() => Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: controller.chipLabels
+                          .map(
+                            (option) => Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
+                              child: ChoiceChip(
+                                  label: Text(option),
+                                  labelStyle: TextStyle(
+                                    color: controller.nameSelectedOptions
+                                            .contains(option)
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    letterSpacing: 1,
+                                  ),
+                                  selected: controller.nameSelectedOptions
+                                      .contains(option),
+                                  onSelected: (selected) {
+                                    if (selected) {
+                                      controller.nameSelectedOptions.clear();
+                                      controller.nameSelectedOptions
+                                          .add(option);
+                                    }
+                                  },
+                                  // ? Commented by jamal start
+                                  // onSelected: (selected) {
+                                  //   if (selected) {
+                                  //     if (controller.nameSelectedOptions.length <
+                                  //         1) {
+                                  //       controller.nameSelectedOptions.add(option);
+                                  //       controller.avatarNameTextCTL.text = option;
+                                  //     } else {
+                                  //       EasyLoading.showError(
+                                  //           "Please Select one name");
+                                  //     }
+                                  //   } else {
+                                  //     controller.selectedOptions.remove(option);
+                                  //   }
+                                  // },
+                                  // ? Commented by jamal end
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(
+                                      color: Colors
+                                          .white, // set border color to white
+                                      width: 1, // set border width
+                                    ),
+                                  ),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.secondary
+                                  //   Theme.of(context)
+                                  // .scaffoldBackgroundColor, // set background color to transparent
+                                  // selectedColor: Colors.white,
+                                  ),
+                            ),
+                          )
+                          .toList(),
+                    )),
+                verticalSpace(SizeConfig.blockSizeVertical * 1),
                 Text("Author Name",
                     style: TextStyle(
                         fontSize: SizeConfig.blockSizeHorizontal * 5,
@@ -74,14 +134,26 @@ class BookWriterView extends GetView<BookWriterController> {
                         fontWeight: FontWeight.bold)),
                 createTextField(context, controller.descriptionController, 500,
                     "Description", 5),
-                Container(
-                  height: SizeConfig.blockSizeVertical * 8,
-                  width: SizeConfig.blockSizeHorizontal * 40,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.indigoAccent, Colors.indigo],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter),
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        bottom: SizeConfig.blockSizeVertical * 2),
+                    height: SizeConfig.blockSizeVertical * 5,
+                    width: SizeConfig.blockSizeHorizontal * 40,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Colors.indigoAccent, Colors.indigo],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter),
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeHorizontal * 3)),
+                    child: Center(
+                      child: Text(
+                        "Generate",
+                        style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 5),
+                      ),
+                    ),
                   ),
                 )
               ],

@@ -172,7 +172,7 @@ class HomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                     onTap: () {
-                      Get.toNamed(Routes.BookGeneratorView);
+                      Get.toNamed(Routes.BOOK_WRITER);
                     },
                     child: card_widgets(Color(0xFFCFFFDA), Color(0xFF84F99E),
                         AppImages.book, "Book Generator")),

@@ -1,6 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
-import '../modules/bindings/book_generator_binding.dart';
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/history_binding.dart';
 import '../modules/bindings/history_slide_binding.dart';
@@ -12,7 +11,7 @@ import '../modules/bindings/slide_maker_binding.dart';
 import '../modules/bindings/splash_binding.dart';
 import '../modules/book_writer/bindings/book_writer_binding.dart';
 import '../modules/book_writer/views/book_writer_view.dart';
-import '../modules/home/book_generator_view.dart';
+
 import '../modules/home/gems_view_view.dart';
 import '../modules/home/history_slide_view.dart';
 import '../modules/home/history_view.dart';
@@ -173,11 +172,7 @@ class AppPages {
       page: () => const NewslideGeneratorView(),
       binding: NewslideGeneratorBinding(),
     ),
-    GetPage(
-      name: _Paths.BookGeneratorView,
-      page: () => const BookGeneratorView(),
-      binding: BookGeneratorBinding(),
-    ),
+
     GetPage(
       name: _Paths.BOOK_WRITER,
       page: () => const BookWriterView(),
