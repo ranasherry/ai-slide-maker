@@ -58,8 +58,8 @@ class AppLovinProvider {
     if (kReleaseMode) {
       // if (isAdsEnable) {
       initializePlugin();
+      // }
     }
-    // }
   }
 
   Future<void> initializePlugin() async {
@@ -260,6 +260,8 @@ class AppLovinProvider {
     //   return;
     // }
     print("Interstitial ad is show is called");
+
+    // if (kDebugMode) return;
 
     if (!isAdsEnable) return;
     interCounter++;

@@ -106,7 +106,8 @@ class HomeView extends GetView<HomeViewCtl> {
           //                 : AppStrings.IOS_MAX_BANNER_ID,
           //             adFormat: AdFormat.banner,
           //             listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-          //               print('Banner widget ad loaded from ' + ad.networkName);
+          //               print('Banner widget ad loaded from ' +
+          //                   ad.networkName);
           //             }, onAdLoadFailedCallback: (adUnitId, error) {
           //               print(
           //                   'Banner widget ad failed to load with error code ' +
@@ -150,6 +151,7 @@ class HomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    AppLovinProvider.instance.showInterstitial(() {});
                     Get.toNamed(Routes.SubSlideView);
                   },
                   child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
@@ -157,6 +159,7 @@ class HomeView extends GetView<HomeViewCtl> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    AppLovinProvider.instance.showInterstitial(() {});
                     Get.toNamed(Routes.INVITATION_MAKER);
                   },
                   child: card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
@@ -172,12 +175,14 @@ class HomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                     onTap: () {
+                      AppLovinProvider.instance.showInterstitial(() {});
                       Get.toNamed(Routes.BOOK_WRITER);
                     },
                     child: card_widgets(Color(0xFFCFFFDA), Color(0xFF84F99E),
                         AppImages.book, "Book Generator")),
                 GestureDetector(
                   onTap: () {
+                    AppLovinProvider.instance.showInterstitial(() {});
                     Get.toNamed(Routes.SubHomeView);
                   },
                   child: card_widgets(Color(0xFFFFFBEB), Color(0xFFFCDC96),
@@ -375,7 +380,7 @@ class HomeView extends GetView<HomeViewCtl> {
           //       )
           //     : Container(),
 
-          verticalSpace(SizeConfig.blockSizeVertical),
+          verticalSpace(SizeConfig.blockSizeVertical * 2),
           !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
               ? Container()
               : MaxAdView(

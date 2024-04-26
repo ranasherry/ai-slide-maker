@@ -83,6 +83,7 @@ class SubHomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    AppLovinProvider.instance.showInterstitial(() {});
                     Get.toNamed(Routes.MathsSolverView);
                   },
                   child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
@@ -90,6 +91,7 @@ class SubHomeView extends GetView<HomeViewCtl> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    AppLovinProvider.instance.showInterstitial(() {});
                     controller.checkPermission(Routes.PPTListView);
                   },
                   child: card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
@@ -187,6 +189,7 @@ class SubHomeView extends GetView<HomeViewCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    AppLovinProvider.instance.showInterstitial(() {});
                     controller.checkPermission(Routes.PDF_VIEW);
                   },
                   child: card_widgets(Color(0xFFCFFFDA), Color(0xFF84F99E),
@@ -194,6 +197,7 @@ class SubHomeView extends GetView<HomeViewCtl> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    AppLovinProvider.instance.showInterstitial(() {});
                     Get.toNamed(Routes.HistoryView);
                   },
                   child: card_widgets(Color(0xFFFFFBEB), Color(0xFFFCDC96),

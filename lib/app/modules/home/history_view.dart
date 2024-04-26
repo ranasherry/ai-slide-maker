@@ -78,9 +78,20 @@ class HistoryView extends GetView<HistoryCTL> {
               ? Expanded(
                   child: Container(
                     child: Center(
-                      child: Image.asset(
-                        AppImages.commingSoon,
-                        scale: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            AppImages.empty,
+                            scale: 5,
+                          ),
+                          Text(
+                            "No history found!",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                color: Theme.of(context).colorScheme.primary),
+                          )
+                        ],
                       ),
                     ),
                   ),
@@ -106,7 +117,8 @@ class HistoryView extends GetView<HistoryCTL> {
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.circular(20)), // Border radius
-                            tileColor: Color(0xFF85C0EB), // Background color
+                            tileColor: Color(0xFF85C0EB),
+                            // Background color
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             trailing:

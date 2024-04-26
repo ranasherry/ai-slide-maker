@@ -388,11 +388,10 @@ class PPTListView extends GetView<PPTListController> {
                       width: SizeConfig.blockSizeHorizontal * 16,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(13),
-                        color: Colors.blue.shade100,
+                        color: Colors.purple.shade100,
                       ),
                       child: Image.asset(
                         AppImages.ppt_ic,
-                        scale: 9,
                       )),
                   horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
                   Column(
