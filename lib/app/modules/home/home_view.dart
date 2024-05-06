@@ -165,6 +165,7 @@ class HomeView extends GetView<HomeViewCtl> {
                   child: card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
                       AppImages.invite, "Invitation"),
                 ),
+              
               ],
             ),
           ),
