@@ -87,6 +87,19 @@ class ComFunction {
       ..dismissOnTap = false
       ..indicatorType = EasyLoadingIndicatorType.circle;
   }
+
+  static void showErrorDialog({
+    required String title,
+    required String errorMessage,
+  }) {
+    Get.defaultDialog(
+      title: title,
+      middleText: errorMessage,
+      textConfirm: "OK",
+      confirmTextColor: Colors.red,
+      onConfirm: () => Get.back(),
+    );
+  }
 }
 
 // Container NativeAdMethed(NativeAd? nativeAd, RxBool isNativeAdLoaded) {

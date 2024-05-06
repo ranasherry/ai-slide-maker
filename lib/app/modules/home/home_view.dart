@@ -180,7 +180,7 @@ class HomeView extends GetView<HomeViewCtl> {
                       Get.toNamed(Routes.BOOK_WRITER);
                     },
                     child: card_widgets(Color(0xFFCFFFDA), Color(0xFF84F99E),
-                        AppImages.book, "Book Generator")),
+                        AppImages.book, "Book Writer")),
                 GestureDetector(
                   onTap: () {
                     AppLovinProvider.instance.showInterstitial(() {});

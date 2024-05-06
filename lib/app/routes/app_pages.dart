@@ -1,4 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/book_writer/bindings/book_generated_binding.dart';
+import 'package:slide_maker/app/modules/book_writer/views/book_generated_view.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/history_binding.dart';
@@ -177,6 +179,11 @@ class AppPages {
       name: _Paths.BOOK_WRITER,
       page: () => const BookWriterView(),
       binding: BookWriterBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOK_GENERATED,
+      page: () => const BookGeneratedView(),
+      binding: BookGeneratedBinding(),
     ),
   ];
 }

@@ -8,5 +8,7 @@ class BookWriterBinding extends Bindings {
     Get.lazyPut<BookWriterController>(
       () => BookWriterController(),
     );
+
+    // Get.put(BookWriterController);
   }
 }
