@@ -61,7 +61,7 @@ class BookGeneratedView extends GetView<BookGeneratedCTL> {
           : Container()),
       appBar: AppBar(
         title: Text(
-          "Book Writer",
+          "AI Book Writer",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),

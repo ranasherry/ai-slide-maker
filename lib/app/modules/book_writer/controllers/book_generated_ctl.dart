@@ -42,11 +42,12 @@ class BookGeneratedCTL extends GetxController {
     TitleMarkDown.value = '''
 
 
-# Flutter Development \n\n
+# ${Title.value} \n\n
 
 
 
-## By Rana Shaheryar ''';
+## By ${auther} ''';
+
     print("Request: $apirequest \n Auther: $auther");
     generateBookOutlines(apirequest);
   }
