@@ -19,7 +19,7 @@ class BookWriterView extends GetView<BookWriterController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Book Writer",
+          "AI Book Writer",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
