@@ -79,7 +79,8 @@ class _Template1State extends State<Template1> {
   String address = "";
   String contact = "";
 
-  TextStyle mainText = TextStyle(fontSize: 60.sp, fontWeight: FontWeight.bold);
+  TextStyle mainText = TextStyle(
+      fontSize: 60.sp, fontWeight: FontWeight.bold, color: Colors.green);
 
   @override
   void initState() {

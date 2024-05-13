@@ -228,17 +228,17 @@ class BookGeneratedCTL extends GetxController {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
 
-    final generatedPdfFile = await HtmlToPdf.convertFromHtmlContent(
-      htmlContent: htmlContent,
-      printPdfConfiguration: PrintPdfConfiguration(
-        targetDirectory: tempPath,
-        targetName: mainDetail,
-        printSize: PrintSize.A4,
-        printOrientation: PrintOrientation.Portrait,
-      ),
-    );
-
     try {
+      final generatedPdfFile = await HtmlToPdf.convertFromHtmlContent(
+        htmlContent: htmlContent,
+        printPdfConfiguration: PrintPdfConfiguration(
+          targetDirectory: tempPath,
+          targetName: Title.value,
+          printSize: PrintSize.A4,
+          printOrientation: PrintOrientation.Portrait,
+        ),
+      );
+
       XFile xFile = XFile(generatedPdfFile.path);
       ShareResult shareResult = await Share.shareXFiles(
         [xFile],
@@ -255,6 +255,9 @@ class BookGeneratedCTL extends GetxController {
       } else {
         EasyLoading.dismiss();
       }
-    } catch (e) {}
+    } catch (e) {
+      EasyLoading.showError("Please Try Again Later");
+      EasyLoading.dismiss();
+    }
   }
 }

@@ -81,11 +81,11 @@ class _Template2State extends State<Template2> {
               verticalSpace(SizeConfig.blockSizeVertical * 10),
               Text(
                 "TOGETHER",
-                style: GoogleFonts.raleway(),
+                style: GoogleFonts.raleway(color: Color(0xFF3F6F9F)),
               ),
               Text(
                 "WITH THEIR FAMILIES",
-                style: GoogleFonts.raleway(),
+                style: GoogleFonts.raleway(color: Color(0xFF3F6F9F)),
               ),
               verticalSpace(SizeConfig.blockSizeVertical * 5),
               Text(
@@ -106,6 +106,7 @@ class _Template2State extends State<Template2> {
               Text("INVITE YOU TO JOIN WEDDING",
                   style: GoogleFonts.raleway(
                       textStyle: TextStyle(
+                          color: Color(0xFF3F6F9F),
                           fontSize: SizeConfig.blockSizeHorizontal * 4))),
               verticalSpace(SizeConfig.blockSizeVertical * 2.1),
               Text(
