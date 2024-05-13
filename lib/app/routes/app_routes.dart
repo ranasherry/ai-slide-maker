@@ -30,6 +30,7 @@ abstract class Routes {
 
   static const BOOK_WRITER = _Paths.BOOK_WRITER;
   static const BOOK_GENERATED = _Paths.BOOK_GENERATED;
+  static const IN_APP_PURCHASES = _Paths.IN_APP_PURCHASES;
 }
 
 abstract class _Paths {
@@ -59,4 +60,5 @@ abstract class _Paths {
 
   static const BOOK_WRITER = '/book-writer';
   static const BOOK_GENERATED = '/book-generated';
+  static const IN_APP_PURCHASES = '/in-app-purchases';
 }
