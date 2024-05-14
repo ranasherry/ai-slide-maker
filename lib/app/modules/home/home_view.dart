@@ -72,6 +72,15 @@ class HomeView extends GetView<HomeViewCtl> {
               height: 1.5,
             ),
             preferredSize: Size.fromHeight(6.0)),
+        leading: GestureDetector(
+          onTap: () {
+            Get.toNamed(Routes.IN_APP_PURCHASES);
+          },
+          child: Icon(
+            Icons.ac_unit_rounded,
+            color: Colors.white,
+          ),
+        ),
         actions: [
           Padding(
               padding:
@@ -165,7 +174,6 @@ class HomeView extends GetView<HomeViewCtl> {
                   child: card_widgets(Color(0xFFF8EDFE), Color(0xFFEAC0FF),
                       AppImages.invite, "Invitation"),
                 ),
-              
               ],
             ),
           ),

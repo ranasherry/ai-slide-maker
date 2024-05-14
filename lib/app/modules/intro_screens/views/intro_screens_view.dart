@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/introscreen_onboarding.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -25,7 +26,8 @@ class IntroScreensView extends GetView<IntroScreensController> {
       //   centerTitle: true,
       // ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*3),
+        padding:
+            EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 3),
         child: IntroScreenOnboarding(
           introductionList: [
             MyIntroduction(
@@ -86,8 +88,9 @@ class MyIntroductionState extends State<MyIntroduction> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3, vertical: SizeConfig.blockSizeVertical*3),
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 3,
+          vertical: SizeConfig.blockSizeVertical * 3),
       child: Column(
         //crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
