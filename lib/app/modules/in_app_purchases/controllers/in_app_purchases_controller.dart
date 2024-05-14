@@ -4,6 +4,7 @@ class InAppPurchasesController extends GetxController {
   //TODO: Implement InAppPurchasesController
 
   final count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
