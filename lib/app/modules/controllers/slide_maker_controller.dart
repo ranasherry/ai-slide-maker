@@ -67,7 +67,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   int initialGems = 20;
   RxInt gems = 0.obs;
   bool? firstTime = false;
-  final pageController = PageController(initialPage: 0);
+  // final pageController = PageController(initialPage: 0);
 
   String NoOfSlides = "Six";
   // RxBool showExtraSlides = false.obs;

@@ -31,6 +31,7 @@ abstract class Routes {
   static const BOOK_WRITER = _Paths.BOOK_WRITER;
   static const BOOK_GENERATED = _Paths.BOOK_GENERATED;
   static const IN_APP_PURCHASES = _Paths.IN_APP_PURCHASES;
+  static const SlideDetailedGeneratedView = _Paths.SlideDetailedGeneratedView;
 }
 
 abstract class _Paths {
@@ -57,6 +58,7 @@ abstract class _Paths {
   static const SubSlideView = '/SubSlideView';
   static const AiSlideAssistant = '/AiSlideAssistant';
   static const NEWSLIDE_GENERATOR = '/newslide-generator';
+  static const SlideDetailedGeneratedView = '/SlideDetailedGeneratedView';
 
   static const BOOK_WRITER = '/book-writer';
   static const BOOK_GENERATED = '/book-generated';

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -81,7 +82,11 @@ class SubSlideView extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     AppLovinProvider.instance.showInterstitial(() {});
-                    Get.toNamed(Routes.SlideMakerView);
+                    if (kDebugMode) {
+                      Get.toNamed(Routes.NEWSLIDE_GENERATOR);
+                    } else {
+                      Get.toNamed(Routes.SlideMakerView);
+                    }
                   },
                   child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
                       AppImages.presentation, "AI Slide Maker"),

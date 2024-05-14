@@ -1,4 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/newslide_generator/bindings/slide_generated_detailed_binding.dart';
+import 'package:slide_maker/app/modules/newslide_generator/views/slide_detailed_generated_view.dart';
 
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/history_binding.dart';
@@ -190,6 +192,11 @@ class AppPages {
       name: _Paths.IN_APP_PURCHASES,
       page: () => const InAppPurchasesView(),
       binding: InAppPurchasesBinding(),
+    ),
+    GetPage(
+      name: _Paths.SlideDetailedGeneratedView,
+      page: () => const SlideDetailedGeneratedView(),
+      binding: SlideGeneratedDetailedBinding(),
     ),
   ];
 }

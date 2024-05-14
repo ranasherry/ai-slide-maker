@@ -16,11 +16,12 @@ import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 
-class BookGeneratedCTL extends GetxController {
+class SlideDetailedGeneratedCTL extends GetxController {
   //TODO: Implement BookWriterController
 
   RxList<BookPageModel> bookPages = <BookPageModel>[].obs;
-  String mainDetail = "";
+  // String mainDetail = "";
+  String mainTopic = "";
   RxBool isBookGenerated = false.obs;
 
   RxString Title = "".obs;
@@ -34,22 +35,23 @@ class BookGeneratedCTL extends GetxController {
 
     final argumunts = Get.arguments;
 
-    String apirequest = argumunts[0];
-    String auther = argumunts[1];
-    mainDetail = argumunts[2];
-    Title.value = argumunts[3];
+    String mainTopic = argumunts[0] as String;
+    Title.value = mainTopic;
+    RxList<String> listOfOutlines = argumunts[1] as RxList<String>;
+    // String auther = argumunts[1];
+    // mainDetail = argumunts[2];
+    // Title.value = argumunts[3];
 
-    TitleMarkDown.value = '''
+//     TitleMarkDown.value = '''
 
+// # ${Title.value} \n\n
 
-# ${Title.value} \n\n
+// ## By ${auther} ''';
 
+//     print("Request: $apirequest \n Auther: $auther");
 
-
-## By ${auther} ''';
-
-    print("Request: $apirequest \n Auther: $auther");
-    generateBookOutlines(apirequest);
+    startWritingBook(listOfOutlines);
+    // generateBookOutlines(apirequest);
   }
 
   @override
@@ -60,46 +62,6 @@ class BookGeneratedCTL extends GetxController {
   @override
   void onClose() {
     super.onClose();
-  }
-
-  Future<void> generateBookOutlines(String apirequest) async {
-    String? rawResponse = await gemeniAPICall(apirequest);
-    if (rawResponse != null) {
-      List<String> listOfOutlines = parseStringToList(rawResponse);
-      OutlinesinMarkdown.value = convertListToMarkdownToc(listOfOutlines);
-      startWritingBook(listOfOutlines);
-      developer.log("List of OutLines: $listOfOutlines ");
-      developer.log("List of OutLines Lenght: ${listOfOutlines.length} ");
-    } else {
-      Get.back();
-    }
-  }
-
-  String convertListToMarkdownToc(List<String> listOfOutlines) {
-    final sb = StringBuffer();
-    sb.write('''### Table of Contents &nbsp; &nbsp; &nbsp;
-    \n\n\n
-
-
-    ''');
-    for (final outline in listOfOutlines) {
-      // Assuming outlines have a simple structure (e.g., chapter number - title)
-      // final parts = outline.split(' - ');
-      // if (parts.length == 2) {
-      //   final chapterNumber = parts[0].trim();
-      //   final title = parts[1].trim();
-      //   // Use appropriate heading level based on your preference (e.g., ## for chapters)
-      //   sb.write('## $chapterNumber - $title\n');
-      // } else {
-      //   // Handle outlines with unexpected structure (optional)
-      //   // sb.write('Invalid outline format: $outline\n');
-      // }
-
-      sb.write('''# ${outline} 
-      
-      ''');
-    }
-    return sb.toString();
   }
 
   Future<String?> gemeniAPICall(String request) async {
@@ -138,12 +100,13 @@ class BookGeneratedCTL extends GetxController {
   Future<void> startWritingBook(List<String> listOfOutlines) async {
     for (String outline in listOfOutlines) {
       // Complete the request string for each chapter
-      String request = '''You are writing a book on following details: 
-      Main Details: $mainDetail
-      Chapters: $listOfOutlines
-      you are writing each chapter in individual request.
-      you have to write on following chapter $outline
-      Note: Do not write anything else then the required chapter.
+      String request =
+          '''You are writing Generating a Presentation Slide on the following details: 
+      Main Presentation Topic: $mainTopic
+      Individual Siled Titles: $listOfOutlines
+      you are writing each Slide in individual request.
+      you have to write on following Slide Topic $outline
+      Note: Do not write anything else then the required Slide. Your response must be in mark down fomat and only in 100 words. if possible try to compare thing and make tables if needed. also indlude network images.
        ''';
 
       String? chapterContent = await gemeniAPICall(request);
