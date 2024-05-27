@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -98,7 +99,10 @@ class _FormWidgetState extends State<FormWidget> {
                 height: 60,
                 // color: Colors.amber,
                 child: Center(
-                  child: !AppLovinProvider.instance.isAdsEnable
+                  child: Obx(() => RevenueCatService()
+                              .currentEntitlement
+                              .value ==
+                          Entitlement.paid
                       ? Container()
                       : MaxAdView(
                           adUnitId: Platform.isAndroid
@@ -120,7 +124,7 @@ class _FormWidgetState extends State<FormWidget> {
                             print('Banner widget ad expanded');
                           }, onAdCollapsedCallback: (ad) {
                             print('Banner widget ad collapsed');
-                          })),
+                          }))),
                 ),
               ),
               verticalSpace(SizeConfig.blockSizeVertical * 2),

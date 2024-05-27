@@ -50,7 +50,7 @@ class SlideDetailedGeneratedCTL extends GetxController {
 
 //     print("Request: $apirequest \n Auther: $auther");
 
-    startWritingBook(listOfOutlines);
+    startGeneratingSlide(listOfOutlines);
     // generateBookOutlines(apirequest);
   }
 
@@ -97,7 +97,7 @@ class SlideDetailedGeneratedCTL extends GetxController {
     return parsedList;
   }
 
-  Future<void> startWritingBook(List<String> listOfOutlines) async {
+  Future<void> startGeneratingSlide(List<String> listOfOutlines) async {
     for (String outline in listOfOutlines) {
       // Complete the request string for each chapter
       String request =
@@ -106,7 +106,7 @@ class SlideDetailedGeneratedCTL extends GetxController {
       Individual Siled Titles: $listOfOutlines
       you are writing each Slide in individual request.
       you have to write on following Slide Topic $outline
-      Note: Do not write anything else then the required Slide. Your response must be in mark down fomat and only in 100 words. if possible try to compare thing and make tables if needed. also indlude network images.
+      Note: Do not write anything else then the required Slide. Your response must be in mark down format and only in less then 70 words. if possible try to compare thing and make tables if needed. there must be very few description for the content as a single slide can not have a lot of text.
        ''';
 
       String? chapterContent = await gemeniAPICall(request);
@@ -133,19 +133,19 @@ class SlideDetailedGeneratedCTL extends GetxController {
 
   sharePDF(BuildContext context) async {
     EasyLoading.show(status: "Please Wait Generating PDF File..");
-    String htmlContent = markdownToHtml('${bookPages[0].ChapData}');
-    developer.log("HTML Content: $htmlContent");
-    generatePDFFromHTML(htmlContent);
+    // String htmlContent = markdownToHtml('${bookPages[0].ChapData}');
+    // developer.log("HTML Content: $htmlContent");
+    // generatePDFFromHTML(htmlContent);
 
     final StringBuffer htmlContentBuffer = StringBuffer();
 
-    final titleInHtml = markdownToHtml(TitleMarkDown.value);
-    final outlineInHtml = markdownToHtml(OutlinesinMarkdown.value);
+    // final titleInHtml = markdownToHtml(TitleMarkDown.value);
+    // final outlineInHtml = markdownToHtml(OutlinesinMarkdown.value);
 
-    htmlContentBuffer.write(titleInHtml);
-    htmlContentBuffer.write('<div class="page-break"></div>');
-    htmlContentBuffer.write(outlineInHtml);
-    htmlContentBuffer.write('<div class="page-break"></div>');
+    // htmlContentBuffer.write(titleInHtml);
+    // htmlContentBuffer.write('<div class="page-break"></div>');
+    // htmlContentBuffer.write(outlineInHtml);
+    // htmlContentBuffer.write('<div class="page-break"></div>');
 
     for (final BookPageModel page in bookPages) {
       htmlContentBuffer.write('<body">');
@@ -162,6 +162,7 @@ class SlideDetailedGeneratedCTL extends GetxController {
   }
 
   Future<void> generatePDFFromHTML(String htmlContent) async {
+    developer.log("Generating PDF");
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
 

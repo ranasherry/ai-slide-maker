@@ -72,12 +72,7 @@ class _IntroScreenOnboardingState extends State<IntroScreenOnboarding> {
                     ),
                   ),
                 ),
-                //                Row(
-                //                  mainAxisAlignment: MainAxisAlignment.center,
-                //                  children: _buildPageIndicator(),
-                //                ),
                 _customProgress(),
-                //_buildNextButton(),
               ],
             ),
           ),
@@ -85,80 +80,6 @@ class _IntroScreenOnboardingState extends State<IntroScreenOnboarding> {
       ),
     );
   }
-
-//  Widget _buildNextButton() {
-//    return (_currentPage != widget.introductionList.length - 1
-//        ? Expanded(
-//      child: Align(
-//        alignment: FractionalOffset.bottomRight,
-//        child: FlatButton(
-//          onPressed: () {
-//            _pageController.nextPage(
-//              duration: Duration(milliseconds: 500),
-//              curve: Curves.ease,
-//            );
-//          },
-//          child: Row(
-//            mainAxisAlignment: MainAxisAlignment.center,
-//            mainAxisSize: MainAxisSize.min,
-//            children: <Widget>[
-////                    Text(
-////                      'Next',
-////                      style: TextStyle(
-////                        color: Colors.black,
-////                        fontSize: 22.0,
-////                      ),
-////                    ),
-//            ],
-//          ),
-//        ),
-//      ),
-//    )
-//        : Expanded(
-//      child: Align(
-//        alignment: FractionalOffset.bottomRight,
-//        child: FlatButton(
-//          onPressed: () {
-//            print('Start');
-//          },
-//          child: Row(
-//            mainAxisAlignment: MainAxisAlignment.center,
-//            mainAxisSize: MainAxisSize.min,
-//            children: <Widget>[
-////                    Text(
-////                      'Start',
-////                      style: TextStyle(
-////                        color: Colors.black,
-////                        fontSize: 22.0,
-////                      ),
-////                    ),
-//            ],
-//          ),
-//        ),
-//      ),
-//    ));
-//  }
-
-//  Widget _indicator(bool isActive) {
-//    return AnimatedContainer(
-//      duration: Duration(milliseconds: 150),
-//      margin: EdgeInsets.symmetric(horizontal: 8.0),
-//      height: 8.0,
-//      width: isActive ? 24 : 16,
-//      decoration: BoxDecoration(
-//        color: isActive ? Color(0xFF7B51D3) : Colors.grey,
-//        borderRadius: BorderRadius.all(Radius.circular(10)),
-//      ),
-//    );
-//  }
-
-//  List<Widget> _buildPageIndicator() {
-//    List<Widget> list = [];
-//    for (int i = 0; i < widget.introductionList.length; i++) {
-//      list.add(i == _currentPage ? _indicator(true) : _indicator(false));
-//    }
-//    return list;
-//  }
 
   Widget _customProgress() {
     return Stack(

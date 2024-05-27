@@ -4,11 +4,15 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/main.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
@@ -35,6 +39,8 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
 
     if (Platform.isAndroid) handlePushNotification();
+
+    startInAppPurchaseTimer();
   }
 
   checkPermission(String page) async {
@@ -128,6 +134,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     print('Fetched open: ${remoteConfig.getString('OpenAiToken')}');
     print('Fetched open: ${remoteConfig.getString('HotpotApi')}');
     print('Fetched open: ${remoteConfig.getString('isHotpotActive')}');
+    print('isNewSLideUI Enabled: ${remoteConfig.getString('isHotpotActive')}');
 
     AppStrings.OPENAI_TOKEN = remoteConfig.getString('OpenAiToken');
     AppStrings.HOTPOT_API = remoteConfig.getString('HotpotApi');
@@ -135,6 +142,10 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     // AppStrings.GOOGLE_SHOPPING_APIKEY = remoteConfig.getString('GoogleShoppingAPI');
     AppStrings.SHOW_HOTPOT_API_IMAGES = remoteConfig.getBool('isHotpotActive');
     AppStrings.JsonTrendTopics = remoteConfig.getString('topicslist');
+    RCVariables.isNewSLideUI.value = remoteConfig.getBool('isNewSLideUI');
+    RCVariables.GeminiAPIKey = remoteConfig.getString('GeminiProKey');
+
+    initGemini(RCVariables.GeminiAPIKey);
     topicListParser();
 
     // AppStrings.ACTIVE_BARD = remoteConfig.getBool('activeBardForShopping');
@@ -205,5 +216,25 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     );
 
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  }
+
+  int inAppPurchaseCounter = 0;
+  void startInAppPurchaseTimer() async {
+    inAppPurchaseCounter++;
+    if (inAppPurchaseCounter > 2) return;
+    const duration = Duration(seconds: 100);
+
+    Future.delayed(Duration(seconds: 5)).then((value) {
+      RevenueCatService().GoToPurchaseScreen();
+    });
+
+    while (true) {
+      await Future.delayed(duration);
+      RevenueCatService().GoToPurchaseScreen();
+    }
+  }
+
+  void initGemini(String geminiAPIKey) {
+    Gemini.init(apiKey: geminiAPIKey, enableDebugging: true);
   }
 }

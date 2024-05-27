@@ -32,9 +32,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
     return WillPopScope(
       onWillPop: () async {
         log("backed");
-        // if (RevenueCatService().currentEntitlement.value == Entitlement.free) {
-        //   AppLovinProvider.instance.showInterstitial(() {});
-        // }//////[j.]
+
         return true;
       },
       child: Scaffold(

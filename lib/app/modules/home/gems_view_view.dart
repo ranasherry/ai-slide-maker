@@ -14,34 +14,6 @@ import '../controllers/gems_view_controller.dart';
 class GemsView extends GetView<GemsViewController> {
   GemsView({Key? key}) : super(key: key);
 
-  // // // Native Ad Implementation start // // //
-  // NativeAd? nativeAd;
-  // RxBool nativeAdIsLoaded = false.obs;
-
-  // initNative() {
-  //   nativeAd = NativeAd(
-  //     adUnitId: AppStrings.ADMOB_NATIVE,
-  //     request: AdRequest(),
-  //     // factoryId: ,
-  //     nativeTemplateStyle:
-  //         NativeTemplateStyle(templateType: TemplateType.medium),
-  //     listener: NativeAdListener(
-  //       onAdLoaded: (Ad ad) {
-  //         print('$NativeAd loaded.');
-
-  //         nativeAdIsLoaded.value = true;
-  //       },
-  //       onAdFailedToLoad: (Ad ad, LoadAdError error) {
-  //         print('$NativeAd failedToLoad: $error');
-  //         ad.dispose();
-  //       },
-  //       onAdOpened: (Ad ad) => print('$NativeAd onAdOpened.'),
-  //       onAdClosed: (Ad ad) => print('$NativeAd onAdClosed.'),
-  //     ),
-  //   )..load();
-  // }
-
-  /// Native Ad Implemntation End ///
   @override
   Widget build(BuildContext context) {
     // initNative();
@@ -110,24 +82,6 @@ class GemsView extends GetView<GemsViewController> {
                     height: SizeConfig.screenHeight * 0.01,
                   ),
                   Ad_GEM_widget(),
-                  //   Platform.isAndroid? Row(children: [
-                  //     Text(
-                  //           'Buy GEMS:',
-                  //           style: StyleSheet.Intro_Sub_heading,
-                  //         ),
-                  //   ],):Container(),
-                  //   SizedBox(height: SizeConfig.screenHeight *0.01,),
-                  //  Platform.isAndroid? BUY_GEM_widget(context):Container()
-                  // AdMobAdsProvider.instance.isAdEnable.value
-                  //     ? Center(
-                  //         child: Container(
-                  //             margin: EdgeInsets.symmetric(
-                  //                 horizontal:
-                  //                     SizeConfig.blockSizeHorizontal * 5),
-                  //             child:
-                  //                 NativeAdMethed(nativeAd, nativeAdIsLoaded)),
-                  //       )
-                  //     : Container()
                 ],
               ),
             )
@@ -195,17 +149,6 @@ class GemsView extends GetView<GemsViewController> {
         SizedBox(
           height: SizeConfig.screenHeight * 0.03,
         ),
-        // Padding(
-        //   padding:  EdgeInsets.all(10),
-        //   child: Row(
-        //     children: [
-        //       Text(
-        //                           'Buy GEMS',
-        //                           style: StyleSheet.sub_heading12,
-        //                         ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
@@ -216,12 +159,8 @@ class GemsView extends GetView<GemsViewController> {
         SizedBox(
           height: SizeConfig.screenHeight * 0.02,
         ),
-        // ElevatedButton(onPressed: (){}, child: Text("Watch Interstitial AD (${GEMS_RATE.INTER_INCREAES_GEMS_RATE} GEMS)")),
         GestureDetector(
           onTap: () {
-            // NavCTL navCTL = Get.find();
-            // navCTL.subscriptionCall();
-            // Get.toNamed(Routes.SUBSCRIPTION);
             _settingModalBottomSheet(context);
           },
           child: Container(
@@ -242,31 +181,6 @@ class GemsView extends GetView<GemsViewController> {
             )),
           ),
         ),
-        //   SizedBox(height: SizeConfig.screenHeight *0.02,),
-        // Container(
-        //   width: SizeConfig.screenWidth *0.8,
-        //   height: SizeConfig.screenHeight *0.06,
-        //               decoration: BoxDecoration(
-        //                 border: Border.all(
-        //                   color: AppColors.icon_color, // Set the border color here
-        //                   width: 2.0, // Set the border width here
-        //                 ),
-        //                 borderRadius: BorderRadius.circular(40.0),
-        //               ),
-        //   child: Center(child: Text("Watch Video AD (${GEMS_RATE.REWARD_INCREAES_GEMS_RATE} GEMS)",style: StyleSheet.Intro_Sub_heading2,)),),
-        // // ElevatedButton(onPressed: (){}, child: Text("Watch Video AD (${GEMS_RATE.REWARD_INCREAES_GEMS_RATE} GEMS)")),
-        // SizedBox(height: SizeConfig.screenHeight *0.03,),
-        // Padding(
-        //   padding:  EdgeInsets.all(10),
-        //   child: Row(
-        //     children: [
-        //       Text(
-        //                           'Buy GEMS',
-        //                           style: StyleSheet.sub_heading12,
-        //                         ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }

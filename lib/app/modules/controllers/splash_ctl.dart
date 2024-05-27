@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/platform.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 
 import '../../routes/app_pages.dart';
@@ -30,7 +32,7 @@ class SplashController extends GetxController {
     AppLovinProvider.instance.init();
     MetaAdsProvider.instance.initialize();
     Timer? timer;
-    timer = Timer.periodic(Duration(milliseconds: 500), (_) {
+    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
       int n = Random().nextInt(10) + 5;
       percent.value += n;
       if (percent.value >= 100) {
@@ -43,7 +45,7 @@ class SplashController extends GetxController {
         timer!.cancel();
       }
     });
-
+    RevenueCatService().initialize();
     // checkplatform();
   }
 

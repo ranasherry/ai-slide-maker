@@ -43,4 +43,5 @@ class AppImages {
   static const history2 = "assets/images/history2.png";
   static const book = "assets/images/book.png";
   static const inappPurchase = "assets/images/inapp_purchase.png";
+  static const vip = "assets/icons/crown.png";
 }

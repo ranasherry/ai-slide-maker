@@ -40,9 +40,9 @@ class AppLovinProvider {
   var isWidgetMRecShowing = false;
   int interCounter = 2;
 
-  bool isAdsEnable = true;
+  // bool isAdsEnable = true;
 
-  void init() {
+  Future<void> init() async {
     _interstitial_ad_unit_id = Platform.isAndroid
         ? AppStrings.MAX_INTER_ID
         : AppStrings.IOS_MAX_INTER_ID;
@@ -55,10 +55,11 @@ class AppLovinProvider {
     // }else{
     //   print("Debug Mode");
     // }
-    if (kReleaseMode) {
-      // if (isAdsEnable) {
+    // if (kReleaseMode) {
+
+    final isAdRemoved = await RevenueCatService().CheckRemoveAdsForUser();
+    if (!isAdRemoved) {
       initializePlugin();
-      // }
     }
   }
 
@@ -84,6 +85,7 @@ class AppLovinProvider {
       //  AppLovinMAX.createMRec(AppStrings.MAX_MREC_ID, AdViewPosition.centered);
       // AppLovinMAX.createBanner(
       //     AppStrings.MAX_BANNER_ID, AdViewPosition.bottomCenter);
+      if (kDebugMode) AppLovinMAX.showMediationDebugger();
     } else {
       print("SDK null");
     }
@@ -238,6 +240,9 @@ class AppLovinProvider {
   }
 
   Future<void> showAppOpenIfReady() async {
+    return;
+    if (RevenueCatService().currentEntitlement.value == Entitlement.paid)
+      return;
     print("ShowAPPOpen Called..");
     if (!isInitialized.value) {
       return;
@@ -262,8 +267,12 @@ class AppLovinProvider {
     print("Interstitial ad is show is called");
 
     // if (kDebugMode) return;
+    print(
+        "showInterstitial currentEntitlement  ${RevenueCatService().currentEntitlement.value}");
 
-    if (!isAdsEnable) return;
+    if (RevenueCatService().currentEntitlement.value == Entitlement.paid) {
+      return;
+    }
     interCounter++;
     if (interCounter < 4 && Platform.isIOS) {
       return;

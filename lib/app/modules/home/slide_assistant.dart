@@ -170,27 +170,6 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                           ),
                         )),
                   ),
-
-                  // Obx(() => GestureDetector(
-                  //       onTap: () {
-                  //         Get.toNamed(Routes.GemsView);
-                  //       },
-                  //       child: Row(
-                  //         children: [
-                  //           Image.asset(
-                  //             AppImages.gems,
-                  //             scale: 30,
-                  //           ),
-                  //           Text(
-                  //             " ${controller.homectl.gems.value}",
-                  //             style: TextStyle(color: Colors.white),
-                  //           ),
-                  //           SizedBox(
-                  //             width: SizeConfig.screenWidth * 0.03,
-                  //           )
-                  //         ],
-                  //       ),
-                  //     ))
                 ],
               ),
             ),
@@ -298,8 +277,6 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                             child: Icon(
                               Icons.send_rounded,
                               color: Theme.of(context).colorScheme.secondary,
-                              // Color(
-                              //     0xFF25D366)
                             ),
                           ), // WhatsApp send button icon
                         )
@@ -345,44 +322,6 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                           image: AssetImage(AppImages.chatbot))),
                 ),
               )
-              // controller.main_image.value.contains("assets")
-              //     ? Container(
-              //         height: SizeConfig.blockSizeHorizontal * 10,
-              //         width: SizeConfig.blockSizeHorizontal * 10,
-              //         // margin: EdgeInsets.only(
-              //         //     top: SizeConfig.blockSizeVertical * 10
-              //         //     ),
-              //         decoration: BoxDecoration(
-              //           // Apply border radius to the container itself
-              //           borderRadius: BorderRadius.circular(
-              //               SizeConfig.blockSizeHorizontal *
-              //                   3), // Make it a perfect circle
-              //           image: DecorationImage(
-              //             fit: BoxFit.cover, // Fill the entire container
-              //             image: AssetImage(controller.main_image.value),
-              //           ),
-              //         ),
-              //       )
-              //     : Container(
-              //         height: SizeConfig.blockSizeHorizontal * 10,
-              //         width: SizeConfig.blockSizeHorizontal * 10,
-              //         decoration: BoxDecoration(
-              //           // Apply border radius to the container itself
-              //           borderRadius: BorderRadius.circular(
-              //               SizeConfig.blockSizeHorizontal *
-              //                   3), // Make it a perfect circle
-              //           // image: DecorationImage(
-              //           //   fit: BoxFit.cover, // Fill the entire container
-              //           //   image: CachedNetworkImageProvider(
-              //           //       controller.main_image.value),
-              //           // ),
-              //         ),
-              //       )
-              // Icon(
-              //   CupertinoIcons.rocket,
-              //   size: SizeConfig.blockSizeHorizontal * 11,
-              //   color: Colors.teal,
-              // ),
             ],
             Column(
               crossAxisAlignment: isSender
@@ -399,33 +338,7 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                       vertical: SizeConfig.blockSizeVertical * 0.5,
                       horizontal: SizeConfig.blockSizeHorizontal * 2),
                   decoration: BoxDecoration(
-                    // gradient: !isSender
-                    //     ? LinearGradient(
-                    //         begin: Alignment.topLeft,
-                    //         end: Alignment.bottomRight,
-                    //         colors: [
-                    //             Colors.white,
-                    //             Colors.white,
-                    //           ])
-                    //     : LinearGradient(
-                    //         begin: Alignment.topCenter,
-                    //         end: Alignment.bottomCenter,
-                    //         colors: [
-                    //           //? User Gradiant
-                    //           Colors.grey,
-                    //           Colors.white,
-                    //         ],
-                    //       ),
-                    // color: Colors.red,
                     color: Theme.of(context).colorScheme.secondary,
-                    // color: isSender
-                    //     ? null
-                    //     : Color
-                    //         .fromARGB(
-                    //             137,
-                    //             34,
-                    //             33,
-                    //             33),
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 4),
                   ),
@@ -433,12 +346,6 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Text(
-                      //   message.sender,
-                      //   style: TextStyle(fontWeight: FontWeight.bold),
-                      // ),
-                      // SizedBox(
-                      //     height: SizeConfig.blockSizeVertical * 1),
                       Align(
                         alignment: isSender
                             ? Alignment.centerRight
@@ -450,26 +357,14 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                             : isSender || (message.length <= 60 && !isSender)
                                 ? Text(
                                     controller.chatList[index].message,
-                                    // style: TextStyle(
-                                    //     color: Theme.of(context)
-                                    //         .colorScheme
-                                    //         .tertiary),
                                   )
                                 : buildMarkdown(context, index),
-
-                        // Text(
-                        //     controller.chatList[index].message,
-                        //     style: TextStyle(color: Colors.white),
-                        //   ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  // width: SizeConfig.screenWidth,
-                  // color: Colors.red,
                   margin: EdgeInsets.symmetric(
-                      // vertical: SizeConfig.blockSizeVertical * 1,
                       horizontal: SizeConfig.blockSizeHorizontal * 5),
                   child: Row(
                     mainAxisAlignment: isSender
@@ -496,13 +391,6 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                                 controller.chatList[index].message);
                           },
                           icon: Icon(Icons.copy_rounded)),
-                      // horizontalSpace(SizeConfig.blockSizeHorizontal*2),
-                      //   IconButton(
-                      //     padding: EdgeInsets.zero,
-
-                      //     onPressed: (){}, icon:Icon(Icons.share))
-                      // ,
-                      // horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
                     ],
                   ),
                 )
@@ -517,11 +405,6 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                   // scale: 12,
                 ),
               )
-              // Icon(
-              //   CupertinoIcons.person_crop_circle,
-              //   size: SizeConfig.blockSizeHorizontal * 10,
-              //   color: Colors.white,
-              // ),
             ],
           ],
         ),

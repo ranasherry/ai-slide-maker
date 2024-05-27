@@ -11,6 +11,7 @@ import 'package:slide_maker/app/data/pdf_viewer_model.dart';
 import 'package:slide_maker/app/modules/showppt/controllers/ppt_listview_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -28,7 +29,8 @@ class PPTListView extends GetView<PPTListController> {
           height: 60,
           // color: Colors.amber,
           child: Center(
-            child: !AppLovinProvider.instance.isAdsEnable
+            child: Obx(() => RevenueCatService().currentEntitlement.value ==
+                    Entitlement.paid
                 ? Container()
                 : MaxAdView(
                     adUnitId: Platform.isAndroid
@@ -48,7 +50,7 @@ class PPTListView extends GetView<PPTListController> {
                       print('Banner widget ad expanded');
                     }, onAdCollapsedCallback: (ad) {
                       print('Banner widget ad collapsed');
-                    })),
+                    }))),
           ),
         ),
         appBar: AppBar(

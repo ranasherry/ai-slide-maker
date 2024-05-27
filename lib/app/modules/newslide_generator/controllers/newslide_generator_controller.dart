@@ -177,9 +177,13 @@ class NewslideGeneratorController extends GetxController {
     // }
   }
 
-  void MoveToSlidesScreeen() {
+  void MoveToSlidesScreeen() async {
     Get.toNamed(Routes.SlideDetailedGeneratedView,
-        arguments: [userInput.value, outlineTitles]);
+            arguments: [userInput.value, outlineTitles])!
+        .then((value) {
+      AppLovinProvider.instance.showInterstitial(() {});
+      Get.back();
+    });
   }
 
   Toster(msg, color) {

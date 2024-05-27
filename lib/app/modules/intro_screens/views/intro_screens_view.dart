@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/introscreen_onboarding.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -124,32 +125,33 @@ class MyIntroductionState extends State<MyIntroduction> {
           ),
           verticalSpace(SizeConfig.blockSizeVertical * 2),
 
-          !AppLovinProvider.instance.isAdsEnable
-              ? Container()
-              : MaxAdView(
-                  adUnitId: Platform.isAndroid
-                      ? AppStrings.MAX_Mrec_ID
-                      : AppStrings.IOS_MAX_MREC_ID,
-                  adFormat: AdFormat.mrec,
-                  listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                    FirebaseAnalytics.instance.logAdImpression(
-                      adFormat: "Mrec",
-                      adSource: ad.networkName,
-                      value: ad.revenue,
-                    );
-                    print('Mrec widget ad loaded from ' + ad.networkName);
-                  }, onAdLoadFailedCallback: (adUnitId, error) {
-                    print('Mrec widget ad failed to load with error code ' +
-                        error.code.toString() +
-                        ' and message: ' +
-                        error.message);
-                  }, onAdClickedCallback: (ad) {
-                    print('Mrec widget ad clicked');
-                  }, onAdExpandedCallback: (ad) {
-                    print('Mrec widget ad expanded');
-                  }, onAdCollapsedCallback: (ad) {
-                    print('Mrec widget ad collapsed');
-                  })),
+          Obx(() =>
+              RevenueCatService().currentEntitlement.value == Entitlement.paid
+                  ? Container()
+                  : MaxAdView(
+                      adUnitId: Platform.isAndroid
+                          ? AppStrings.MAX_Mrec_ID
+                          : AppStrings.IOS_MAX_MREC_ID,
+                      adFormat: AdFormat.mrec,
+                      listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                        FirebaseAnalytics.instance.logAdImpression(
+                          adFormat: "Mrec",
+                          adSource: ad.networkName,
+                          value: ad.revenue,
+                        );
+                        print('Mrec widget ad loaded from ' + ad.networkName);
+                      }, onAdLoadFailedCallback: (adUnitId, error) {
+                        print('Mrec widget ad failed to load with error code ' +
+                            error.code.toString() +
+                            ' and message: ' +
+                            error.message);
+                      }, onAdClickedCallback: (ad) {
+                        print('Mrec widget ad clicked');
+                      }, onAdExpandedCallback: (ad) {
+                        print('Mrec widget ad expanded');
+                      }, onAdCollapsedCallback: (ad) {
+                        print('Mrec widget ad collapsed');
+                      }))),
 
           verticalSpace(SizeConfig.blockSizeVertical * 2),
         ],

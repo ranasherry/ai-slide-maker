@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:slide_maker/app/modules/newslide_generator/bindings/slide_generated_detailed_binding.dart';
 import 'package:slide_maker/app/modules/newslide_generator/views/slide_detailed_generated_view.dart';
@@ -189,10 +190,10 @@ class AppPages {
       binding: BookGeneratedBinding(),
     ),
     GetPage(
-      name: _Paths.IN_APP_PURCHASES,
-      page: () => const InAppPurchasesView(),
-      binding: InAppPurchasesBinding(),
-    ),
+        name: _Paths.IN_APP_PURCHASES,
+        page: () => const InAppPurchasesView(),
+        binding: InAppPurchasesBinding(),
+        transition: Transition.downToUp),
     GetPage(
       name: _Paths.SlideDetailedGeneratedView,
       page: () => const SlideDetailedGeneratedView(),

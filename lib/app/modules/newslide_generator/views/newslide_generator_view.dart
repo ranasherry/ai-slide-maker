@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:im_animations/im_animations.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -90,6 +91,40 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Container(
+                          height: 60,
+                          // color: Colors.amber,
+                          child: Center(
+                            child: Obx(() => RevenueCatService()
+                                        .currentEntitlement
+                                        .value ==
+                                    Entitlement.paid
+                                ? Container()
+                                : MaxAdView(
+                                    adUnitId: Platform.isAndroid
+                                        ? AppStrings.MAX_BANNER_ID
+                                        : AppStrings.IOS_MAX_BANNER_ID,
+                                    adFormat: AdFormat.banner,
+                                    listener: AdViewAdListener(
+                                        onAdLoadedCallback: (ad) {
+                                      print('Banner widget ad loaded from ' +
+                                          ad.networkName);
+                                    }, onAdLoadFailedCallback:
+                                            (adUnitId, error) {
+                                      print(
+                                          'Banner widget ad failed to load with error code ' +
+                                              error.code.toString() +
+                                              ' and message: ' +
+                                              error.message);
+                                    }, onAdClickedCallback: (ad) {
+                                      print('Banner widget ad clicked');
+                                    }, onAdExpandedCallback: (ad) {
+                                      print('Banner widget ad expanded');
+                                    }, onAdCollapsedCallback: (ad) {
+                                      print('Banner widget ad collapsed');
+                                    }))),
+                          ),
+                        ),
                         controller.outlineTitleFetched.value
                             ? Container()
                             : Container(
@@ -276,6 +311,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                   ),
                 ],
               ),
+
               //  ? commented by jamal start
               // Obx(() => isBannerLoaded.value &&
               //         AdMobAdsProvider.instance.isAdEnable.value
@@ -284,40 +320,6 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
               //         child: AdWidget(ad: myBanner))
               //     : Container()),
               //  ? commented by jamal end
-
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: 60,
-                  // color: Colors.amber,
-                  child: Center(
-                    child: !AppLovinProvider.instance.isAdsEnable
-                        ? Container()
-                        : MaxAdView(
-                            adUnitId: Platform.isAndroid
-                                ? AppStrings.MAX_BANNER_ID
-                                : AppStrings.IOS_MAX_BANNER_ID,
-                            adFormat: AdFormat.banner,
-                            listener:
-                                AdViewAdListener(onAdLoadedCallback: (ad) {
-                              print('Banner widget ad loaded from ' +
-                                  ad.networkName);
-                            }, onAdLoadFailedCallback: (adUnitId, error) {
-                              print(
-                                  'Banner widget ad failed to load with error code ' +
-                                      error.code.toString() +
-                                      ' and message: ' +
-                                      error.message);
-                            }, onAdClickedCallback: (ad) {
-                              print('Banner widget ad clicked');
-                            }, onAdExpandedCallback: (ad) {
-                              print('Banner widget ad expanded');
-                            }, onAdCollapsedCallback: (ad) {
-                              print('Banner widget ad collapsed');
-                            })),
-                  ),
-                ),
-              ),
             ]),
           )),
     );

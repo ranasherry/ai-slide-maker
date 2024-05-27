@@ -13,10 +13,10 @@ packages:
     dependency: "direct main"
     description:
       name: applovin_max
-      sha256: "3910554a96b1a60b5e9a9fa08c844b4308984077b045dcbb5db0cf4c8c28b449"
+      sha256: d2c6c9435b3b6d6319e215a363b1837b7cef1ea10647c8fb0a169f63c61d951e
       url: "https://pub.dev"
     source: hosted
-    version: "3.8.1"
+    version: "3.9.2"
   archive:
     dependency: transitive
     description:
@@ -361,14 +361,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.2"
-  easy_audience_network:
-    dependency: "direct main"
-    description:
-      name: easy_audience_network
-      sha256: "3bd9f76785163e898683cf59d2c1799f8cd6d04afcd601dd981ced03763bbe93"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.6"
   easy_docs_viewer:
     dependency: "direct main"
     description:
@@ -1408,6 +1400,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+  purchases_flutter:
+    dependency: "direct main"
+    description:
+      name: purchases_flutter
+      sha256: "41b3a72e92d8d40f83caf2a43ba79fab3def3617a6d53902310e38f65fb5f6f0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.29.1"
   qr:
     dependency: transitive
     description:

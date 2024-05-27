@@ -19,6 +19,7 @@ import 'package:lottie/lottie.dart';
 import 'package:slide_maker/app/data/slideResponce.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/big_fact_slides.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/flutter_deck_app.dart';
 import 'package:slide_maker/packages/slick_slides/slick_slides.dart';
@@ -38,49 +39,6 @@ const _defaultTransition = SlickFadeTransition(
 
 class SlideMakerView extends GetView<SlideMakerController> {
   SlideMakerView({Key? key}) : super(key: key);
-
-  // // // Banner Ad Implementation start // // //
-
-  //  ? commented by jamal start
-
-  // late BannerAd myBanner;
-  // RxBool isBannerLoaded = false.obs;
-
-  // initBanner() {
-  //   BannerAdListener listener = BannerAdListener(
-  //     // Called when an ad is successfully received.
-  //     onAdLoaded: (Ad ad) {
-  //       print('Ad loaded.');
-  //       isBannerLoaded.value = true;
-  //     },
-  //     // Called when an ad request failed.
-  //     onAdFailedToLoad: (Ad ad, LoadAdError error) {
-  //       // Dispose the ad here to free resources.
-  //       ad.dispose();
-  //       print('Ad failed to load: $error');
-  //     },
-  //     // Called when an ad opens an overlay that covers the screen.
-  //     onAdOpened: (Ad ad) {
-  //       print('Ad opened.');
-  //     },
-  //     // Called when an ad removes an overlay that covers the screen.
-  //     onAdClosed: (Ad ad) {
-  //       print('Ad closed.');
-  //     },
-  //     // Called when an impression occurs on the ad.
-  //     onAdImpression: (Ad ad) {
-  //       print('Ad impression.');
-  //     },
-  //   );
-
-  //   myBanner = BannerAd(
-  //     adUnitId: AppStrings.ADMOB_BANNER,
-  //     size: AdSize.banner,
-  //     request: AdRequest(),
-  //     listener: listener,
-  //   );
-  //   myBanner.load();
-  // }
 
   //  ? commented by jamal end
 
@@ -114,52 +72,10 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // controller.onBackPressed(); // ? Commented by jamal
             },
             child: Icon(Icons.arrow_back_ios_new_rounded)),
-        // ? Commented by jamal start
-        // leading: Obx(
-        //   () => controller.showSlides.value
-        //       ? GestureDetector(
-        //           onTap: () {
-        //             if (kReleaseMode) {
-        //               if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-        //                 MetaAdsProvider.instance.showInterstitialAd();
-        //               } else {
-        //                 AppLovinProvider.instance.showInterstitial(() {});
-        //               }
-        //             }
-        //             // AdMobAdsProvider.instance.showInterstitialAd(() {});
-        //             controller.onBackPressed();
-        //           },
-        //           child: Icon(
-        //             Icons.arrow_back_ios_new,
-        //             color: Colors.black,
-        //           ),
-        //         )
-        //       : GestureDetector(
-        //           onTap: () {
-        //             controller.scaffoldKey.currentState!.openDrawer();
-        //           },
-        //           child: Icon(
-        //             Icons.menu,
-        //             color: Colors.transparent, //changes by jamal
-        //           )),
-        // ),
-        // ? Commented by jamal end
 
         actions: [
-          Obx(() =>
-
-              // RevenueCatService().currentEntitlement.value == Entitlement.paid?
-              //     Container()
-              //     :
-
-              Row(
+          Obx(() => Row(
                 children: [
-                  // Obx(() => Card(
-                  //     color: AppColors.foreground_color2,
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: Text("Next ${controller.timerValue.value}"),
-                  //     ))),
                   GestureDetector(
                     onTap: () {
                       controller.convertToPPT();
@@ -182,23 +98,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
                             : Container()
                         : Container(),
                   ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Get.toNamed(Routes.GemsView);
-                  //   },
-                  //   child: Row(
-                  //     children: [
-                  //       Image.asset(
-                  //         AppImages.gems,
-                  //         scale: 30,
-                  //       ),
-                  //       Text(" ${controller.gems.value}"),
-                  //       SizedBox(
-                  //         width: SizeConfig.screenWidth * 0.03,
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ))
         ],
@@ -367,7 +266,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   ),
                 ),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -408,46 +306,39 @@ class SlideMakerView extends GetView<SlideMakerController> {
                   ),
                 ],
               ),
-              //  ? commented by jamal start
-              // Obx(() => isBannerLoaded.value &&
-              //         AdMobAdsProvider.instance.isAdEnable.value
-              //     ? Container(
-              //         height: AdSize.banner.height.toDouble(),
-              //         child: AdWidget(ad: myBanner))
-              //     : Container()),
-              //  ? commented by jamal end
-
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 60,
                   // color: Colors.amber,
                   child: Center(
-                    child: !AppLovinProvider.instance.isAdsEnable
-                        ? Container()
-                        : MaxAdView(
-                            adUnitId: Platform.isAndroid
-                                ? AppStrings.MAX_BANNER_ID
-                                : AppStrings.IOS_MAX_BANNER_ID,
-                            adFormat: AdFormat.banner,
-                            listener:
-                                AdViewAdListener(onAdLoadedCallback: (ad) {
-                              print('Banner widget ad loaded from ' +
-                                  ad.networkName);
-                            }, onAdLoadFailedCallback: (adUnitId, error) {
-                              print(
-                                  'Banner widget ad failed to load with error code ' +
-                                      error.code.toString() +
-                                      ' and message: ' +
-                                      error.message);
-                            }, onAdClickedCallback: (ad) {
-                              print('Banner widget ad clicked');
-                            }, onAdExpandedCallback: (ad) {
-                              print('Banner widget ad expanded');
-                            }, onAdCollapsedCallback: (ad) {
-                              print('Banner widget ad collapsed');
-                            })),
-                  ),
+                      child: Obx(() => RevenueCatService()
+                                  .currentEntitlement
+                                  .value ==
+                              Entitlement.paid
+                          ? Container()
+                          : MaxAdView(
+                              adUnitId: Platform.isAndroid
+                                  ? AppStrings.MAX_BANNER_ID
+                                  : AppStrings.IOS_MAX_BANNER_ID,
+                              adFormat: AdFormat.banner,
+                              listener:
+                                  AdViewAdListener(onAdLoadedCallback: (ad) {
+                                print('Banner widget ad loaded from ' +
+                                    ad.networkName);
+                              }, onAdLoadFailedCallback: (adUnitId, error) {
+                                print(
+                                    'Banner widget ad failed to load with error code ' +
+                                        error.code.toString() +
+                                        ' and message: ' +
+                                        error.message);
+                              }, onAdClickedCallback: (ad) {
+                                print('Banner widget ad clicked');
+                              }, onAdExpandedCallback: (ad) {
+                                print('Banner widget ad expanded');
+                              }, onAdCollapsedCallback: (ad) {
+                                print('Banner widget ad collapsed');
+                              })))),
                 ),
               ),
             ]),
@@ -487,16 +378,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Container(
-        //     height: SizeConfig.blockSizeVertical * 40,
-        //     child: FlutterDeckExample(
-        //       slideResponseList: controller.slideResponseList,
-        //       NoOfSlides: controller.slideResponseList.length,
-        //       // showExtra: controller.showExtraSlides.value,
-        //     )
-
-        //     ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -515,12 +396,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                       print("You pressed Icon Elevated Button");
                       controller.isEditable.value =
                           !controller.isEditable.value;
-                      // final tempList = controller.slideResponseList.toList();
-                      // controller.editableSlideResponseList.clear();
-                      // controller.editableSlideResponseList.value = tempList;
-                      // print(
-                      //     "Slide Respinse Length: ${controller.editableSlideResponseList.length}");
-                      //   controller.editableSlideResponseList.value = tempList;
+
                       if (controller.isEditable.value) {
                         final tempList = controller.slideResponseList.toList();
                         controller.editableSlideResponseList.clear();
@@ -538,46 +414,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     },
                   ),
                 )),
-            // Obx(() => ElevatedButton.icon(
-            //           onPressed: () {
-            //             print("You pressed Icon Elevated Button");
-            //             controller.isEditable.value =
-            //                 !controller.isEditable.value;
-            //             // final tempList = controller.slideResponseList.toList();
-            //             // controller.editableSlideResponseList.clear();
-            //             // controller.editableSlideResponseList.value = tempList;
-            //             // print(
-            //             //     "Slide Respinse Length: ${controller.editableSlideResponseList.length}");
-            //             //   controller.editableSlideResponseList.value = tempList;
-            //             if (controller.isEditable.value) {
-            //               final tempList =
-            //                   controller.slideResponseList.toList();
-            //               controller.editableSlideResponseList.clear();
-            //               controller.editableSlideResponseList.value =
-            //                   tempList.toList();
-            //               print("is Editable true");
-            //             } else {
-            //               final tempList =
-            //                   controller.editableSlideResponseList.toList();
-            //               controller.slideResponseList.clear();
-            //               controller.slideResponseList.value =
-            //                   tempList.toList();
-            //               print("is Editable false");
-            //             }
-            //           },
-            //           style: ElevatedButton.styleFrom(
-            //               primary: controller.isEditable.value
-            //                   ? dartui.Color.fromARGB(255, 67, 167, 105)
-            //                   : dartui.Color.fromARGB(255, 139, 44, 44),
-            //               onPrimary: Colors.white),
-            //           icon: AnimatedIcon(icon: AnimatedIcons.ed, progress: null,), //icon data for elevated button
-            //           label: Text(controller.isEditable.value
-            //               ? "Save"
-            //               : "Edit"), //label text
-            //         )
-
-            //     ),
-
             horizontalSpace(SizeConfig.blockSizeHorizontal * 2)
           ],
         ),
@@ -591,69 +427,35 @@ class SlideMakerView extends GetView<SlideMakerController> {
         MoreSlidesButton(context),
         verticalSpace(SizeConfig.blockSizeVertical * 1),
 
-        !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
-            ? Container()
-            : MaxAdView(
-                adUnitId: Platform.isAndroid
-                    ? AppStrings.MAX_Mrec_ID
-                    : AppStrings.IOS_MAX_MREC_ID,
-                adFormat: AdFormat.mrec,
-                listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                  FirebaseAnalytics.instance.logAdImpression(
-                    adFormat: "Mrec",
-                    adSource: ad.networkName,
-                    value: ad.revenue,
-                  );
-                  print('Mrec widget ad loaded from ' + ad.networkName);
-                }, onAdLoadFailedCallback: (adUnitId, error) {
-                  print('Mrec widget ad failed to load with error code ' +
-                      error.code.toString() +
-                      ' and message: ' +
-                      error.message);
-                }, onAdClickedCallback: (ad) {
-                  print('Mrec widget ad clicked');
-                }, onAdExpandedCallback: (ad) {
-                  print('Mrec widget ad expanded');
-                }, onAdCollapsedCallback: (ad) {
-                  print('Mrec widget ad collapsed');
-                })),
+        Obx(() =>
+            RevenueCatService().currentEntitlement.value == Entitlement.paid
+                ? Container()
+                : MaxAdView(
+                    adUnitId: Platform.isAndroid
+                        ? AppStrings.MAX_Mrec_ID
+                        : AppStrings.IOS_MAX_MREC_ID,
+                    adFormat: AdFormat.mrec,
+                    listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                      FirebaseAnalytics.instance.logAdImpression(
+                        adFormat: "Mrec",
+                        adSource: ad.networkName,
+                        value: ad.revenue,
+                      );
+                      print('Mrec widget ad loaded from ' + ad.networkName);
+                    }, onAdLoadFailedCallback: (adUnitId, error) {
+                      print('Mrec widget ad failed to load with error code ' +
+                          error.code.toString() +
+                          ' and message: ' +
+                          error.message);
+                    }, onAdClickedCallback: (ad) {
+                      print('Mrec widget ad clicked');
+                    }, onAdExpandedCallback: (ad) {
+                      print('Mrec widget ad expanded');
+                    }, onAdCollapsedCallback: (ad) {
+                      print('Mrec widget ad collapsed');
+                    }))),
       ],
     );
-
-    // Container(
-    //   // padding: EdgeInsets.only(top: 60, bottom: 60),
-    //   height: SizeConfig.screenHeight * 0.75,
-    //   child: Obx(() => ListView.builder(
-    //       // padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-    //       // itemCount: controller.outlineTitles.length,
-    //       itemCount: controller.slideResponseList.length,
-    //       cacheExtent: 99999,
-    //       // addAutomaticKeepAlives: true, // the number of items in the list
-    //       itemBuilder: (context, index) {
-    //         return Stack(
-    //           children: [
-    //             singleSlide(index),
-    //             Align(
-    //               alignment: Alignment.topRight,
-    //               child: Card(
-    //                 color: AppColors.Green_color,
-    //                 child: Padding(
-    //                   padding: EdgeInsets.all(5.0),
-    //                   child: Text(
-    //                     "Slide ${index + 1}",
-    //                     style: StyleSheet.Intro_Sub_heading,
-    //                   ),
-    //                 ),
-    //               ),
-    //             )
-    //           ],
-    //         );
-    //         // ListTile(
-    //         //   title: Text('Item ${index + 1}'), // the title of each item
-    //         // );
-    //       })),
-    // );
-    // // singleSlide();
   }
 
   Container _slickSlide(List<SlideResponse> slideResponseList) {
@@ -687,108 +489,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
               },
             )));
   }
-
-  // BigFactSlide singleSlide(index) {
-  //   String title = controller.slideResponseList[index].slideTitle;
-  //   String dis = controller.slideResponseList[index].slideDescription;
-  //   String imagePrompt = "Create an image of $title";
-  //   return BigFactSlide(
-  //     customData1: 'Value 1',
-  //     customData2: 'Value 2',
-  //   );
-  // }
-
-  // Widget singleSlide(index) {
-  //   String title = controller.slideResponseList[index].slideTitle;
-  //   String dis = controller.slideResponseList[index].slideDescription;
-  //   String imagePrompt = "Create an image of $title";
-  //   return Padding(
-  //     padding: EdgeInsets.all(8.0),
-  //     child: Card(
-  //       color: AppColors.buttonColor,
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius:
-  //             BorderRadius.circular(10.0), // adjust the value as you like
-  //       ),
-  //       child: Padding(
-  //         padding: EdgeInsets.all(8.0),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Padding(
-  //               padding: EdgeInsets.all(10.0),
-  //               child: Container(
-  //                 // width: 200,
-  //                 // height: 250,
-  //                 width: SizeConfig.screenWidth * 0.5,
-  //                 height: SizeConfig.screenHeight * 0.3,
-  //                 child: SingleChildScrollView(
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Text(
-  //                         // "The Future of AI and evolving AI",
-  //                         "${controller.slideResponseList[index].slideTitle}",
-  //                         style: StyleSheet.Subscription_heading,
-  //                       ),
-  //                       Divider(),
-  //                       Text(
-  //                           // "Artificial Intelligence (AI) is a rapidly advancing field of computer science that empowers machines to mimic human intelligence, enabling them to learn from data, reason, make decisions, and solve complex problems. AI is transforming industries, from healthcare to finance, by automating tasks, improving efficiency, and driving innovation.",
-  //                           "${controller.slideResponseList[index].slideDescription}",
-  //                           style: StyleSheet.Intro_Sub_heading),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //             Column(
-  //               // mainAxisAlignment: MainAxisAlignment.end,
-  //               children: [
-  //                 // Card(
-  //                 //   shape: RoundedRectangleBorder(
-  //                 //     borderRadius: BorderRadius.circular(10.0),
-  //                 //   ),
-  //                 //   elevation: 10.0,
-  //                 //   child: Image.asset(
-  //                 //     AppImages.presentation,
-  //                 //     scale: 4,
-  //                 //   ),
-  //                 // )
-  //                 // SizedBox(height: SizeConfig.screenHeight *0.1,),
-  //                 // ? commented by jamal start
-  //                 // Card(
-  //                 //   shape: RoundedRectangleBorder(
-  //                 //     borderRadius: BorderRadius.circular(
-  //                 //         10.0), // adjust the value as you like
-  //                 //   ),
-  //                 //   elevation: 10.0, // adjust the value as you like
-  //                 //   child: SlideImageContainer(
-  //                 //       controller: controller, imagePrompt: imagePrompt),
-  //                 // ),
-  //                 // ? commented by jamal end
-
-  //                 Obx(
-  //                   () => Card(
-  //                       shape: RoundedRectangleBorder(
-  //                           borderRadius: BorderRadius.circular(10.0)),
-  //                       elevation: 10.0,
-  //                       child: Container(
-  //                           width: SizeConfig.screenWidth * 0.3,
-  //                           child:
-  //                               Image.network(controller.slideImageList[index]))
-  //                       // child: Image.network("https://stackoverflow.com/questions/73336313/exception-invalid-image-data"))
-  //                       ),
-  //                 ),
-  //               ],
-  //             )
-
-  //             // )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget NextButton(BuildContext context) {
     return GestureDetector(
@@ -856,23 +556,9 @@ class SlideMakerView extends GetView<SlideMakerController> {
         // controller.showExtraSlides.toggle();
         controller.generateExtraSlides();
         print("Next Button Clicked");
-        // if (kReleaseMode) {
-        //   if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-        //     MetaAdsProvider.instance.showInterstitialAd();
-        //   } else {
-        //     AppLovinProvider.instance.showInterstitial(() {});
-        //   }
-        // }
-
-        // controller.increaseOutputHeight();
-        // AdMobAdsProvider.instance.showInterstitialAd(() {});
       },
       child: Container(
         width: SizeConfig.blockSizeHorizontal * 70,
-        // height: 100,
-        // color: AppColors.Bright_Pink_color,
-        // duration: Duration(milliseconds: 500),
-        // curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -882,15 +568,12 @@ class SlideMakerView extends GetView<SlideMakerController> {
               offset: Offset(0, 5), // Offset in x and y direction
             ),
           ],
-
           gradient: LinearGradient(
               colors: [Colors.indigo, Colors.indigoAccent.shade200],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter),
           borderRadius:
               BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
-          // border: Border.all(color: AppColors.icon_color),
-          // color: AppColors.Green_color,
         ),
         child: Padding(
           padding:
@@ -902,8 +585,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
               // :
               "Regenerate with 2 Extra slides",
               style: TextStyle(
-                  // fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  // fontSize: SizeConfig.blockSizeHorizontal * 1.2,
                   fontSize: SizeConfig.blockSizeHorizontal * 12.sp,
                   color: Colors.white),
             ),
@@ -923,8 +604,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     Text(
                       "Outlines of the topic",
                       style: TextStyle(
-                          // fontSize: SizeConfig.blockSizeHorizontal * 4,
-                          // fontSize: SizeConfig.blockSizeHorizontal * 1.3,
                           fontSize: 74.sp,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.primary),
@@ -939,10 +618,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
                                 leading: const Icon(Icons.arrow_forward),
-                                // trailing: const Text(
-                                //   "GFG",
-                                //   style: TextStyle(color: Colors.green, fontSize: 15),
-                                // ),
                                 title: Text(
                                   "${controller.slideResponseList[index].slideTitle}",
                                   style: TextStyle(
@@ -977,20 +652,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.primary),
                         ),
-                        // Container(
-                        //   color: AppColors.greybox,
-                        //   child:
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8.0),
-                        //   child: Row(children: [
-                        //     Image.asset(AppImagesPack2.slides,color: AppColors.icon_color,),
-                        //     Text("6 pages",
-                        //   style: TextStyle(
-                        //   // fontSize: SizeConfig.blockSizeHorizontal * 4,
-                        //   color: Colors.white),
-                        //   ),
-                        //   ],),
-                        // ),)
                       ],
                     ),
                   ),
@@ -1007,19 +668,10 @@ class SlideMakerView extends GetView<SlideMakerController> {
   Widget createButton(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          // controller.increaseOutputHeight();
-          // controller.tempList(); //? commmented by jamal
-
-          //Just for now
-          // if (kReleaseMode) {
-          //   if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-          //     MetaAdsProvider.instance.showInterstitialAd();
-          //   } else {
-          //     AppLovinProvider.instance.showInterstitial(() {});
-          //   }
-          // }
-          // AdMobAdsProvider.instance.showInterstitialAd(() {});
-          if (!controller.isWaitingForTime.value || kDebugMode) {
+          if (!controller.isWaitingForTime.value ||
+              kDebugMode ||
+              RevenueCatService().currentEntitlement.value ==
+                  Entitlement.paid) {
             // if (!controller.isWaitingForTime.value) {
             controller.validate_user_input("Six");
           } else {
@@ -1056,7 +708,11 @@ class SlideMakerView extends GetView<SlideMakerController> {
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          controller.isWaitingForTime.value
+                          controller.isWaitingForTime.value &&
+                                  RevenueCatService()
+                                          .currentEntitlement
+                                          .value ==
+                                      Entitlement.free
                               ? Text(
                                   controller.outlineTitleFetched.value
                                       ? "Recreate in ${controller.timerValue.value}"
@@ -1071,32 +727,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                       ? "Recreate"
                                       : "Create",
                                   style: TextStyle(
-                                      fontSize: 54.sp,
-                                      // SizeConfig.blockSizeHorizontal * 4,
-                                      // SizeConfig.blockSizeHorizontal * 2,
-                                      color: Colors.white),
+                                      fontSize: 54.sp, color: Colors.white),
                                 ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.only(
-                          //           left: SizeConfig.blockSizeHorizontal * 1),
-                          //       child: Text(
-                          //         "20",
-                          //         style: TextStyle(
-                          //             fontSize:
-                          //                 SizeConfig.blockSizeHorizontal * 3,
-                          //             color: Colors.white),
-                          //       ),
-                          //     ),
-                          //     horizontalSpace(SizeConfig.blockSizeHorizontal * 1),
-                          //     Image.asset(
-                          //       AppImages.gems,
-                          //       scale: 35,
-                          //     )
-                          //   ],
-                          // )
                         ],
                       )
                     : Container(),
@@ -1139,12 +771,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
             enabledBorder: OutlineInputBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
-                borderSide: BorderSide.none
-                // borderSide: BorderSide(
-                //   color: Color(0xFF0095B0), // Border color
-                //   width: 1.0, // Border width
-                // ),
-                ),
+                borderSide: BorderSide.none),
 
             focusedBorder: OutlineInputBorder(
               borderRadius:
@@ -1156,15 +783,6 @@ class SlideMakerView extends GetView<SlideMakerController> {
               ),
             ),
           ),
-          // cursorColor: Colors.white,
-          //               style: TextStyle(
-          //                   // fontSize: SizeConfig.blockSizeHorizontal * 4,
-          //                   color: Colors.white),
-          // decoration: InputDecoration(labelText:
-          // "Product Name",
-          // // fillColor: Colors.white
-          // // colo
-          // ),
           onChanged: (value) {
             print(value);
             controller.userInput.value = value;
@@ -1413,14 +1031,6 @@ class _SlideImageContainerState extends State<SlideImageContainer> {
               return Container();
             }
           },
-        )
-        // ClipRRect(
-        //   borderRadius: BorderRadius.circular(10.0), // Same as the Card's borderRadius for rounded corners
-        //   child: Image.network(
-        //     "https://cdn.britannica.com/47/246247-050-F1021DE9/AI-text-to-image-photo-robot-with-computer.jpg",
-        //     fit: BoxFit.cover, // You can adjust this to control how the image fits within the container
-        //   ),
-        // ),
-        );
+        ));
   }
 }

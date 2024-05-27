@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/templates/tamplate1.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -50,7 +51,8 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
             height: 60,
             // color: Colors.amber,
             child: Center(
-              child: !AppLovinProvider.instance.isAdsEnable
+              child: Obx(() => RevenueCatService().currentEntitlement.value ==
+                      Entitlement.paid
                   ? Container()
                   : MaxAdView(
                       adUnitId: Platform.isAndroid
@@ -71,7 +73,7 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
                         print('Banner widget ad expanded');
                       }, onAdCollapsedCallback: (ad) {
                         print('Banner widget ad collapsed');
-                      })),
+                      }))),
             ),
           ),
           Padding(
@@ -113,7 +115,8 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
             // height: 60,
             // color: Colors.amber,
             child: Center(
-              child: !AppLovinProvider.instance.isAdsEnable || Platform.isIOS
+              child: Obx(() => RevenueCatService().currentEntitlement.value ==
+                      Entitlement.paid
                   ? Container()
                   : MaxAdView(
                       adUnitId: Platform.isAndroid
@@ -121,20 +124,24 @@ class InvitationMakerView extends GetView<InvitationMakerController> {
                           : AppStrings.IOS_MAX_MREC_ID,
                       adFormat: AdFormat.mrec,
                       listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                        print('Banner widget ad loaded from ' + ad.networkName);
+                        FirebaseAnalytics.instance.logAdImpression(
+                          adFormat: "Mrec",
+                          adSource: ad.networkName,
+                          value: ad.revenue,
+                        );
+                        print('Mrec widget ad loaded from ' + ad.networkName);
                       }, onAdLoadFailedCallback: (adUnitId, error) {
-                        print(
-                            'Banner widget ad failed to load with error code ' +
-                                error.code.toString() +
-                                ' and message: ' +
-                                error.message);
+                        print('Mrec widget ad failed to load with error code ' +
+                            error.code.toString() +
+                            ' and message: ' +
+                            error.message);
                       }, onAdClickedCallback: (ad) {
-                        print('Banner widget ad clicked');
+                        print('Mrec widget ad clicked');
                       }, onAdExpandedCallback: (ad) {
-                        print('Banner widget ad expanded');
+                        print('Mrec widget ad expanded');
                       }, onAdCollapsedCallback: (ad) {
-                        print('Banner widget ad collapsed');
-                      })),
+                        print('Mrec widget ad collapsed');
+                      }))),
             ),
           ),
         ],

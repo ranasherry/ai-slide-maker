@@ -31,6 +31,7 @@ class AppStrings {
 
   static const MAX_Reward_ID = "efa63a2cafbae46f";
   static RxList<String> topicsList = <String>[].obs;
+
   static const MAX_SDK =
       "eCVIa8prwGmBAEXgBN70zL66PSODmw1GcCGut4bzm5eU7ANKptVSTaGrduCvfRTGOIQWEpHoI2UwQ1corcGexv";
 
@@ -55,6 +56,11 @@ class AppStrings {
   static String ADMOB_APP_OPEN = "ca-app-pub-6047136030887290/9687433159";
   static String ADMOB_NATIVE = "ca-app-pub-6047136030887290/2861390106";
   static String ADMOB_REWARDED = "ca-app-pub-6047136030887290/7085320548";
+
+  //? RevenueCat
+  static const entitlementID = "remove_ads";
+
+  static const revenueCatGoogleAPIKEY = "goog_hAsleyJthCfUtAQlmqdSbKVtLOv";
 
   // ]
 

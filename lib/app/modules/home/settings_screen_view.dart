@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -56,30 +57,32 @@ class SettingsView extends GetView<SettingsViewCTL> {
               // height: 60,
               // color: Colors.amber,
               child: Center(
-                child: !AppLovinProvider.instance.isAdsEnable
-                    ? Container()
-                    : MaxAdView(
-                        adUnitId: Platform.isAndroid
-                            ? AppStrings.MAX_BANNER_ID
-                            : AppStrings.IOS_MAX_BANNER_ID,
-                        adFormat: AdFormat.banner,
-                        listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                          print(
-                              'Banner widget ad loaded from ' + ad.networkName);
-                        }, onAdLoadFailedCallback: (adUnitId, error) {
-                          print(
-                              'Banner widget ad failed to load with error code ' +
-                                  error.code.toString() +
-                                  ' and message: ' +
-                                  error.message);
-                        }, onAdClickedCallback: (ad) {
-                          print('Banner widget ad clicked');
-                        }, onAdExpandedCallback: (ad) {
-                          print('Banner widget ad expanded');
-                        }, onAdCollapsedCallback: (ad) {
-                          print('Banner widget ad collapsed');
-                        })),
-              ),
+                  child: Obx(() => RevenueCatService()
+                              .currentEntitlement
+                              .value ==
+                          Entitlement.paid
+                      ? Container()
+                      : MaxAdView(
+                          adUnitId: Platform.isAndroid
+                              ? AppStrings.MAX_BANNER_ID
+                              : AppStrings.IOS_MAX_BANNER_ID,
+                          adFormat: AdFormat.banner,
+                          listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                            print('Banner widget ad loaded from ' +
+                                ad.networkName);
+                          }, onAdLoadFailedCallback: (adUnitId, error) {
+                            print(
+                                'Banner widget ad failed to load with error code ' +
+                                    error.code.toString() +
+                                    ' and message: ' +
+                                    error.message);
+                          }, onAdClickedCallback: (ad) {
+                            print('Banner widget ad clicked');
+                          }, onAdExpandedCallback: (ad) {
+                            print('Banner widget ad expanded');
+                          }, onAdCollapsedCallback: (ad) {
+                            print('Banner widget ad collapsed');
+                          })))),
             ),
             verticalSpace(SizeConfig.blockSizeVertical),
             Padding(
@@ -157,7 +160,8 @@ class SettingsView extends GetView<SettingsViewCTL> {
                 child: settings_btn("Privacy Policy", Icons.privacy_tip,
                     "Rights of user", Theme.of(context).colorScheme.primary)),
             verticalSpace(SizeConfig.blockSizeVertical * 1),
-            !AppLovinProvider.instance.isAdsEnable
+            Obx(() => RevenueCatService().currentEntitlement.value ==
+                    Entitlement.paid
                 ? Container()
                 : MaxAdView(
                     adUnitId: Platform.isAndroid
@@ -182,7 +186,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
                       print('Mrec widget ad expanded');
                     }, onAdCollapsedCallback: (ad) {
                       print('Mrec widget ad collapsed');
-                    })),
+                    }))),
             verticalSpace(SizeConfig.blockSizeVertical),
           ],
         ),

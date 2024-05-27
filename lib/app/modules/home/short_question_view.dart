@@ -54,29 +54,6 @@ class ShortQuestionView extends GetView<MathsSolverController> {
       ),
       body: ListView(
         children: [
-          // Container(
-          //   // height: 60,
-          //   // color: Colors.amber,
-          //   child: Center(
-          //     child: MaxAdView(
-          //         adUnitId: AppStrings.MAX_BANNER_ID,
-          //         adFormat: AdFormat.banner,
-          //         listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-          //           print('Banner widget ad loaded from ' + ad.networkName);
-          //         }, onAdLoadFailedCallback: (adUnitId, error) {
-          //           print('Banner widget ad failed to load with error code ' +
-          //               error.code.toString() +
-          //               ' and message: ' +
-          //               error.message);
-          //         }, onAdClickedCallback: (ad) {
-          //           print('Banner widget ad clicked');
-          //         }, onAdExpandedCallback: (ad) {
-          //           print('Banner widget ad expanded');
-          //         }, onAdCollapsedCallback: (ad) {
-          //           print('Banner widget ad collapsed');
-          //         })),
-          //   ),
-          // ),
           Center(
             child: Container(
               margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
@@ -218,25 +195,6 @@ class ShortQuestionView extends GetView<MathsSolverController> {
                                     ),
                                   )
                                 : ShimmerLoader()),
-
-                            //  Row(
-                            //   children: [
-                            //     Text(
-                            //       "The answer is ",
-                            //       style: TextStyle(
-                            //           fontSize:
-                            //               SizeConfig.blockSizeHorizontal * 4,
-                            //           decoration: TextDecoration.underline),
-                            //     ),
-                            //     Text(
-                            //       "4.",
-                            //       style: TextStyle(
-                            //         fontSize:
-                            //             SizeConfig.blockSizeHorizontal * 4,
-                            //       ),
-                            //     )
-                            //   ],
-                            // ),
                           )
                         ],
                       ),

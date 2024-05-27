@@ -99,81 +99,17 @@ class SplashScreen extends GetView<SplashController> {
                                   color: Color(0xFFE35E1F)),
                             ),
                           ))
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(
-                      //       horizontal: SizeConfig.blockSizeHorizontal * 15),
-                      //   width: SizeConfig.screenWidth,
-                      //   child: Center(
-                      //     child: Obx(() => LinearPercentIndicator(
-                      //           width: SizeConfig.screenWidth * .65,
-                      //           lineHeight: SizeConfig.blockSizeVertical,
-                      //           percent: controller.percent.value / 100,
-
-                      //           // center: new Text("${controller.percent.value} %"),
-                      //           backgroundColor: Colors.white,
-                      //           progressColor: Colors.red,
-                      //         )),
-                      //   ),
-                      // ),
-
-                      // verticalSpace(SizeConfig.blockSizeVertical * 5),
-                      // Text("All Video Downloader",
-                      //     style: TextStyle(
-                      //         color: Colors.black,
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.bold)),
-                      // Text("(Download Your favorite videos)",
-                      //     style: TextStyle(
-                      //         color: Colors.black,
-                      //         fontSize: 12,
-                      //         fontWeight: FontWeight.bold)),
+                    
                     ],
                   ),
                 ),
               ),
-              // _nativeAd(),
-              // Align(
-              //     alignment: Alignment.topCenter,
-              //     child: Container(
-              //       margin:
-              //           EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
-              //       child: Container(
-              //           width: SizeConfig.screenWidth,
-              //           height: controller
-              //               .googleAdsCT.myBannersplashScreen!.size.height
-              //               .toDouble(),
-              //           child: Center(
-              //             child: AdWidget(
-              //               ad: controller.googleAdsCT.myBannersplashScreen!,
-              //             ),
-              //           )),
-
-              //       // ),
-              //     )),
+           
             ],
           ),
         ),
       ),
-      // floatingActionButton: Obx(() => controller.isLoaded.value
-      //     ? FloatingActionButton(
-      //         backgroundColor: Color(0xFFF12073),
-      //         onPressed: () {
-      //           print("Is First Time: ${controller.isFirstTime}");
-      //           // controller.appLovin_CTL.showInterAd();
-
-      //           if (controller.isFirstTime!) {
-      //             controller.setFirstTime(false);
-      //             Get.offAndToNamed(Routes.HOW_TO_SCREEN);
-      //           } else {
-      //             Get.offAndToNamed(Routes.TabsScreenView);
-      //           }
-      //         },
-      //         child: Icon(
-      //           Icons.arrow_forward,
-      //           color: Colors.white,
-      //         ),
-      //       )
-      //     : Container()),
+  
     );
   }
 }
