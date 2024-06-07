@@ -25,17 +25,18 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
 
-    GetRemoteConfig().then((value) {
-      SetRemoteConfig();
+    // GetRemoteConfig().then((value) {
+    //   SetRemoteConfig();
 
-      remoteConfig.onConfigUpdated.listen((event) async {
-        print("Remote Updated");
-        //  await remoteConfig.activate();
-        SetRemoteConfig();
+    //   remoteConfig.onConfigUpdated.listen((event) async {
+    //     print("Remote Updated");
+    //     //  await remoteConfig.activate();
+    //     SetRemoteConfig();
 
-        // Use the new config values here.
-      });
-    });
+    //     // Use the new config values here.
+    //   });
+    // });
+
     print('2 Fetched open: ${AppStrings.OPENAI_TOKEN}');
 
     if (Platform.isAndroid) handlePushNotification();

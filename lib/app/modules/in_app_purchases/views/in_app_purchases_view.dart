@@ -86,6 +86,7 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                       remove_ads("Remove Ads"),
                       remove_ads("Unlock All Templates"),
                       remove_ads("Unlimited Prompts"),
+                      remove_ads("Write Books"),
                       verticalSpace(SizeConfig.blockSizeVertical * 5),
                       Center(
                         child: Container(

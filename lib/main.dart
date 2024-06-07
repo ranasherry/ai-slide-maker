@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
+import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/utills/ThemeNotifier.dart';
 import 'package:slide_maker/theme/app_theme.dart';
 
@@ -27,6 +28,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  RemoteConfigService().initialize();
 
   //? Push Notification Implementation
   FirebaseMessaging messaging = FirebaseMessaging.instance;

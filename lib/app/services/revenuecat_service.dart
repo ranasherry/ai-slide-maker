@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
 
 // import '../modules/home/controllers/nav_view_ctl.dart';
 // import '../modules/utills/Gems_rates.dart';
@@ -46,6 +47,14 @@ class RevenueCatService {
         .then((value) async {
       getRemoveAdProduct();
       await checkSubscriptionStatus();
+      FirestoreService().UserID = await Purchases.appUserID;
+      if (currentEntitlement.value == Entitlement.paid) {
+        try {
+          CreateFirebaseUser();
+        } catch (e) {
+          dp.log("Firebase Error: $e");
+        }
+      }
     });
 
     Purchases.addCustomerInfoUpdateListener((customerInfo) async {
@@ -90,6 +99,7 @@ class RevenueCatService {
       if (purchaserInfo.allPurchasedProductIdentifiers
           .contains("aislide_adremove_1")) {
         RemoveAdsForUser();
+        CreateFirebaseUser();
       }
       // Handle successful purchase
     } catch (error) {
@@ -167,6 +177,10 @@ class RevenueCatService {
         "CurrentEntitlement: ${RevenueCatService().currentEntitlement.value}");
 
     return isAdRemoved;
+  }
+
+  void CreateFirebaseUser() {
+    FirestoreService().createUser(uid: FirestoreService().UserID);
   }
 }
 

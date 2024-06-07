@@ -49,36 +49,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
               // controller.onBackPressed(); // ? Commented by jamal
             },
             child: Icon(Icons.arrow_back_ios_new_rounded)),
-        // ? Commented by jamal start
-        // leading: Obx(
-        //   () => controller.showSlides.value
-        //       ? GestureDetector(
-        //           onTap: () {
-        //             if (kReleaseMode) {
-        //               if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-        //                 MetaAdsProvider.instance.showInterstitialAd();
-        //               } else {
-        //                 AppLovinProvider.instance.showInterstitial(() {});
-        //               }
-        //             }
-        //             // AdMobAdsProvider.instance.showInterstitialAd(() {});
-        //             controller.onBackPressed();
-        //           },
-        //           child: Icon(
-        //             Icons.arrow_back_ios_new,
-        //             color: Colors.black,
-        //           ),
-        //         )
-        //       : GestureDetector(
-        //           onTap: () {
-        //             controller.scaffoldKey.currentState!.openDrawer();
-        //           },
-        //           child: Icon(
-        //             Icons.menu,
-        //             color: Colors.transparent, //changes by jamal
-        //           )),
-        // ),
-        // ? Commented by jamal end
+      
       ),
       body: Obx(() => Center(
             child: Stack(children: [

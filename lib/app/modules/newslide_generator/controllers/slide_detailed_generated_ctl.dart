@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
+
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:html_to_pdf/html_to_pdf.dart';
 import 'package:markdown/markdown.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +15,10 @@ import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/CM.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 class SlideDetailedGeneratedCTL extends GetxController {
   //TODO: Implement BookWriterController
@@ -28,6 +32,8 @@ class SlideDetailedGeneratedCTL extends GetxController {
 
   RxString OutlinesinMarkdown = "".obs;
   RxString TitleMarkDown = "".obs;
+
+  int tokensConsumed = 0;
 
   @override
   void onInit() {
@@ -64,29 +70,56 @@ class SlideDetailedGeneratedCTL extends GetxController {
     super.onClose();
   }
 
+  int geminiRequestCounter = 0;
   Future<String?> gemeniAPICall(String request) async {
-    final gemini = Gemini.instance;
-    List<Content> chatContent = [];
-    Content userInstruction =
-        Content(parts: [Parts(text: request)], role: 'user');
-    chatContent.add(userInstruction);
+    developer.log("RequestCounter: $geminiRequestCounter");
+    final apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
+    final model = GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: apiKey,
+        generationConfig: GenerationConfig(
+          maxOutputTokens: 200,
+          // responseMimeType: "application/json",
+        ));
 
+    final content = [Content.text(request)];
     try {
-      var value = await gemini.chat(chatContent,
-          // safetySettings: safetySettings,
-          generationConfig: GenerationConfig(
-            temperature: 0.5,
-          ));
-      String? generatedMessage = value?.output;
+      final response = await model.generateContent(content);
 
-      // developer.log(value?.output ?? 'without output');
-      // developer.log("${value}");
-      developer.log(value?.output ?? 'No Gemini Output');
-      developer.log(" Gemini Output ${value}");
-      return generatedMessage;
+      if (response.text != null) {
+        if (response.usageMetadata != null) {
+          developer
+              .log("Tokens Count: ${response.usageMetadata!.totalTokenCount}");
+          tokensConsumed += response.usageMetadata!.totalTokenCount ?? 0;
+        }
+        String? generatedMessage = response.text;
+        geminiRequestCounter = 0;
+
+        developer.log("Gemini Response: $generatedMessage");
+        return generatedMessage;
+      } else {
+        if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+          geminiRequestCounter = 0;
+
+          return "Could not generate this slide due to busy server. please try again after a few minutes ";
+        } else {
+          geminiRequestCounter++;
+          String? generatedMessage = await gemeniAPICall(request);
+          return generatedMessage;
+        }
+      }
     } catch (e) {
-      developer.log('Gemini Error $e', error: e);
-      return null;
+      developer.log('Gemini Error $e ', error: e);
+      // return "Could not generate due to some techniqal issue. please try again after a few minutes ";
+      if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+        geminiRequestCounter = 0;
+
+        return "Could not generate this slide due to busy server. please try again after a few minutes ";
+      } else {
+        geminiRequestCounter++;
+        String? generatedMessage = await gemeniAPICall(request);
+        return generatedMessage;
+      }
 
       // generatedMessage = "Error Message $e";
     }
@@ -128,6 +161,29 @@ class SlideDetailedGeneratedCTL extends GetxController {
     isBookGenerated.value = true;
     if (isBookGenerated.value) {
       AppLovinProvider.instance.showInterstitial(() {});
+
+      if (RevenueCatService().currentEntitlement.value == Entitlement.paid) {
+        List<BookPageModel> listToUpload = bookPages;
+
+        final historyItem = SlideItem(
+            slideTitle: Title.value,
+            listOfPages: listToUpload,
+            timestamp: DateTime.now().millisecondsSinceEpoch);
+
+        FirestoreService()
+            .addHistoryItem(FirestoreService().UserID, historyItem);
+
+        // FirestoreService()
+        //     .increaseGenerationCount(uid: FirestoreService().UserID);
+        FirestoreService()
+            .increaseTokensConsumed(
+          uid: FirestoreService().UserID,
+          increament: tokensConsumed,
+        )
+            .then((value) {
+          tokensConsumed = 0;
+        });
+      }
     }
   }
 

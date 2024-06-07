@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
@@ -10,6 +12,8 @@ import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'dart:developer' as developer;
+
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 class NewslideGeneratorController extends GetxController {
   //TODO: Implement NewslideGeneratorController
@@ -29,6 +33,8 @@ class NewslideGeneratorController extends GetxController {
   RxDouble create_box_height = 0.0.obs;
   RxDouble input_box_width = 0.0.obs;
   RxDouble input_box_height = 0.0.obs;
+
+  int tokensConsumed = 0;
 
   //? TextEditing Controller
   TextEditingController inputTextCTL = TextEditingController();
@@ -238,32 +244,87 @@ class NewslideGeneratorController extends GetxController {
     return parsedList;
   }
 
+  int geminiRequestCounter = 0;
   Future<String?> gemeniAPICall(String request) async {
-    final gemini = Gemini.instance;
-    List<Content> chatContent = [];
-    Content userInstruction =
-        Content(parts: [Parts(text: request)], role: 'user');
-    chatContent.add(userInstruction);
+    developer.log("RequestCounter: $geminiRequestCounter");
+    final apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
+    final model = GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: apiKey,
+        generationConfig: GenerationConfig(
+          maxOutputTokens: 200,
+          // responseMimeType: "application/json",
+        ));
 
+    final content = [Content.text(request)];
     try {
-      var value = await gemini.chat(chatContent,
-          // safetySettings: safetySettings,
-          generationConfig: GenerationConfig(
-            maxOutputTokens: 100,
-            temperature: 1,
-          ));
-      String? generatedMessage = value?.output;
+      final response = await model.generateContent(content);
 
-      // developer.log(value?.output ?? 'without output');
-      // developer.log("${value}");
-      developer.log(value?.output ?? 'No Gemini Output');
-      developer.log(" Gemini Output ${value}");
-      return generatedMessage;
+      if (response.text != null) {
+        if (response.usageMetadata != null) {
+          developer
+              .log("Tokens Count: ${response.usageMetadata!.totalTokenCount}");
+          tokensConsumed += response.usageMetadata!.totalTokenCount ?? 0;
+        }
+        String? generatedMessage = response.text;
+        geminiRequestCounter = 0;
+
+        developer.log("Gemini Response: $generatedMessage");
+        return generatedMessage;
+      } else {
+        if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+          geminiRequestCounter = 0;
+
+          return null;
+        } else {
+          geminiRequestCounter++;
+          String? generatedMessage = await gemeniAPICall(request);
+          return generatedMessage;
+        }
+      }
     } catch (e) {
-      developer.log('Gemini Error $e', error: e);
-      return null;
+      if (kDebugMode) developer.log('Gemini Error $e key: $apiKey  ', error: e);
+      // return "Could not generate due to some techniqal issue. please try again after a few minutes ";
+      if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+        geminiRequestCounter = 0;
+
+        return null;
+      } else {
+        geminiRequestCounter++;
+        String? generatedMessage = await gemeniAPICall(request);
+        return generatedMessage;
+      }
 
       // generatedMessage = "Error Message $e";
     }
   }
+
+  // Future<String?> gemeniAPICall(String request) async {
+  //   final gemini = Gemini.instance;
+  //   List<Content> chatContent = [];
+  //   Content userInstruction =
+  //       Content(parts: [Parts(text: request)], role: 'user');
+  //   chatContent.add(userInstruction);
+
+  //   try {
+  //     var value = await gemini.chat(chatContent,
+  //         // safetySettings: safetySettings,
+  //         generationConfig: GenerationConfig(
+  //           maxOutputTokens: 100,
+  //           temperature: 1,
+  //         ));
+  //     String? generatedMessage = value?.output;
+
+  //     // developer.log(value?.output ?? 'without output');
+  //     // developer.log("${value}");
+  //     developer.log(value?.output ?? 'No Gemini Output');
+  //     developer.log(" Gemini Output ${value}");
+  //     return generatedMessage;
+  //   } catch (e) {
+  //     developer.log('Gemini Error $e', error: e);
+  //     return null;
+
+  //     // generatedMessage = "Error Message $e";
+  //   }
+  // }
 }
