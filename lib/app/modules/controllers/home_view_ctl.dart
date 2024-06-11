@@ -4,8 +4,11 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:flutter_pptx/flutter_pptx.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
@@ -17,6 +20,11 @@ import 'package:slide_maker/main.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // TextEditingController feedback = TextEditingController();
+
+  Rx<String> subject = "".obs;
+  String recipient = "sr.netcurve@gmail.com";
 
   @override
   void onInit() {
@@ -73,6 +81,28 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     // TODO: implement onClose
     super.onClose();
   }
+
+  Future<void> send() async {
+    final Email email = Email(
+      recipients: [recipient],
+      subject: subject.value,
+    );
+
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      platformResponse = error.toString();
+    }
+
+    Get.snackbar('Email Sender', platformResponse);
+  }
+
+  // void removeAttachment(int index) {
+  //   attachments.removeAt(index);
+  // }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
