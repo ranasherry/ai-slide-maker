@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class WatchAdDialog extends StatefulWidget {
@@ -109,29 +110,51 @@ void showWatchAdDialog({
   );
 }
 
-Container card_widgets(Color color1, Color color2, String image, String text) {
+Container card_widgets(Color color1, Color color2, String image, String text,
+    {bool isPremium = false}) {
   return Container(
     height: SizeConfig.blockSizeVertical * 18,
     width: SizeConfig.blockSizeHorizontal * 42,
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 3),
-        gradient: LinearGradient(
-            colors: [color1, color2],
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft)),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    child: Stack(
       children: [
-        Image.asset(
-          image,
+        Container(
+          height: SizeConfig.blockSizeVertical * 18,
+          width: SizeConfig.blockSizeHorizontal * 42,
+          decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(SizeConfig.blockSizeHorizontal * 3),
+              gradient: LinearGradient(
+                  colors: [color1, color2],
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Image.asset(
+                image,
+              ),
+              Text(
+                text,
+                style: TextStyle(
+                    fontSize: SizeConfig.blockSizeHorizontal * 4,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              )
+            ],
+          ),
         ),
-        Text(
-          text,
-          style: TextStyle(
-              fontSize: SizeConfig.blockSizeHorizontal * 4,
-              fontWeight: FontWeight.bold,
-              color: Colors.black),
-        )
+        isPremium
+            ? Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                    width: SizeConfig.blockSizeHorizontal * 5.5,
+                    height: SizeConfig.blockSizeHorizontal * 5.5,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeHorizontal * 1,
+                        vertical: SizeConfig.blockSizeHorizontal * 1),
+                    child: Image.asset(AppImages.vip)),
+              )
+            : Container()
       ],
     ),
   );

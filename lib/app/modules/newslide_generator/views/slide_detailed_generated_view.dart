@@ -58,7 +58,11 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
                 controller.sharePDF(context);
               },
               tooltip: 'Share PDF',
-              child: Icon(Icons.share),
+              focusColor: Theme.of(context).colorScheme.primary,
+              child: Icon(
+                Icons.share,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             )
           : Container()),
       appBar: AppBar(
@@ -103,6 +107,9 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
                                 width: SizeConfig.screenWidth,
                                 height: SizeConfig.screenHeight,
                                 child: Card(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SingleChildScrollView(
@@ -202,6 +209,8 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
     return Container(
       width: SizeConfig.screenWidth,
       // height: SizeConfig.blockSizeVertical * 50,
+      // decoration:
+      //     BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
       child: MarkdownWidget(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),

@@ -39,138 +39,11 @@ class HomeView extends GetView<HomeViewCtl> {
               height: 1.5,
             ),
             preferredSize: Size.fromHeight(6.0)),
-        leading: GestureDetector(
-            onTap: () {
-              Get.bottomSheet(Container(
-                height: SizeConfig.blockSizeVertical * 40,
-                width: SizeConfig.screenWidth,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.only(
-                        topLeft:
-                            Radius.circular(SizeConfig.blockSizeHorizontal * 3),
-                        topRight: Radius.circular(
-                            SizeConfig.blockSizeHorizontal * 3))),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(top: SizeConfig.blockSizeVertical * 1),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              AppImages.feedback,
-                              scale: 14,
-                            ),
-                            Text(
-                              "Rate your experience",
-                              style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 5,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Image.asset(
-                              AppImages.feedback,
-                              scale: 14,
-                            ),
-                          ],
-                        ),
-                        verticalSpace(SizeConfig.blockSizeVertical * 2),
-                        // feedback_field(
-                        //     context, "Recipient", controller.recipient),
-                        // verticalSpace(SizeConfig.blockSizeVertical * 1),
-                        // feedback_field(context, "Subject", controller.subject),
-                        // verticalSpace(SizeConfig.blockSizeVertical * 1),
-                        SizedBox(
-                          width: SizeConfig.blockSizeHorizontal * 95,
-                          height: SizeConfig.blockSizeVertical * 25,
-                          child: TextField(
-                            cursorColor: Theme.of(context).colorScheme.primary,
-                            onChanged: (value) =>
-                                controller..subject.value = value,
+        // leading: GestureDetector(
+        //     onTap: () {
 
-                            textAlignVertical: TextAlignVertical.top,
-
-                            textAlign: TextAlign.left,
-                            expands: true,
-                            maxLines: null,
-
-                            // controller: controller,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                              ),
-                              // enabledBorder: OutlineInputBorder(
-                              //   borderSide: BorderSide(),
-                              //   borderRadius: BorderRadius.circular(
-                              //       SizeConfig.blockSizeHorizontal * 2),
-                              // ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                              ),
-                              // labelText: 'Name',
-                              // labelStyle: TextStyle(color: Colors.blue),
-                              hintText: "Add your feedback",
-                              hintStyle: TextStyle(color: Colors.grey),
-                              // prefixIcon:
-                              //     Icon(Icons.text_fields, color: Colors.blue),
-                              // suffixIcon:
-                              //     Icon(Icons.check_circle, color: Colors.green),
-                              filled: true,
-                              fillColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              // contentPadding: EdgeInsets.symmetric(
-                              //   vertical: SizeConfig.blockSizeVertical * 10,
-                              //   horizontal: SizeConfig.blockSizeHorizontal * 2,
-                              // ),
-                            ),
-                          ),
-                        ),
-
-                        verticalSpace(SizeConfig.blockSizeVertical * 2),
-                        GestureDetector(
-                          onTap: () {
-                            controller.send();
-                          },
-                          child: Container(
-                            height: SizeConfig.blockSizeVertical * 5.5,
-                            width: SizeConfig.blockSizeHorizontal * 35,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 3,
-                                ),
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Colors.indigo,
-                                      Colors.indigoAccent
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)),
-                            child: Center(
-                              child: Text(
-                                "Submit",
-                                style: TextStyle(
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 4,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ));
-            },
-            child: Icon(Icons.menu)),
+        //     },
+        //     child: Icon(Icons.menu)),
 
         actions: [
           Padding(
@@ -271,13 +144,20 @@ class HomeView extends GetView<HomeViewCtl> {
                 GestureDetector(
                     onTap: () {
                       AppLovinProvider.instance.showInterstitial(() {});
-                      Get.toNamed(Routes.BOOK_WRITER);
+                      if (RevenueCatService().currentEntitlement.value ==
+                          Entitlement.paid) {
+                        Get.toNamed(Routes.BOOK_WRITER);
+                      } else {
+                        RevenueCatService().GoToPurchaseScreen();
+                      }
                     },
                     child: card_widgets(Color(0xFFCFFFDA), Color(0xFF84F99E),
-                        AppImages.book, "AI Book Writer")),
+                        AppImages.book, "AI Book Writer",
+                        isPremium: true)),
                 GestureDetector(
                   onTap: () {
                     AppLovinProvider.instance.showInterstitial(() {});
+
                     Get.toNamed(Routes.SubHomeView);
                   },
                   child: card_widgets(Color(0xFFFFFBEB), Color(0xFFFCDC96),

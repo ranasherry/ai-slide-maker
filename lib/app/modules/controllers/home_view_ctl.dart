@@ -1,30 +1,38 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_pptx/flutter_pptx.dart';
 import 'package:get/get.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:path_provider/path_provider.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
+import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/main.dart';
+import 'package:slide_rating_dialog/slide_rating_dialog.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // TextEditingController feedback = TextEditingController();
 
-  Rx<String> subject = "".obs;
-  String recipient = "sr.netcurve@gmail.com";
+  Rx<String> feedbackMessage = "".obs;
+  String recipient = "consoleai360@gmail.com";
 
   @override
   void onInit() {
@@ -50,6 +58,8 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     if (Platform.isAndroid) handlePushNotification();
 
     startInAppPurchaseTimer();
+    // if(kIsDe)
+    // ShowFeedbackBottomSheet();
   }
 
   checkPermission(String page) async {
@@ -82,16 +92,27 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     super.onClose();
   }
 
-  Future<void> send() async {
+  Future<void> sendFeedBackEmail(String message) async {
     final Email email = Email(
       recipients: [recipient],
-      subject: subject.value,
+      subject: "AI Slide Feedback",
+      body: message,
     );
 
     String platformResponse;
 
     try {
       await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+      showReviewDialogue(Get.context!);
+    } catch (error) {
+      showReviewDialogue(Get.context!);
+
+      platformResponse = error.toString();
+    }
+
+    try {
+      sendFirebaseFeedback(message);
       platformResponse = 'success';
     } catch (error) {
       platformResponse = error.toString();
@@ -100,6 +121,25 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     Get.snackbar('Email Sender', platformResponse);
   }
 
+  Future<void> sendFirebaseFeedback(message) async {
+    // Firestore storage
+    final feedbackCollection =
+        FirebaseFirestore.instance.collection('feedback');
+    final feedbackDocRef =
+        await feedbackCollection.doc(FirestoreService().UserID);
+    feedbackDocRef.set({
+      'message': message,
+      'timestamp':
+          FieldValue.serverTimestamp(), // Automatically generated timestamp
+    });
+
+    // Handle success or error
+    if (feedbackDocRef.id != null) {
+      print('Feedback submitted successfully!');
+    } else {
+      print('Error submitting feedback.');
+    }
+  }
   // void removeAttachment(int index) {
   //   attachments.removeAt(index);
   // }
@@ -267,5 +307,224 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
 
   void initGemini(String geminiAPIKey) {
     Gemini.init(apiKey: geminiAPIKey, enableDebugging: true);
+  }
+
+  int feedBackCount = 5;
+
+  void ShowFeedbackBottomSheet() {
+    log("ShowBottomSheetCalled..");
+    if (feedBackCount >= 5) {
+      Future.delayed(Duration(seconds: 2), () {
+        Get.bottomSheet(Container(
+          height: SizeConfig.blockSizeVertical * 60,
+          width: SizeConfig.screenWidth,
+          decoration: BoxDecoration(
+              color: Theme.of(Get.context!).colorScheme.background,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(SizeConfig.blockSizeHorizontal * 3),
+                  topRight:
+                      Radius.circular(SizeConfig.blockSizeHorizontal * 3))),
+          child: Padding(
+            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 1),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AppImages.feedback,
+                        scale: 14,
+                      ),
+                      Text(
+                        "Rate your experience",
+                        style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 5,
+                            color: Theme.of(Get.context!).colorScheme.primary,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Image.asset(
+                        AppImages.feedback,
+                        scale: 14,
+                      ),
+                    ],
+                  ),
+                  verticalSpace(SizeConfig.blockSizeVertical * 2),
+                  Container(
+                    width: SizeConfig.screenWidth,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeHorizontal * 2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Image.asset(
+                        //   AppImages.feedback,
+                        //   scale: 10,
+                        // ),
+                        Text(
+                          "Note: ",
+                          style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 5,
+                              color: Theme.of(Get.context!).colorScheme.primary,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                          width: SizeConfig.blockSizeHorizontal * 75,
+                          child: Text(
+                            "We consider your feedback very seriously and will try to improve the app according to your feedback ",
+                            softWrap: true,
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                color:
+                                    Theme.of(Get.context!).colorScheme.primary,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  verticalSpace(SizeConfig.blockSizeVertical * 2),
+                  // feedback_field(
+                  //     context, "Recipient", controller.recipient),
+                  // verticalSpace(SizeConfig.blockSizeVertical * 1),
+                  // feedback_field(context, "Subject", controller.subject),
+                  // verticalSpace(SizeConfig.blockSizeVertical * 1),
+                  SizedBox(
+                    width: SizeConfig.blockSizeHorizontal * 95,
+                    height: SizeConfig.blockSizeVertical * 25,
+                    child: TextField(
+                      cursorColor: Theme.of(Get.context!).colorScheme.primary,
+                      onChanged: (value) => feedbackMessage.value = value,
+
+                      textAlignVertical: TextAlignVertical.top,
+
+                      textAlign: TextAlign.left,
+                      expands: true,
+                      maxLines: null,
+
+                      // controller: controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 2),
+                        ),
+                        // enabledBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(),
+                        //   borderRadius: BorderRadius.circular(
+                        //       SizeConfig.blockSizeHorizontal * 2),
+                        // ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(Get.context!).colorScheme.primary,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 2),
+                        ),
+                        // labelText: 'Name',
+                        // labelStyle: TextStyle(color: Colors.blue),
+                        hintText: "Add your feedback",
+                        hintStyle: TextStyle(color: Colors.grey),
+                        // prefixIcon:
+                        //     Icon(Icons.text_fields, color: Colors.blue),
+                        // suffixIcon:
+                        //     Icon(Icons.check_circle, color: Colors.green),
+                        filled: true,
+                        fillColor: Theme.of(Get.context!).colorScheme.secondary,
+                        // contentPadding: EdgeInsets.symmetric(
+                        //   vertical: SizeConfig.blockSizeVertical * 10,
+                        //   horizontal: SizeConfig.blockSizeHorizontal * 2,
+                        // ),
+                      ),
+                    ),
+                  ),
+
+                  verticalSpace(SizeConfig.blockSizeVertical * 2),
+                  GestureDetector(
+                    onTap: () {
+                      sendFeedBackEmail(feedbackMessage.value);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          bottom: SizeConfig.blockSizeVertical * 1),
+                      height: SizeConfig.blockSizeVertical * 5.5,
+                      width: SizeConfig.blockSizeHorizontal * 35,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeHorizontal * 3,
+                          ),
+                          gradient: LinearGradient(
+                              colors: [Colors.indigo, Colors.indigoAccent],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter)),
+                      child: Center(
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ));
+      });
+    } else {
+      feedBackCount++;
+    }
+  }
+
+  void showReviewDialogue(BuildContext context) {
+    log("showReviewDialogue");
+
+    int finalRating = 4;
+
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext cont) => SlideRatingDialog(
+              onRatingChanged: (rating) {
+                print(rating.toString());
+                finalRating = rating;
+              },
+              buttonOnTap: () async {
+                if (finalRating >= 3) {
+                  // Review on PlayStore
+                  LaunchReview.launch(
+                    androidAppId: "com.genius.aislides.generator",
+                  );
+                  Get.back();
+
+                  await storeReviewCount(finalRating);
+                  // EasyLoading.showSuccess("Thanks for the Rating");
+                } else {
+                  Get.back();
+
+                  //? Store Review on Firebase
+                  await storeReviewCount(finalRating);
+                  // EasyLoading.showSuccess("Thanks for the Rating");
+                }
+                // Do your Business Logic here;
+              },
+            ));
+  }
+
+  Future<void> storeReviewCount(int rating) async {
+    final firestore = FirebaseFirestore.instance;
+    final ratingDocRef = firestore.collection('Rating').doc(rating.toString());
+
+    // Use a transaction to ensure data consistency
+    await firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(ratingDocRef);
+      if (!snapshot.exists) {
+        transaction
+            .set(ratingDocRef, {'count': 0}); // Create with initial count
+      }
+      transaction.update(ratingDocRef, {'count': FieldValue.increment(1)});
+    });
   }
 }

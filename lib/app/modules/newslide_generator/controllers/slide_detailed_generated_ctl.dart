@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -14,6 +15,7 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/data/book_page_model.dart';
+import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
@@ -184,6 +186,8 @@ class SlideDetailedGeneratedCTL extends GetxController {
           tokensConsumed = 0;
         });
       }
+      HomeViewCtl homeViewCtl = Get.find();
+      homeViewCtl.ShowFeedbackBottomSheet();
     }
   }
 
@@ -244,6 +248,9 @@ class SlideDetailedGeneratedCTL extends GetxController {
       if (shareResult == ShareResultStatus.success) {
         EasyLoading.dismiss();
         EasyLoading.showSuccess("PDF Shared Successfully");
+
+        FirebaseAnalytics.instance
+            .logShare(contentType: "pdf", itemId: "ai_pdf", method: "android");
       } else if (shareResult == ShareResultStatus.dismissed) {
         EasyLoading.dismiss();
       } else {

@@ -16,7 +16,7 @@ class FirestoreService {
   final String _historySubcollectionPath =
       'history'; // Customizable subcollection path
 
-  String UserID = "";
+  String UserID = "temp";
 
   /// Creates a new user document with an empty history list, generationCount of 0, and tokensConsumed of 0.
   Future<void> createUser({required String uid}) async {
@@ -29,6 +29,7 @@ class FirestoreService {
       });
       UserID =
           uid; // Assuming this is for internal tracking (avoid storing in client-side code)
+
       print(
           'User created successfully: $uid'); // Optional logging for debugging
     } else {

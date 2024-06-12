@@ -11,6 +11,7 @@ ThemeData lightMode = ThemeData(
         primary: Colors.grey.shade900,
         secondary: Colors.white,
         tertiary: Colors.white,
+        primaryContainer: Color(0xFFE7EBFA),
         shadow: Colors.grey.shade300));
 
 // Color Scheme for DarkMode
@@ -25,4 +26,5 @@ ThemeData darkMode = ThemeData(
         primary: Colors.white,
         secondary: Colors.grey.shade800,
         tertiary: Colors.grey.shade600,
+        primaryContainer: Colors.grey.shade900,
         shadow: Colors.transparent));

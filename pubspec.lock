@@ -1589,6 +1589,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_rating_dialog:
+    dependency: "direct main"
+    description:
+      name: slide_rating_dialog
+      sha256: b0816aeb3924b684732e0107d4dcd005dca768fe549923a4ebe9ea1b507b455d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   source_span:
     dependency: transitive
     description:

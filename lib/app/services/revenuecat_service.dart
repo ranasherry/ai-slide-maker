@@ -2,6 +2,7 @@ import 'dart:developer' as dp;
 // import 'package:ai_chatbot/app/modules/routes/app_pages.dart';
 // import 'package:flutter_gif/flutter_gif.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -100,6 +101,14 @@ class RevenueCatService {
           .contains("aislide_adremove_1")) {
         RemoveAdsForUser();
         CreateFirebaseUser();
+
+        FirebaseAnalytics.instance.logPurchase(
+            currency: product.currencyCode,
+            value: product.price,
+            items: [
+              AnalyticsEventItem(
+                  itemId: product.identifier, price: product.price)
+            ]);
       }
       // Handle successful purchase
     } catch (error) {
