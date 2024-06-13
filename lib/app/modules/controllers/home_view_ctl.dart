@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -28,11 +29,12 @@ import 'package:slide_rating_dialog/slide_rating_dialog.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final formKey = GlobalKey<FormState>();
 
   // TextEditingController feedback = TextEditingController();
 
   Rx<String> feedbackMessage = "".obs;
-  String recipient = "consoleai360@gmail.com";
+  String recipient = "codewithsherry@gmail.com";
 
   @override
   void onInit() {
@@ -393,48 +395,58 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
                   SizedBox(
                     width: SizeConfig.blockSizeHorizontal * 95,
                     height: SizeConfig.blockSizeVertical * 25,
-                    child: TextField(
-                      cursorColor: Theme.of(Get.context!).colorScheme.primary,
-                      onChanged: (value) => feedbackMessage.value = value,
+                    child: Form(
+                      key: formKey,
+                      child: TextFormField(
+                        cursorColor: Theme.of(Get.context!).colorScheme.primary,
+                        onChanged: (value) => feedbackMessage.value = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter feedback';
+                          }
+                          return null;
+                        },
 
-                      textAlignVertical: TextAlignVertical.top,
+                        textAlignVertical: TextAlignVertical.top,
 
-                      textAlign: TextAlign.left,
-                      expands: true,
-                      maxLines: null,
+                        textAlign: TextAlign.left,
+                        expands: true,
+                        maxLines: null,
 
-                      // controller: controller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.blockSizeHorizontal * 2),
-                        ),
-                        // enabledBorder: OutlineInputBorder(
-                        //   borderSide: BorderSide(),
-                        //   borderRadius: BorderRadius.circular(
-                        //       SizeConfig.blockSizeHorizontal * 2),
-                        // ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Theme.of(Get.context!).colorScheme.primary,
+                        // controller: controller,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 2),
                           ),
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.blockSizeHorizontal * 2),
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide(),
+                          //   borderRadius: BorderRadius.circular(
+                          //       SizeConfig.blockSizeHorizontal * 2),
+                          // ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Theme.of(Get.context!).colorScheme.primary,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 2),
+                          ),
+                          // labelText: 'Name',
+                          // labelStyle: TextStyle(color: Colors.blue),
+                          hintText: "Add your feedback",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          // prefixIcon:
+                          //     Icon(Icons.text_fields, color: Colors.blue),
+                          // suffixIcon:
+                          //     Icon(Icons.check_circle, color: Colors.green),
+                          filled: true,
+                          fillColor:
+                              Theme.of(Get.context!).colorScheme.secondary,
+                          // contentPadding: EdgeInsets.symmetric(
+                          //   vertical: SizeConfig.blockSizeVertical * 10,
+                          //   horizontal: SizeConfig.blockSizeHorizontal * 2,
+                          // ),
                         ),
-                        // labelText: 'Name',
-                        // labelStyle: TextStyle(color: Colors.blue),
-                        hintText: "Add your feedback",
-                        hintStyle: TextStyle(color: Colors.grey),
-                        // prefixIcon:
-                        //     Icon(Icons.text_fields, color: Colors.blue),
-                        // suffixIcon:
-                        //     Icon(Icons.check_circle, color: Colors.green),
-                        filled: true,
-                        fillColor: Theme.of(Get.context!).colorScheme.secondary,
-                        // contentPadding: EdgeInsets.symmetric(
-                        //   vertical: SizeConfig.blockSizeVertical * 10,
-                        //   horizontal: SizeConfig.blockSizeHorizontal * 2,
-                        // ),
                       ),
                     ),
                   ),
@@ -442,7 +454,9 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
                   verticalSpace(SizeConfig.blockSizeVertical * 2),
                   GestureDetector(
                     onTap: () {
-                      sendFeedBackEmail(feedbackMessage.value);
+                      if (formKey.currentState!.validate()) {
+                        sendFeedBackEmail(feedbackMessage.value);
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(
