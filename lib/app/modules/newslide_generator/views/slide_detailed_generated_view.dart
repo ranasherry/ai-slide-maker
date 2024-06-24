@@ -55,7 +55,8 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
       floatingActionButton: Obx(() => controller.isBookGenerated.value
           ? FloatingActionButton(
               onPressed: () {
-                controller.sharePDF(context);
+                // controller.sharePDF(context);
+                controller.sharePPTX(context);
               },
               tooltip: 'Share PDF',
               focusColor: Theme.of(context).colorScheme.primary,

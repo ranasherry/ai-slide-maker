@@ -140,6 +140,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
       print('Error submitting feedback.');
     }
   }
+
   // void removeAttachment(int index) {
   //   attachments.removeAt(index);
   // }
@@ -311,9 +312,9 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
 
   int feedBackCount = 5;
 
-  void ShowFeedbackBottomSheet() {
+  void ShowFeedbackBottomSheet({bool fromSettings = false}) {
     log("ShowBottomSheetCalled..");
-    if (feedBackCount >= 5) {
+    if (feedBackCount >= 5 || fromSettings) {
       Future.delayed(Duration(seconds: 2), () {
         Get.bottomSheet(Container(
           height: SizeConfig.blockSizeVertical * 60,
