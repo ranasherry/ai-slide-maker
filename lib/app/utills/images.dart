@@ -45,4 +45,9 @@ class AppImages {
   static const inappPurchase = "assets/images/inapp_purchase.png";
   static const vip = "assets/icons/crown.png";
   static const feedback = "assets/images/feedback.png";
+  static const no_ads = "assets/images/no_ads.png";
+  static const unlock_templates = "assets/images/template.png";
+  static const unlimited_promts = "assets/images/prompt.png";
+  static const write_books = "assets/images/wriite_books.png";
+  static const purchase = "assets/images/purchase.png";
 }
