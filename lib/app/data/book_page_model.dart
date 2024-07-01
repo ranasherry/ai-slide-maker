@@ -1,23 +1,36 @@
+import 'package:slide_maker/app/data/helping_enums.dart';
+
 class BookPageModel {
   String ChapName;
   // Uint8List file;
   // DocumentFile File;
   String ChapData;
+  String? ImagePath;
+  SlideImageType imageType;
+  bool containsImage;
 
   BookPageModel({
     required this.ChapName,
     // required this.file,
     required this.ChapData,
+    this.ImagePath,
+    required this.imageType,
+    required this.containsImage,
   });
 
   Map<String, dynamic> toMap() => {
         'chapName': ChapName,
         'chapData': ChapData,
+        'ImagePath': ImagePath,
+        'imageType': imageType.toString(),
+        'containsImage': containsImage.toString(),
       };
   factory BookPageModel.fromMap(Map<String, dynamic> data) => BookPageModel(
-        ChapName: data['chapName'] as String,
-        ChapData: data['chapData'] as String,
-      );
+      ChapName: data['chapName'] as String,
+      ChapData: data['chapData'] as String,
+      ImagePath: data['ImagePath'] as String,
+      imageType: SlideImageType.network,
+      containsImage: bool.parse(data['containsImage'] as String));
 }
 
 class SlideItem {

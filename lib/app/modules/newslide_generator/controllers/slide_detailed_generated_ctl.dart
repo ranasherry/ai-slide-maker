@@ -19,6 +19,7 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/data/book_page_model.dart';
+import 'package:slide_maker/app/data/helping_enums.dart';
 import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/modules/home/slide_assistant.dart';
 import 'package:slide_maker/app/modules/newslide_generator/views/helping_widget.dart/mymarkdown_widget.dart';
@@ -154,15 +155,23 @@ class SlideDetailedGeneratedCTL extends GetxController {
 
       String? chapterContent = await gemeniAPICall(request);
       if (chapterContent != null) {
-        BookPageModel page =
-            BookPageModel(ChapName: outline, ChapData: chapterContent);
+        final isTable = ComFunction().containsTable(chapterContent);
+        BookPageModel page = BookPageModel(
+            ChapName: outline,
+            ChapData: chapterContent,
+            imageType: SlideImageType.svg,
+            ImagePath: AppImages.Theme2_vertical[0],
+            containsImage: isTable ? false : true);
         bookPages.add(page);
         developer.log("Title: $outline Booke Page: $chapterContent");
       } else {
         BookPageModel page = BookPageModel(
             ChapName: outline,
             ChapData:
-                "Could not Write anything on this Chapter as I'am Still in learning phase.");
+                "Could not Write anything on this Chapter as I'am Still in learning phase.",
+            imageType: SlideImageType.svg,
+            ImagePath: AppImages.Theme2_vertical[0],
+            containsImage: false);
         bookPages.add(page);
         developer.log("Title: $outline Booke Page: $chapterContent");
       }
@@ -275,163 +284,58 @@ class SlideDetailedGeneratedCTL extends GetxController {
   }
 
   Future<void> generatePPTXFile() async {
-    final pres = await createPresentation();
-    await downloadPresentation(pres);
+    EasyLoading.show(status: "Generating PPTX File");
+    try {
+      final pres = await createPresentation();
+
+      await downloadPresentation(pres);
+    } on Exception catch (e) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Could not Generate Slide");
+      // TODO
+    }
   }
 
   Future<void> downloadPresentation(FlutterPowerPoint pres) async {
     final bytes = await pres.save();
-    if (bytes == null) return;
+    if (bytes == null) {
+      EasyLoading.dismiss();
+      return;
+    }
     downloadFile('presentation.pptx', bytes);
   }
 
   Future<FlutterPowerPoint> createPresentation() async {
     final pres = FlutterPowerPoint();
 
-    // pres.addTitleSlide(
-    //   title: 'Slide one'.toTextValue(),
-    // );
+//? Title Slide
+    await pres.addWidgetSlide(
+      (size) => MyMarkDownWidget(
+        page: BookPageModel(
+            ChapName: Title.value,
+            ChapData: "",
+            imageType: SlideImageType.svg,
+            ImagePath: AppImages.Theme2_horizontal[0],
+            containsImage: true),
+        size: size,
+        isTitle: true,
+      ),
+    );
 
-    // pres.addTitleAndPhotoSlide(
-    //   title: 'Slide two'.toTextValue(),
-    //   image: ImageReference(
-    //     path: 'assets/images/sample_gif.gif',
-    //     name: 'Sample Gif',
-    //   ),
-    // );
-
-    // pres.addTitleAndPhotoAltSlide(
-    //   title: 'Slide three'.toTextValue(),
-    //   image: ImageReference(
-    //     path: 'assets/images/sample_jpg.jpg',
-    //     name: 'Sample Jpg',
-    //   ),
-    // );
-
-    // pres
-    //     .addTitleAndBulletsSlide(
-    //       title: 'Slide three'.toTextValue(),
-    //       bullets: [
-    //         'Bullet 1',
-    //         'Bullet 2',
-    //         'Bullet 3',
-    //         'Bullet 4',
-    //       ].map((e) => e.toTextValue()).toList(),
-    //     )
-    //     .speakerNotes = TextValue.uniform('This is a note!');
-
-    // pres
-    //     .addBulletsSlide(
-    //       bullets: [
-    //         'Bullet 1',
-    //         'Bullet 2',
-    //         'Bullet 3',
-    //         'Bullet 4',
-    //       ].map((e) => e.toTextValue()).toList(),
-    //     )
-    //     .speakerNotes = TextValue.singleLine([
-    //   TextItem('This '),
-    //   TextItem('is ', isBold: true),
-    //   TextItem('a ', isUnderline: true),
-    //   TextItem('note!'),
-    // ]);
-
-    // pres.addTitleBulletsAndPhotoSlide(
-    //   title: 'Slide five'.toTextValue(),
-    //   image: ImageReference(
-    //     path: 'assets/images/sample_jpg.jpg',
-    //     name: 'Sample Jpg',
-    //   ),
-    //   bullets: [
-    //     'Bullet 1',
-    //     'Bullet 2',
-    //     'Bullet 3',
-    //     'Bullet 4',
-    //   ].map((e) => e.toTextValue()).toList(),
-    // );
-
-    // pres
-    //     .addSectionSlide(
-    //       section: 'Section 1'.toTextValue(),
-    //     )
-    //     .speakerNotes = TextValue.multiLine([
-    //   TextValueLine(values: [
-    //     TextItem('This '),
-    //     TextItem('is ', isBold: true),
-    //     TextItem('a ', isUnderline: true),
-    //     TextItem('note 1!'),
-    //   ]),
-    //   TextValueLine(values: [
-    //     TextItem('This '),
-    //     TextItem('is ', isBold: true),
-    //     TextItem('a ', isUnderline: true),
-    //     TextItem('note 2!'),
-    //   ]),
-    // ]);
-
-    // pres.addTitleOnlySlide(
-    //   title: 'Title 1'.toTextValue(),
-    //   subtitle: 'Subtitle 1'.toTextValue(),
-    // );
-
-    // pres.addAgendaSlide(
-    //   title: 'Title 1'.toTextValue(),
-    //   subtitle: 'Subtitle 1'.toTextValue(),
-    //   topics: 'Topics 1'.toTextValue(),
-    // );
-
-    // pres.addStatementSlide(
-    //   statement: 'Statement 1'.toTextValue(),
-    // );
-
-    // pres.addBigFactSlide(
-    //   fact: 'Title 1'.toTextLine(),
-    //   information: 'Fact 1'.toTextValue(),
-    // );
-
-    // pres.addQuoteSlide(
-    //   quote: 'Quote 1'.toTextLine(),
-    //   attribution: 'Attribution 1'.toTextValue(),
-    // );
-
-    // pres.addPhoto3UpSlide(
-    //   image1: ImageReference(
-    //     path: AppImages.splash,
-    //     name: 'Sample Gif',
-    //   ),
-    //   image2: ImageReference(
-    //     path: AppImages.splash,
-    //     name: 'Sample Jpg',
-    //   ),
-    //   image3: ImageReference(
-    //     path: AppImages.splash,
-    //     name: 'Sample Png',
-    //   ),
-    // );
-
-    // pres.addPhotoSlide(
-    //   image: ImageReference(
-    //     path: AppImages.splash,
-    //     name: 'Sample Gif',
-    //   ),
-    // );
-
-    // pres.addBlankSlide();
-
-    // pres.addBlankSlide().background.color = '000000';
-
-    // pres.addBlankSlide().background.image = ImageReference(
-    //   path: AppImages.splash,
-    //   name: 'Sample Gif',
-    // );
-
-    await pres.addSlidesFromMarkdown(bookPages[1].ChapData);
-    print("Chap Data: ${bookPages[1].ChapData}");
-
+    int i = 1;
     for (final BookPageModel page in bookPages) {
+      developer.log("Page Data: ${page.ChapData}");
       await pres.addWidgetSlide(
-        (size) => MyMarkDownWidget(page: page),
+        (size) => MyMarkDownWidget(
+          page: page,
+          size: size,
+          isTitle: false,
+        ),
       );
+
+      double value = (i / bookPages.length);
+      EasyLoading.showProgress(value, status: "Generating PPTX");
+      i++;
     }
 
     pres.showSlideNumbers = true;
@@ -483,15 +387,23 @@ class SlideDetailedGeneratedCTL extends GetxController {
 
       // Share the downloaded file using ShareXFile
       final xFile = XFile(file.path);
-      await Share.shareXFiles([xFile]);
+      ShareResult result = await Share.shareXFiles([xFile]);
+      if (result.status == ShareResultStatus.success) {
+        EasyLoading.dismiss();
+        AppLovinProvider.instance.showInterstitial(() {});
+      } else {
+        EasyLoading.dismiss();
+      }
 
       print('File downloaded successfully: ${file.path}');
     } on FileSystemException catch (e) {
       // Handle file system errors (e.g., insufficient storage)
       print('Error downloading file: $e');
+      EasyLoading.dismiss();
     } catch (e) {
       // Handle other unexpected errors
       print('Unexpected error: $e');
+      EasyLoading.dismiss();
     }
   }
 }

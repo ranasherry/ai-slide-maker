@@ -13,8 +13,10 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/data/book_page_model.dart';
+import 'package:slide_maker/app/data/helping_enums.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/CM.dart';
+import 'package:slide_maker/app/utills/images.dart';
 
 class BookGeneratedCTL extends GetxController {
   //TODO: Implement BookWriterController
@@ -148,15 +150,22 @@ class BookGeneratedCTL extends GetxController {
 
       String? chapterContent = await gemeniAPICall(request);
       if (chapterContent != null) {
-        BookPageModel page =
-            BookPageModel(ChapName: outline, ChapData: chapterContent);
+        BookPageModel page = BookPageModel(
+            ChapName: outline,
+            ChapData: chapterContent,
+            imageType: SlideImageType.svg,
+            ImagePath: AppImages.Theme2_vertical[0],
+            containsImage: false);
         bookPages.add(page);
         developer.log("Title: $outline Booke Page: $chapterContent");
       } else {
         BookPageModel page = BookPageModel(
             ChapName: outline,
             ChapData:
-                "Could not Write anything on this Chapter as I'am Still in learning phase.");
+                "Could not Write anything on this Chapter as I'am Still in learning phase.",
+            imageType: SlideImageType.svg,
+            ImagePath: AppImages.Theme2_vertical[0],
+            containsImage: false);
         bookPages.add(page);
         developer.log("Title: $outline Booke Page: $chapterContent");
       }

@@ -71,8 +71,8 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                       ),
                       Center(
                         child: Container(
-                          height: SizeConfig.blockSizeVertical * 30,
-                          width: SizeConfig.blockSizeHorizontal * 60,
+                          height: SizeConfig.blockSizeVertical * 22,
+                          width: SizeConfig.blockSizeHorizontal * 44,
                           child: Image.asset(AppImages.inappPurchase),
                         ),
                       ),
@@ -87,12 +87,14 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                       ),
                       verticalSpace(SizeConfig.blockSizeVertical * 2),
                       remove_ads("Remove Ads", AppImages.no_ads, Colors.blue),
+                      remove_ads("Remove Watermark", AppImages.remove_watermark,
+                          Colors.blue),
                       remove_ads("Access All Templates",
                           AppImages.unlock_templates, Colors.amber),
                       remove_ads("Endless Prompts", AppImages.unlimited_promts,
                           Color(0xFF722158)),
-                      remove_ads(
-                          "Book creation", AppImages.write_books, Colors.green),
+                      remove_ads("Create your Own Ebook", AppImages.write_books,
+                          Colors.green),
                       verticalSpace(SizeConfig.blockSizeVertical * 5),
                       Center(
                         child: Container(

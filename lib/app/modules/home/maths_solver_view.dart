@@ -830,43 +830,43 @@ class MathsSolverView extends GetView<MathsSolverController> {
     );
   }
 
-  Container _slidingImages() {
-    return Container(
-        // color: Colors.orange,
-        child: CarouselSlider(
-      options: CarouselOptions(
-          height: SizeConfig.screenHeight * 0.4,
-          aspectRatio: 16 / 9,
-          // viewportFraction: 1,
-          autoPlay: true), // width: SizeConfig.blockSizeHorizontal * 100,
-      // height: SizeConfig.blockSizeVertical * 20,
-      items: controller.imgList
-          .map((item) => Container(
-                // padding: EdgeInsets.symmetric(
-                //     horizontal: SizeConfig.blockSizeHorizontal * 2),
-                width: SizeConfig.blockSizeHorizontal * 90,
-                child: Center(
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.asset(item)
-                        // CachedNetworkImage(
-                        //   imageUrl: item,
-                        //   // width: SizeConfig.blockSizeHorizontal * 90,
-                        //   placeholder: (context, url) => CircularProgressIndicator(),
-                        //   errorWidget: (context, url, error) => Icon(Icons.error),
-                        // ),
+  // Container _slidingImages() {
+  //   return Container(
+  //       // color: Colors.orange,
+  //       child: CarouselSlider(
+  //     options: CarouselOptions(
+  //         height: SizeConfig.screenHeight * 0.4,
+  //         aspectRatio: 16 / 9,
+  //         // viewportFraction: 1,
+  //         autoPlay: true), // width: SizeConfig.blockSizeHorizontal * 100,
+  //     // height: SizeConfig.blockSizeVertical * 20,
+  //     items: controller.imgList
+  //         .map((item) => Container(
+  //               // padding: EdgeInsets.symmetric(
+  //               //     horizontal: SizeConfig.blockSizeHorizontal * 2),
+  //               width: SizeConfig.blockSizeHorizontal * 90,
+  //               child: Center(
+  //                   child: ClipRRect(
+  //                       borderRadius: BorderRadius.circular(10.0),
+  //                       child: Image.asset(item)
+  //                       // CachedNetworkImage(
+  //                       //   imageUrl: item,
+  //                       //   // width: SizeConfig.blockSizeHorizontal * 90,
+  //                       //   placeholder: (context, url) => CircularProgressIndicator(),
+  //                       //   errorWidget: (context, url, error) => Icon(Icons.error),
+  //                       // ),
 
-                        // Image.network(
-                        //   item,
-                        //   fit: BoxFit.cover,
-                        //   // height: SizeConfig.blockSizeVertical * 20,
-                        //   width: SizeConfig.blockSizeHorizontal * 90,
-                        // ),
-                        )),
-              ))
-          .toList(),
-    ));
-  }
+  //                       // Image.network(
+  //                       //   item,
+  //                       //   fit: BoxFit.cover,
+  //                       //   // height: SizeConfig.blockSizeVertical * 20,
+  //                       //   width: SizeConfig.blockSizeHorizontal * 90,
+  //                       // ),
+  //                       )),
+  //             ))
+  //         .toList(),
+  //   ));
+  // }
 
   Padding drawer_widget(IconData icon, String text) {
     return Padding(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
+import 'dart:core';
 
 class ComFunction {
   static bool validateEmail(String email) {
@@ -99,6 +100,22 @@ class ComFunction {
       confirmTextColor: Colors.red,
       onConfirm: () => Get.back(),
     );
+  }
+
+  bool containsTable(String markdownString) {
+    // Regex pattern to match table separators
+    final tableSeparatorPattern = r"^\s*\|(.+?)\|\s*$";
+
+    // Split the string into lines using split method
+    final lines = markdownString.split("\n");
+
+    // Check if any line starts with "|" and ends with "|"
+    for (final line in lines) {
+      if (RegExp(tableSeparatorPattern).hasMatch(line)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
