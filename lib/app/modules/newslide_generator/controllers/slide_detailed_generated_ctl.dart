@@ -20,6 +20,8 @@ import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/data/helping_enums.dart';
+import 'package:slide_maker/app/data/slide_history.dart';
+import 'package:slide_maker/app/data/slides_history_dbhandler.dart';
 import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/modules/home/slide_assistant.dart';
 import 'package:slide_maker/app/modules/newslide_generator/views/helping_widget.dart/mymarkdown_widget.dart';
@@ -78,6 +80,9 @@ class SlideDetailedGeneratedCTL extends GetxController {
 
   @override
   void onClose() {
+    HomeViewCtl homeViewCtl = Get.find();
+    homeViewCtl.showReviewDialogue(Get.context!);
+
     super.onClose();
   }
 
@@ -180,11 +185,12 @@ class SlideDetailedGeneratedCTL extends GetxController {
     isBookGenerated.value = true;
     if (isBookGenerated.value) {
       AppLovinProvider.instance.showInterstitial(() {});
-
+      saveSlideInDB();
       if (RevenueCatService().currentEntitlement.value == Entitlement.paid) {
         List<BookPageModel> listToUpload = bookPages;
 
         final historyItem = SlideItem(
+            id: 1,
             slideTitle: Title.value,
             listOfPages: listToUpload,
             timestamp: DateTime.now().millisecondsSinceEpoch);
@@ -203,12 +209,16 @@ class SlideDetailedGeneratedCTL extends GetxController {
           tokensConsumed = 0;
         });
       }
-      HomeViewCtl homeViewCtl = Get.find();
-      homeViewCtl.ShowFeedbackBottomSheet();
+
+      // HomeViewCtl homeViewCtl = Get.find();
+
+      // Future.delayed(Duration(seconds: 5), () {
+      //   homeViewCtl.showReviewDialogue(Get.context!);
+      // });
     }
   }
 
-  sharePPTX(mat.BuildContext context) async {
+  sharePPTX() async {
     await generatePPTXFile();
   }
 
@@ -286,9 +296,10 @@ class SlideDetailedGeneratedCTL extends GetxController {
   Future<void> generatePPTXFile() async {
     EasyLoading.show(status: "Generating PPTX File");
     try {
-      final pres = await createPresentation();
+      final pres = await ComFunction()
+          .createPresentation(bookPages: bookPages, Title: Title.value);
 
-      await downloadPresentation(pres);
+      await ComFunction().downloadPresentation(pres);
     } on Exception catch (e) {
       EasyLoading.dismiss();
       EasyLoading.showError("Could not Generate Slide");
@@ -296,114 +307,104 @@ class SlideDetailedGeneratedCTL extends GetxController {
     }
   }
 
-  Future<void> downloadPresentation(FlutterPowerPoint pres) async {
-    final bytes = await pres.save();
-    if (bytes == null) {
-      EasyLoading.dismiss();
-      return;
-    }
-    downloadFile('presentation.pptx', bytes);
-  }
-
-  Future<FlutterPowerPoint> createPresentation() async {
-    final pres = FlutterPowerPoint();
-
-//? Title Slide
-    await pres.addWidgetSlide(
-      (size) => MyMarkDownWidget(
-        page: BookPageModel(
-            ChapName: Title.value,
-            ChapData: "",
-            imageType: SlideImageType.svg,
-            ImagePath: AppImages.Theme2_horizontal[0],
-            containsImage: true),
-        size: size,
-        isTitle: true,
-      ),
-    );
-
-    int i = 1;
-    for (final BookPageModel page in bookPages) {
-      developer.log("Page Data: ${page.ChapData}");
-      await pres.addWidgetSlide(
-        (size) => MyMarkDownWidget(
-          page: page,
-          size: size,
-          isTitle: false,
-        ),
-      );
-
-      double value = (i / bookPages.length);
-      EasyLoading.showProgress(value, status: "Generating PPTX");
-      i++;
-    }
-
-    pres.showSlideNumbers = true;
-
-    return pres;
-  }
-
-  // mat.Container buildMarkdown(mat.BuildContext context, String data) {
-  //   final isDark = mat.Theme.of(context).brightness == mat.Brightness.dark;
-  //   final config =
-  //       isDark ? MarkdownConfig.darkConfig : MarkdownConfig.defaultConfig;
-  //   final codeWrapper =
-  //       (child, text, language) => CodeWrapperWidget(child, text, language);
-
-  //   // PreConfig(textStyle: );
-  //   return mat.Container(
-  //     width: SizeConfig.screenWidth,
-  //     // height: SizeConfig.blockSizeVertical * 50,
-  //     // decoration:
-  //     //     BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
-  //     child: MarkdownWidget(
-  //       shrinkWrap: true,
-  //       physics: mat.NeverScrollableScrollPhysics(),
-  //       data: data,
-  //       config: config.copy(configs: [
-  //         isDark
-  //             ? PreConfig.darkConfig.copy(wrapper: codeWrapper)
-  //             : PreConfig(
-  //                     textStyle: mat.TextStyle(
-  //                         color: mat.Theme.of(context).colorScheme.primary))
-  //                 .copy(wrapper: codeWrapper)
-  //       ]),
-  //     ),
-  //   );
+  // Future<void> downloadPresentation(FlutterPowerPoint pres) async {
+  //   final bytes = await pres.save();
+  //   if (bytes == null) {
+  //     EasyLoading.dismiss();
+  //     return;
+  //   }
+  //   downloadFile('presentation.pptx', bytes);
   // }
 
-  Future<void> downloadFile(String filename, Uint8List bytes) async {
+//   Future<FlutterPowerPoint> createPresentation() async {
+//     final pres = FlutterPowerPoint();
+
+// //? Title Slide
+//     await pres.addWidgetSlide(
+//       (size) => MyMarkDownWidget(
+//         page: BookPageModel(
+//             ChapName: Title.value,
+//             ChapData: "",
+//             imageType: SlideImageType.svg,
+//             ImagePath: AppImages.Theme2_horizontal[0],
+//             containsImage: true),
+//         size: size,
+//         isTitle: true,
+//       ),
+//     );
+
+//     int i = 1;
+//     for (final BookPageModel page in bookPages) {
+//       developer.log("Page Data: ${page.ChapData}");
+//       await pres.addWidgetSlide(
+//         (size) => MyMarkDownWidget(
+//           page: page,
+//           size: size,
+//           isTitle: false,
+//         ),
+//       );
+
+//       double value = (i / bookPages.length);
+//       EasyLoading.showProgress(value, status: "Generating PPTX");
+//       i++;
+//     }
+
+//     pres.showSlideNumbers = true;
+
+//     return pres;
+//   }
+
+  // Future<void> downloadFile(String filename, Uint8List bytes) async {
+  //   try {
+  //     Directory tempDir = await getTemporaryDirectory();
+  //     String tempPath = tempDir.path;
+
+  //     // Get the temporary directory for safe file creation
+
+  //     // Create a new file with the specified filename
+  //     final file = File('$tempPath/$filename');
+
+  //     // Write the bytes to the file
+  //     await file.writeAsBytes(bytes);
+
+  //     // Share the downloaded file using ShareXFile
+  //     final xFile = XFile(file.path);
+  //     ShareResult result = await Share.shareXFiles([xFile]);
+  //     if (result.status == ShareResultStatus.success) {
+  //       EasyLoading.dismiss();
+  //       AppLovinProvider.instance.showInterstitial(() {});
+  //     } else {
+  //       EasyLoading.dismiss();
+  //     }
+
+  //     print('File downloaded successfully: ${file.path}');
+  //   } on FileSystemException catch (e) {
+  //     // Handle file system errors (e.g., insufficient storage)
+  //     print('Error downloading file: $e');
+  //     EasyLoading.dismiss();
+  //   } catch (e) {
+  //     // Handle other unexpected errors
+  //     print('Unexpected error: $e');
+  //     EasyLoading.dismiss();
+  //   }
+  // }
+
+  //? DB implementation
+  Future<void> saveSlideInDB() async {
+    List<BookPageModel> listToUpload = bookPages;
+    final historyItem = SlideItem(
+        id: 1,
+        slideTitle: Title.value,
+        listOfPages: listToUpload,
+        timestamp: DateTime.now().millisecondsSinceEpoch);
     try {
-      Directory tempDir = await getTemporaryDirectory();
-      String tempPath = tempDir.path;
-
-      // Get the temporary directory for safe file creation
-
-      // Create a new file with the specified filename
-      final file = File('$tempPath/$filename');
-
-      // Write the bytes to the file
-      await file.writeAsBytes(bytes);
-
-      // Share the downloaded file using ShareXFile
-      final xFile = XFile(file.path);
-      ShareResult result = await Share.shareXFiles([xFile]);
-      if (result.status == ShareResultStatus.success) {
-        EasyLoading.dismiss();
-        AppLovinProvider.instance.showInterstitial(() {});
-      } else {
-        EasyLoading.dismiss();
-      }
-
-      print('File downloaded successfully: ${file.path}');
-    } on FileSystemException catch (e) {
-      // Handle file system errors (e.g., insufficient storage)
-      print('Error downloading file: $e');
-      EasyLoading.dismiss();
-    } catch (e) {
-      // Handle other unexpected errors
-      print('Unexpected error: $e');
-      EasyLoading.dismiss();
+      // final db = await SlideHistoryDatabaseHandler.instance.database;
+      await SlideHistoryDatabaseHandler.db.insertSlideHistory(historyItem);
+      print('Slide added successfully!');
+      // Choose storage approach:
+    } catch (error) {
+      print('Error saving slide in database: $error');
+      // Handle error appropriately (e.g., display error message to user)
     }
   }
 }

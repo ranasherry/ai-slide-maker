@@ -1,23 +1,21 @@
 import 'dart:io';
 
 import 'package:applovin_max/applovin_max.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 import 'package:get/get.dart';
-import 'package:markdown_widget/config/configs.dart';
-import 'package:markdown_widget/markdown_widget.dart';
-import 'package:markdown_widget/widget/markdown.dart';
-import 'package:slide_maker/app/modules/book_writer/controllers/book_generated_ctl.dart';
-import 'package:slide_maker/app/modules/home/slide_assistant.dart';
+
 import 'package:slide_maker/app/modules/newslide_generator/controllers/slide_detailed_generated_ctl.dart';
-import 'package:slide_maker/app/modules/newslide_generator/views/helping_widget.dart/helping_widget_methods.dart';
+
 import 'package:slide_maker/app/modules/newslide_generator/views/themes/theme1/t1_title1.dart';
-import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
+
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
-import 'package:slide_maker/app/utills/images.dart';
+
 import 'package:slide_maker/app/utills/size_config.dart';
 
 import 'themes/theme1/t1_style1.dart';
@@ -60,7 +58,7 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
           ? FloatingActionButton(
               onPressed: () {
                 // controller.sharePDF(context);
-                controller.sharePPTX(context);
+                controller.sharePPTX();
               },
               tooltip: 'Share PDF',
               focusColor: Theme.of(context).colorScheme.primary,
@@ -92,12 +90,45 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
               Get.back();
             },
             child: Icon(Icons.arrow_back_ios_new_rounded)),
+        actions: [
+          Padding(
+              padding:
+                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 4),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.HistoryView);
+                },
+                child: Container(
+                  // width: SizeConfig.screenWidth * 0.065,
+                  child: Icon(
+                    Icons.history,
+                    size: 30,
+                  ),
+                ),
+              )),
+        ],
       ),
       body: Obx(() => controller.bookPages.length == 0
           ? _LoadingWidget()
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      vertical: SizeConfig.blockSizeVertical,
+                      horizontal: SizeConfig.blockSizeHorizontal * 5),
+                  child: FAProgressBar(
+                    maxValue: 7,
+                    currentValue: controller.bookPages.length.toDouble() + 1,
+                    displayText: '/7  slides Generated',
+                    progressGradient: LinearGradient(
+                      colors: [
+                        Colors.blue.withOpacity(0.75),
+                        Colors.green.withOpacity(0.75),
+                      ],
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: Obx(() => PageView(
                         controller: PageController(

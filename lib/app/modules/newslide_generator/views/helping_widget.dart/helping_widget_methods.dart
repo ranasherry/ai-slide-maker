@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:slide_maker/app/data/book_page_model.dart';
@@ -30,6 +32,7 @@ Widget myAllImageProvider(
     {required BookPageModel page,
     required double width,
     required double height}) {
+  log("Pagetitle: ${page.ChapName} ImageType: ${page.imageType} ");
   switch (page.imageType) {
     case SlideImageType.svg:
       return Container(
@@ -49,6 +52,21 @@ Widget myAllImageProvider(
           ));
       break;
     default:
-      return Container();
+      return Container(
+          width: width,
+          height: height,
+          child: SvgPicture.asset(
+            page.ImagePath ?? "",
+            height: height,
+            width: width,
+            fit: BoxFit.cover,
+            // colorFilter:
+            // ColorFilter.mode(Colors.green, BlendMode.softLight),
+            semanticsLabel: page.ChapName,
+            placeholderBuilder: (BuildContext context) => Container(
+                padding: const EdgeInsets.all(30.0),
+                child: const CircularProgressIndicator()),
+          ));
+    // return Container();
   }
 }

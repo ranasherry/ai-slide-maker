@@ -172,6 +172,8 @@ class MyMarkDownWidget extends StatelessWidget {
           dynamic child, dynamic text, dynamic language),
       BuildContext context,
       Size size) {
+    log("Main Page1: ${page.ChapName} \n AppImage: ${page.ImagePath}");
+
     return Stack(
       children: [
         page.containsImage
@@ -226,7 +228,7 @@ class MyMarkDownWidget extends StatelessWidget {
   }
 
   Widget titleLayout(bool isDark, BuildContext context, Size size) {
-    log("Title Page1: ${page.ChapName} \n AppImage: ${Image.asset(AppImages.Theme2_horizontal[0])}");
+    log("Title Page1: ${page.ChapName} \n AppImage: ${page.ImagePath}");
     return Stack(
       children: [
         Container(

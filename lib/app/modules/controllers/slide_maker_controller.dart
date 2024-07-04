@@ -543,7 +543,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
 
           increaseOutputHeight();
           setNewTime();
-          saveSlideInDB();
+          // saveSlideInDB();
           if (true) {
             EasyLoading.dismiss();
             if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
@@ -1224,22 +1224,22 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   }
 
   //? DB implementation
-  Future<void> saveSlideInDB() async {
-    SlidesHistory slidesHistory = SlidesHistory(
-        id: 0,
-        title: userInput.value,
-        timestamp: DateTime.now(),
-        slidesList: slideResponseList);
-    try {
-      // final db = await SlideHistoryDatabaseHandler.instance.database;
-      await SlideHistoryDatabaseHandler.db.insertSlideHistory(slidesHistory);
-      print('Avatar added successfully!');
-      // Choose storage approach:
-    } catch (error) {
-      print('Error saving slide in database: $error');
-      // Handle error appropriately (e.g., display error message to user)
-    }
-  }
+  // Future<void> saveSlideInDB() async {
+  //   SlidesHistory slidesHistory = SlidesHistory(
+  //       id: 0,
+  //       title: userInput.value,
+  //       timestamp: DateTime.now(),
+  //       slidesList: slideResponseList);
+  //   try {
+  //     // final db = await SlideHistoryDatabaseHandler.instance.database;
+  //     await SlideHistoryDatabaseHandler.db.insertSlideHistory(slidesHistory);
+  //     print('Avatar added successfully!');
+  //     // Choose storage approach:
+  //   } catch (error) {
+  //     print('Error saving slide in database: $error');
+  //     // Handle error appropriately (e.g., display error message to user)
+  //   }
+  // }
 
   void generateExtraSlides() {
     showSlides.value = false;

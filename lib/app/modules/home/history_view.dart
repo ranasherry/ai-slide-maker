@@ -114,9 +114,11 @@ class HistoryView extends GetView<HistoryCTL> {
                               AppLovinProvider.instance.showInterstitial(() {});
                             },
                             leading: Image.asset(AppImages.drawer),
-                            title: Text(controller.savedSlides[index].title),
+                            title:
+                                Text(controller.savedSlides[index].slideTitle),
                             subtitle: Text(timeago.format(
-                                controller.savedSlides[index].timestamp)),
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    controller.savedSlides[index].timestamp))),
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.circular(20)), // Border radius

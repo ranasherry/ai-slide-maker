@@ -14,6 +14,7 @@ import 'package:flutter_pptx/flutter_pptx.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
@@ -26,6 +27,7 @@ import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/main.dart';
 import 'package:slide_rating_dialog/slide_rating_dialog.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -106,9 +108,10 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     try {
       await FlutterEmailSender.send(email);
       platformResponse = 'success';
-      showReviewDialogue(Get.context!);
+      feedBackCount = 2;
+      // showReviewDialogue(Get.context!);
     } catch (error) {
-      showReviewDialogue(Get.context!);
+      // showReviewDialogue(Get.context!);
 
       platformResponse = error.toString();
     }
@@ -120,7 +123,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
       platformResponse = error.toString();
     }
 
-    Get.snackbar('Email Sender', platformResponse);
+    // Get.snackbar('Email Sender', platformResponse);
   }
 
   Future<void> sendFirebaseFeedback(message) async {
@@ -317,7 +320,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   void ShowFeedbackBottomSheet({bool fromSettings = false}) {
     log("ShowBottomSheetCalled..");
     if (feedBackCount >= 5 || fromSettings) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: fromSettings ? 0 : 2), () {
         Get.bottomSheet(Container(
           height: SizeConfig.blockSizeVertical * 60,
           width: SizeConfig.screenWidth,
@@ -493,11 +496,22 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     }
   }
 
-  void showReviewDialogue(BuildContext context) {
+  int reviewCount = 5;
+  Future<void> showReviewDialogue(BuildContext context) async {
     log("showReviewDialogue");
-
+    if (reviewCount < 5) {
+      reviewCount++;
+      return;
+    }
     int finalRating = 4;
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    bool isReviewed = pref.getBool("isReviewed") ?? false;
 
+    if (isReviewed) {
+      ShowFeedbackBottomSheet();
+
+      return;
+    }
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -507,11 +521,35 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
                 finalRating = rating;
               },
               buttonOnTap: () async {
+                final _inAppReview = InAppReview.instance;
                 if (finalRating >= 3) {
                   // Review on PlayStore
-                  LaunchReview.launch(
-                    androidAppId: "com.genius.aislides.generator",
-                  );
+                  // LaunchReview.launch(
+                  //   androidAppId: "com.genius.aislides.generator",
+                  // );
+                  // Get.back();
+                  if (isReviewed) {
+                    Get.snackbar("Thanks",
+                        "The submission of your review has already been completed.",
+                        snackStyle: SnackStyle.FLOATING,
+                        backgroundColor: Colors.white,
+                        colorText: Colors.black);
+                  } else {
+                    if (await _inAppReview.isAvailable()) {
+                      print('request actual review from store');
+                      _inAppReview.requestReview();
+                    } else {
+                      print('open actual store listing');
+                      // TODO: use your own store ids
+                      _inAppReview.openStoreListing(
+                        appStoreId: 'com.genius.aislides.generator',
+                        // microsoftStoreId: '<your microsoft store id>',
+                      );
+                      reviewCount = 0;
+                      pref.setBool("isReviewed", true);
+                    }
+                  }
+
                   Get.back();
 
                   await storeReviewCount(finalRating);
@@ -523,6 +561,9 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
                   await storeReviewCount(finalRating);
                   // EasyLoading.showSuccess("Thanks for the Rating");
                 }
+
+                ShowFeedbackBottomSheet();
+
                 // Do your Business Logic here;
               },
             ));

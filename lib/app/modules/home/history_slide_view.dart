@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:slide_maker/app/data/slideResponce.dart';
 import 'package:slide_maker/app/modules/controllers/history_ctl.dart';
 import 'package:slide_maker/app/modules/controllers/history_slide_ctl.dart';
+import 'package:slide_maker/app/modules/newslide_generator/views/themes/theme1/t1_style1.dart';
+import 'package:slide_maker/app/modules/newslide_generator/views/themes/theme1/t1_title1.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/flutter_deck_app.dart';
@@ -20,9 +22,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../packages/slick_slides/slick_slides.dart';
 
-const _defaultTransition = SlickFadeTransition(
-  color: Colors.white,
-);
+// const _defaultTransition = SlickFadeTransition(
+//   color: Colors.white,
+// );
 
 class HistorySlideView extends GetView<HistorySlideCTL> {
   HistorySlideView({super.key});
@@ -63,7 +65,7 @@ class HistorySlideView extends GetView<HistorySlideCTL> {
         title: Text(
           // "History",
           controller.slidesHistory != null
-              ? controller.slidesHistory!.title
+              ? controller.slidesHistory!.slideTitle
               : "Slide",
           style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
@@ -78,79 +80,47 @@ class HistorySlideView extends GetView<HistorySlideCTL> {
               Icons.arrow_back_ios_new_rounded,
               color: Theme.of(context).colorScheme.primary,
             )),
+
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              onTap: () {
+                controller.sharePPTX();
+              },
+              child: Icon(
+                Icons.share,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          )
+        ],
         // backgroundColor: Color(0xFFE7EBFA),
       ),
       body: Column(
-        children: [slideShow()],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Obx(() => PageView(
+                  controller: PageController(
+                      viewportFraction:
+                          .9), // Optional for custom scrolling behavior
+                  children:
+                      List.generate(controller.bookPages.length + 1, (index) {
+                    return _slideCardMethod(context, index);
+                  }),
+                )),
+          )
+        ],
       ),
     );
   }
 
-  Widget slideShow() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _slickSlide(controller.slideResponseList),
-        verticalSpace(SizeConfig.blockSizeVertical * 1.5),
-        // MaxAdView(
-        //     adUnitId: Platform.isAndroid
-        //         ? AppStrings.MAX_Mrec_ID
-        //         : AppStrings.IOS_MAX_MREC_ID,
-        //     adFormat: AdFormat.mrec,
-        //     listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-        //       FirebaseAnalytics.instance.logAdImpression(
-        //         adFormat: "Mrec",
-        //         adSource: ad.networkName,
-        //         value: ad.revenue,
-        //       );
-        //       print('Mrec widget ad loaded from ' + ad.networkName);
-        //     }, onAdLoadFailedCallback: (adUnitId, error) {
-        //       print('Mrec widget ad failed to load with error code ' +
-        //           error.code.toString() +
-        //           ' and message: ' +
-        //           error.message);
-        //     }, onAdClickedCallback: (ad) {
-        //       print('Mrec widget ad clicked');
-        //     }, onAdExpandedCallback: (ad) {
-        //       print('Mrec widget ad expanded');
-        //     }, onAdCollapsedCallback: (ad) {
-        //       print('Mrec widget ad collapsed');
-        //     })),
-      ],
-    );
-
-    // // singleSlide();
-  }
-
-  Container _slickSlide(List<SlideResponse> slideResponseList) {
-    return Container(
-        // height: SizeConfig.blockSizeVertical * 20,
-        // width: SizeConfig.screenWidth,
-        child: SlideDeck(
-            // presenterView: true,
-            theme: SlideThemeData.light(
-                backgroundBuilder: (context) {
-                  return Image.asset(AppImages.PPT_BG3);
-                },
-                textTheme: SlideTextThemeData.light(
-                    body: TextStyle(
-                        fontFamily: 'Inter',
-                        color: Colors.black,
-                        fontSize: 55.0,
-                        fontWeight: FontWeight.w600,
-                        fontVariations: [FontVariation('wght', 400)]))),
-            slides: List.generate(
-              slideResponseList.length,
-              (index) {
-                List<String> _bullets =
-                    slideResponseList[index].slideDescription.split(".");
-                return BulletsSlide(
-                  title: slideResponseList[index].slideTitle,
-                  bulletByBullet: true,
-                  bullets: _bullets,
-                  // transition: _defaultTransition,
-                );
-              },
-            )));
+  Widget _slideCardMethod(BuildContext context, int index) {
+    if (index == 0) {
+      return T1_Title1History(index: index, controller: controller);
+    } else {
+      return T1_Style1History(index: index - 1, controller: controller);
+    }
   }
 }

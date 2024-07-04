@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
+import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/data/slide_history.dart';
 import 'package:slide_maker/app/data/slides_history_dbhandler.dart';
 
 class HistoryCTL extends GetxController {
-  RxList<SlidesHistory> savedSlides = <SlidesHistory>[].obs;
+  RxList<SlideItem> savedSlides = <SlideItem>[].obs;
   @override
   void onInit() {
     // TODO: implement onInit
