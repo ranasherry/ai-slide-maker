@@ -32,6 +32,8 @@ abstract class Routes {
   static const BOOK_GENERATED = _Paths.BOOK_GENERATED;
   static const IN_APP_PURCHASES = _Paths.IN_APP_PURCHASES;
   static const SlideDetailedGeneratedView = _Paths.SlideDetailedGeneratedView;
+  static const SING_IN = _Paths.SING_IN;
+  static const SING_UP = _Paths.SING_UP;
 }
 
 abstract class _Paths {
@@ -63,4 +65,6 @@ abstract class _Paths {
   static const BOOK_WRITER = '/book-writer';
   static const BOOK_GENERATED = '/book-generated';
   static const IN_APP_PURCHASES = '/in-app-purchases';
+  static const SING_IN = '/sing-in';
+  static const SING_UP = '/sing-up';
 }
