@@ -142,6 +142,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
       print('Error submitting feedback.');
     }
   }
+
   // void removeAttachment(int index) {
   //   attachments.removeAt(index);
   // }
