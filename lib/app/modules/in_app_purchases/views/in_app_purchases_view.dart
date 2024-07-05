@@ -11,6 +11,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 import '../controllers/in_app_purchases_controller.dart';
@@ -52,6 +53,10 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
               if (snapshot.hasData) {
                 if (snapshot.data != null) {
                   StoreProduct removeAdProduct = snapshot.data!;
+
+                  final withoutDiscountPrice = controller.getOriginalPrice(
+                      discountPercentage: RCVariables.discountPercentage,
+                      discountedPrice: removeAdProduct.price);
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -95,66 +100,132 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                           Color(0xFF722158)),
                       remove_ads("Create your Own Ebook", AppImages.write_books,
                           Colors.green),
-                      verticalSpace(SizeConfig.blockSizeVertical * 5),
+                      verticalSpace(SizeConfig.blockSizeVertical * 2),
                       Center(
                         child: Container(
-                          height: SizeConfig.blockSizeVertical * 8,
+                          height: SizeConfig.blockSizeVertical * 12,
                           width: SizeConfig.blockSizeHorizontal * 90,
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.yellow
-                                      .withOpacity(0.2), // Shadow color
-                                  spreadRadius: 0, // Spread radius
-                                  blurRadius: 2, // Blur radius
-                                  offset: Offset(
-                                      3, 3), // Shadow position: x and y offset
-                                ),
-                              ],
-                              color: Color(0xFF07171D),
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 2),
-                              border: Border.all(
-                                  color: Colors.yellowAccent,
-                                  width: SizeConfig.blockSizeHorizontal * 0.1)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          // color: Colors.amber,
+                          child: Stack(
                             children: [
-                              Shimmer.fromColors(
-                                baseColor: Colors.white,
-                                highlightColor: Colors.yellow.shade600,
-                                child: Text(
-                                  // "\$1.00 USD / Lifetime Free Access",
-                                  "${removeAdProduct.price} ${removeAdProduct.currencyCode} / Lifetime Free Access",
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
+                              Center(
+                                child: Container(
+                                  height: SizeConfig.blockSizeVertical * 10,
+                                  width: SizeConfig.blockSizeHorizontal * 90,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.yellow
+                                              .withOpacity(0.2), // Shadow color
+                                          spreadRadius: 0, // Spread radius
+                                          blurRadius: 2, // Blur radius
+                                          offset: Offset(3,
+                                              3), // Shadow position: x and y offset
+                                        ),
+                                      ],
+                                      color: Color(0xFF07171D),
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.blockSizeHorizontal * 2),
+                                      border: Border.all(
+                                          color: Colors.yellowAccent,
+                                          width:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  0.1)),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            SizeConfig.blockSizeHorizontal * 5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: SizeConfig
+                                                      .blockSizeHorizontal *
+                                                  5),
+                                          child: Text(
+                                            // "\$1.00 USD / Lifetime Free Access",
+                                            "${withoutDiscountPrice.toStringAsFixed(2)} ${removeAdProduct.currencyCode}",
+                                            style: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeHorizontal *
+                                                    3,
+                                                fontWeight: FontWeight.bold,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        Row(
+                                          // mainAxisAlignment:
+                                          //     MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Shimmer.fromColors(
+                                              baseColor: Colors.white,
+                                              highlightColor:
+                                                  Colors.yellow.shade600,
+                                              child: Text(
+                                                // "\$1.00 USD / Lifetime Free Access",
+                                                "${removeAdProduct.price} ${removeAdProduct.currencyCode} / Lifetime Free Access",
+                                                style: TextStyle(
+                                                    fontSize: SizeConfig
+                                                            .blockSizeHorizontal *
+                                                        4,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            // Text(
+                                            //   "Free",
+                                            //   style: TextStyle(
+                                            //       fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                            //       color: Colors.white),
+                                            // ),
+                                            Spacer(),
+                                            Image.asset(
+                                              AppImages.purchase,
+                                              scale: 20,
+                                            )
+                                            // Transform.scale(
+                                            //   scale: 1.3,
+                                            //   child: Checkbox(
+                                            //     value: true,
+                                            //     shape: CircleBorder(),
+                                            //     onChanged: null,
+                                            //     checkColor: Colors.grey.shade900,
+                                            //     // activeColor: Colors.amber,
+                                            //     fillColor:
+                                            //         MaterialStateProperty.all(Colors.amber),
+                                            //   ),
+                                            // )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                              // Text(
-                              //   "Free",
-                              //   style: TextStyle(
-                              //       fontSize: SizeConfig.blockSizeHorizontal * 4,
-                              //       color: Colors.white),
-                              // ),
-                              Image.asset(
-                                AppImages.purchase,
-                                scale: 20,
+                              Positioned(
+                                top: 2,
+                                left: 10,
+                                child: Container(
+                                  width: SizeConfig.blockSizeHorizontal * 10,
+                                  height: SizeConfig.blockSizeHorizontal * 10,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage(AppImages.purchase))),
+                                  child: Center(
+                                    child: Text(
+                                        "${RCVariables.discountPercentage.toInt().toString()}% off"),
+                                  ),
+                                ),
                               )
-                              // Transform.scale(
-                              //   scale: 1.3,
-                              //   child: Checkbox(
-                              //     value: true,
-                              //     shape: CircleBorder(),
-                              //     onChanged: null,
-                              //     checkColor: Colors.grey.shade900,
-                              //     // activeColor: Colors.amber,
-                              //     fillColor:
-                              //         MaterialStateProperty.all(Colors.amber),
-                              //   ),
-                              // )
                             ],
                           ),
                         ),

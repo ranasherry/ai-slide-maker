@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:permission_handler/permission_handler.dart';
@@ -87,6 +88,11 @@ class SplashController extends GetxController {
 
       print("Is First Time from Init: $isFirstTime");
       if (isFirstTime) {
+        // if (kDebugMode) {
+        //   //TODO: Testing
+        //   Get.toNamed(Routes.SING_IN);
+        //   return;
+        // }
         Get.toNamed(Routes.INTRO_SCREENS);
       } else {
         Get.offNamed(Routes.HomeView);

@@ -26,7 +26,7 @@ class IntroScreensController extends GetxController {
   void increment() => count.value++;
 
   void goToHomePage() {
-    setFirstTime(true);
+    setFirstTime(false);
     AppLovinProvider.instance.showInterstitial(() {});
   }
 

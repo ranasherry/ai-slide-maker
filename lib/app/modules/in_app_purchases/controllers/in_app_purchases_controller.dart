@@ -9,6 +9,8 @@ class InAppPurchasesController extends GetxController {
 
   final count = 0.obs;
 
+  // RxDouble discountPercentage
+
   @override
   void onInit() {
     super.onInit();
@@ -58,5 +60,16 @@ class InAppPurchasesController extends GetxController {
 
   void proceedToRemoveAd(StoreProduct removeAdProduct) {
     RevenueCatService().purchaseSubscriptionWithProduct(removeAdProduct);
+  }
+
+  double getOriginalPrice(
+      {required double discountPercentage, required double discountedPrice}) {
+    // Convert discount percentage to a decimal value (e.g., 10% -> 0.1)
+    final decimalDiscount = discountPercentage / 100.0;
+
+    // Calculate the original price using the formula: originalPrice = discountedPrice / (1 - discount)
+    final originalPrice = discountedPrice / (1 - decimalDiscount);
+
+    return originalPrice;
   }
 }

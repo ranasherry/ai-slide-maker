@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:slide_maker/app/modules/newslide_generator/bindings/slide_generated_detailed_binding.dart';
-import 'package:slide_maker/app/modules/newslide_generator/views/slide_detailed_generated_view.dart';
 
+import '../modules/authentications/sing_in/bindings/sing_in_binding.dart';
+import '../modules/authentications/sing_in/views/sing_in_view.dart';
+import '../modules/authentications/sing_up/bindings/sing_up_binding.dart';
+import '../modules/authentications/sing_up/views/sing_up_view.dart';
 import '../modules/bindings/gems_view_binding.dart';
 import '../modules/bindings/history_binding.dart';
 import '../modules/bindings/history_slide_binding.dart';
@@ -38,7 +40,9 @@ import '../modules/invitation_maker/views/b.templates/b_template1.dart';
 import '../modules/invitation_maker/views/invitation_maker_view.dart';
 import '../modules/invitation_maker/views/wedding_invite_view.dart';
 import '../modules/newslide_generator/bindings/newslide_generator_binding.dart';
+import '../modules/newslide_generator/bindings/slide_generated_detailed_binding.dart';
 import '../modules/newslide_generator/views/newslide_generator_view.dart';
+import '../modules/newslide_generator/views/slide_detailed_generated_view.dart';
 import '../modules/pdfPermission/bindings/pdf_permission_binding.dart';
 import '../modules/pdfPermission/views/pdf_permission_view.dart';
 import '../modules/pdfView/bindings/pdf_view_binding.dart';
@@ -198,6 +202,16 @@ class AppPages {
       name: _Paths.SlideDetailedGeneratedView,
       page: () => const SlideDetailedGeneratedView(),
       binding: SlideGeneratedDetailedBinding(),
+    ),
+    GetPage(
+      name: _Paths.SING_IN,
+      page: () => SignInView(),
+      binding: SingInBinding(),
+    ),
+    GetPage(
+      name: _Paths.SING_UP,
+      page: () => SingUpView(),
+      binding: SingUpBinding(),
     ),
   ];
 }
