@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:im_animations/im_animations.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/colors.dart';
@@ -49,7 +50,23 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
               // controller.onBackPressed(); // ? Commented by jamal
             },
             child: Icon(Icons.arrow_back_ios_new_rounded)),
-      
+        actions: [
+          Padding(
+              padding:
+                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 4),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.HistoryView);
+                },
+                child: Container(
+                  // width: SizeConfig.screenWidth * 0.065,
+                  child: Icon(
+                    Icons.history,
+                    size: 30,
+                  ),
+                ),
+              )),
+        ],
       ),
       body: Obx(() => Center(
             child: Stack(children: [

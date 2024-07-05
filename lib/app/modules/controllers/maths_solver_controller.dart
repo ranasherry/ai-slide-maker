@@ -47,11 +47,11 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
 
   RxDouble demo_height = 0.0.obs;
   RxBool show_demo = false.obs;
-  List<String> imgList = [
-    AppImages.MathSlider1,
-    AppImages.MathSlider2,
-    AppImages.MathSlider3
-  ];
+  // List<String> imgList = [
+  //   AppImages.MathSlider1,
+  //   AppImages.MathSlider2,
+  //   AppImages.MathSlider3
+  // ];
   RxBool isTextFieldFilled = false.obs;
   // RxString textEditingController = "".obs;
   RxString questionText = "".obs;

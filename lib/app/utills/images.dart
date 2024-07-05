@@ -7,9 +7,9 @@ class AppImages {
   static const presentation = "assets/images/presentation.png";
   static const board = "assets/images/board.png";
   static const scan = "assets/images/scan.png";
-  static const MathSlider3 = "assets/math_images/frame.png";
-  static const MathSlider2 = "assets/math_images/Frame a6.png";
-  static const MathSlider1 = "assets/math_images/Frame 5.png";
+  // static const MathSlider3 = "assets/math_images/frame.png";
+  // static const MathSlider2 = "assets/math_images/Frame a6.png";
+  // static const MathSlider1 = "assets/math_images/Frame 5.png";
   static const gallery = "assets/images/gallery.png";
   static const pencil = "assets/images/pencil.png";
   static const history = "assets/images/history.png";
@@ -50,4 +50,24 @@ class AppImages {
   static const unlimited_promts = "assets/images/prompt.png";
   static const write_books = "assets/images/wriite_books.png";
   static const purchase = "assets/images/purchase.png";
+  static const remove_watermark = "assets/images/remove_watermark.png";
+
+  static const Theme1_horizontal = [
+    "assets/themes/theme1/them1_h1.png",
+    "assets/themes/theme1/them1_h2.png",
+    "assets/themes/theme1/them1_h3.png",
+    "assets/themes/theme1/them1_h1]4.png",
+  ];
+  static const Theme1_vertical = [
+    "assets/themes/theme1/them1_v1.png",
+    "assets/themes/theme1/them1_v2.png",
+    "assets/themes/theme1/them1_v3.png",
+  ];
+
+  static const Theme2_horizontal = [
+    "assets/themes/theme2/them2_h1.svg",
+  ];
+  static const Theme2_vertical = [
+    "assets/themes/theme2/them2_v1.svg",
+  ];
 }

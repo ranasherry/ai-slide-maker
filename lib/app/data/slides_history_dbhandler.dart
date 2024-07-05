@@ -1,3 +1,4 @@
+import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/data/slide_history.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -31,35 +32,35 @@ class SlideHistoryDatabaseHandler {
     await db.execute('''
       CREATE TABLE $_tableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
+        slideTitle TEXT,
         timestamp INTEGER,
-        slidesList TEXT
+        listOfPages TEXT
       )
     ''');
   }
 
-  Future<int> insertSlideHistory(SlidesHistory slideHistory) async {
+  Future<int> insertSlideHistory(SlideItem slideHistory) async {
     final database = await myDataBase;
     return await database.insert(_tableName, slideHistory.toMap());
   }
 
-  Future<List<SlidesHistory>> fetchAllSlideHistory() async {
+  Future<List<SlideItem>> fetchAllSlideHistory() async {
     final database = await myDataBase;
     final results = await database.query(
       _tableName,
       orderBy: 'timestamp DESC', // Order by timestamp in descending order
     );
-    return results.map((result) => SlidesHistory.fromMap(result)).toList();
+    return results.map((result) => SlideItem.fromMap(result)).toList();
   }
 
-  Future<SlidesHistory?> fetchSlideHistoryById(int id) async {
+  Future<SlideItem?> fetchSlideHistoryById(int id) async {
     final database = await myDataBase;
     final results =
         await database.query(_tableName, where: 'id = ?', whereArgs: [id]);
-    return results.isNotEmpty ? SlidesHistory.fromMap(results.first) : null;
+    return results.isNotEmpty ? SlideItem.fromMap(results.first) : null;
   }
 
-  Future<int> updateSlideHistory(SlidesHistory slideHistory) async {
+  Future<int> updateSlideHistory(SlideItem slideHistory) async {
     final database = await myDataBase;
     return await database.update(_tableName, slideHistory.toMap(),
         where: 'id = ?', whereArgs: [slideHistory.id]);
