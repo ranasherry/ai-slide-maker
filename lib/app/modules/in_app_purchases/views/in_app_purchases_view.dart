@@ -104,7 +104,7 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                       Center(
                         child: Container(
                           height: SizeConfig.blockSizeVertical * 12,
-                          width: SizeConfig.blockSizeHorizontal * 90,
+                          width: SizeConfig.screenWidth,
                           // color: Colors.amber,
                           child: Stack(
                             children: [
@@ -210,20 +210,92 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                top: 2,
-                                left: 10,
-                                child: Container(
-                                  width: SizeConfig.blockSizeHorizontal * 10,
-                                  height: SizeConfig.blockSizeHorizontal * 10,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image:
-                                              AssetImage(AppImages.purchase))),
-                                  child: Center(
-                                    child: Text(
-                                        "${RCVariables.discountPercentage.toInt().toString()}% off"),
-                                  ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: SizeConfig.blockSizeVertical * 5),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: SizeConfig.blockSizeHorizontal *
+                                              2),
+                                      width:
+                                          SizeConfig.blockSizeHorizontal * 12.5,
+                                      height:
+                                          SizeConfig.blockSizeHorizontal * 12.5,
+                                      decoration: BoxDecoration(
+                                          // color: Colors.amber,
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                        AppImages.discount,
+                                      ))),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            top: SizeConfig.blockSizeVertical *
+                                                1.1,
+                                            left:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    3),
+                                        child: HeartBeat(
+                                          child: Text(
+                                            "${RCVariables.discountPercentage.toInt().toString()}% off",
+                                            style: TextStyle(
+                                                color: Color(0xFFFFE60A),
+                                                height: 1,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          top: SizeConfig.blockSizeVertical * 1,
+                                          right:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  4.1),
+                                      width:
+                                          SizeConfig.blockSizeHorizontal * 28,
+                                      height:
+                                          SizeConfig.blockSizeHorizontal * 7.5,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                              AppImages.limited,
+                                            ),
+                                            fit: BoxFit.fill),
+                                        // borderRadius: BorderRadius.only(
+                                        //     topRight: Radius.circular(
+                                        //         SizeConfig.blockSizeHorizontal *
+                                        //             2)),
+                                        // gradient: LinearGradient(
+                                        //     colors: [
+                                        //       Color(0xFFFF865C),
+                                        //       Color(0xFFE03600),
+                                        //     ],
+                                        //     begin: Alignment.topCenter,
+                                        //     end: Alignment.bottomCenter)
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: SizeConfig
+                                                      .blockSizeHorizontal *
+                                                  3.5,
+                                              bottom:
+                                                  SizeConfig.blockSizeVertical *
+                                                      0.5),
+                                          child: Text(
+                                            "Limited Offer",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
                             ],

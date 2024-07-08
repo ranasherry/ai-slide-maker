@@ -51,6 +51,8 @@ class AppImages {
   static const write_books = "assets/images/wriite_books.png";
   static const purchase = "assets/images/purchase.png";
   static const remove_watermark = "assets/images/remove_watermark.png";
+  static const discount = "assets/images/discount.png";
+  static const limited = "assets/images/limited.png";
 
   static const Theme1_horizontal = [
     "assets/themes/theme1/them1_h1.png",
