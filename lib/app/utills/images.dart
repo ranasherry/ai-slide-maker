@@ -53,6 +53,9 @@ class AppImages {
   static const remove_watermark = "assets/images/remove_watermark.png";
   static const discount = "assets/images/discount.png";
   static const limited = "assets/images/limited.png";
+  static const hot = "assets/images/hot.png";
+
+  // SVG
 
   static const Theme1_horizontal = [
     "assets/themes/theme1/them1_h1.png",
