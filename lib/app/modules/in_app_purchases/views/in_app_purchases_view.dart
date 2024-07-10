@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:im_animations/im_animations.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+
 import 'package:shimmer/shimmer.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/CM.dart';
@@ -20,8 +23,11 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
   const InAppPurchasesView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
+    return Scaffold(body: customePayWall());
+  }
+
+  Container customePayWall() {
+    return Container(
       // height: SizeConfig.screenHeight,
       // width: SizeConfig.screenWidth,
 
@@ -37,8 +43,8 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
           //   // Colors.black,
           // ], begin: Alignment.topLeft, end: Alignment.bottomRight)
           ),
-      child: FutureBuilder(
-        future: RevenueCatService().getRemoveAdProduct(),
+      child: FutureBuilder<List<StoreProduct>>(
+        future: RevenueCatService().getAllSubscriptionProducts(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error); // Log the error for debugging
@@ -52,11 +58,12 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
             case ConnectionState.done:
               if (snapshot.hasData) {
                 if (snapshot.data != null) {
-                  StoreProduct removeAdProduct = snapshot.data!;
+                  final products = snapshot.data!;
 
-                  final withoutDiscountPrice = controller.getOriginalPrice(
-                      discountPercentage: RCVariables.discountPercentage,
-                      discountedPrice: removeAdProduct.price);
+                  // final withoutDiscountPrice = controller.getOriginalPrice(
+                  //     discountPercentage: RCVariables.discountPercentage,
+                  //     discountedPrice: removeAdProduct.price);
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -96,217 +103,37 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                           Colors.blue),
                       remove_ads("Access All Templates",
                           AppImages.unlock_templates, Colors.amber),
-                      remove_ads("Endless Prompts", AppImages.unlimited_promts,
-                          Color(0xFF722158)),
+                      // remove_ads("Endless Prompts", AppImages.unlimited_promts,
+                      //     Color(0xFF722158)),
                       remove_ads("Create your Own Ebook", AppImages.write_books,
                           Colors.green),
-                      verticalSpace(SizeConfig.blockSizeVertical * 2),
-                      Center(
-                        child: Container(
-                          height: SizeConfig.blockSizeVertical * 12,
-                          width: SizeConfig.screenWidth,
-                          // color: Colors.amber,
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Container(
-                                  height: SizeConfig.blockSizeVertical * 10,
-                                  width: SizeConfig.blockSizeHorizontal * 90,
-                                  decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.yellow
-                                              .withOpacity(0.2), // Shadow color
-                                          spreadRadius: 0, // Spread radius
-                                          blurRadius: 2, // Blur radius
-                                          offset: Offset(3,
-                                              3), // Shadow position: x and y offset
-                                        ),
-                                      ],
-                                      color: Color(0xFF07171D),
-                                      borderRadius: BorderRadius.circular(
-                                          SizeConfig.blockSizeHorizontal * 2),
-                                      border: Border.all(
-                                          color: Colors.yellowAccent,
-                                          width:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  0.1)),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            SizeConfig.blockSizeHorizontal * 5),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: SizeConfig
-                                                      .blockSizeHorizontal *
-                                                  5),
-                                          child: Text(
-                                            // "\$1.00 USD / Lifetime Free Access",
-                                            "${withoutDiscountPrice.toStringAsFixed(2)} ${removeAdProduct.currencyCode}",
-                                            style: TextStyle(
-                                                fontSize: SizeConfig
-                                                        .blockSizeHorizontal *
-                                                    3,
-                                                fontWeight: FontWeight.bold,
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                        Row(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Shimmer.fromColors(
-                                              baseColor: Colors.white,
-                                              highlightColor:
-                                                  Colors.yellow.shade600,
-                                              child: Text(
-                                                // "\$1.00 USD / Lifetime Free Access",
-                                                "${removeAdProduct.price} ${removeAdProduct.currencyCode} / Lifetime Free Access",
-                                                style: TextStyle(
-                                                    fontSize: SizeConfig
-                                                            .blockSizeHorizontal *
-                                                        4,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            // Text(
-                                            //   "Free",
-                                            //   style: TextStyle(
-                                            //       fontSize: SizeConfig.blockSizeHorizontal * 4,
-                                            //       color: Colors.white),
-                                            // ),
-                                            Spacer(),
-                                            Image.asset(
-                                              AppImages.purchase,
-                                              scale: 20,
-                                            )
-                                            // Transform.scale(
-                                            //   scale: 1.3,
-                                            //   child: Checkbox(
-                                            //     value: true,
-                                            //     shape: CircleBorder(),
-                                            //     onChanged: null,
-                                            //     checkColor: Colors.grey.shade900,
-                                            //     // activeColor: Colors.amber,
-                                            //     fillColor:
-                                            //         MaterialStateProperty.all(Colors.amber),
-                                            //   ),
-                                            // )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: SizeConfig.blockSizeVertical * 5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          left: SizeConfig.blockSizeHorizontal *
-                                              2),
-                                      width:
-                                          SizeConfig.blockSizeHorizontal * 12.5,
-                                      height:
-                                          SizeConfig.blockSizeHorizontal * 12.5,
-                                      decoration: BoxDecoration(
-                                          // color: Colors.amber,
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                        AppImages.discount,
-                                      ))),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            top: SizeConfig.blockSizeVertical *
-                                                1.1,
-                                            left:
-                                                SizeConfig.blockSizeHorizontal *
-                                                    3),
-                                        child: HeartBeat(
-                                          child: Text(
-                                            "${RCVariables.discountPercentage.toInt().toString()}% off",
-                                            style: TextStyle(
-                                                color: Color(0xFFFFE60A),
-                                                height: 1,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          top: SizeConfig.blockSizeVertical * 1,
-                                          right:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  4.1),
-                                      width:
-                                          SizeConfig.blockSizeHorizontal * 28,
-                                      height:
-                                          SizeConfig.blockSizeHorizontal * 7.5,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                              AppImages.limited,
-                                            ),
-                                            fit: BoxFit.fill),
-                                        // borderRadius: BorderRadius.only(
-                                        //     topRight: Radius.circular(
-                                        //         SizeConfig.blockSizeHorizontal *
-                                        //             2)),
-                                        // gradient: LinearGradient(
-                                        //     colors: [
-                                        //       Color(0xFFFF865C),
-                                        //       Color(0xFFE03600),
-                                        //     ],
-                                        //     begin: Alignment.topCenter,
-                                        //     end: Alignment.bottomCenter)
-                                      ),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: SizeConfig
-                                                      .blockSizeHorizontal *
-                                                  3.5,
-                                              bottom:
-                                                  SizeConfig.blockSizeVertical *
-                                                      0.5),
-                                          child: Text(
-                                            "Limited Offer",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                      // verticalSpace(SizeConfig.blockSizeVertical * 4),
+
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: products.length,
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          log("ProductName: ${product.title}");
+                          return Obx(() => RadioListTile<int>(
+                                title: Text(controller
+                                    .removeParentheses(product.title)),
+                                subtitle: Text(product.description),
+                                value: index,
+                                groupValue: controller.selectedIndex.value,
+                                onChanged: (value) {
+                                  controller.selectedIndex.value = value!;
+                                },
+                              ));
+                        },
                       ),
                       Spacer(),
+
                       Center(
                         child: GestureDetector(
                           onTap: () {
-                            controller.proceedToRemoveAd(removeAdProduct);
+                            controller.proceedToRemoveAd(
+                                products[controller.selectedIndex.value]);
                             controller.recordInAppImpression();
                             // ComFunction.showInfoDialog(
                             //     title: "Coming Soon",
@@ -380,7 +207,7 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
           }
         },
       ),
-    ));
+    );
   }
 
   Widget remove_ads(String text, String image, Color color) {

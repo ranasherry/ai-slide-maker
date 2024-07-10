@@ -62,8 +62,11 @@ class RemoteConfigService {
     RCVariables.GeminiAPIKey = remoteConfig.getString('GeminiProKey');
     RCVariables.discountPercentage =
         remoteConfig.getInt('discountPercentage').toDouble();
+
+    RCVariables.discountTimeLeft = remoteConfig.getInt('discountTimeLeft');
     String jsonKeys = remoteConfig.getString('GeminiKeysList');
 
+    dp.log("discountTimeLeft: ${RCVariables.discountTimeLeft}");
     initGemini(RCVariables.GeminiAPIKey);
     topicListParser();
     keysListParser(jsonKeys);

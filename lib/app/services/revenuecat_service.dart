@@ -41,26 +41,43 @@ class RevenueCatService {
   ];
   static const _apiKey = 'goog_hAsleyJthCfUtAQlmqdSbKVtLOv';
 
-  Future<void> initialize() async {
+  Future<String> initialize(String? userID) async {
     // String customerID="ranasherry94@gmail.com";
     await Purchases.setLogLevel(LogLevel.debug);
-    await Purchases.configure(PurchasesConfiguration(_apiKey))
-        .then((value) async {
-      getRemoveAdProduct();
-      await checkSubscriptionStatus();
-      FirestoreService().UserID = await Purchases.appUserID;
-      if (currentEntitlement.value == Entitlement.paid) {
-        try {
-          CreateFirebaseUser();
-        } catch (e) {
-          dp.log("Firebase Error: $e");
-        }
+
+    await Purchases.configure(PurchasesConfiguration(
+      _apiKey,
+    )..appUserID = userID);
+
+    //     .then((value) async {
+    //   getRemoveAdProduct();
+    //   await checkSubscriptionStatus();
+    //   FirestoreService().UserID = await Purchases.appUserID;
+    //   if (currentEntitlement.value == Entitlement.paid) {
+    //     try {
+    //       CreateFirebaseUser();
+    //     } catch (e) {
+    //       dp.log("Firebase Error: $e");
+    //     }
+    //   }
+    // });
+
+    getRemoveAdProduct();
+    await checkSubscriptionStatus();
+    FirestoreService().UserID = await Purchases.appUserID;
+    if (currentEntitlement.value == Entitlement.paid) {
+      try {
+        CreateFirebaseUser();
+      } catch (e) {
+        dp.log("Firebase Error: $e");
       }
-    });
+    }
 
     Purchases.addCustomerInfoUpdateListener((customerInfo) async {
       updatePurchaseStatus();
     });
+
+    return FirestoreService().UserID;
   }
 
   Future<StoreProduct?> getRemoveAdProduct() async {
@@ -74,6 +91,28 @@ class RevenueCatService {
     }
 
     return null;
+  }
+
+  Future<List<StoreProduct>> getAllSubscriptionProducts() async {
+    // Get offerings
+    final offerings = await Purchases.getOfferings();
+
+    // Check if "premium_subscription" offering exists
+    final premiumOffering = offerings.getOffering("premium_subscription");
+    if (premiumOffering == null) {
+      return []; // Return empty list if offering is not found
+    }
+
+    // Get available packages for the offering
+    final packages = premiumOffering.availablePackages;
+
+    // Extract products from each package and combine into a single list
+    final List<StoreProduct> allProducts = [];
+    for (var package in packages) {
+      allProducts.add(package.storeProduct);
+    }
+
+    return allProducts;
   }
 
   void printWrapped(String text) =>

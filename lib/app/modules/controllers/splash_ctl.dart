@@ -32,6 +32,7 @@ class SplashController extends GetxController {
     super.onInit();
     AppLovinProvider.instance.init();
     MetaAdsProvider.instance.initialize();
+
     Timer? timer;
     timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
       int n = Random().nextInt(10) + 5;
@@ -46,26 +47,9 @@ class SplashController extends GetxController {
         timer!.cancel();
       }
     });
-    RevenueCatService().initialize();
+    RevenueCatService().initialize(null);
     // checkplatform();
   }
-
-  // checkPermission() async {
-
-  //      PermissionStatus status = await Permission.manageExternalStorage.status;
-  //     if (status == PermissionStatus.granted) {
-  //     print("Storage Granted");
-  //     Future.delayed(Duration(seconds: 3),(){
-  //     Get.offNamed(Routes.HomeView);
-  //     });
-  //   }
-  //   else{
-  //     print("Storage Not Granted");
-  //     Future.delayed(Duration(seconds: 3),(){
-  //     Get.offNamed(Routes.PDF_PERMISSION);
-  //     });
-  //   }
-  // }
 
   @override
   void onReady() {
@@ -88,13 +72,18 @@ class SplashController extends GetxController {
 
       print("Is First Time from Init: $isFirstTime");
       if (isFirstTime) {
-        // if (kDebugMode) {
-        //   //TODO: Testing
-        //   Get.toNamed(Routes.SING_IN);
-        //   return;
-        // }
+        if (kDebugMode) {
+          //TODO: Testing
+          Get.toNamed(Routes.SING_IN);
+          return;
+        }
         Get.toNamed(Routes.INTRO_SCREENS);
       } else {
+        if (kDebugMode) {
+          //TODO: Testing
+          Get.toNamed(Routes.SING_IN);
+          return;
+        }
         Get.offNamed(Routes.HomeView);
       }
     });

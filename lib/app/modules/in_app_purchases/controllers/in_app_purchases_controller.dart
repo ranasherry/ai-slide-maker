@@ -1,19 +1,27 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/models/store_product_wrapper.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 class InAppPurchasesController extends GetxController {
   //TODO: Implement InAppPurchasesController
 
   final count = 0.obs;
+  RxString timeLeft = "".obs;
+  Rx<int> selectedIndex = 0.obs;
 
   // RxDouble discountPercentage
 
   @override
   void onInit() {
     super.onInit();
+
+    initDiscountTimer();
   }
 
   @override
@@ -71,5 +79,56 @@ class InAppPurchasesController extends GetxController {
     final originalPrice = discountedPrice / (1 - decimalDiscount);
 
     return originalPrice;
+  }
+
+  String timeUntil(int millisecondsSinceEpoch) {
+    // Get current time in milliseconds
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    // Calculate difference in milliseconds
+    final difference = millisecondsSinceEpoch - now;
+
+    // Check if target date has already passed
+    if (difference <= 0) {
+      return "Time has passed";
+    }
+
+    // Calculate remaining days, hours, minutes, and seconds
+    final days = (difference / Duration.millisecondsPerDay).floor();
+    final hours = ((difference % Duration.millisecondsPerDay) /
+            Duration.millisecondsPerHour)
+        .floor();
+    final minutes = ((difference % Duration.millisecondsPerHour) /
+            Duration.millisecondsPerMinute)
+        .floor();
+    final seconds = ((difference % Duration.millisecondsPerMinute) /
+            Duration.millisecondsPerSecond)
+        .floor();
+
+    // Build the string representation
+    final String dayString = days > 0 ? "$days day${days > 1 ? 's' : ''} " : "";
+    final String hourString =
+        hours > 0 ? "${hours.toString().padLeft(2, '0')}h " : "";
+    final String minuteString =
+        minutes > 0 ? "${minutes.toString().padLeft(2, '0')}m " : "";
+    final String secondString =
+        seconds > 0 ? "${seconds.toString().padLeft(2, '0')}s" : "";
+
+    return "$dayString$hourString$minuteString$secondString".trim();
+  }
+
+  void initDiscountTimer() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      timeLeft.value = timeUntil(RCVariables.discountTimeLeft);
+      // log("TimeLeft: ${timeLeft.value}");
+    });
+  }
+
+  String removeParentheses(String input) {
+    // Regular expression to match parentheses and everything inside them
+    final RegExp regExp = RegExp(r'\(.*?\)');
+
+    // Replace all matches with an empty string
+    return input.replaceAll(regExp, '');
   }
 }
