@@ -102,6 +102,7 @@ class SignInController extends GetxController {
             name: user.displayName ?? "",
             email: user.email ?? "",
             revenueCatUserId: revenueCatUserId);
+
         // final newUser = {
         //   'id': user.uid,
         //   'name': user.displayName,

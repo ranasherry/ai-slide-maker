@@ -2,10 +2,14 @@ import 'dart:developer' as dp;
 // import 'package:ai_chatbot/app/modules/routes/app_pages.dart';
 // import 'package:flutter_gif/flutter_gif.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 
@@ -29,6 +33,7 @@ class RevenueCatService {
     // Purchases.setEmail(email)
     return _instance;
   }
+  String UserID = "";
 
   RevenueCatService._internal();
 
@@ -39,15 +44,22 @@ class RevenueCatService {
     'aislide_adremove_1',
     // 'lifetime_premium',
   ];
+
+  final entitlementID = "remove_ads";
   static const _apiKey = 'goog_hAsleyJthCfUtAQlmqdSbKVtLOv';
 
   Future<String> initialize(String? userID) async {
     // String customerID="ranasherry94@gmail.com";
     await Purchases.setLogLevel(LogLevel.debug);
-
-    await Purchases.configure(PurchasesConfiguration(
-      _apiKey,
-    )..appUserID = userID);
+    if (userID != null) {
+      await Purchases.configure(PurchasesConfiguration(
+        _apiKey,
+      )..appUserID = userID);
+    } else {
+      await Purchases.configure(PurchasesConfiguration(
+        _apiKey,
+      ));
+    }
 
     //     .then((value) async {
     //   getRemoveAdProduct();
@@ -62,9 +74,10 @@ class RevenueCatService {
     //   }
     // });
 
-    getRemoveAdProduct();
+    // getRemoveAdProduct();
     await checkSubscriptionStatus();
     FirestoreService().UserID = await Purchases.appUserID;
+    UserID = await Purchases.appUserID;
     if (currentEntitlement.value == Entitlement.paid) {
       try {
         CreateFirebaseUser();
@@ -77,7 +90,7 @@ class RevenueCatService {
       updatePurchaseStatus();
     });
 
-    return FirestoreService().UserID;
+    return UserID;
   }
 
   Future<StoreProduct?> getRemoveAdProduct() async {
@@ -133,22 +146,58 @@ class RevenueCatService {
 
   Future<void> purchaseSubscriptionWithProduct(StoreProduct product) async {
     try {
+      // final purchaserInfo = await Purchases.purchaseStoreProduct(product);
+
+      //? New Method
+      // final purchaserInfo = await Purchases.getCustomerInfo();
       final purchaserInfo = await Purchases.purchaseStoreProduct(product);
 
-      print("PurchaseInfo: ${purchaserInfo.allPurchasedProductIdentifiers}");
-      if (purchaserInfo.allPurchasedProductIdentifiers
-          .contains("aislide_adremove_1")) {
+      final entitelments = purchaserInfo.entitlements.active.values.toList();
+
+      // entitlementInfos.active;
+      dp.log("Active Entitlements: ${entitelments.first.identifier}");
+
+      if (entitelments.first.identifier == entitlementID) {
+        //? Unlock Premium Features
         RemoveAdsForUser();
         CreateFirebaseUser();
+        if (kReleaseMode) {
+          FirebaseAnalytics.instance.logPurchase(
+              currency: product.currencyCode,
+              value: product.price,
+              items: [
+                AnalyticsEventItem(
+                    itemId: product.identifier, price: product.price)
+              ]);
+        }
 
-        FirebaseAnalytics.instance.logPurchase(
-            currency: product.currencyCode,
-            value: product.price,
-            items: [
-              AnalyticsEventItem(
-                  itemId: product.identifier, price: product.price)
-            ]);
+        // TODO: Check if user is logged in or not. if logged in, update Revenue Cat User ID else Goto Signin Page
+
+        bool isLoggedIn = FirebaseAuth.instance.currentUser != null
+            ? true
+            : false; // check user logged in or not
+        if (isLoggedIn) {
+          updateRevenueCatUserID(UserID);
+        } else {
+          Get.toNamed(Routes.SING_IN);
+        }
       }
+
+      print("PurchaseInfo: ${purchaserInfo.allPurchasedProductIdentifiers}");
+      // if (purchaserInfo.allPurchasedProductIdentifiers
+      //     .contains("aislide_adremove_1")) {
+      //   RemoveAdsForUser();
+      //   CreateFirebaseUser();
+      //   if (kReleaseMode) {
+      //     FirebaseAnalytics.instance.logPurchase(
+      //         currency: product.currencyCode,
+      //         value: product.price,
+      //         items: [
+      //           AnalyticsEventItem(
+      //               itemId: product.identifier, price: product.price)
+      //         ]);
+      //   }
+      // }
       // Handle successful purchase
     } catch (error) {
       // Handle purchase error
@@ -158,10 +207,20 @@ class RevenueCatService {
   Future<void> checkSubscriptionStatus() async {
     try {
       final purchaserInfo = await Purchases.getCustomerInfo();
+      final entitelments = purchaserInfo.entitlements.active.values.toList();
+
+      // entitlementInfos.active;
+      dp.log("Active Entitlements: ${entitelments.first.identifier}");
+
+      if (entitelments.first.identifier == entitlementID) {
+        //? Unlock Premium Features
+        RemoveAdsForUser();
+      }
+
       print(
           "CheckSubscription: ${purchaserInfo.allPurchasedProductIdentifiers}");
-      if (purchaserInfo.allPurchasedProductIdentifiers
-          .contains("aislide_adremove_1")) {}
+      // if (purchaserInfo.allPurchasedProductIdentifiers
+      //     .contains("aislide_adremove_1")) {}
     } catch (error) {
       // Error occurred while fetching the subscription status
       print('Error: $error');
@@ -208,7 +267,7 @@ class RevenueCatService {
     CheckRemoveAdsForUser();
 
     // Get.back();
-    Get.offAllNamed(Routes.HomeView);
+    // Get.offAllNamed(Routes.HomeView);
   }
 
   Future<bool> CheckRemoveAdsForUser() async {
@@ -229,6 +288,24 @@ class RevenueCatService {
 
   void CreateFirebaseUser() {
     FirestoreService().createUser(uid: FirestoreService().UserID);
+  }
+
+  Future<void> updateRevenueCatUserID(String userID) async {
+    dp.log("Updating RevenueCatUserID: $userID");
+    User user = FirebaseAuth.instance.currentUser!;
+    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final docSnapshot = await docRef.get();
+    if (docSnapshot.exists) {
+      // User exists, handle existing user data
+      final userMap = docSnapshot.data() as Map<String, dynamic>;
+      UserData userData = UserData.fromMap(userMap);
+      // Perform actions with existing user data (e.g., print name)
+
+      userData.revenueCatUserId = userID;
+
+      docRef.update(userData.toMap());
+      print('User found: ${userData.email}');
+    }
   }
 }
 

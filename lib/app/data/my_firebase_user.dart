@@ -1,8 +1,8 @@
 class UserData {
-  final String id;
-  final String? name;
-  final String email;
-  final String revenueCatUserId;
+  String id;
+  String? name;
+  String email;
+  String revenueCatUserId;
 
   UserData({
     required this.id,

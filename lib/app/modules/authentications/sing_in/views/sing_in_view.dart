@@ -17,6 +17,12 @@ class SignInView extends GetView<SignInController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+            onTap: () {
+              Get.offAllNamed(Routes.HomeView);
+            },
+            child: Icon(Icons.cancel)),
+
         title: const Text(
           'SignIn',
           style: TextStyle(color: Colors.white),
