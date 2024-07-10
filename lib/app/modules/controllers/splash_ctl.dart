@@ -72,18 +72,18 @@ class SplashController extends GetxController {
 
       print("Is First Time from Init: $isFirstTime");
       if (isFirstTime) {
-        if (kDebugMode) {
-          //TODO: Testing
-          Get.toNamed(Routes.SING_IN);
-          return;
-        }
+        // if (kDebugMode) {
+        //   //TODO: Testing
+        //   Get.toNamed(Routes.SING_IN);
+        //   return;
+        // }
         Get.toNamed(Routes.INTRO_SCREENS);
       } else {
-        if (kDebugMode) {
-          //TODO: Testing
-          Get.toNamed(Routes.SING_IN);
-          return;
-        }
+        // if (kDebugMode) {
+        //   //TODO: Testing
+        //   Get.toNamed(Routes.SING_IN);
+        //   return;
+        // }
         Get.offNamed(Routes.HomeView);
       }
     });
