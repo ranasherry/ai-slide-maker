@@ -130,8 +130,10 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     // Firestore storage
     final feedbackCollection =
         FirebaseFirestore.instance.collection('feedback');
-    final feedbackDocRef =
-        await feedbackCollection.doc(FirestoreService().UserID);
+    final docID =
+        "${DateTime.now().millisecondsSinceEpoch}}_${FirestoreService().UserID}";
+
+    final feedbackDocRef = await feedbackCollection.doc(docID);
     feedbackDocRef.set({
       'message': message,
       'timestamp':

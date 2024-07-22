@@ -13,24 +13,28 @@ import 'package:slide_maker/app/utills/size_config.dart';
 import '../../helping_widget.dart/mymarkdown_view.dart';
 
 class T1_Style1 extends StatefulWidget {
-  const T1_Style1({super.key, required this.index, required this.controller});
+  T1_Style1({super.key, required this.index, required this.controller});
 
   final int index;
   final SlideDetailedGeneratedCTL controller;
+  final Size size = Size(
+    24384000,
+    13716000,
+  );
 
   @override
   State<T1_Style1> createState() => _T1_Style1State();
 }
 
 class _T1_Style1State extends State<T1_Style1> {
-  bool isTable = false;
+  bool isTable = true;
 
   initState() {
     //...
     setState(() {
       if (widget.controller.bookPages.length + 1 != widget.index) {
-        isTable = ComFunction()
-            .containsTable(widget.controller.bookPages[widget.index].ChapData);
+        // isTable = ComFunction()
+        //     .containsTable(widget.controller.bookPages[widget.index].ChapData);
         developer.log(
             "isTable: $isTable ${widget.controller.bookPages[widget.index].ChapData}");
       }
@@ -44,13 +48,24 @@ class _T1_Style1State extends State<T1_Style1> {
     //     .containsTable(widget.controller.bookPages[widget.index].ChapData);
     return Container(
       // color: Colors.yellow,  // Uncomment for debugging purposes
-      // width: SizeConfig.screenWidth,
+      // width: widget.size.width * .80,
+      // height: widget.size.height,
       height: SizeConfig.screenHeight,
+      // decoration: BoxDecoration(
+      //   image: DecorationImage(
+      //       image: AssetImage(
+      //         AppImages.PPT_BG1,
+      //       ),
+      //       fit: BoxFit.cover),
+      // ),
+
       child: Card(
-        // color: Theme.of(context).colorScheme.primaryContainer,
         color: Theme.of(context).colorScheme.primaryContainer,
+        // color: Colors.transparent,
         child: SingleChildScrollView(
-          child: isTable ? _withTable(context) : _withoutTable(context),
+          child: isTable ? _withTable(context) : _withTable(context)
+          //  _withoutTable(context)
+          ,
         ),
       ),
     );

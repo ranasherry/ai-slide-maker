@@ -91,7 +91,7 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                   padding: EdgeInsets.all(5.0),
                                   child: Text(
                                     "Share",
-                                    style: StyleSheet.Intro_Sub_heading_black,
+                                    // style: StyleSheet.Intro_Sub_heading_black,
                                   ),
                                 ),
                               )

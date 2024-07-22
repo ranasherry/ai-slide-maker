@@ -19,7 +19,7 @@ class PdfPermissionView extends GetView<PdfPermissionController> {
           children: [
             Text(
               "Documents Reader",
-              style: StyleSheet.Intro_heading_black,
+              // style: StyleSheet.Intro_heading_black,
             ),
             Lottie.asset('assets/lottie/77323-profile-lock.json'),
             Container(
@@ -44,7 +44,7 @@ class PdfPermissionView extends GetView<PdfPermissionController> {
                       child: Center(
                           child: Text(
                         'Allow',
-                        style: StyleSheet.Subscription_heading,
+                        // style: StyleSheet.Subscription_heading,
                       ))),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFC20000),

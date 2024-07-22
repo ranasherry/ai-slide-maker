@@ -49,6 +49,8 @@ import '../modules/pdfView/bindings/pdf_view_binding.dart';
 import '../modules/pdfView/views/pdf_view_view.dart';
 import '../modules/ppt_uploader/bindings/ppt_uploader_binding.dart';
 import '../modules/ppt_uploader/views/ppt_uploader_view.dart';
+import '../modules/presentaion_generator/bindings/presentaion_generator_binding.dart';
+import '../modules/presentaion_generator/views/presentaion_generator_view.dart';
 import '../modules/showPDF/bindings/show_p_d_f_binding.dart';
 import '../modules/showPDF/views/show_p_d_f_view.dart';
 import '../modules/showppt/bindings/ppt_list_binding.dart';
@@ -212,6 +214,11 @@ class AppPages {
       name: _Paths.SING_UP,
       page: () => SingUpView(),
       binding: SingUpBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRESENTAION_GENERATOR,
+      page: () => const PresentaionGeneratorView(),
+      binding: PresentaionGeneratorBinding(),
     ),
   ];
 }

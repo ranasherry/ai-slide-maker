@@ -106,6 +106,16 @@ class SubSlideView extends StatelessWidget {
             ),
           ),
           verticalSpace(SizeConfig.blockSizeVertical * 2),
+          GestureDetector(
+            onTap: () {
+              AppLovinProvider.instance.showInterstitial(() {});
+
+              Get.toNamed(Routes.PRESENTAION_GENERATOR);
+            },
+            child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
+                AppImages.presentation, "AI Presentation New Method"),
+          ),
+          verticalSpace(SizeConfig.blockSizeVertical * 2),
           Obx(() =>
               RevenueCatService().currentEntitlement.value == Entitlement.paid
                   ? Container()

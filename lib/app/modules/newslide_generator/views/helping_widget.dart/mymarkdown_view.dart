@@ -4,6 +4,7 @@ import 'package:slide_maker/app/utills/size_config.dart';
 
 Container buildMarkdown(BuildContext context, String data,
     {required double width}) {
+  // final isDark = Theme.of(context).brightness == Brightness.dark;
   final isDark = Theme.of(context).brightness == Brightness.dark;
   final config =
       isDark ? MarkdownConfig.darkConfig : MarkdownConfig.defaultConfig;

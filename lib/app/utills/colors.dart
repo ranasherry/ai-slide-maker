@@ -19,9 +19,14 @@ class AppColors {
   static const text_color = Color(0xFFFFFFFF);
   static const selected_color = Color.fromARGB(255, 255, 220, 92);
 
-
   static const neonBorder = Color(0xFF0095B0);
   static const greybox = Color.fromARGB(255, 78, 78, 78);
 
   static const ScaffoldColor = Color(0xFF000C1A);
+
+  //? New Colors
+  static const headerContainerGradient = [Color(0xFF4B20C8), Color(0xFF5720F8)];
+  static const footerContainerColor = Color(0xFFE7EBFA);
+  static const fragmantBGColor = Color(0xFFE7EBFA);
+  static const buttonBGColor = Colors.purple;
 }

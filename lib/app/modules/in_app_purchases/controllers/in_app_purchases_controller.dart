@@ -131,4 +131,42 @@ class InAppPurchasesController extends GetxController {
     // Replace all matches with an empty string
     return input.replaceAll(regExp, '');
   }
+
+  String getProductTitle(StoreProduct product) {
+    if (product.identifier == "aislide_adremove_1") {
+      return "Pay Once";
+    } else if (product.identifier ==
+        "aislide_premium_1w:aislide-baseplan-weekly") {
+      return "Weekly";
+    } else if (product.identifier ==
+        "aislide_premium_1m:aislide-baseplan-monthly") {
+      return "Monthly";
+    } else {
+      log("Product ID: ${product.identifier}");
+      return product.title;
+    }
+  }
+
+  String getProductPeriod(StoreProduct product) {
+    if (product.identifier == "aislide_adremove_1") {
+      return "Life Time";
+    } else if (product.identifier ==
+        "aislide_premium_1w:aislide-baseplan-weekly") {
+      return "Week";
+    } else if (product.identifier ==
+        "aislide_premium_1m:aislide-baseplan-monthly") {
+      return "Month";
+    } else {
+      log("Product ID: ${product.identifier}");
+      return product.description;
+    }
+  }
+
+  bool getIsHot(StoreProduct product) {
+    if (product.identifier == "aislide_adremove_1") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

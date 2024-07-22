@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
@@ -42,6 +43,7 @@ class SignInController extends GetxController {
     String email = emailCTL.text; // Replace with actual email value
     String password = passwordCTL.text; // Replace with actual password value
     log("Attempting Signin...");
+    EasyLoading.show(status: "Please wait...");
     try {
       UserCredential userCredential = await authService
           .signInWithEmailAndPassword(email: email, password: password);
@@ -50,7 +52,9 @@ class SignInController extends GetxController {
       log('UserUUID: ${userCredential.user!.uid}');
       log('UserName: ${userCredential.user!.displayName}');
 
-      onLoginSuccess(userCredential.user!);
+      await onLoginSuccess(userCredential.user!);
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess("Successfully Logined");
 
       // return true;
       // Handle successful sign-in (e.g., navigate to a home page)
@@ -62,6 +66,8 @@ class SignInController extends GetxController {
       } else {
         print(e.code); // Print other error codes
       }
+      EasyLoading.dismiss();
+      EasyLoading.showError("Email or Password is wrong");
       // Handle errors appropriately (e.g., show a snackbar)
       // return false;
     }

@@ -162,7 +162,7 @@ class MyApp extends StatelessWidget {
                   //   useMaterial3: true,
                   // ),
 
-                  themeMode: ThemeMode.system,
+                  themeMode: ThemeMode.light,
                   // themeMode: themeNotifier.themeMode,
                   // home: CustomPDFViewer(),
                   // title: "Application",

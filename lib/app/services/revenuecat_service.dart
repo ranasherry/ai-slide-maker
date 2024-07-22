@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,6 +52,12 @@ class RevenueCatService {
 
   Future<String> initialize(String? userID) async {
     // String customerID="ranasherry94@gmail.com";
+
+    // if (kDebugMode) {
+    //   userID = "\$RCAnonymousID:22a7f8f7cd4f4080beb2e366ff3daaec";
+    // }
+
+    dp.log("Inititalizing Revenue cart: $userID");
     await Purchases.setLogLevel(LogLevel.debug);
     if (userID != null) {
       await Purchases.configure(PurchasesConfiguration(
@@ -146,6 +154,7 @@ class RevenueCatService {
 
   Future<void> purchaseSubscriptionWithProduct(StoreProduct product) async {
     try {
+      EasyLoading.show(status: "Please wait...");
       // final purchaserInfo = await Purchases.purchaseStoreProduct(product);
 
       //? New Method
@@ -159,7 +168,7 @@ class RevenueCatService {
 
       if (entitelments.first.identifier == entitlementID) {
         //? Unlock Premium Features
-        RemoveAdsForUser();
+        await RemoveAdsForUser(true);
         CreateFirebaseUser();
         if (kReleaseMode) {
           FirebaseAnalytics.instance.logPurchase(
@@ -177,10 +186,14 @@ class RevenueCatService {
             ? true
             : false; // check user logged in or not
         if (isLoggedIn) {
-          updateRevenueCatUserID(UserID);
+          await updateRevenueCatUserID(UserID);
+          EasyLoading.showSuccess("Congratulation your are a Premium User now");
+          Get.offAllNamed(Routes.HomeView);
         } else {
-          Get.toNamed(Routes.SING_IN);
+          // Get.toNamed(Routes.SING_IN);
+          showSignInDialog();
         }
+        EasyLoading.dismiss();
       }
 
       print("PurchaseInfo: ${purchaserInfo.allPurchasedProductIdentifiers}");
@@ -200,6 +213,7 @@ class RevenueCatService {
       // }
       // Handle successful purchase
     } catch (error) {
+      EasyLoading.dismiss();
       // Handle purchase error
     }
   }
@@ -214,7 +228,9 @@ class RevenueCatService {
 
       if (entitelments.first.identifier == entitlementID) {
         //? Unlock Premium Features
-        RemoveAdsForUser();
+        await RemoveAdsForUser(true);
+      } else {
+        await RemoveAdsForUser(false);
       }
 
       print(
@@ -222,6 +238,8 @@ class RevenueCatService {
       // if (purchaserInfo.allPurchasedProductIdentifiers
       //     .contains("aislide_adremove_1")) {}
     } catch (error) {
+      await RemoveAdsForUser(false);
+
       // Error occurred while fetching the subscription status
       print('Error: $error');
     }
@@ -258,13 +276,17 @@ class RevenueCatService {
     return await SharedPreferences.getInstance();
   }
 
-  RemoveAdsForUser() async {
+  Future<void> RemoveAdsForUser(bool isAdRemoved) async {
     final prefs = await getSharedPrefs();
-    await prefs.setBool('isAdRemoved', true);
+    await prefs.setBool('isAdRemoved', isAdRemoved);
 
-    RevenueCatService().currentEntitlement.value = Entitlement.paid;
+    if (isAdRemoved) {
+      RevenueCatService().currentEntitlement.value = Entitlement.paid;
+    } else {
+      RevenueCatService().currentEntitlement.value = Entitlement.free;
+    }
     dp.log("RemoveAdsForUser Called");
-    CheckRemoveAdsForUser();
+    await CheckRemoveAdsForUser();
 
     // Get.back();
     // Get.offAllNamed(Routes.HomeView);
@@ -306,6 +328,39 @@ class RevenueCatService {
       docRef.update(userData.toMap());
       print('User found: ${userData.email}');
     }
+  }
+
+  void showSignInDialog() {
+    Get.defaultDialog(
+      title: "Subscription Successful",
+      content: Column(
+        children: [
+          Text("You have successfully bought the subscription."),
+          SizedBox(height: 10),
+          Text(
+              "Please sign in so that you can use the subscription on other devices as well."),
+        ],
+      ),
+      confirm: ElevatedButton(
+        onPressed: () {
+          // Navigate to the sign-in screen
+          Get.toNamed(Routes.SING_IN);
+        },
+        child: Text("Sign In"),
+      ),
+      cancel: ElevatedButton(
+        onPressed: () {
+          // Get.back();
+          Get.offAllNamed(Routes.HomeView);
+        },
+        child: Text("Later"),
+      ),
+    );
+  }
+
+  Future<void> signOut() async {
+    // await Purchases.logOut();
+    await initialize(null);
   }
 }
 

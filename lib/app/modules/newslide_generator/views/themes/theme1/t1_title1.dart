@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/controllers/history_slide_ctl.dart';
 import 'package:slide_maker/app/modules/newslide_generator/controllers/slide_detailed_generated_ctl.dart';
 import 'package:slide_maker/app/modules/newslide_generator/views/helping_widget.dart/helping_widget_methods.dart';
@@ -97,11 +98,15 @@ class _T1_Title1State extends State<T1_Title1> {
 }
 
 class T1_Title1History extends StatefulWidget {
-  const T1_Title1History(
-      {super.key, required this.index, required this.controller});
+  T1_Title1History({super.key, required this.index, required this.controller});
 
   final int index;
   final HistorySlideCTL controller;
+
+  final Size size = Size(
+    24384000,
+    13716000,
+  );
 
   @override
   State<T1_Title1History> createState() => _T1_Title1HistoryState();
@@ -112,8 +117,11 @@ class _T1_Title1HistoryState extends State<T1_Title1History> {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.yellow,  // Uncomment for debugging purposes
-      width: SizeConfig.screenWidth,
-      height: SizeConfig.screenHeight,
+      width: widget.size.width,
+      height: widget.size.width,
+      // width: SizeConfig.screenWidth,
+      // height: SizeConfig.screenHeight,
+
       child: Card(
         color: Theme.of(context).colorScheme.primaryContainer,
         child: SingleChildScrollView(

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:applovin_max/applovin_max.dart';
@@ -68,248 +69,242 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
               )),
         ],
       ),
-      body: Obx(() => Center(
-            child: Stack(children: [
-              SingleChildScrollView(
-                child: Container(
-                  margin: EdgeInsets.only(
-                    top: SizeConfig.blockSizeVertical * 6,
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 60,
-                          // color: Colors.amber,
-                          child: Center(
-                            child: Obx(() => RevenueCatService()
-                                        .currentEntitlement
-                                        .value ==
-                                    Entitlement.paid
-                                ? Container()
-                                : MaxAdView(
-                                    adUnitId: Platform.isAndroid
-                                        ? AppStrings.MAX_BANNER_ID
-                                        : AppStrings.IOS_MAX_BANNER_ID,
-                                    adFormat: AdFormat.banner,
-                                    listener: AdViewAdListener(
-                                        onAdLoadedCallback: (ad) {
-                                      print('Banner widget ad loaded from ' +
-                                          ad.networkName);
-                                    }, onAdLoadFailedCallback:
-                                            (adUnitId, error) {
-                                      print(
-                                          'Banner widget ad failed to load with error code ' +
-                                              error.code.toString() +
-                                              ' and message: ' +
-                                              error.message);
-                                    }, onAdClickedCallback: (ad) {
-                                      print('Banner widget ad clicked');
-                                    }, onAdExpandedCallback: (ad) {
-                                      print('Banner widget ad expanded');
-                                    }, onAdCollapsedCallback: (ad) {
-                                      print('Banner widget ad collapsed');
-                                    }))),
-                          ),
+      body: Obx(() => Stack(children: [
+            SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: SizeConfig.blockSizeVertical * 6,
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 60,
+                        // color: Colors.amber,
+                        child: Center(
+                          child: Obx(() => RevenueCatService()
+                                      .currentEntitlement
+                                      .value ==
+                                  Entitlement.paid
+                              ? Container()
+                              : MaxAdView(
+                                  adUnitId: Platform.isAndroid
+                                      ? AppStrings.MAX_BANNER_ID
+                                      : AppStrings.IOS_MAX_BANNER_ID,
+                                  adFormat: AdFormat.banner,
+                                  listener: AdViewAdListener(
+                                      onAdLoadedCallback: (ad) {
+                                    print('Banner widget ad loaded from ' +
+                                        ad.networkName);
+                                  }, onAdLoadFailedCallback: (adUnitId, error) {
+                                    print(
+                                        'Banner widget ad failed to load with error code ' +
+                                            error.code.toString() +
+                                            ' and message: ' +
+                                            error.message);
+                                  }, onAdClickedCallback: (ad) {
+                                    print('Banner widget ad clicked');
+                                  }, onAdExpandedCallback: (ad) {
+                                    print('Banner widget ad expanded');
+                                  }, onAdCollapsedCallback: (ad) {
+                                    print('Banner widget ad collapsed');
+                                  }))),
                         ),
-                        controller.outlineTitleFetched.value
-                            ? Container()
-                            : Container(
-                                width: SizeConfig.screenWidth,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  4),
-                                      child: Text(
-                                        'Trending Topics:',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                      ),
+                      controller.outlineTitleFetched.value
+                          ? Container()
+                          : Container(
+                              width: SizeConfig.screenWidth,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            SizeConfig.blockSizeHorizontal * 4),
+                                    child: Text(
+                                      'Trending Topics:',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  4),
-                                      child: Wrap(
-                                        spacing: 3.0,
-                                        runSpacing: 3.0,
-                                        children: AppStrings.topicsList.value
-                                            .map((suggestion) {
-                                          return ActionChip(
-                                            onPressed: () {
-                                              controller.userInput.value =
-                                                  suggestion;
-                                              if (!controller
-                                                      .isWaitingForTime.value ||
-                                                  kDebugMode) {
-                                                // if (!controller.isWaitingForTime.value) {
-                                                controller
-                                                    .validate_user_input();
-                                              } else {
-                                                controller
-                                                    .showWatchRewardPrompt();
-                                              }
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            SizeConfig.blockSizeHorizontal * 4),
+                                    child: Wrap(
+                                      spacing: 3.0,
+                                      runSpacing: 3.0,
+                                      children: AppStrings.topicsList.value
+                                          .map((suggestion) {
+                                        return ActionChip(
+                                          onPressed: () {
+                                            controller.userInput.value =
+                                                suggestion;
+                                            if (!controller
+                                                    .isWaitingForTime.value ||
+                                                kDebugMode) {
+                                              // if (!controller.isWaitingForTime.value) {
+                                              controller.validate_user_input();
+                                            } else {
+                                              controller
+                                                  .showWatchRewardPrompt();
+                                            }
 
-                                              // controller.NoOfSlides = 1;
-                                            },
-                                            label: Text(
-                                              suggestion,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 11),
-                                            ),
-                                            backgroundColor: Colors.indigo,
+                                            // controller.NoOfSlides = 1;
+                                          },
+                                          label: Text(
+                                            suggestion,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11),
+                                          ),
+                                          backgroundColor: Colors.indigo,
 
-                                            // Theme.of(context).primaryColor,
-                                            elevation: 4,
-                                            shadowColor:
-                                                Theme.of(context).shadowColor,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 12, vertical: 8),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
+                                          // Theme.of(context).primaryColor,
+                                          elevation: 4,
+                                          shadowColor:
+                                              Theme.of(context).shadowColor,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 8),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        );
+                                      }).toList(),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                        verticalSpace(SizeConfig.blockSizeVertical * 2),
-                        DottedBorder(
-                          borderType: BorderType.RRect,
-                          strokeCap: StrokeCap.round,
-                          padding: EdgeInsets.all(
-                              SizeConfig.blockSizeHorizontal * 3),
-                          color: Theme.of(context).colorScheme.primary,
-                          // Color(0xFF0049C8),
-                          // dashPattern: [19, 2, 6, 3],
-                          dashPattern: [6, 1, 8, 11],
-                          radius: Radius.circular(
-                              SizeConfig.blockSizeHorizontal * 4),
-                          strokeWidth: 2,
-                          child: AnimatedContainer(
-                            width: controller.input_box_width.value,
-                            height: controller.input_box_height.value,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastOutSlowIn,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondary,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context).colorScheme.shadow,
-                                  // Colors.grey.shade300, // Shadow color
-                                  spreadRadius: 2, // Spread radius
-                                  blurRadius: 10, // Blur radius
-                                  offset: Offset(
-                                      0, 5), // Offset in x and y direction
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                  color: Theme.of(context).colorScheme.primary),
                             ),
-                            child: controller.showInside.value
-                                ? Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        outField(context),
-                                        Divider(),
-                                        inputField(context),
-                                      ],
-                                    ),
-                                  )
-                                : Container(),
+                      verticalSpace(SizeConfig.blockSizeVertical * 2),
+                      DottedBorder(
+                        borderType: BorderType.RRect,
+                        strokeCap: StrokeCap.round,
+                        padding:
+                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                        color: Theme.of(context).colorScheme.primary,
+                        // Color(0xFF0049C8),
+                        // dashPattern: [19, 2, 6, 3],
+                        dashPattern: [6, 1, 8, 11],
+                        radius:
+                            Radius.circular(SizeConfig.blockSizeHorizontal * 4),
+                        strokeWidth: 2,
+                        child: AnimatedContainer(
+                          width: controller.input_box_width.value,
+                          height: controller.input_box_height.value,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.fastOutSlowIn,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(context).colorScheme.shadow,
+                                // Colors.grey.shade300, // Shadow color
+                                spreadRadius: 2, // Spread radius
+                                blurRadius: 10, // Blur radius
+                                offset:
+                                    Offset(0, 5), // Offset in x and y direction
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                                color: Theme.of(context).colorScheme.primary),
                           ),
-                        ),
-                        SizedBox(
-                          height: SizeConfig.screenHeight * 0.05,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            createButton(context),
-                            controller.outlineTitleFetched.value
-                                ? Row(
+                          child: controller.showInside.value
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      SizedBox(
-                                        width: SizeConfig.screenWidth * 0.15,
-                                      ),
-                                      NextButton(context),
+                                      outField(context),
+                                      Divider(),
+                                      inputField(context),
                                     ],
-                                  )
-                                : Container(),
-                          ],
+                                  ),
+                                )
+                              : Container(),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.screenHeight * 0.05,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          createButton(context),
+                          controller.outlineTitleFetched.value
+                              ? Row(
+                                  children: [
+                                    SizedBox(
+                                      width: SizeConfig.screenWidth * 0.15,
+                                    ),
+                                    NextButton(context),
+                                  ],
+                                )
+                              : Container(),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
+            ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: SizeConfig.blockSizeVertical * 6,
-                    width: SizeConfig.blockSizeHorizontal * 100,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xFFD5E4FF), Color(0xFFDFEBFF)],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight),
-                      // color: Color(0xFFD5E4FF),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(
-                              SizeConfig.blockSizeHorizontal * 4),
-                          bottomRight: Radius.circular(
-                              SizeConfig.blockSizeHorizontal * 4)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .shadow, // Shadow color
-                          spreadRadius: 2, // Spread radius
-                          blurRadius: 10, // Blur radius
-                          offset: Offset(0, 5), // Offset in x and y direction
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                        child: Text(
-                      "Note: This Content is AI generated",
-                      style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 4,
-                          fontWeight: FontWeight.bold,
-                          // color: Color(0xFF013961)
-                          color: Colors.indigo.shade700),
-                    )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: SizeConfig.blockSizeVertical * 6,
+                  width: SizeConfig.blockSizeHorizontal * 100,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Color(0xFFD5E4FF), Color(0xFFDFEBFF)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight),
+                    // color: Color(0xFFD5E4FF),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft:
+                            Radius.circular(SizeConfig.blockSizeHorizontal * 4),
+                        bottomRight: Radius.circular(
+                            SizeConfig.blockSizeHorizontal * 4)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .shadow, // Shadow color
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 10, // Blur radius
+                        offset: Offset(0, 5), // Offset in x and y direction
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                  child: Center(
+                      child: Text(
+                    "Note: This Content is AI generated",
+                    style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        fontWeight: FontWeight.bold,
+                        // color: Color(0xFF013961)
+                        color: Colors.indigo.shade700),
+                  )),
+                ),
+              ],
+            ),
 
-              //  ? commented by jamal start
-              // Obx(() => isBannerLoaded.value &&
-              //         AdMobAdsProvider.instance.isAdEnable.value
-              //     ? Container(
-              //         height: AdSize.banner.height.toDouble(),
-              //         child: AdWidget(ad: myBanner))
-              //     : Container()),
-              //  ? commented by jamal end
-            ]),
-          )),
+            //  ? commented by jamal start
+            // Obx(() => isBannerLoaded.value &&
+            //         AdMobAdsProvider.instance.isAdEnable.value
+            //     ? Container(
+            //         height: AdSize.banner.height.toDouble(),
+            //         child: AdWidget(ad: myBanner))
+            //     : Container()),
+            //  ? commented by jamal end
+          ])),
     );
   }
 
@@ -551,7 +546,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                 ? Column(
                     children: [
                       Text(
-                        "Outlines of the topic",
+                        "Outlines of the Presentation",
                         style: TextStyle(
                             // fontSize: SizeConfig.blockSizeHorizontal * 4,
                             // fontSize: SizeConfig.blockSizeHorizontal * 1.3,
@@ -575,6 +570,10 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                                   // ),
                                   title: Text(
                                     "${controller.outlineTitles[index]}",
+                                    // onChanged: (value) {
+                                    //   controller.outlineTitles[index] = value;
+                                    //   log("New Outline: ${controller.outlineTitles[index]}");
+                                    // },
                                     style: TextStyle(
                                         fontSize: 54.sp,
                                         // SizeConfig.blockSizeHorizontal * 1.2,
@@ -584,6 +583,15 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .primary),
+                                    // controller: TextEditingController(
+                                    //   text:
+                                    //       "${controller.outlineTitles[index]}",
+                                    // ),
+                                    // focusNode: FocusNode(),
+                                    // cursorColor:
+                                    //     Theme.of(context).colorScheme.primary,
+                                    // backgroundCursorColor:
+                                    //     Theme.of(context).colorScheme.secondary,
                                   ));
                             }),
                       ),

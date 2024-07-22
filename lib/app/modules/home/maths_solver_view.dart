@@ -375,7 +375,7 @@ class MathsSolverView extends GetView<MathsSolverController> {
                           ),
                           Text(
                             "Copy",
-                            style: StyleSheet.Intro_Sub_heading,
+                            // style: StyleSheet.Intro_Sub_heading,
                           ),
                           SizedBox(
                             width: SizeConfig.screenWidth * 0.02,

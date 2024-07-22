@@ -83,6 +83,9 @@ class SignInView extends GetView<SignInController> {
                       if (value == null || value.isEmpty) {
                         return 'Password is required';
                       }
+                      if (value.length < 8) {
+                        return 'Password must be greater then 8 Charecters';
+                      }
                       return null; // No error messages
                     },
                     decoration: InputDecoration(
@@ -122,11 +125,11 @@ class SignInView extends GetView<SignInController> {
               const SizedBox(height: 10.0), // Add spacing
 
               // Sign in with Google button
-              SignInButton(
-                Buttons.Google,
-                text: 'Sign in with Google',
-                onPressed: () => controller.signInWithGoogle(),
-              ),
+              // SignInButton(
+              //   Buttons.Google,
+              //   text: 'Sign in with Google',
+              //   onPressed: () => controller.signInWithGoogle(),
+              // ),
               const SizedBox(height: 10.0), // Add spacing
 
               // Sign up button with border and text color

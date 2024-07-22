@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -160,33 +162,55 @@ class SettingsView extends GetView<SettingsViewCTL> {
                 child: settings_btn("Privacy Policy", Icons.privacy_tip,
                     "Rights of user", Theme.of(context).colorScheme.primary)),
             verticalSpace(SizeConfig.blockSizeVertical * 1),
-            Obx(() => RevenueCatService().currentEntitlement.value ==
-                    Entitlement.paid
-                ? Container()
-                : MaxAdView(
-                    adUnitId: Platform.isAndroid
-                        ? AppStrings.MAX_Mrec_ID
-                        : AppStrings.IOS_MAX_MREC_ID,
-                    adFormat: AdFormat.mrec,
-                    listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                      FirebaseAnalytics.instance.logAdImpression(
-                        adFormat: "Mrec",
-                        adSource: ad.networkName,
-                        value: ad.revenue,
-                      );
-                      print('Mrec widget ad loaded from ' + ad.networkName);
-                    }, onAdLoadFailedCallback: (adUnitId, error) {
-                      print('Mrec widget ad failed to load with error code ' +
-                          error.code.toString() +
-                          ' and message: ' +
-                          error.message);
-                    }, onAdClickedCallback: (ad) {
-                      print('Mrec widget ad clicked');
-                    }, onAdExpandedCallback: (ad) {
-                      print('Mrec widget ad expanded');
-                    }, onAdCollapsedCallback: (ad) {
-                      print('Mrec widget ad collapsed');
-                    }))),
+            FirebaseAuth.instance.currentUser != null
+                ? GestureDetector(
+                    onTap: () {
+                      controller.deleteAccount();
+                    },
+                    child: settings_btn("Delete Account", Icons.delete, "",
+                        Theme.of(context).colorScheme.primary))
+                : Container(),
+            verticalSpace(SizeConfig.blockSizeVertical * 1),
+            FirebaseAuth.instance.currentUser != null
+                ? GestureDetector(
+                    onTap: () {
+                      controller.signOut();
+                    },
+                    child: settings_btn("Logout", Icons.logout, "",
+                        Theme.of(context).colorScheme.primary))
+                : GestureDetector(
+                    onTap: () {
+                      Get.offNamed(Routes.SING_IN);
+                    },
+                    child: settings_btn("Signin", Icons.login, "",
+                        Theme.of(context).colorScheme.primary)),
+            // Obx(() => RevenueCatService().currentEntitlement.value ==
+            //         Entitlement.paid
+            //     ? Container()
+            //     : MaxAdView(
+            //         adUnitId: Platform.isAndroid
+            //             ? AppStrings.MAX_Mrec_ID
+            //             : AppStrings.IOS_MAX_MREC_ID,
+            //         adFormat: AdFormat.mrec,
+            //         listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+            //           FirebaseAnalytics.instance.logAdImpression(
+            //             adFormat: "Mrec",
+            //             adSource: ad.networkName,
+            //             value: ad.revenue,
+            //           );
+            //           print('Mrec widget ad loaded from ' + ad.networkName);
+            //         }, onAdLoadFailedCallback: (adUnitId, error) {
+            //           print('Mrec widget ad failed to load with error code ' +
+            //               error.code.toString() +
+            //               ' and message: ' +
+            //               error.message);
+            //         }, onAdClickedCallback: (ad) {
+            //           print('Mrec widget ad clicked');
+            //         }, onAdExpandedCallback: (ad) {
+            //           print('Mrec widget ad expanded');
+            //         }, onAdCollapsedCallback: (ad) {
+            //           print('Mrec widget ad collapsed');
+            //         }))),
             verticalSpace(SizeConfig.blockSizeVertical),
           ],
         ),

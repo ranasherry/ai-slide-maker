@@ -7,40 +7,40 @@ import 'colors.dart';
 //import 'package:junk_cleaner/app/utilities/size_config.dart';
 
 class StyleSheet {
-  static const home_text = TextStyle(
-      fontSize: 25, fontWeight: FontWeight.bold, color: AppColors.white_color);
+  // static const home_text = TextStyle(
+  //     fontSize: 25, fontWeight: FontWeight.bold, color: AppColors.white_color);
 
-  static const view_heading =
-      TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
-  static const title_heading =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-  static const sub_heading = TextStyle(
-      color: AppColors.white_color, fontSize: 12, fontStyle: FontStyle.italic);
-  static const sub_heading12 =
-      TextStyle(fontSize: 15, fontStyle: FontStyle.italic);
-  static const sub_heading2 =
-      TextStyle(fontSize: 18, fontStyle: FontStyle.italic);
-  static const Intro_heading = TextStyle(
-      color: AppColors.white_color, fontSize: 25, fontStyle: FontStyle.italic);
-  static const Intro_heading_black = TextStyle(
-      color: AppColors.black_color, fontSize: 25, fontStyle: FontStyle.italic);
-  static const Subscription_heading = TextStyle(
-      color: AppColors.white_color, fontSize: 25, fontWeight: FontWeight.bold);
-  static const Subscription_heading_black = TextStyle(
-      color: AppColors.black_color, fontSize: 25, fontWeight: FontWeight.bold);
-  static const Intro_Sub_heading = TextStyle(
-      color: AppColors.white_color, fontSize: 15, fontStyle: FontStyle.italic);
-  static const Intro_Sub_heading_black = TextStyle(
-      color: AppColors.black_color, fontSize: 15, fontStyle: FontStyle.italic);
-  static const Intro_Sub_heading5 = TextStyle(
-      color: AppColors.white_color, fontSize: 25, fontStyle: FontStyle.italic);
+  // static const view_heading =
+  //     TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
+  // static const title_heading =
+  //     TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  // static const sub_heading = TextStyle(
+  //     color: AppColors.white_color, fontSize: 12, fontStyle: FontStyle.italic);
+  // static const sub_heading12 =
+  //     TextStyle(fontSize: 15, fontStyle: FontStyle.italic);
+  // static const sub_heading2 =
+  //     TextStyle(fontSize: 18, fontStyle: FontStyle.italic);
+  // static const Intro_heading = TextStyle(
+  //     color: AppColors.white_color, fontSize: 25, fontStyle: FontStyle.italic);
+  // static const Intro_heading_black = TextStyle(
+  //     color: AppColors.black_color, fontSize: 25, fontStyle: FontStyle.italic);
+  // static const Subscription_heading = TextStyle(
+  //     color: AppColors.white_color, fontSize: 25, fontWeight: FontWeight.bold);
+  // static const Subscription_heading_black = TextStyle(
+  //     color: AppColors.black_color, fontSize: 25, fontWeight: FontWeight.bold);
+  // static const Intro_Sub_heading = TextStyle(
+  //     color: AppColors.white_color, fontSize: 15, fontStyle: FontStyle.italic);
+  // static const Intro_Sub_heading_black = TextStyle(
+  //     color: AppColors.black_color, fontSize: 15, fontStyle: FontStyle.italic);
+  // static const Intro_Sub_heading5 = TextStyle(
+  //     color: AppColors.white_color, fontSize: 25, fontStyle: FontStyle.italic);
   static const Intro_Sub_heading2 =
       TextStyle(color: AppColors.white_color, fontSize: 15);
-  static const Intro_Sub_heading3 = TextStyle(
-    color: AppColors.white_color,
-    fontSize: 15,
-    decoration: TextDecoration.underline,
-  );
+  // static const Intro_Sub_heading3 = TextStyle(
+  //   color: AppColors.white_color,
+  //   fontSize: 15,
+  //   decoration: TextDecoration.underline,
+  // );
 
   // static MarkdownStyleSheet darkMarkdownStyleSheet = MarkdownStyleSheet(
   //     a: TextStyle(
