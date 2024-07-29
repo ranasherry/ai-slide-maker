@@ -131,6 +131,7 @@ dependencies:
   flutter_animation_progress_bar: ^2.3.1
   in_app_review: ^2.0.9
   flutter_signin_button: ^2.0.0
+  linear_progress_bar: ^1.1.2
 
   flutter_localizations:
     sdk: flutter
@@ -169,6 +170,7 @@ flutter:
     - assets/invitation/
     - assets/icons/
     - assets/ppt_bg/
+    - assets/svg/
     - assets/themes/theme1/
     - assets/themes/theme2/
 

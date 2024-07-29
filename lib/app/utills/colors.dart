@@ -26,7 +26,13 @@ class AppColors {
 
   //? New Colors
   static const headerContainerGradient = [Color(0xFF4B20C8), Color(0xFF5720F8)];
+
   static const footerContainerColor = Color(0xFFE7EBFA);
   static const fragmantBGColor = Color(0xFFE7EBFA);
   static const buttonBGColor = Colors.purple;
+
+  static const textfieldcolor = Color(0xFFFFFFFF);
+  static const background = Color(0xFFF5F6F8);
+  static const mainColor = Color(0xFF571FFC);
+  static const titles = Color(0xFF262729);
 }

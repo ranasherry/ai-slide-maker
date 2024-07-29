@@ -75,4 +75,18 @@ class AppImages {
   static const Theme2_vertical = [
     "assets/themes/theme2/them2_v1.svg",
   ];
+
+  static const magic_stick = "assets/images/magic_stick.png";
+  static const slide_background = "assets/images/slide_background.png";
+  static const default_image = "assets/images/default.jpg";
+  static const professional = "assets/images/professional.jpg";
+  static const academic = "assets/images/academic.jpg";
+  static const inspirational = "assets/images/inspirational.jpg";
+  static const humorous = "assets/images/humorous.jpg";
+
+  // SVG Images
+
+  static const defaultAmount = "assets/svg/default.svg";
+  static const medium = "assets/svg/medium.svg";
+  static const pro = "assets/svg/pro.svg";
 }

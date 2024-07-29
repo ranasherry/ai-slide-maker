@@ -36,6 +36,7 @@ class StyleSheet {
   //     color: AppColors.white_color, fontSize: 25, fontStyle: FontStyle.italic);
   static const Intro_Sub_heading2 =
       TextStyle(color: AppColors.white_color, fontSize: 15);
+
   // static const Intro_Sub_heading3 = TextStyle(
   //   color: AppColors.white_color,
   //   fontSize: 15,
