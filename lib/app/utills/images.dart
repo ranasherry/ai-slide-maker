@@ -83,6 +83,13 @@ class AppImages {
     "assets/slidy/style1/4.png",
   ];
 
+  static const slidy_style2 = [
+    "assets/slidy/style2/1.png",
+    "assets/slidy/style2/2.png",
+    "assets/slidy/style2/3.png",
+    "assets/slidy/style2/4.png",
+  ];
+
   static const magic_stick = "assets/images/magic_stick.png";
   static const slide_background = "assets/images/slide_background.png";
   static const default_image = "assets/images/default.jpg";
