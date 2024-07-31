@@ -192,7 +192,7 @@ class SubSlideView extends StatelessWidget {
                             image: AssetImage(AppImages.limited))),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 1),
+                          left: SizeConfig.blockSizeHorizontal * 3),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
