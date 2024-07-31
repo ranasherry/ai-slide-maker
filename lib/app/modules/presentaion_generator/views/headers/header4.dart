@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-class Header1 extends StatelessWidget {
-  const Header1({
+class Header4 extends StatelessWidget {
+  const Header4({
     super.key,
   });
 

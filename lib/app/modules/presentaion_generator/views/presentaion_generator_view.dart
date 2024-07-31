@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/headers/header1.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/views/headers/header2.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/views/headers/header3.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/views/headers/header4.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -187,8 +190,9 @@ class PresentaionGeneratorView extends GetView<PresentaionGeneratorController> {
                 index: controller.currentIndex.value,
                 children: [
                   Header1(),
-                  Header1(),
-                  Header1(),
+                  Header2(),
+                  Header3(),
+                  Header4(),
                 ],
               ))
         ],

@@ -56,7 +56,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
   }
 
   Widget _individualSlide(int index) {
-    Size size = Size(SizeConfig.blockSizeHorizontal * 80,
+    Size size = Size(SizeConfig.blockSizeHorizontal * 90,
         SizeConfig.blockSizeHorizontal * 45);
     return Container(
       margin: EdgeInsets.symmetric(

@@ -10,6 +10,7 @@ import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_outline_frag.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_styles_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/title_input_fragment.dart.dart';
 import 'package:slide_maker/app/utills/colors.dart';
@@ -38,11 +39,12 @@ class PresentaionGeneratorController extends GetxController {
 //-------------------------------------------------------------------------------------//
   final count = 0.obs;
   // RxInt currentIndex = 0.obs;
-  RxInt currentIndex = 2.obs;
+  RxInt currentIndex = 3.obs;
 
   List<Widget> mainFragments = [
     titleInputFragment(),
     SlidesOutlinesFrag(),
+    SlideStylesFrag(),
     SlidesFragment(),
   ];
   RxInt noOfSlide = 3.obs;
@@ -83,8 +85,8 @@ class PresentaionGeneratorController extends GetxController {
       fontSize: 14.0,
       color: Colors.blue.shade500,
     ),
-    imageList: [AppImages.PPT_BG2],
-    fadeColor: Colors.blue.shade100,
+    imageList: AppImages.slidy_style1,
+    fadeColor: const Color.fromARGB(64, 187, 222, 251),
   );
   @override
   void onInit() {
@@ -255,7 +257,7 @@ return. if format contains section then generate only 3 sections
       developer.log("SavedSlides: ${slide.toMap()}");
     }
 
-    currentIndex.value = 2;
+    currentIndex.value = 3;
   }
 
   void initdummyPresentation() {
@@ -383,7 +385,7 @@ return. if format contains section then generate only 3 sections
 
   void switchToSelectStyle() {
     currentIndex.value = 2;
-    startGeneratingSlide();
+    // startGeneratingSlide();
   }
 
   //-----------------------------------------------------------------------------------------------//
