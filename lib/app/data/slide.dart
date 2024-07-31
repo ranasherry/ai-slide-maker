@@ -28,9 +28,13 @@ class MySlide {
     return MySlide(
       id: map['id'] as int?,
       slideTitle: map['slideTitle'] ?? "" as String,
-      slideSections: (map['slideSections'] ?? [] as List)
-          ?.map((x) => SlideSection.fromMap(x as Map<String, dynamic>))
-          .toList(),
+      slideSections: List<SlideSection>.from((map['slideSections'] as List)
+          .map<SlideSection>(
+              (x) => SlideSection.fromMap(x as Map<String, dynamic>))),
+
+      // slideSections: (map['slideSections'] ?? [] as List)
+      //     ?.map((x) => SlideSection.fromMap(x as Map<String, dynamic>))
+      //     .toList(),
       slideType: SlideType.fromString(map['slideType'] ?? "title" as String) ??
           SlideType.title,
     );
@@ -90,12 +94,15 @@ class SlideSection {
 
   factory SlideSection.fromMap(Map<String, dynamic> map) {
     return SlideSection(
-      sectionHeader: map['sectionHeader'] as String?,
-      sectionContent: map['sectionContent'] as String?,
-      memoryImage: map['memoryImage'] != null
-          ? Uint8List.fromList(map['memoryImage'])
-          : null,
-    );
+        sectionHeader: map['sectionHeader'] as String?,
+        sectionContent: map['sectionContent'] as String?,
+        memoryImage: map['memoryImage'] != null
+            ? Uint8List.fromList(map['memoryImage'].cast<int>())
+            : null
+        // map['memoryImage'] != null
+        //     ? Uint8List.fromList(map['memoryImage'])
+        //     : null,
+        );
   }
 
   String toJson() => json.encode(toMap());

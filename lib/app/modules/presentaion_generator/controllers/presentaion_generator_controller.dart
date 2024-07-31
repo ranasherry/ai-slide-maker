@@ -9,6 +9,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_outline_frag.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/title_input_fragment.dart.dart';
 import 'package:slide_maker/app/utills/colors.dart';
@@ -24,25 +25,33 @@ class PresentaionGeneratorController extends GetxController {
   TextEditingController title = TextEditingController();
 
   Rx<String> isEmpty = ''.obs;
-  Rx<String> selectedTone = ''.obs;
-  Rx<String> selectedTextAmount = ''.obs;
+  Rx<String> selectedTone = 'Default'.obs;
+  Rx<String> selectedTextAmount = 'Brief'.obs;
   Rx<bool> isSelected = false.obs;
 
   //-----------------------------------------------------------------------------------//
 
-  final count = 0.obs;
-  RxInt currentIndex = 0.obs;
+  //? Slide Outline Section
+  RxList<String> plannedOutlines = <String>[].obs;
+  RxBool isPlannedOutlinesGenerated = false.obs;
 
-  List<Widget> mainFragments = [titleInputFragment(), SlidesFragment()];
+//-------------------------------------------------------------------------------------//
+  final count = 0.obs;
+  // RxInt currentIndex = 0.obs;
+  RxInt currentIndex = 2.obs;
+
+  List<Widget> mainFragments = [
+    titleInputFragment(),
+    SlidesOutlinesFrag(),
+    SlidesFragment(),
+  ];
   RxInt noOfSlide = 3.obs;
   String toneOfVoice = "";
 
-  TextEditingController titleTextCTL =
-      TextEditingController(text: "Solar Eclipse");
+  TextEditingController titleTextCTL = TextEditingController();
 
   Rx<TextAmount> textAmount = TextAmount.Brief.obs;
 
-  RxList<String> plannedOutlines = <String>[].obs;
   int tokensConsumed = 0;
 
   //? Section Related to Slides Screens
@@ -106,8 +115,8 @@ class PresentaionGeneratorController extends GetxController {
         for (var outline in plannedOutlines) {
           developer.log("PlannedOutlines: ${outline}");
         }
-
-        startGeneratingSlide();
+        isPlannedOutlinesGenerated.value = true;
+        // startGeneratingSlide();
       } else {
         EasyLoading.dismiss();
 
@@ -246,7 +255,7 @@ return. if format contains section then generate only 3 sections
       developer.log("SavedSlides: ${slide.toMap()}");
     }
 
-    currentIndex.value = 1;
+    currentIndex.value = 2;
   }
 
   void initdummyPresentation() {
@@ -265,14 +274,16 @@ return. if format contains section then generate only 3 sections
       slideSections: [
         SlideSection(
             sectionHeader: "Total Solar Eclipse",
-            sectionContent: "The moon completely covers the sun."),
+            sectionContent:
+                "The moon completely covers the sun. Only part of the sun is obscured by the moon. Never look directly at the sun without proper eye protection. Solar eclipses are rare and spectacular events that should be observed with care "),
         SlideSection(
             sectionHeader: "Partial Solar Eclipse",
-            sectionContent: "Only part of the sun is obscured by the moon."),
+            sectionContent:
+                "Only part of the sun is obscured by the moon. Solar eclipses are rare and spectacular events that should be observed with care. Never look directly at the sun without proper eye protection. Solar eclipses are rare and spectacular events that should be observed with care"),
         SlideSection(
             sectionHeader: "Annular Solar Eclipse",
             sectionContent:
-                "The moon is too far to cover the sun completely, creating a ring-like appearance."),
+                "The moon is too far to cover the sun completely, creating a ring-like appearance. Solar eclipses are rare and spectacular events that should be observed with care."),
       ],
       slideType: SlideType.sectioned,
     );
@@ -281,11 +292,12 @@ return. if format contains section then generate only 3 sections
       slideTitle: "Safety Measures",
       slideSections: [
         SlideSection(
+            sectionHeader: "Annular Solar Eclipse",
             sectionContent:
-                "Never look directly at the sun without proper eye protection."),
+                "Never look directly at the sun without proper eye protection. Solar eclipses are rare and spectacular events that should be observed with care."),
         SlideSection(
             sectionContent:
-                "Use solar viewing glasses or a pinhole projector to watch the eclipse."),
+                "Use solar viewing glasses or a pinhole projector to watch the eclipse. Use solar viewing glasses or a pinhole projector to watch the eclipse."),
       ],
       slideType: SlideType.sectioned,
     );
@@ -294,8 +306,9 @@ return. if format contains section then generate only 3 sections
       slideTitle: "Conclusion",
       slideSections: [
         SlideSection(
+            sectionHeader: "Annular Solar Eclipse",
             sectionContent:
-                "Solar eclipses are rare and spectacular events that should be observed with care."),
+                "Solar eclipses are rare and spectacular events that should be observed with care. Never look directly at the sun without proper eye protection. Solar eclipses are rare and spectacular events that should be observed with care"),
       ],
       slideType: SlideType.sectioned,
     );
@@ -314,10 +327,10 @@ return. if format contains section then generate only 3 sections
     isEmpty.value = newText;
   }
 
-  var selectedSlides = "1 slides".obs;
+  // var selectedSlides = "1 slides".obs;
 
   void selectSlide(int slideNumber) {
-    selectedSlides.value = slideNumber.toString();
+    noOfSlide.value = slideNumber;
   }
 
   void selectTone(String tone) {
@@ -327,6 +340,53 @@ return. if format contains section then generate only 3 sections
   void selectTextAmount(String amount) {
     selectedTextAmount.value = amount;
   }
+
+  //? Slide Outline Frag Section
+
+  // Method to add a new slide
+  void addSlide() {
+    int newSlideNumber = plannedOutlines.length + 1;
+    plannedOutlines.add(newSlideNumber.toString());
+  }
+
+  // Method to remove a slide
+  void removeSlide(int index) {
+    plannedOutlines.removeAt(index);
+    // Adjust slide numbers after removal
+    // updateSlideNumbers();
+  }
+
+  // Method to reorder slides
+  void reorderSlides(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final String slide = plannedOutlines.removeAt(oldIndex);
+    plannedOutlines.insert(newIndex, slide);
+    // Adjust slide numbers after reordering
+    // updateSlideNumbers();
+  }
+
+  // Update slide numbers to reflect their new order
+  void updateSlideNumbers() {
+    plannedOutlines.assignAll(
+      List.generate(plannedOutlines.length, (index) => (index + 1).toString()),
+    );
+  }
+
+  void switchToSlidesOutlines() {
+    if (titleTextCTL.text.isNotEmpty) {
+      RequestPresentationPlan();
+      currentIndex.value = 1;
+    }
+  }
+
+  void switchToSelectStyle() {
+    currentIndex.value = 2;
+    startGeneratingSlide();
+  }
+
+  //-----------------------------------------------------------------------------------------------//
 }
 
 enum TextAmount { Brief, Medium, Detailed }

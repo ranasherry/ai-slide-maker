@@ -37,7 +37,7 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
             style: widget.slidePallet.bigTitleTStyle
                 .copyWith(fontSize: widget.size.width * 0.065),
           ),
-          verticalSpace(widget.size.height * 0.1),
+          verticalSpace(widget.size.height * 0.05),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,16 +54,16 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
                         style: widget.mySlide.slideSections[i].sectionHeader !=
                                 null
                             ? widget.slidePallet.bigTitleTStyle
-                                .copyWith(fontSize: widget.size.width * 0.03)
+                                .copyWith(fontSize: widget.size.width * 0.035)
                             : widget.slidePallet.bigTitleTStyle,
                       ),
-                      verticalSpace(widget.size.height * 0.08),
+                      verticalSpace(widget.size.height * 0.04),
                       Text(
                         widget.mySlide.slideSections[i].sectionContent ?? '',
                         style: widget.mySlide.slideSections[i].sectionContent !=
                                 null
                             ? widget.slidePallet.bigTitleTStyle
-                                .copyWith(fontSize: widget.size.width * 0.03)
+                                .copyWith(fontSize: widget.size.width * 0.012)
                             : widget.slidePallet.bigTitleTStyle,
                       ),
                     ],

@@ -185,7 +185,11 @@ class PresentaionGeneratorView extends GetView<PresentaionGeneratorController> {
           ),
           Obx(() => IndexedStack(
                 index: controller.currentIndex.value,
-                children: [Header1()],
+                children: [
+                  Header1(),
+                  Header1(),
+                  Header1(),
+                ],
               ))
         ],
       ),

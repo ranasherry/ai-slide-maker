@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide1.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -15,7 +16,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
   const SlidesFragment({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print("hello1 ${controller.myPresentation.value!.slides.length}");
+    // print("hello1 ${controller.myPresentation.value!.slides.length}");
 
     return Scaffold(
       // bottomNavigationBar: ,
@@ -61,41 +62,28 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
       margin: EdgeInsets.symmetric(
           horizontal: SizeConfig.blockSizeHorizontal * 2,
           vertical: SizeConfig.blockSizeVertical),
-      child: index == 0
-          ? TitleSlide1(
-              mySlide: controller.myPresentation.value!.slides[index],
-              slidePallet: controller.dummySlidePallet,
-              size: size)
-          : SectionedSlide1(
-              mySlide: controller.myPresentation.value!.slides[index],
-              slidePallet: controller.dummySlidePallet,
-              size: size),
+      child: Builder(builder: (context) {
+        if (index == 0) {
+          return TitleSlide1(
+            mySlide: controller.myPresentation.value!.slides[index],
+            slidePallet: controller.dummySlidePallet,
+            size: size,
+          );
+        } else if (index == 1) {
+          return SectionedSlide2(
+            mySlide: controller.myPresentation.value!.slides[index],
+            slidePallet: controller.dummySlidePallet,
+            size: size,
+          );
+        } else {
+          return SectionedSlide1(
+            mySlide: controller.myPresentation.value!.slides[index],
+            slidePallet: controller.dummySlidePallet,
+            size: size,
+          );
+        }
+      }),
     );
-
-    //  Container(
-    //   height: size.width,
-    //   width: size.height,
-    //   child: Column(
-    //     children: [
-    //       Text(controller.myPresentation.value!.slides[index].slideTitle),
-    //       Row(
-    //         children: [
-    //           Container(
-    //             width: size.width / 1,
-    //             child: Column(
-    //               children: [
-    //                 // Text(controller.myPresentation.value!.slides[index]
-    //                 //     .slideSections[0].sectionHeader!),
-    //                 // Text(controller.myPresentation.value!.slides[index]
-    //                 //     .slideSections[0].sectionContent!),
-    //               ],
-    //             ),
-    //           )
-    //         ],
-    //       )
-    //     ],
-    //   ),
-    // );
   }
 
   Align footerWidget() {
@@ -131,9 +119,9 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                               .buttonBGColor, // Button background color
                           foregroundColor: Colors.white),
                       onPressed: () {
-                        controller.RequestPresentationPlan();
+                        // controller.RequestPresentationPlan();
                       },
-                      child: Text("Generate a plan")))
+                      child: Text("Save & Share")))
             ],
           ),
         ),
