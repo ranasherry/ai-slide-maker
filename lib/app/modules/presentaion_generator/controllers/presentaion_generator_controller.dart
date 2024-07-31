@@ -39,7 +39,7 @@ class PresentaionGeneratorController extends GetxController {
 //-------------------------------------------------------------------------------------//
   final count = 0.obs;
   // RxInt currentIndex = 0.obs;
-  RxInt currentIndex = 3.obs;
+  RxInt currentIndex = 0.obs;
 
   List<Widget> mainFragments = [
     titleInputFragment(),
@@ -91,7 +91,7 @@ class PresentaionGeneratorController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    initdummyPresentation();
+    // initdummyPresentation();
     // RequestPresentationPlan();
   }
 
@@ -218,16 +218,24 @@ class PresentaionGeneratorController extends GetxController {
 
   //? Slide Screen Section
   Future<void> startGeneratingSlide() async {
+    currentIndex.value = 3;
+
     myPresentation = MyPresentation(
       presentationId: DateTime.now().millisecondsSinceEpoch,
       presentationTitle: titleTextCTL.text,
       slides: <MySlide>[].obs,
     ).obs;
-
+    List<String> coveredTitles = [];
     for (var outline in plannedOutlines) {
+      //?
       developer.log("Generating Slide for $outline");
       final request = '''
-      You will create a presentation slide on given ${myPresentation.value!.presentationTitle}. you are only require to give your response on require json formate enclosed in curly braces{} and no other text will 
+      You will create a presentation slide on given Topic: ${myPresentation.value!.presentationTitle}. 
+      You will be creating individual slide on Following Slide Title: ${outline}.
+      you must ignore the following topics as they already have covered.
+      CoveredTopic List ${coveredTitles.toString()}
+      
+      you are only require to give your response on require json formate enclosed in curly braces{} and no other text will 
 return. if format contains section then generate only 3 sections
  Required Json Format:
 {
@@ -240,12 +248,21 @@ return. if format contains section then generate only 3 sections
       ]
 }
       ''';
+
+      developer.log("GeminiRequest: $request");
+
       String? apiRespnse = await gemeniAPICall(request);
       if (apiRespnse != null) {
         developer.log("GeminiRawResponse: $apiRespnse");
         try {
           MySlide mySlide = MySlide.fromJson(apiRespnse);
           myPresentation.value!.slides.add(mySlide);
+
+          coveredTitles.add(mySlide.slideTitle);
+
+          for (var section in mySlide.slideSections) {
+            coveredTitles.add(section.sectionHeader ?? "");
+          }
           developer.log("MySlide: ${mySlide.toJson()}");
         } on Exception catch (e) {
           developer.log("Json Parsing Error: $e");

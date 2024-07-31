@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:slide_maker/app/data/slide.dart';
@@ -20,6 +22,15 @@ class SectionedSlide2 extends StatefulWidget {
 }
 
 class __SectionedSlide1State extends State<SectionedSlide2> {
+  int bgIndex = 0;
+  initState() {
+    setState(() {
+      final random = Random();
+      bgIndex = random.nextInt(widget.slidePallet.imageList.length);
+    });
+    print("initState Called");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +42,7 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
             width: widget.size.width,
             height: widget.size.height,
             child: Image.asset(
-              widget.slidePallet.imageList[1],
+              widget.slidePallet.imageList[bgIndex],
               fit: BoxFit.fill,
             ),
           ),
@@ -45,16 +56,16 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                verticalSpace(widget.size.height * 0.1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.mySlide.slideTitle,
-                      style: widget.slidePallet.bigTitleTStyle
-                          .copyWith(fontSize: widget.size.width * 0.065),
-                    ),
-                  ],
+                verticalSpace(widget.size.height * 0.0),
+                Container(
+                  width: widget.size.width,
+                  // height: widget.size.height * 0.2,
+                  child: Text(
+                    widget.mySlide.slideTitle,
+                    // overflow: TextOverflow.ellipsis,
+                    style: widget.slidePallet.bigTitleTStyle
+                        .copyWith(fontSize: widget.size.width * 0.050),
+                  ),
                 ),
                 verticalSpace(widget.size.height * 0.05),
                 Column(

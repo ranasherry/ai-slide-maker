@@ -36,14 +36,20 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10))),
-              child: Obx(() => controller.myPresentation.value != null &&
-                      controller.myPresentation.value!.slides.length > 0
-                  ? ListView.builder(
-                      itemCount: controller.myPresentation.value!.slides.length,
-                      itemBuilder: (context, index) {
-                        print("hello2");
-                        return _individualSlide(index);
-                      })
+              child: Obx(() => controller.myPresentation.value != null
+                  // &&
+                  //         controller.myPresentation.value!.slides.length > 0
+                  ? Obx(() => !controller.myPresentation.value!.slides.isEmpty
+                      ? ListView.builder(
+                          itemCount:
+                              controller.myPresentation.value!.slides.length,
+                          itemBuilder: (context, index) {
+                            print("hello2");
+                            return _individualSlide(index);
+                          })
+                      : Container(
+                          child: Text("Loading..."),
+                        ))
                   : Container(
                       child: Text("Loading..."),
                     )),
