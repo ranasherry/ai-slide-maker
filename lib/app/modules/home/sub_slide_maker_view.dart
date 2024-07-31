@@ -2,14 +2,17 @@ import 'dart:io';
 
 import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
@@ -106,15 +109,118 @@ class SubSlideView extends StatelessWidget {
             ),
           ),
           verticalSpace(SizeConfig.blockSizeVertical * 2),
-          GestureDetector(
-            onTap: () {
-              AppLovinProvider.instance.showInterstitial(() {});
+          Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  AppLovinProvider.instance.showInterstitial(() {});
 
-              Get.toNamed(Routes.PRESENTAION_GENERATOR);
-            },
-            child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
-                AppImages.presentation, "AI Presentation New Method"),
+                  Get.toNamed(Routes.PRESENTAION_GENERATOR);
+                },
+                child: Container(
+                  height: SizeConfig.blockSizeVertical * 10,
+                  width: SizeConfig.blockSizeHorizontal * 90,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFFFAA6C),
+                            Color.fromARGB(255, 252, 151, 43)
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter),
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 2)),
+                  child: Row(
+                    children: [
+                      horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
+                      Image.asset(
+                        AppImages.drawer,
+                        color: Colors.deepOrange,
+                        scale: 8,
+                      ),
+                      horizontalSpace(SizeConfig.blockSizeHorizontal * 3.5),
+                      Column(
+                        children: [
+                          verticalSpace(SizeConfig.blockSizeVertical * 2.6),
+                          Text("AI Slide Maker Beta",
+                              style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 5,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                  shadows: [
+                                    Shadow(
+                                        // bottomLeft
+                                        offset: Offset(-1.5, -1.5),
+                                        color: Color(0xFFFF911D)),
+                                    Shadow(
+                                        // bottomRight
+                                        offset: Offset(1.5, -1.5),
+                                        color: Color(0xFFFF911D)),
+                                    Shadow(
+                                        // topRight
+                                        offset: Offset(1.5, 1.5),
+                                        color: Color(0xFFFF911D)),
+                                    Shadow(
+                                        // topLeft
+                                        offset: Offset(-1.5, 1.5),
+                                        color: Color(0xFFFF911D)),
+                                  ])),
+                          Text(
+                            "Join the AI slide revolution click to start!",
+                            style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 2,
+                                    color: Colors.white)),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: SizeConfig.blockSizeHorizontal * 70,
+                top: SizeConfig.blockSizeVertical * 0.3,
+                child: Container(
+                    height: SizeConfig.blockSizeVertical * 5,
+                    width: SizeConfig.blockSizeHorizontal * 20,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(AppImages.limited))),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: SizeConfig.blockSizeHorizontal * 1),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "New",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                color: Colors.white),
+                          ),
+                          Image.asset(
+                            AppImages.hot,
+                            scale: 1.5,
+                          )
+                        ],
+                      ),
+                    )),
+              )
+            ],
           ),
+          // GestureDetector(
+          //   onTap: () {
+          //     AppLovinProvider.instance.showInterstitial(() {});
+
+          //     Get.toNamed(Routes.PRESENTAION_GENERATOR);
+          //   },
+          //   child: card_widgets(Color(0xFFD6F5FF), Color(0xFFA2E2FE),
+          //       AppImages.presentation, "AI Presentation New Method"),
+          // ),
           verticalSpace(SizeConfig.blockSizeVertical * 2),
           Obx(() =>
               RevenueCatService().currentEntitlement.value == Entitlement.paid
