@@ -90,6 +90,20 @@ class AppImages {
     "assets/slidy/style2/4.png",
   ];
 
+    static const slidy_style3 = [
+    "assets/slidy/style3/1.png",
+    "assets/slidy/style3/2.png",
+    "assets/slidy/style3/3.png",
+    "assets/slidy/style3/4.png",
+  ];
+
+    static const slidy_style4 = [
+    "assets/slidy/style4/1.png",
+    "assets/slidy/style4/2.png",
+    "assets/slidy/style4/3.png",
+    "assets/slidy/style4/4.png",
+  ];
+
   static const magic_stick = "assets/images/magic_stick.png";
   static const slide_background = "assets/images/slide_background.png";
   static const default_image = "assets/images/default.jpg";

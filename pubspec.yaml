@@ -175,6 +175,8 @@ flutter:
     - assets/themes/theme2/
     - assets/slidy/style1/
     - assets/slidy/style2/
+    - assets/slidy/style3/
+    - assets/slidy/style4/
 
     - assets/lottie/fBBmyrlUDl.json
     - assets/lottie/77323-profile-lock.json
