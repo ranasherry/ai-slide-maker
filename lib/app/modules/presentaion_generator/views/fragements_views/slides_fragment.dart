@@ -39,6 +39,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
               child: Obx(() => controller.myPresentation.value != null
                   // &&
                   //         controller.myPresentation.value!.slides.length > 0
+
                   ? Obx(() => !controller.myPresentation.value!.slides.isEmpty
                       ? ListView.builder(
                           itemCount:
