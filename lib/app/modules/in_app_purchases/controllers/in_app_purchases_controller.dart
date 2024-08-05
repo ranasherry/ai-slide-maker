@@ -15,6 +15,8 @@ class InAppPurchasesController extends GetxController {
   RxString timeLeft = "".obs;
   Rx<int> selectedIndex = 0.obs;
 
+  RxBool showTimer = false.obs;
+
   // RxDouble discountPercentage
 
   @override
@@ -105,22 +107,61 @@ class InAppPurchasesController extends GetxController {
             Duration.millisecondsPerSecond)
         .floor();
 
-    // Build the string representation
-    final String dayString = days > 0 ? "$days day${days > 1 ? 's' : ''} " : "";
-    final String hourString =
-        hours > 0 ? "${hours.toString().padLeft(2, '0')}h " : "";
-    final String minuteString =
-        minutes > 0 ? "${minutes.toString().padLeft(2, '0')}m " : "";
-    final String secondString =
-        seconds > 0 ? "${seconds.toString().padLeft(2, '0')}s" : "";
+    // Calculate total hours
+    final totalHours = (days * 24) + hours;
 
-    return "$dayString$hourString$minuteString$secondString".trim();
+    // Build the string representation
+    final String hourString = totalHours > 0 ? "${totalHours}h" : "";
+    final String minuteString =
+        minutes > 0 ? " : ${minutes.toString().padLeft(2, '0')}m" : "";
+    final String secondString =
+        seconds > 0 ? " : ${seconds.toString().padLeft(2, '0')}s" : "";
+
+    return "$hourString$minuteString$secondString".trim();
   }
+
+  // String timeUntil(int millisecondsSinceEpoch) {
+  //   // Get current time in milliseconds
+  //   final now = DateTime.now().millisecondsSinceEpoch;
+  //   final temp = DateTime.now().add(Duration(days: 4)).millisecondsSinceEpoch;
+
+  //   log("Time: $temp");
+  //   // Calculate difference in milliseconds
+  //   final difference = millisecondsSinceEpoch - now;
+
+  //   // Check if target date has already passed
+  //   if (difference <= 0) {
+  //     return "Time has passed";
+  //   }
+
+  //   // Calculate remaining days, hours, minutes, and seconds
+  //   final days = (difference / Duration.millisecondsPerDay).floor();
+  //   final hours = ((difference % Duration.millisecondsPerDay) /
+  //           Duration.millisecondsPerHour)
+  //       .floor();
+  //   final minutes = ((difference % Duration.millisecondsPerHour) /
+  //           Duration.millisecondsPerMinute)
+  //       .floor();
+  //   final seconds = ((difference % Duration.millisecondsPerMinute) /
+  //           Duration.millisecondsPerSecond)
+  //       .floor();
+
+  //   // Build the string representation
+  //   final String dayString = days > 0 ? "$days day${days > 1 ? 's' : ''} " : "";
+  //   final String hourString =
+  //       hours > 0 ? "${hours.toString().padLeft(2, '0')}h " : "";
+  //   final String minuteString =
+  //       minutes > 0 ? "${minutes.toString().padLeft(2, '0')}m " : "";
+  //   final String secondString =
+  //       seconds > 0 ? "${seconds.toString().padLeft(2, '0')}s" : "";
+
+  //   return "$dayString$hourString$minuteString$secondString".trim();
+  // }
 
   void initDiscountTimer() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       timeLeft.value = timeUntil(RCVariables.discountTimeLeft);
-      // log("TimeLeft: ${timeLeft.value}");
+      log("TimeLeft: ${timeLeft.value}");
     });
   }
 

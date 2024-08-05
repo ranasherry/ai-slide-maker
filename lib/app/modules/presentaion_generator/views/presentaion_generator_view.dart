@@ -168,21 +168,21 @@ class PresentaionGeneratorView extends GetView<PresentaionGeneratorController> {
                         minHeight: SizeConfig.blockSizeVertical * 1,
                       )),
                 ),
-                Container(
-                  height: SizeConfig.blockSizeVertical * 6,
-                  width: SizeConfig.blockSizeHorizontal * 20,
-                  decoration: BoxDecoration(
-                      color: AppColors.mainColor, shape: BoxShape.circle),
-                  child: Center(
-                    child: Text(
-                      "1/2",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                Obx(() => Container(
+                      height: SizeConfig.blockSizeVertical * 6,
+                      width: SizeConfig.blockSizeHorizontal * 20,
+                      decoration: BoxDecoration(
+                          color: AppColors.mainColor, shape: BoxShape.circle),
+                      child: Center(
+                        child: Text(
+                          "${controller.currentIndex.value + 1}/${controller.mainFragments.length}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    )),
               ],
             ),
           ),

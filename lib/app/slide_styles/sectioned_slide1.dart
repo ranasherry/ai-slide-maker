@@ -78,32 +78,39 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
                         i += 1)
                       Expanded(
                         flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.mySlide.slideSections[i].sectionHeader ??
-                                  '',
-                              style: widget.mySlide.slideSections[i]
-                                          .sectionHeader !=
-                                      null
-                                  ? widget.slidePallet.bigTitleTStyle.copyWith(
-                                      fontSize: widget.size.width * 0.035)
-                                  : widget.slidePallet.bigTitleTStyle,
-                            ),
-                            verticalSpace(widget.size.height * 0.04),
-                            Text(
-                              widget.mySlide.slideSections[i].sectionContent ??
-                                  '',
-                              style: widget.mySlide.slideSections[i]
-                                          .sectionContent !=
-                                      null
-                                  ? widget.slidePallet.bigTitleTStyle.copyWith(
-                                      fontSize: widget.size.width * 0.012)
-                                  : widget.slidePallet.bigTitleTStyle,
-                            ),
-                          ],
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widget.size.width * 0.01),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.mySlide.slideSections[i].sectionHeader ??
+                                    '',
+                                style: widget.mySlide.slideSections[i]
+                                            .sectionHeader !=
+                                        null
+                                    ? widget.slidePallet.bigTitleTStyle
+                                        .copyWith(
+                                            fontSize: widget.size.width * 0.035)
+                                    : widget.slidePallet.bigTitleTStyle,
+                              ),
+                              verticalSpace(widget.size.height * 0.04),
+                              Text(
+                                widget.mySlide.slideSections[i]
+                                        .sectionContent ??
+                                    '',
+                                style: widget.mySlide.slideSections[i]
+                                            .sectionContent !=
+                                        null
+                                    ? widget.slidePallet.bigTitleTStyle
+                                        .copyWith(
+                                            fontSize: widget.size.width * 0.012)
+                                    : widget.slidePallet.bigTitleTStyle,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     // Expanded(

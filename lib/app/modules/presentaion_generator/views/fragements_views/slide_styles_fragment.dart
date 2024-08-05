@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
+import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class SlideStylesFrag extends GetView<PresentaionGeneratorController> {
   const SlideStylesFrag({super.key});
@@ -42,65 +44,66 @@ class SlideStylesFrag extends GetView<PresentaionGeneratorController> {
                     style: AppStyle.subHeadingText),
               ),
               SizedBox(
-                height: SizeConfig.blockSizeVertical * 50,
-                child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap:
-                        true, // This is important to make ListView work inside another ListView
+                // height: SizeConfig.blockSizeVertical * 50,
+                height: SizeConfig.blockSizeHorizontal * 43,
 
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: SizeConfig.blockSizeVertical * 4,
-                            left: SizeConfig.blockSizeHorizontal * 4,
-                            bottom: SizeConfig.blockSizeVertical * 30),
-                        width: SizeConfig.blockSizeHorizontal * 65,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                AppImages.slide_background,
+                child: ListView.builder(
+                    itemCount: palletList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      print("hello2");
+                      return GestureDetector(
+                        onTap: () {
+                          controller.selectedPallet.value = palletList[index];
+                        },
+                        child: Obx(() => Container(
+                              margin: EdgeInsets.all(4),
+                              // padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    SizeConfig.blockSizeHorizontal * 2,
+                                  ),
+                                  border: Border.all(
+                                      color: controller.selectedPallet.value ==
+                                              palletList[index]
+                                          ? Colors.blue
+                                          : Colors.transparent,
+                                      width: 1)),
+                              child: Container(
+                                margin: EdgeInsets.all(7),
+                                padding: EdgeInsets.all(10),
+                                width: SizeConfig.blockSizeHorizontal * 65,
+                                height: SizeConfig.blockSizeHorizontal * 10,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                        palletList[index].imageList.first,
+                                      ),
+                                      fit: BoxFit.cover),
+                                  borderRadius: BorderRadius.circular(
+                                    SizeConfig.blockSizeHorizontal * 3,
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Title",
+                                      style:
+                                          palletList[index].sectionHeaderTStyle,
+                                    ),
+                                    verticalSpace(
+                                        SizeConfig.blockSizeVertical * 2),
+                                    Text(
+                                      "Description",
+                                      style: palletList[index].normalDescTStyle,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 3,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: SizeConfig.blockSizeVertical * 4,
-                            left: SizeConfig.blockSizeHorizontal * 4,
-                            bottom: SizeConfig.blockSizeVertical * 30),
-                        width: SizeConfig.blockSizeHorizontal * 65,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                AppImages.slide_background,
-                              ),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 3,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: SizeConfig.blockSizeVertical * 4,
-                            left: SizeConfig.blockSizeHorizontal * 4,
-                            bottom: SizeConfig.blockSizeVertical * 30),
-                        width: SizeConfig.blockSizeHorizontal * 65,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                AppImages.slide_background,
-                              ),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 3,
-                          ),
-                        ),
-                      )
-                    ]),
+                            )),
+                      );
+                    }),
               )
             ],
           ),
@@ -143,6 +146,7 @@ class SlideStylesFrag extends GetView<PresentaionGeneratorController> {
                   child: GestureDetector(
                     onTap: () {
                       controller.startGeneratingSlide();
+                      AppLovinProvider.instance.showInterstitial(() {});
                     },
                     child: Container(
                       height: SizeConfig.blockSizeVertical * 7,

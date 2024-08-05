@@ -200,22 +200,24 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
               Padding(
                 padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
                 child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      controller.switchToSelectStyle();
-                    },
-                    child: Container(
-                      height: SizeConfig.blockSizeVertical * 7,
-                      width: SizeConfig.blockSizeHorizontal * 85,
-                      decoration: BoxDecoration(
-                          color: AppColors.mainColor,
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.blockSizeHorizontal * 8)),
-                      child: Center(
-                        child: Text("Next", style: AppStyle.button),
-                      ),
-                    ),
-                  ),
+                  child: Obx(() => GestureDetector(
+                        onTap: controller.isPlannedOutlinesGenerated.value
+                            ? () {
+                                controller.switchToSelectStyle();
+                              }
+                            : null,
+                        child: Container(
+                          height: SizeConfig.blockSizeVertical * 7,
+                          width: SizeConfig.blockSizeHorizontal * 85,
+                          decoration: BoxDecoration(
+                              color: AppColors.mainColor,
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 8)),
+                          child: Center(
+                            child: Text("Next", style: AppStyle.button),
+                          ),
+                        ),
+                      )),
                 ),
               ),
               // Container(

@@ -45,6 +45,7 @@ class RemoteConfigService {
       await remoteConfig.setDefaults(const {
         "GeminiProKey": "GeminiProKey",
         "discountPercentage": 50,
+        "slotLeft": 20,
       });
 
       await remoteConfig.fetchAndActivate();
@@ -64,6 +65,7 @@ class RemoteConfigService {
         remoteConfig.getInt('discountPercentage').toDouble();
 
     RCVariables.discountTimeLeft = remoteConfig.getInt('discountTimeLeft');
+    RCVariables.slotLeft.value = remoteConfig.getInt('slotLeft');
     String jsonKeys = remoteConfig.getString('GeminiKeysList');
 
     dp.log("discountTimeLeft: ${RCVariables.discountTimeLeft}");

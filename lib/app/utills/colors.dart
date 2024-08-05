@@ -29,10 +29,12 @@ class AppColors {
 
   static const footerContainerColor = Color(0xFFF5F6F8);
   static const fragmantBGColor = Color(0xFFE7EBFA);
-  static const buttonBGColor = Color(0xFF571FFC);
+  // static const buttonBGColor = Color(0xFF571FFC);
+  static const buttonBGColor = Color(0xFFFF6421);
 
   static const textfieldcolor = Color(0xFFFFFFFF);
   static const background = Color(0xFFF5F6F8);
-  static const mainColor = Color(0xFF571FFC);
+  // static const mainColor = Color(0xFF571FFC);
+  static const mainColor = Color(0xFFFF6421);
   static const titles = Color(0xFF262729);
 }

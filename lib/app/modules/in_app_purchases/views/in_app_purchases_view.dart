@@ -37,7 +37,13 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                   if (snapshot.hasData) {
                     if (snapshot.data != null) {
                       final products = snapshot.data!;
-
+                      controller.selectedIndex.value = products.length - 1;
+                      if (products[controller.selectedIndex.value].identifier ==
+                          "aislide_adremove_1") {
+                        controller.showTimer.value = true;
+                      } else {
+                        controller.showTimer.value = false;
+                      }
                       // final withoutDiscountPrice = controller.getOriginalPrice(
                       //     discountPercentage: RCVariables.discountPercentage,
                       //     discountedPrice: removeAdProduct.price);
@@ -140,6 +146,22 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                           //     "Pay Once", "1000\$", "100\$/week", "90%"),
                           verticalSpace(SizeConfig.blockSizeVertical * 4),
                           _BtnContinue(products),
+                          Obx(() => controller.showTimer.value
+                              ? Container(
+                                  margin: EdgeInsets.only(
+                                      top: SizeConfig.blockSizeVertical),
+                                  child: Center(
+                                    child: Text(
+                                      "Only ${RCVariables.slotLeft.value} Slots Left | Remianing Time ${controller.timeLeft.value}",
+                                      style: TextStyle(
+                                          color: Colors.orange,
+                                          fontSize:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  2.7),
+                                    ),
+                                  ),
+                                )
+                              : Container()),
                           Center(
                             child: Container(
                               height: SizeConfig.blockSizeVertical * 11,
@@ -327,6 +349,12 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
               child: GestureDetector(
                 onTap: () {
                   controller.selectedIndex.value = index;
+
+                  if (pID == "aislide_adremove_1") {
+                    controller.showTimer.value = true;
+                  } else {
+                    controller.showTimer.value = false;
+                  }
                 },
                 child: Container(
                   margin:
@@ -459,7 +487,7 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                 left: SizeConfig.blockSizeHorizontal * 8,
                 child: Container(
                   height: SizeConfig.blockSizeVertical * 2.2,
-                  width: SizeConfig.blockSizeHorizontal * 11,
+                  width: SizeConfig.blockSizeHorizontal * 27,
                   decoration: BoxDecoration(
                       color: Color(0xFFFF0000),
                       border: Border(
@@ -485,7 +513,7 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        "Hot",
+                        "Limited Slots ",
                         style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 fontSize: SizeConfig.blockSizeHorizontal * 3,

@@ -3,9 +3,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide1.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
@@ -24,37 +26,56 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
       body: Container(
         height: SizeConfig.screenHeight,
         decoration: BoxDecoration(
-            gradient:
-                LinearGradient(colors: AppColors.headerContainerGradient)),
+            // gradient:
+            //     LinearGradient(colors: AppColors.headerContainerGradient)
+            ),
         child: Stack(
           children: [
             Container(
-              width: SizeConfig.screenWidth,
-              padding: EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.15),
-              decoration: BoxDecoration(
-                  color: AppColors.fragmantBGColor,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              child: Obx(() => controller.myPresentation.value != null
-                  // &&
-                  //         controller.myPresentation.value!.slides.length > 0
-
-                  ? Obx(() => !controller.myPresentation.value!.slides.isEmpty
-                      ? ListView.builder(
-                          itemCount:
-                              controller.myPresentation.value!.slides.length,
-                          itemBuilder: (context, index) {
-                            print("hello2");
+                width: SizeConfig.screenWidth,
+                padding:
+                    EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.15),
+                decoration: BoxDecoration(
+                    color: AppColors.fragmantBGColor,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                child: Obx(() => !controller.myPresentation.value.slides.isEmpty
+                    ? Obx(() => ListView.builder(
+                        itemCount: controller.isSlidesGenerated.value
+                            ? controller.myPresentation.value.slides.length
+                            : controller.myPresentation.value.slides.length + 1,
+                        itemBuilder: (context, index) {
+                          print("hello2");
+                          if (controller.isSlidesGenerated.value) {
                             return _individualSlide(index);
-                          })
-                      : Container(
-                          child: Text("Loading..."),
-                        ))
-                  : Container(
-                      child: Text("Loading..."),
-                    )),
-            ),
+                          } else {
+                            if (index <=
+                                controller.myPresentation.value.slides.length) {
+                              return _individualSlide(index);
+                            } else {
+                              Size size = Size(
+                                  SizeConfig.blockSizeHorizontal * 90,
+                                  SizeConfig.blockSizeHorizontal * 45);
+                              Container(
+                                width: size.width,
+                                height: size.height,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(controller
+                                            .selectedPallet
+                                            .value
+                                            .imageList[0]))),
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }
+                        }))
+                    : Container(
+                        width: SizeConfig.screenWidth,
+                        height: SizeConfig.screenHeight * 0.5,
+                        child: Center(child: CircularProgressIndicator()),
+                      ))),
             footerWidget()
           ],
         ),
@@ -65,6 +86,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
   Widget _individualSlide(int index) {
     Size size = Size(SizeConfig.blockSizeHorizontal * 90,
         SizeConfig.blockSizeHorizontal * 45);
+
     return Container(
       margin: EdgeInsets.symmetric(
           horizontal: SizeConfig.blockSizeHorizontal * 2,
@@ -73,19 +95,19 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
         if (index == 0) {
           return TitleSlide1(
             mySlide: controller.myPresentation.value!.slides[index],
-            slidePallet: controller.dummySlidePallet,
+            slidePallet: controller.selectedPallet.value,
             size: size,
           );
         } else if (index == 1) {
           return SectionedSlide2(
             mySlide: controller.myPresentation.value!.slides[index],
-            slidePallet: controller.dummySlidePallet,
+            slidePallet: controller.selectedPallet.value,
             size: size,
           );
         } else {
           return SectionedSlide1(
             mySlide: controller.myPresentation.value!.slides[index],
-            slidePallet: controller.dummySlidePallet,
+            slidePallet: controller.selectedPallet.value,
             size: size,
           );
         }
@@ -127,6 +149,14 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                           foregroundColor: Colors.white),
                       onPressed: () {
                         // controller.RequestPresentationPlan();
+                        if (controller.isSlidesGenerated.value) {
+                          controller.createPresentation();
+                          AppLovinProvider.instance.showInterstitial(() {});
+                        } else {
+                          EasyLoading.showToast(
+                              "Please Wait for remaining slides to be Generated..",
+                              duration: Durations.extralong2);
+                        }
                       },
                       child: Text("Save & Share")))
             ],

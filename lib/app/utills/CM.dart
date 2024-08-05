@@ -11,7 +11,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/data/helping_enums.dart';
+import 'package:slide_maker/app/data/slide.dart';
+import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide1.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
+import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/images.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -160,6 +165,65 @@ class ComFunction {
       );
 
       double value = (i / bookPages.length);
+      EasyLoading.showProgress(value, status: "Generating PPTX");
+      i++;
+    }
+
+    pres.showSlideNumbers = true;
+
+    return pres;
+  }
+
+  Future<FlutterPowerPoint> createSlidyPresentation(
+      {required List<MySlide> mySlides,
+      required String Title,
+      required SlidePallet slidePallet}) async {
+    final pres = FlutterPowerPoint();
+
+//? Title Slide
+    // await pres.addWidgetSlide(
+    //   (size) => MyMarkDownWidget(
+    //     page: BookPageModel(
+    //         ChapName: Title,
+    //         ChapData: "",
+    //         imageType: SlideImageType.svg,
+    //         ImagePath: AppImages.Theme2_horizontal[0],
+    //         containsImage: true),
+    //     size: size,
+    //     isTitle: true,
+    //   ),
+    // );
+
+    int i = 1;
+    for (final MySlide slide in mySlides) {
+      // developer.log("Page Data: ${page.ChapData}");
+      if (i == 0) {
+        await pres.addWidgetSlide(
+          (size) => TitleSlide1(
+            mySlide: slide,
+            slidePallet: slidePallet,
+            size: size,
+          ),
+        );
+      } else if (i == 1) {
+        await pres.addWidgetSlide(
+          (size) => SectionedSlide2(
+            mySlide: slide,
+            slidePallet: slidePallet,
+            size: size,
+          ),
+        );
+      } else {
+        await pres.addWidgetSlide(
+          (size) => SectionedSlide1(
+            mySlide: slide,
+            slidePallet: slidePallet,
+            size: size,
+          ),
+        );
+      }
+
+      double value = (i / mySlides.length);
       EasyLoading.showProgress(value, status: "Generating PPTX");
       i++;
     }

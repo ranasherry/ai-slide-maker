@@ -13,11 +13,14 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_styles_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/title_input_fragment.dart.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
+import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
   //TODO: Implement PresentaionGeneratorController
@@ -57,37 +60,14 @@ class PresentaionGeneratorController extends GetxController {
   int tokensConsumed = 0;
 
   //? Section Related to Slides Screens
-  Rx<MyPresentation?> myPresentation = Rx<MyPresentation?>(null);
-  SlidePallet dummySlidePallet = SlidePallet(
-    id: 1,
-    name: "Blue Theme",
-    slideCategory: "Light",
-    bigTitleTStyle: TextStyle(
-      fontSize: 24.0,
-      fontWeight: FontWeight.bold,
-      color: Colors.blue.shade900,
-    ),
-    normalTitleTStyle: TextStyle(
-      fontSize: 20.0,
-      fontWeight: FontWeight.bold,
-      color: Colors.blue.shade800,
-    ),
-    sectionHeaderTStyle: TextStyle(
-      fontSize: 18.0,
-      fontWeight: FontWeight.w600,
-      color: Colors.blue.shade700,
-    ),
-    normalDescTStyle: TextStyle(
-      fontSize: 16.0,
-      color: Colors.blue.shade600,
-    ),
-    sectionDescTextStyle: TextStyle(
-      fontSize: 14.0,
-      color: Colors.blue.shade500,
-    ),
-    imageList: AppImages.slidy_style1,
-    fadeColor: const Color.fromARGB(64, 187, 222, 251),
-  );
+  Rx<MyPresentation> myPresentation = MyPresentation(
+          presentationId: 0, presentationTitle: "", slides: <MySlide>[].obs)
+      .obs;
+
+  Rx<SlidePallet> selectedPallet = palletList.first.obs;
+
+//? Slides Fragment
+  RxBool isSlidesGenerated = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -124,6 +104,8 @@ class PresentaionGeneratorController extends GetxController {
 
         EasyLoading.showError(
             "We are Currently at our limit Please Try again later...");
+
+        currentIndex.value -= 1;
       }
     } else {
       // Toster("No internet Connection", AppColors.Lime_Green_color);
@@ -219,22 +201,35 @@ class PresentaionGeneratorController extends GetxController {
   //? Slide Screen Section
   Future<void> startGeneratingSlide() async {
     currentIndex.value = 3;
+    String writingStyle = selectedTone.value;
 
-    myPresentation = MyPresentation(
+    String contentLength = "";
+    if (selectedTextAmount.value == "Brief") {
+      contentLength = "30 words";
+    } else if (selectedTextAmount.value == "Medium") {
+      contentLength = "45 words";
+    } else {
+      contentLength = "65 words";
+    }
+    myPresentation.value = MyPresentation(
       presentationId: DateTime.now().millisecondsSinceEpoch,
       presentationTitle: titleTextCTL.text,
       slides: <MySlide>[].obs,
-    ).obs;
+    );
     List<String> coveredTitles = [];
     for (var outline in plannedOutlines) {
       //?
       developer.log("Generating Slide for $outline");
       final request = '''
-      You will create a presentation slide on given Topic: ${myPresentation.value!.presentationTitle}. 
+      You will create a presentation slide on given Topic: ${myPresentation.value.presentationTitle}. 
+
       You will be creating individual slide on Following Slide Title: ${outline}.
       you must ignore the following topics as they already have covered.
       CoveredTopic List ${coveredTitles.toString()}
       
+      Your writing style will be: ${writingStyle}
+      write maximum word in sectionContent: ${contentLength}
+
       you are only require to give your response on require json formate enclosed in curly braces{} and no other text will 
 return. if format contains section then generate only 3 sections
  Required Json Format:
@@ -256,7 +251,7 @@ return. if format contains section then generate only 3 sections
         developer.log("GeminiRawResponse: $apiRespnse");
         try {
           MySlide mySlide = MySlide.fromJson(apiRespnse);
-          myPresentation.value!.slides.add(mySlide);
+          myPresentation.value.slides.add(mySlide);
 
           coveredTitles.add(mySlide.slideTitle);
 
@@ -270,9 +265,11 @@ return. if format contains section then generate only 3 sections
         }
       }
     }
-    for (var slide in myPresentation.value!.slides) {
+    for (var slide in myPresentation.value.slides) {
       developer.log("SavedSlides: ${slide.toMap()}");
     }
+
+    isSlidesGenerated.value = true;
 
     currentIndex.value = 3;
   }
@@ -397,12 +394,30 @@ return. if format contains section then generate only 3 sections
     if (titleTextCTL.text.isNotEmpty) {
       RequestPresentationPlan();
       currentIndex.value = 1;
+      AppLovinProvider.instance.showInterstitial(() {});
     }
   }
 
   void switchToSelectStyle() {
     currentIndex.value = 2;
+    AppLovinProvider.instance.showInterstitial(() {});
     // startGeneratingSlide();
+  }
+
+  Future<void> createPresentation() async {
+    EasyLoading.show(status: "Generating PPTX File");
+    try {
+      final pres = await ComFunction().createSlidyPresentation(
+          mySlides: myPresentation.value.slides,
+          Title: myPresentation.value.presentationTitle,
+          slidePallet: selectedPallet.value);
+
+      await ComFunction().downloadPresentation(pres);
+    } on Exception catch (e) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Could not Generate Slide");
+      // TODO
+    }
   }
 
   //-----------------------------------------------------------------------------------------------//
