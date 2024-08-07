@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/modules/intro_screens/controllers/new_intro_screen_controller.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
+import 'package:slide_maker/app/utills/helprer_widgets/main_header_bg.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -17,58 +19,77 @@ class NewIntroScreensView extends GetView<newInroScreenCTL> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
+          Stack(
+            children: [
+              MainHeaderBG(
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.blockSizeVertical * 35),
+              Container(
+                width: SizeConfig.screenWidth,
+                height: SizeConfig.blockSizeVertical * 35,
+                child: Center(
+                  child: Text("Please choose your profession",
+                      style: GoogleFonts.aBeeZee(
+                        textStyle: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 6,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textfieldcolor),
+                      )),
+                ),
+              )
+            ],
+          ),
+
           Container(
-              height: SizeConfig.blockSizeVertical * 40.3,
-              width: SizeConfig.screenWidth,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(AppImages.slide_background))),
-              child: Center(
-                child: Text("Please choose your profession",
-                    style: GoogleFonts.aBeeZee(
-                      textStyle: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 6,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textfieldcolor),
-                    )),
-              )),
-          Center(
-            child: Obx(() {
-              return Wrap(
-                spacing: 8.0,
-                children: controller.chipOptions.map((option) {
-                  return ChoiceChip(
-                    elevation: 2,
-                    label: Text(option,
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: TextStyle(
+            // height: SizeConfig.blockSizeVertical * 35,
+
+            width: SizeConfig.screenWidth,
+
+            child: Column(
+              children: [
+                verticalSpace(SizeConfig.blockSizeVertical * 3),
+                Center(
+                  child: Obx(() {
+                    return Wrap(
+                      spacing: 8.0,
+                      children: controller.chipOptions.map((option) {
+                        return ChoiceChip(
+                          elevation: 2,
+                          label: Text(option,
+                              style: GoogleFonts.aBeeZee(
+                                textStyle: TextStyle(
+                                  color:
+                                      controller.selectedChoice.value == option
+                                          ? AppColors.mainColor
+                                          : Colors.black,
+                                ),
+                              )),
+                          selected: controller.selectedChoice.value == option,
+                          onSelected: (selected) {
+                            if (selected) {
+                              controller.selectChoice(option);
+                            }
+                          },
+                          backgroundColor: AppColors.textfieldcolor,
+                          selectedColor: AppColors.textfieldcolor,
+                          side: BorderSide(
                             color: controller.selectedChoice.value == option
                                 ? AppColors.mainColor
-                                : Colors.black,
+                                : Colors.transparent,
                           ),
-                        )),
-                    selected: controller.selectedChoice.value == option,
-                    onSelected: (selected) {
-                      if (selected) {
-                        controller.selectChoice(option);
-                      }
-                    },
-                    backgroundColor: AppColors.textfieldcolor,
-                    selectedColor: AppColors.textfieldcolor,
-                    side: BorderSide(
-                      color: controller.selectedChoice.value == option
-                          ? AppColors.mainColor
-                          : Colors.transparent,
-                    ),
-                    showCheckmark: false,
-                    shadowColor: Colors.grey.shade300,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 8)),
-                  );
-                }).toList(),
-              );
-            }),
+                          showCheckmark: false,
+                          shadowColor: Colors.grey.shade300,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 8)),
+                        );
+                      }).toList(),
+                    );
+                  }),
+                ),
+                // Spacer(),
+              ],
+            ),
           ),
           Spacer(),
           GestureDetector(
@@ -97,7 +118,23 @@ class NewIntroScreensView extends GetView<newInroScreenCTL> {
                 child: Center(
                   child: Text("Next", style: AppStyle.button),
                 )),
-          )
+          ),
+
+          // Container(
+          //     height: SizeConfig.blockSizeVertical * 40.3,
+          //     width: SizeConfig.screenWidth,
+          //     decoration: BoxDecoration(
+          //         image: DecorationImage(
+          //             image: AssetImage(AppImages.slide_background))),
+          //     child: Center(
+          //       child: Text("Please choose your profession",
+          //           style: GoogleFonts.aBeeZee(
+          //             textStyle: TextStyle(
+          //                 fontSize: SizeConfig.blockSizeHorizontal * 6,
+          //                 fontWeight: FontWeight.bold,
+          //                 color: AppColors.textfieldcolor),
+          //           )),
+          //     )),
         ],
       ),
       //  Column(

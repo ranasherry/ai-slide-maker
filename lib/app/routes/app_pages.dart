@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/home/home_view_1.dart';
 import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/new_intro_screen_view.dart';
 
@@ -181,6 +182,7 @@ class AppPages {
       page: () => const SubSlideView(),
       // binding: ,
     ),
+    
     GetPage(
       name: _Paths.AiSlideAssistant,
       page: () => const AiSlideAssistant(),
@@ -226,6 +228,11 @@ class AppPages {
       name: _Paths.PRESENTAION_GENERATOR,
       page: () => const PresentaionGeneratorView(),
       binding: PresentaionGeneratorBinding(),
+    ),
+      GetPage(
+      name: _Paths.HOMEVIEW1,
+      page: () => const HomeView1(),
+      // binding: ,
     ),
   ];
 }
