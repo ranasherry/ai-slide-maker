@@ -61,7 +61,7 @@ class __TitleSlide1State extends State<TitleSlide1> {
                 Container(
                   width: widget.mySlide.slideSections[0].memoryImage != null
                       ? widget.size.width * 0.5
-                      : widget.size.width,
+                      : widget.size.width * 0.9,
                   child: Column(
                     children: [
                       verticalSpace(widget.size.height * 0.1),

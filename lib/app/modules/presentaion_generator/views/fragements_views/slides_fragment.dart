@@ -98,18 +98,21 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
             slidePallet: controller.selectedPallet.value,
             size: size,
           );
-        } else if (index == 1) {
-          return SectionedSlide2(
-            mySlide: controller.myPresentation.value!.slides[index],
-            slidePallet: controller.selectedPallet.value,
-            size: size,
-          );
         } else {
-          return SectionedSlide1(
-            mySlide: controller.myPresentation.value!.slides[index],
-            slidePallet: controller.selectedPallet.value,
-            size: size,
-          );
+          //? Sections
+          if (index == 1) {
+            return SectionedSlide2(
+              mySlide: controller.myPresentation.value!.slides[index],
+              slidePallet: controller.selectedPallet.value,
+              size: size,
+            );
+          } else {
+            return SectionedSlide1(
+              mySlide: controller.myPresentation.value!.slides[index],
+              slidePallet: controller.selectedPallet.value,
+              size: size,
+            );
+          }
         }
       }),
     );

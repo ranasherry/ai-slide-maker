@@ -25,7 +25,7 @@ class SplashController extends GetxController {
   // GoogleAdsCTL googleAdsCT=Get.find();
 
   var tabIndex = 0.obs;
-  Rx<int> percent = 0.obs;
+  // Rx<int> percent = 0.obs;
   Rx<bool> isLoaded = false.obs;
   @override
   void onInit() async {
@@ -33,19 +33,23 @@ class SplashController extends GetxController {
     AppLovinProvider.instance.init();
     MetaAdsProvider.instance.initialize();
 
-    Timer? timer;
-    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
-      int n = Random().nextInt(10) + 5;
-      percent.value += n;
-      if (percent.value >= 100) {
-        percent.value = 100;
-        // checkPermission();/
-        checkFirstTime();
+    // Timer? timer;
+    // timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+    //   int n = Random().nextInt(10) + 5;
+    //   percent.value += n;
+    //   if (percent.value >= 100) {
+    //     percent.value = 100;
+    //     // checkPermission();/
+    //     checkFirstTime();
 
-        // isLoaded.value = true;
+    //     // isLoaded.value = true;
 
-        timer!.cancel();
-      }
+    //     timer!.cancel();
+    //   }
+    // });
+
+    Future.delayed(Duration(milliseconds: 2000), () {
+      checkFirstTime();
     });
     RevenueCatService().initialize(null);
     // checkplatform();
