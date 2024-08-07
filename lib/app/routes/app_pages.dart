@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
+import 'package:slide_maker/app/modules/intro_screens/views/new_intro_screen_view.dart';
 
 import '../modules/authentications/sing_in/bindings/sing_in_binding.dart';
 import '../modules/authentications/sing_in/views/sing_in_view.dart';
@@ -147,6 +149,11 @@ class AppPages {
       name: _Paths.INTRO_SCREENS,
       page: () => const IntroScreensView(),
       binding: IntroScreensBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEW_INTRO_SCREENS,
+      page: () => const NewIntroScreensView(),
+      binding: newIntroScreenBinding(),
     ),
     GetPage(
       name: _Paths.INVITATION_MAKER,
