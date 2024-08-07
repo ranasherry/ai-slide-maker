@@ -161,7 +161,7 @@ class InAppPurchasesController extends GetxController {
   void initDiscountTimer() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       timeLeft.value = timeUntil(RCVariables.discountTimeLeft);
-      log("TimeLeft: ${timeLeft.value}");
+      // log("TimeLeft: ${timeLeft.value}");
     });
   }
 

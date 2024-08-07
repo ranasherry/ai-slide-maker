@@ -21,7 +21,7 @@ class PdfPermissionView extends GetView<PdfPermissionController> {
               "Documents Reader",
               // style: StyleSheet.Intro_heading_black,
             ),
-            Lottie.asset('assets/lottie/77323-profile-lock.json'),
+            // Lottie.asset('assets/lottie/77323-profile-lock.json'),
             Container(
                 width: SizeConfig.screenWidth * 0.8,
                 child: Text(

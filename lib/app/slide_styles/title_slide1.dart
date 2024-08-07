@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/utills/clip_shapes/hexagon_clipper.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class TitleSlide1 extends StatefulWidget {
@@ -30,7 +31,8 @@ class __TitleSlide1State extends State<TitleSlide1> {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
     });
-    print("initState Called");
+    print(
+        "initState Called: Image Bytes: ${widget.mySlide.slideSections[0].memoryImage}");
   }
 
   @override
@@ -53,24 +55,52 @@ class __TitleSlide1State extends State<TitleSlide1> {
                 horizontal: widget.size.width * 0.02,
                 vertical: widget.size.height * 0.04),
             decoration: BoxDecoration(color: widget.slidePallet.fadeColor),
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                verticalSpace(widget.size.height * 0.1),
-                Text(
-                  widget.mySlide.slideTitle,
-                  style: widget.slidePallet.bigTitleTStyle
-                      .copyWith(fontSize: widget.size.width * 0.065),
+                Container(
+                  width: widget.mySlide.slideSections[0].memoryImage != null
+                      ? widget.size.width * 0.5
+                      : widget.size.width,
+                  child: Column(
+                    children: [
+                      verticalSpace(widget.size.height * 0.1),
+                      Text(
+                        widget.mySlide.slideTitle,
+                        style: widget.slidePallet.bigTitleTStyle
+                            .copyWith(fontSize: widget.size.width * 0.065),
+                      ),
+                      verticalSpace(widget.size.height * 0.1),
+                      Text(
+                        widget.mySlide.slideSections[0].sectionContent!,
+                        style: widget.slidePallet.bigTitleTStyle
+                            .copyWith(fontSize: widget.size.width * 0.03),
+                      ),
+                    ],
+                  ),
                 ),
-                verticalSpace(widget.size.height * 0.1),
-                Text(
-                  widget.mySlide.slideSections[0].sectionContent!,
-                  style: widget.slidePallet.bigTitleTStyle
-                      .copyWith(fontSize: widget.size.width * 0.03),
-                ),
+                widget.mySlide.slideSections[0].memoryImage != null
+                    ? Container(
+                        width: widget.size.width * 0.45,
+                        height: widget.size.height,
+                        child: Center(child: _ImageWidget()))
+                    : Container(),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _ImageWidget() {
+    return ClipPath(
+      clipper: HexagonClipper(),
+      child: Image.memory(
+        widget.mySlide.slideSections[0].memoryImage!,
+        width: widget.size.width * 0.3,
+        height: widget.size.width * 0.3,
+        fit: BoxFit.fill,
       ),
     );
   }

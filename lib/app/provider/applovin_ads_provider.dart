@@ -58,8 +58,19 @@ class AppLovinProvider {
     // if (kReleaseMode) {
 
     final isAdRemoved = await RevenueCatService().CheckRemoveAdsForUser();
+
+    // if (kDebugMode) {
+    //   AppLovinMAX.setConsentFlowDebugUserGeography(
+    //       ConsentFlowUserGeography.gdpr);
+    //   AppLovinMAX.showMediationDebugger();
+    //   print("Show Mediation Debugger called...");
+    //   await initializePlugin();
+    //   showAppLovinConsentFlow();
+    // }
+
     if (!isAdRemoved && kReleaseMode) {
-      initializePlugin();
+      await initializePlugin();
+      showAppLovinConsentFlow();
     }
   }
 
@@ -421,6 +432,14 @@ class AppLovinProvider {
 
   temp() {
     print("Rewarded Temp");
+  }
+
+  void showAppLovinConsentFlow() async {
+    MaxCMPError? error = await AppLovinMAX.showCmpForExistingUser();
+
+    if (error == null) {
+      // The CMP alert was shown successfully.
+    }
   }
 }
 

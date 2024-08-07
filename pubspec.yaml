@@ -179,7 +179,7 @@ flutter:
     - assets/slidy/style4/
 
     - assets/lottie/fBBmyrlUDl.json
-    - assets/lottie/77323-profile-lock.json
+    # - assets/lottie/77323-profile-lock.json
 
   #   - images/a_dot_ham.jpeg
 

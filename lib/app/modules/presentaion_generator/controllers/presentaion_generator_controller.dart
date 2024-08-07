@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/title_input_fragment.dart.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/services/myapi_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -66,11 +69,14 @@ class PresentaionGeneratorController extends GetxController {
 
   Rx<SlidePallet> selectedPallet = palletList.first.obs;
 
+  // Uint8List? memoryImage;
+
 //? Slides Fragment
   RxBool isSlidesGenerated = false.obs;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+
     // initdummyPresentation();
     // RequestPresentationPlan();
   }
@@ -151,9 +157,10 @@ class PresentaionGeneratorController extends GetxController {
     final model = GenerativeModel(
         model: 'gemini-1.5-flash',
         apiKey: apiKey,
-        generationConfig: GenerationConfig(maxOutputTokens: 500, temperature: 1
-            // responseMimeType: "application/json",
-            ));
+        generationConfig:
+            GenerationConfig(maxOutputTokens: 50000, temperature: 1
+                // responseMimeType: "application/json",
+                ));
 
     final content = [Content.text(request)];
     try {
@@ -199,17 +206,93 @@ class PresentaionGeneratorController extends GetxController {
   }
 
   //? Slide Screen Section
+//   Future<void> startGeneratingSlide() async {
+//     currentIndex.value = 3;
+//     String writingStyle = selectedTone.value;
+
+//     String contentLength = "";
+//     if (selectedTextAmount.value == "Brief") {
+//       contentLength = "30 words";
+//     } else if (selectedTextAmount.value == "Medium") {
+//       contentLength = "45 words";
+//     } else {
+//       contentLength = "65 words";
+//     }
+//     myPresentation.value = MyPresentation(
+//       presentationId: DateTime.now().millisecondsSinceEpoch,
+//       presentationTitle: titleTextCTL.text,
+//       slides: <MySlide>[].obs,
+//     );
+//     List<String> coveredTitles = [];
+//     for (var outline in plannedOutlines) {
+//       //?
+//       developer.log("Generating Slide for $outline");
+//       final request = '''
+//       You will create a presentation slide on given Topic: ${myPresentation.value.presentationTitle}.
+
+//       You will be creating individual slide on Following Slide Title: ${outline}.
+//       you must ignore the following topics as they already have covered.
+//       CoveredTopic List ${coveredTitles.toString()}
+
+//       Your writing style will be: ${writingStyle}
+//       write maximum word in sectionContent: ${contentLength}
+
+//       you are only require to give your response on require json formate enclosed in curly braces{} and no other text will
+// return. if format contains section then generate only 3 sections
+//  Required Json Format:
+// {
+//   "slideTitle": "Your Title Here",
+//   "slideSections": [
+//     {
+//       "sectionHeader": "Section Title",
+//       "sectionContent": "This is the content for the first section."
+//     }
+//       ]
+// }
+//       ''';
+
+//       developer.log("GeminiRequest: $request");
+
+//       String? apiRespnse = await gemeniAPICall(request);
+//       if (apiRespnse != null) {
+//         developer.log("GeminiRawResponse: $apiRespnse");
+//         try {
+//           MySlide mySlide = MySlide.fromJson(apiRespnse);
+//           myPresentation.value.slides.add(mySlide);
+
+//           coveredTitles.add(mySlide.slideTitle);
+
+//           for (var section in mySlide.slideSections) {
+//             coveredTitles.add(section.sectionHeader ?? "");
+//           }
+//           developer.log("MySlide: ${mySlide.toJson()}");
+//         } on Exception catch (e) {
+//           developer.log("Json Parsing Error: $e");
+//           // TODO
+//         }
+//       }
+//     }
+//     for (var slide in myPresentation.value.slides) {
+//       developer.log("SavedSlides: ${slide.toMap()}");
+//     }
+
+//     isSlidesGenerated.value = true;
+
+//     currentIndex.value = 3;
+//   }
+
   Future<void> startGeneratingSlide() async {
     currentIndex.value = 3;
     String writingStyle = selectedTone.value;
 
     String contentLength = "";
     if (selectedTextAmount.value == "Brief") {
-      contentLength = "30 words";
+      contentLength = "40 words";
     } else if (selectedTextAmount.value == "Medium") {
-      contentLength = "45 words";
+      // contentLength = "55 words";
+      contentLength = "55 words";
     } else {
-      contentLength = "65 words";
+      contentLength = "75 words";
     }
     myPresentation.value = MyPresentation(
       presentationId: DateTime.now().millisecondsSinceEpoch,
@@ -217,13 +300,14 @@ class PresentaionGeneratorController extends GetxController {
       slides: <MySlide>[].obs,
     );
     List<String> coveredTitles = [];
-    for (var outline in plannedOutlines) {
-      //?
-      developer.log("Generating Slide for $outline");
-      final request = '''
+    // for (var outline in plannedOutlines) {
+
+    //?
+    developer.log("Generating Slide for $plannedOutlines");
+    final request = '''
       You will create a presentation slide on given Topic: ${myPresentation.value.presentationTitle}. 
 
-      You will be creating individual slide on Following Slide Title: ${outline}.
+      You will be creating slideList on Following Slide Titles: ${plannedOutlines}.
       you must ignore the following topics as they already have covered.
       CoveredTopic List ${coveredTitles.toString()}
       
@@ -231,8 +315,21 @@ class PresentaionGeneratorController extends GetxController {
       write maximum word in sectionContent: ${contentLength}
 
       you are only require to give your response on require json formate enclosed in curly braces{} and no other text will 
-return. if format contains section then generate only 3 sections
+return. if format contains section then generate only maximum 3 sections.
+Note: Sections for each slide must be 2 or 3
  Required Json Format:
+
+ {
+ "Slides": [
+{
+  "slideTitle": "Your Title Here",
+  "slideSections": [
+    {
+      "sectionHeader": "Section Title",
+      "sectionContent": "This is the content for the first section."
+    }
+      ]
+},
 {
   "slideTitle": "Your Title Here",
   "slideSections": [
@@ -242,29 +339,61 @@ return. if format contains section then generate only 3 sections
     }
       ]
 }
+
+]
+ }
+
       ''';
 
-      developer.log("GeminiRequest: $request");
+    developer.log("GeminiRequest: $request");
 
-      String? apiRespnse = await gemeniAPICall(request);
-      if (apiRespnse != null) {
-        developer.log("GeminiRawResponse: $apiRespnse");
-        try {
-          MySlide mySlide = MySlide.fromJson(apiRespnse);
-          myPresentation.value.slides.add(mySlide);
+    String? apiRespnse = await gemeniAPICall(request);
+    if (apiRespnse != null) {
+      developer.log("GeminiRawResponse: $apiRespnse");
+      try {
+        final jsonList = json.decode(apiRespnse) as Map<String, dynamic>;
+        final originalList = jsonList["Slides"] as List;
+        developer.log("SlidesList: ${originalList}");
 
-          coveredTitles.add(mySlide.slideTitle);
-
-          for (var section in mySlide.slideSections) {
-            coveredTitles.add(section.sectionHeader ?? "");
-          }
-          developer.log("MySlide: ${mySlide.toJson()}");
-        } on Exception catch (e) {
-          developer.log("Json Parsing Error: $e");
-          // TODO
+        List<MySlide> slides = [];
+        for (var item in originalList) {
+          MySlide slide = MySlide.fromMap(item);
+          slides.add(slide);
+          developer.log("Added Slide: ${slide.toMap()}");
         }
+        // List<MySlide> slides =
+        //     originalList.map((slide) => MySlide.fromMap(slide)).toList();
+
+        // MySlide mySlide = MySlide.fromJson(apiRespnse);
+
+        String imageUrl =
+            await MyAPIService().fetchImageUrl("Flutter With Gaming") ??
+                "No Url Found";
+        developer.log("ImageUrl: ${imageUrl}");
+
+        Uint8List? imageBytes = await MyAPIService().downloadImage(imageUrl);
+        if (imageBytes != null) {
+          slides[0].slideSections[0].memoryImage = imageBytes;
+          // memoryImage=imageBytes;
+          developer.log("Image Bytes: $imageBytes");
+        }
+
+        myPresentation.value.slides.value = slides;
+
+        // coveredTitles.add(mySlide.slideTitle);
+        developer
+            .log("SavedSlides Length: ${myPresentation.value.slides.length}");
+
+        // for (var section in mySlide.slideSections) {
+        //   coveredTitles.add(section.sectionHeader ?? "");
+        // }
+        // developer.log("MySlide: ${mySlide.toJson()}");
+      } on Exception catch (e) {
+        developer.log("Json Parsing Error: $e");
+        // TODO
       }
     }
+
     for (var slide in myPresentation.value.slides) {
       developer.log("SavedSlides: ${slide.toMap()}");
     }

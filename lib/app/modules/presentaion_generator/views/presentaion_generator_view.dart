@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/headers/head
 import 'package:slide_maker/app/modules/presentaion_generator/views/headers/header4.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
+import 'package:slide_maker/app/utills/helprer_widgets/main_header_bg.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -119,84 +121,95 @@ class PresentaionGeneratorView extends GetView<PresentaionGeneratorController> {
     );
   }
 
-  Container headerWidget() {
-    return Container(
-      width: SizeConfig.screenWidth,
-      height: SizeConfig.screenHeight * 0.35,
-      decoration: BoxDecoration(
-          // gradient: LinearGradient(colors: AppColors.headerContainerGradient
-          // )
-          image: DecorationImage(
-              image: AssetImage(
-                AppImages.slide_background,
+  Widget headerWidget() {
+    return Stack(
+      children: [
+        MainHeaderBG(
+          width: SizeConfig.screenWidth,
+          height: SizeConfig.screenHeight * 0.35,
+        ),
+        Container(
+          width: SizeConfig.screenWidth,
+          height: SizeConfig.screenHeight * 0.35,
+          decoration: BoxDecoration(
+              // gradient: LinearGradient(colors: AppColors.headerContainerGradient
+              // )
+              // image: DecorationImage(
+              //     image: AssetImage(
+              //       AppImages.slide_background,
+              //     ),
+              //     fit: BoxFit.cover)
               ),
-              fit: BoxFit.cover)),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: SizeConfig.blockSizeVertical * 6,
-                horizontal: SizeConfig.blockSizeHorizontal * 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 6,
-                    width: SizeConfig.blockSizeHorizontal * 20,
-                    decoration: BoxDecoration(
-                        color: AppColors.mainColor, shape: BoxShape.circle),
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: SizeConfig.blockSizeHorizontal * 56,
-                  child: Obx(() => LinearProgressBar(
-                        maxSteps: controller.mainFragments.length,
-                        progressType: LinearProgressBar.progressTypeLinear,
-                        currentStep: controller.currentIndex.value + 1,
-                        progressColor: AppColors.textfieldcolor,
-                        backgroundColor: AppColors.mainColor,
-                        borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 6),
-                        minHeight: SizeConfig.blockSizeVertical * 1,
-                      )),
-                ),
-                Obx(() => Container(
-                      height: SizeConfig.blockSizeVertical * 6,
-                      width: SizeConfig.blockSizeHorizontal * 20,
-                      decoration: BoxDecoration(
-                          color: AppColors.mainColor, shape: BoxShape.circle),
-                      child: Center(
-                        child: Text(
-                          "${controller.currentIndex.value + 1}/${controller.mainFragments.length}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: SizeConfig.blockSizeVertical * 6,
+                    horizontal: SizeConfig.blockSizeHorizontal * 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        height: SizeConfig.blockSizeVertical * 6,
+                        width: SizeConfig.blockSizeHorizontal * 20,
+                        decoration: BoxDecoration(
+                            color: AppColors.secondaryColor,
+                            shape: BoxShape.circle),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
                         ),
                       ),
-                    )),
-              ],
-            ),
+                    ),
+                    Container(
+                      width: SizeConfig.blockSizeHorizontal * 56,
+                      child: Obx(() => LinearProgressBar(
+                            maxSteps: controller.mainFragments.length,
+                            progressType: LinearProgressBar.progressTypeLinear,
+                            currentStep: controller.currentIndex.value + 1,
+                            progressColor: AppColors.textfieldcolor,
+                            backgroundColor: AppColors.secondaryColor,
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 6),
+                            minHeight: SizeConfig.blockSizeVertical * 1,
+                          )),
+                    ),
+                    Obx(() => Container(
+                          height: SizeConfig.blockSizeVertical * 6,
+                          width: SizeConfig.blockSizeHorizontal * 20,
+                          decoration: BoxDecoration(
+                              color: AppColors.secondaryColor,
+                              shape: BoxShape.circle),
+                          child: Center(
+                            child: Text(
+                              "${controller.currentIndex.value + 1}/${controller.mainFragments.length}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              Obx(() => IndexedStack(
+                    index: controller.currentIndex.value,
+                    children: [
+                      Header1(),
+                      Header2(),
+                      Header3(),
+                      Header4(),
+                    ],
+                  ))
+            ],
           ),
-          Obx(() => IndexedStack(
-                index: controller.currentIndex.value,
-                children: [
-                  Header1(),
-                  Header2(),
-                  Header3(),
-                  Header4(),
-                ],
-              ))
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

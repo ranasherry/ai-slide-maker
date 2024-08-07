@@ -25,16 +25,17 @@ class AppColors {
   static const ScaffoldColor = Color(0xFF000C1A);
 
   //? New Colors
-  static const headerContainerGradient = [Color(0xFF4B20C8), Color(0xFF5720F8)];
+  static const headerContainerGradient = [Color(0xFFD33800), Color(0xFFD33800)];
 
   static const footerContainerColor = Color(0xFFF5F6F8);
   static const fragmantBGColor = Color(0xFFE7EBFA);
-  // static const buttonBGColor = Color(0xFF571FFC);
-  static const buttonBGColor = Color(0xFFFF6421);
+  static const buttonBGColor = Color(0xFFD33800);
+  // static const buttonBGColor = Color(0xFFFF6421);
 
   static const textfieldcolor = Color(0xFFFFFFFF);
   static const background = Color(0xFFF5F6F8);
-  // static const mainColor = Color(0xFF571FFC);
-  static const mainColor = Color(0xFFFF6421);
+  static const mainColor = Color(0xFFD33800);
+  static const secondaryColor = Color(0xFFF34709);
+  // static const mainColor = Color(0xFFFF6421);
   static const titles = Color(0xFF262729);
 }

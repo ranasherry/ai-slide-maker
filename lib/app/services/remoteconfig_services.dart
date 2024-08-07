@@ -98,9 +98,9 @@ class RemoteConfigService {
     print(
         tempList); // Output: ["CES 2024 Highlights", "Volcano Erupts in Iceland"]
 
-    for (String topic in tempList) {
-      dp.log("RCKeys: $topic"); // Prints each topic individually
-    }
+    // for (String topic in tempList) {
+    //   dp.log("RCKeys: $topic"); // Prints each topic individually
+    // }
     RCVariables.geminiAPIKeys = tempList;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as developer;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,79 +79,52 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
                         i += 1)
                       Expanded(
                         flex: 1,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: widget.size.width * 0.01),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.mySlide.slideSections[i].sectionHeader ??
-                                    '',
-                                style: widget.mySlide.slideSections[i]
-                                            .sectionHeader !=
-                                        null
-                                    ? widget.slidePallet.bigTitleTStyle
-                                        .copyWith(
-                                            fontSize: widget.size.width * 0.035)
-                                    : widget.slidePallet.bigTitleTStyle,
-                              ),
-                              verticalSpace(widget.size.height * 0.04),
-                              Text(
-                                widget.mySlide.slideSections[i]
-                                        .sectionContent ??
-                                    '',
-                                style: widget.mySlide.slideSections[i]
-                                            .sectionContent !=
-                                        null
-                                    ? widget.slidePallet.bigTitleTStyle
-                                        .copyWith(
-                                            fontSize: widget.size.width * 0.012)
-                                    : widget.slidePallet.bigTitleTStyle,
-                              ),
-                            ],
-                          ),
-                        ),
+                        child: _slideSection(i),
                       ),
-                    // Expanded(
-                    //   flex: 1,
-                    //   child: Column(
-                    //     children: [
-                    //       for (int i = 1;
-                    //           i < widget.mySlide.slideSections.length;
-                    //           i += 2)
-                    //         Column(
-                    //           children: [
-                    //             Text(
-                    //               widget.mySlide.slideSections[i].sectionHeader ?? '',
-                    //               style: widget.mySlide.slideSections[i]
-                    //                           .sectionHeader !=
-                    //                       null
-                    //                   ? widget.slidePallet.bigTitleTStyle.copyWith(
-                    //                       fontSize: widget.size.width * 0.03)
-                    //                   : widget.slidePallet.bigTitleTStyle,
-                    //             ),
-                    //             verticalSpace(widget.size.height * 0.08),
-                    //             Text(
-                    //               widget.mySlide.slideSections[i].sectionContent ??
-                    //                   '',
-                    //               style: widget.mySlide.slideSections[i]
-                    //                           .sectionContent !=
-                    //                       null
-                    //                   ? widget.slidePallet.bigTitleTStyle.copyWith(
-                    //                       fontSize: widget.size.width * 0.03)
-                    //                   : widget.slidePallet.bigTitleTStyle,
-                    //             ),
-                    //           ],
-                    //         ),
-                    //     ],
-                    //   ),
-                    // ),
                   ],
                 )
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _slideSection(int i) {
+    double sectionFontSize = widget.size.width * 0.014;
+    if (widget.mySlide.slideSections[i].sectionContent != null) {
+      String text = widget.mySlide.slideSections[i].sectionContent ?? "";
+
+      if (text.length <= 140) {
+        sectionFontSize = widget.size.width * 0.018;
+      } else if (text.length <= 180) {
+        sectionFontSize = widget.size.width * 0.016;
+      } else if (text.length <= 220) {
+        sectionFontSize = widget.size.width * 0.0145;
+      }
+      developer.log("Content Length ${text.length}");
+    }
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: widget.size.width * 0.01),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.mySlide.slideSections[i].sectionHeader ?? '',
+            style: widget.mySlide.slideSections[i].sectionHeader != null
+                ? widget.slidePallet.bigTitleTStyle
+                    .copyWith(fontSize: sectionFontSize * 2)
+                : widget.slidePallet.bigTitleTStyle,
+          ),
+          verticalSpace(widget.size.height * 0.04),
+          Text(
+            widget.mySlide.slideSections[i].sectionContent ?? '',
+            style: widget.mySlide.slideSections[i].sectionContent != null
+                ? widget.slidePallet.bigTitleTStyle
+                    .copyWith(fontSize: sectionFontSize)
+                : widget.slidePallet.bigTitleTStyle,
           ),
         ],
       ),

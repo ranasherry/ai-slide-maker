@@ -19,8 +19,8 @@ class MySlide {
     return {
       'id': id,
       'slideTitle': slideTitle,
-      'slideSections': slideSections?.map((x) => x.toMap()).toList(),
-      'slideType': slideType?.value,
+      'slideSections': slideSections.map((x) => x.toMap()).toList(),
+      'slideType': slideType.value,
     };
   }
 
@@ -41,7 +41,10 @@ class MySlide {
   }
 
   String toJson() => json.encode(toMap());
+  // String toJson() => json.encode(toMap());
 
+  // factory MySlide.fromJson(Map<String, dynamic> source) =>
+  //     MySlide.fromMap(source as Map<String, dynamic>);
   factory MySlide.fromJson(String source) =>
       MySlide.fromMap(json.decode(source) as Map<String, dynamic>);
 }
