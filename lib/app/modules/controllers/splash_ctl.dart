@@ -77,7 +77,7 @@ class SplashController extends GetxController {
         //   Get.toNamed(Routes.SING_IN);
         //   return;
         // }
-        Get.toNamed(Routes.INTRO_SCREENS);
+        Get.toNamed(Routes.NEW_INTRO_SCREENS);
       } else {
         // if (kDebugMode) {
         //   //TODO: Testing
@@ -85,6 +85,7 @@ class SplashController extends GetxController {
         //   return;
         // }
         Get.offNamed(Routes.HomeView);
+        // Get.offNamed(Routes.NEW_INTRO_SCREENS);
       }
     });
   }

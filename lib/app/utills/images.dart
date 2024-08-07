@@ -90,14 +90,14 @@ class AppImages {
     "assets/slidy/style2/4.png",
   ];
 
-    static const slidy_style3 = [
+  static const slidy_style3 = [
     "assets/slidy/style3/1.png",
     "assets/slidy/style3/2.png",
     "assets/slidy/style3/3.png",
     "assets/slidy/style3/4.png",
   ];
 
-    static const slidy_style4 = [
+  static const slidy_style4 = [
     "assets/slidy/style4/1.png",
     "assets/slidy/style4/2.png",
     "assets/slidy/style4/3.png",
