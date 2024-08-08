@@ -1,4 +1,5 @@
 class AppImages {
+  static const main_icon = "assets/icons/main_icon.png";
   static const gems = "assets/images/gem.png";
   static const slides = "assets/images/slideshow.png";
   static const splash = "assets/images/splash.png";
@@ -107,6 +108,9 @@ class AppImages {
   ];
 
   static const magic_stick = "assets/images/magic_stick.png";
+  static const slide_beta = "assets/images/slide_beta.png";
+  static const slide = "assets/images/slide.png";
+  static const new_version = "assets/images/new_version.png";
   static const slide_background = "assets/images/slide_background.png";
   static const default_image = "assets/images/default.jpg";
   static const professional = "assets/images/professional.jpg";

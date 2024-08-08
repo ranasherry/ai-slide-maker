@@ -14,6 +14,7 @@ import 'package:slide_maker/app/modules/home/slide_assistant.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -58,6 +59,7 @@ class BookGeneratedView extends GetView<BookGeneratedCTL> {
                 controller.sharePDF(context);
               },
               tooltip: 'Share PDF',
+              backgroundColor: AppColors.mainColor,
               child: Icon(Icons.share),
             )
           : Container()),

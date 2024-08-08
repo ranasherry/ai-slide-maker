@@ -13,6 +13,7 @@ import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/theme/app_theme.dart';
@@ -86,55 +87,55 @@ class SettingsView extends GetView<SettingsViewCTL> {
                             print('Banner widget ad collapsed');
                           })))),
             ),
-            verticalSpace(SizeConfig.blockSizeVertical),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: SizeConfig.blockSizeHorizontal * 7,
-                  right: SizeConfig.blockSizeHorizontal * 4),
-              child: Row(
-                children: [
-                  Icon(
-                      controller.isDarkMode.value
-                          ? Icons.light_mode
-                          : Icons.dark_mode,
-                      color: Colors.blue),
-                  horizontalSpace(SizeConfig.blockSizeHorizontal * 6),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Theme Mode",
-                        style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 5,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "Light / Dark Theme",
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 3,
-                            color: Colors.blue),
-                      )
-                    ],
-                  ),
-                  Spacer(),
-                  Obx(
-                    () => Switch(
-                      value: !controller.isDarkMode.value,
-                      onChanged: (value) {
-                        print("Is dark mode:  ${Get.isDarkMode}");
-                        Get.changeThemeMode(
-                            Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                        controller.isDarkMode.value = Get.isDarkMode;
-                      },
-                      activeColor: Colors.blue,
-                      inactiveThumbColor: Colors.blueGrey,
-                      activeTrackColor: Colors.grey.shade800,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // verticalSpace(SizeConfig.blockSizeVertical),
+            // Padding(
+            //   padding: EdgeInsets.only(
+            //       left: SizeConfig.blockSizeHorizontal * 7,
+            //       right: SizeConfig.blockSizeHorizontal * 4),
+            //   child: Row(
+            //     children: [
+            //       Icon(
+            //           controller.isDarkMode.value
+            //               ? Icons.light_mode
+            //               : Icons.dark_mode,
+            //           color: AppColors.mainColor),
+            //       horizontalSpace(SizeConfig.blockSizeHorizontal * 6),
+            //       Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             "Theme Mode",
+            //             style: TextStyle(
+            //               fontSize: SizeConfig.blockSizeHorizontal * 5,
+            //               fontWeight: FontWeight.bold,
+            //             ),
+            //           ),
+            //           Text(
+            //             "Light / Dark Theme",
+            //             style: TextStyle(
+            //                 fontSize: SizeConfig.blockSizeHorizontal * 3,
+            //                 color: AppColors.mainColor),
+            //           )
+            //         ],
+            //       ),
+            //       Spacer(),
+            //       Obx(
+            //         () => Switch(
+            //           value: !controller.isDarkMode.value,
+            //           onChanged: (value) {
+            //             print("Is dark mode:  ${Get.isDarkMode}");
+            //             Get.changeThemeMode(
+            //                 Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+            //             controller.isDarkMode.value = Get.isDarkMode;
+            //           },
+            //           activeColor: AppColors.mainColor,
+            //           inactiveThumbColor: Colors.blueGrey,
+            //           activeTrackColor: Colors.grey.shade800,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             GestureDetector(
               onTap: () {
                 LaunchReview.launch(
@@ -161,7 +162,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
                 },
                 child: settings_btn("Privacy Policy", Icons.privacy_tip,
                     "Rights of user", Theme.of(context).colorScheme.primary)),
-            verticalSpace(SizeConfig.blockSizeVertical * 1),
+            // verticalSpace(SizeConfig.blockSizeVertical * 1),
             FirebaseAuth.instance.currentUser != null
                 ? GestureDetector(
                     onTap: () {
@@ -170,7 +171,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
                     child: settings_btn("Delete Account", Icons.delete, "",
                         Theme.of(context).colorScheme.primary))
                 : Container(),
-            verticalSpace(SizeConfig.blockSizeVertical * 1),
+            // verticalSpace(SizeConfig.blockSizeVertical * 1),
             FirebaseAuth.instance.currentUser != null
                 ? GestureDetector(
                     onTap: () {
@@ -182,7 +183,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
                     onTap: () {
                       Get.offNamed(Routes.SING_IN);
                     },
-                    child: settings_btn("Signin", Icons.login, "",
+                    child: settings_btn("Sign In", Icons.login, "",
                         Theme.of(context).colorScheme.primary)),
             // Obx(() => RevenueCatService().currentEntitlement.value ==
             //         Entitlement.paid
@@ -229,7 +230,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
         children: [
           Icon(
             icon1,
-            color: Colors.blue,
+            color: AppColors.mainColor,
             size: SizeConfig.blockSizeHorizontal * 7,
           ),
           horizontalSpace(SizeConfig.blockSizeHorizontal * 6),
@@ -247,7 +248,7 @@ class SettingsView extends GetView<SettingsViewCTL> {
                 text2,
                 style: TextStyle(
                     fontSize: SizeConfig.blockSizeHorizontal * 3,
-                    color: Colors.blue),
+                    color: AppColors.mainColor),
               )
             ],
           ),
