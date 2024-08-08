@@ -5,9 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/app_style.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -158,8 +161,8 @@ class _FormWidgetState extends State<FormWidget> {
                                 labelStyle: TextStyle(
                                   color: widget.controller.nameSelectedOptions
                                           .contains(option)
-                                      ? Colors.blue
-                                      : Colors.white,
+                                      ? AppColors.mainColor
+                                      : Colors.grey,
                                   letterSpacing: 1,
                                 ),
                                 selected: widget.controller.nameSelectedOptions
@@ -214,25 +217,28 @@ class _FormWidgetState extends State<FormWidget> {
                     }
                   },
                   child: Container(
-                    margin: EdgeInsets.only(
-                        bottom: SizeConfig.blockSizeVertical * 2),
-                    height: SizeConfig.blockSizeVertical * 5,
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.indigoAccent, Colors.indigo],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter),
+                      margin: EdgeInsets.only(
+                          bottom: SizeConfig.blockSizeVertical * 2),
+                      height: SizeConfig.blockSizeVertical * 7,
+                      width: SizeConfig.blockSizeHorizontal * 85,
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        // border: Border.all(color: Color(0xFFDD3B00))
                         borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 3)),
-                    child: Center(
-                      child: Text(
-                        "Generate",
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 5),
+                            SizeConfig.blockSizeHorizontal * 8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2), // Shadow color
+                            spreadRadius: 2, // How much the shadow spreads
+                            blurRadius: 10, // How soft the shadow is
+                            offset:
+                                Offset(4, 4), // Position of the shadow (x, y)
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
+                      child: Center(
+                        child: Text("Generate", style: AppStyle.button),
+                      )),
                 ),
               )
             ],
