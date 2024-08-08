@@ -15,7 +15,7 @@ class MyAPIService {
 
   MyAPIService._internal();
 
-  Future<String?> fetchImageUrl(String prompt) async {
+  Future<List<String>?> fetchImageUrl(String prompt) async {
     final String apiUrl = 'http://aqibsiddiqui.com/image?url=true';
 
     try {
@@ -34,8 +34,10 @@ class MyAPIService {
 
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         developer.log('MYAPITAG fetchImageUrl jsonResponse: ${jsonResponse}');
-
-        return jsonResponse['url'];
+        final List<String> imageUrls =
+            jsonResponse['url'].cast<String>(); // Cast to List<String>
+        return imageUrls;
+        // return jsonResponse['url'];
       } else {
         developer.log(
             'MYAPITAG Failed to get image URL. Status code: ${response.statusCode}');

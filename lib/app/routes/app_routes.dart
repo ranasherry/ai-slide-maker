@@ -37,6 +37,7 @@ abstract class Routes {
   static const SING_UP = _Paths.SING_UP;
   static const PRESENTAION_GENERATOR = _Paths.PRESENTAION_GENERATOR;
   static const HOMEVIEW1 = _Paths.HOMEVIEW1;
+  static const GenderAskingView = _Paths.GenderAskingView;
 }
 
 abstract class _Paths {
@@ -73,4 +74,5 @@ abstract class _Paths {
   static const SING_UP = '/sing-up';
   static const PRESENTAION_GENERATOR = '/presentaion-generator';
   static const HOMEVIEW1 = '/HOMEVIEW1';
+  static const GenderAskingView = '/GenderAskingView';
 }

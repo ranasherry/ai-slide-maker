@@ -81,7 +81,7 @@ class SplashController extends GetxController {
         //   Get.toNamed(Routes.SING_IN);
         //   return;
         // }
-        Get.toNamed(Routes.NEW_INTRO_SCREENS);
+        Get.toNamed(Routes.GenderAskingView);
       } else {
         // if (kDebugMode) {
         //   //TODO: Testing

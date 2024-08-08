@@ -122,6 +122,7 @@ class PresentaionGeneratorController extends GetxController {
   }
 
   Future<List<String>> generateOutlines() async {
+    // noOfSlide.value = 14;
     String apiRequest =
         ''' Generate the Main Titles for the presentation slide on the Topic ${titleTextCTL.text}
     For Example For the Topic AI Following will be Your response for the titles:
@@ -281,6 +282,8 @@ class PresentaionGeneratorController extends GetxController {
 //     currentIndex.value = 3;
 //   }
 
+  int apiAttempt = 0;
+
   Future<void> startGeneratingSlide() async {
     currentIndex.value = 3;
     String writingStyle = selectedTone.value;
@@ -316,7 +319,9 @@ class PresentaionGeneratorController extends GetxController {
 
       you are only require to give your response on require json formate enclosed in curly braces{} and no other text will 
 return. if format contains section then generate only maximum 3 sections.
-Note: Sections for each slide must be 2 or 3
+Note: Sections for each slide must be 2 or 3.
+
+Always use correct json format. never use quotes inside text so I Can parse it into object.
  Required Json Format:
 
  {
@@ -366,16 +371,19 @@ Note: Sections for each slide must be 2 or 3
 
         // MySlide mySlide = MySlide.fromJson(apiRespnse);
 
-        String imageUrl =
-            await MyAPIService().fetchImageUrl("Flutter With Gaming") ??
-                "No Url Found";
+        List<String> imageUrl =
+            await MyAPIService().fetchImageUrl("Flutter With Gaming") ?? [""];
+
         developer.log("ImageUrl: ${imageUrl}");
 
-        Uint8List? imageBytes = await MyAPIService().downloadImage(imageUrl);
-        if (imageBytes != null) {
-          slides[0].slideSections[0].memoryImage = imageBytes;
-          // memoryImage=imageBytes;
-          developer.log("Image Bytes: $imageBytes");
+        int index = 0;
+        for (var url in imageUrl) {
+          Uint8List? imageBytes = await MyAPIService().downloadImage(url);
+          if (imageBytes != null) {
+            slides[index].slideSections[0].memoryImage = imageBytes;
+            // memoryImage=imageBytes;
+            developer.log("Image Bytes: $imageBytes");
+          }
         }
 
         myPresentation.value.slides.value = slides;
@@ -390,8 +398,20 @@ Note: Sections for each slide must be 2 or 3
         // developer.log("MySlide: ${mySlide.toJson()}");
       } on Exception catch (e) {
         developer.log("Json Parsing Error: $e");
+        apiAttempt++;
+        if (apiAttempt <= 2) {
+          startGeneratingSlide();
+        } else {
+          EasyLoading.showError(
+              "Something Went wrong. Please try again in few minutes..");
+          currentIndex.value--;
+        }
         // TODO
       }
+    } else {
+      EasyLoading.showError(
+          "Something Went wrong. Please try again in few minutes..");
+      currentIndex.value--;
     }
 
     for (var slide in myPresentation.value.slides) {
