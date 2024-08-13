@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:applovin_max/applovin_max.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 
@@ -440,6 +441,36 @@ class AppLovinProvider {
     if (error == null) {
       // The CMP alert was shown successfully.
     }
+  }
+
+  Obx MyBannerAdWidget() {
+    return Obx(() =>
+        RevenueCatService().currentEntitlement.value == Entitlement.paid
+            ? Container()
+            : MaxAdView(
+                adUnitId: Platform.isAndroid
+                    ? AppStrings.MAX_BANNER_ID
+                    : AppStrings.IOS_MAX_BANNER_ID,
+                adFormat: AdFormat.banner,
+                listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                  FirebaseAnalytics.instance.logAdImpression(
+                    adFormat: "banner",
+                    adSource: ad.networkName,
+                    value: ad.revenue,
+                  );
+                  print('Mrec widget ad loaded from ' + ad.networkName);
+                }, onAdLoadFailedCallback: (adUnitId, error) {
+                  print('Mrec widget ad failed to load with error code ' +
+                      error.code.toString() +
+                      ' and message: ' +
+                      error.message);
+                }, onAdClickedCallback: (ad) {
+                  print('Mrec widget ad clicked');
+                }, onAdExpandedCallback: (ad) {
+                  print('Mrec widget ad expanded');
+                }, onAdCollapsedCallback: (ad) {
+                  print('Mrec widget ad collapsed');
+                })));
   }
 }
 

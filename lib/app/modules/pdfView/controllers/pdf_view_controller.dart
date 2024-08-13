@@ -9,7 +9,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_storage/shared_storage.dart';
+
 // import 'package:shared_storage/shared_storage.dart';
 // import 'package:shared_storage/saf.dart';
 // import 'package:slide_maker/app/data/enum.dart';
@@ -23,326 +23,326 @@ ReceivePort _port = ReceivePort();
 RxList<PDFModel> pdf_viewer_model = <PDFModel>[].obs;
 
 class PdfViewController extends GetxController {
-  static const MethodChannel channel = MethodChannel('pdf_files');
-  Rx<bool> canShowPdf = false.obs;
-  Rx<bool> canShowToast = false.obs;
-  Rx<bool> canShowToolbar = true.obs;
-  Rx<bool> canShowScrollHead = true.obs;
-  // OverlayEntry? selectionOverlayEntry;
-  // PdfTextSelectionChangedDetails? textSelectionDetails;
-  // Color? contextMenuColor;
-  // Color? copyTextColor;
-  OverlayEntry? textSearchOverlayEntry;
+  // static const MethodChannel channel = MethodChannel('pdf_files');
+  // Rx<bool> canShowPdf = false.obs;
+  // Rx<bool> canShowToast = false.obs;
+  // Rx<bool> canShowToolbar = true.obs;
+  // Rx<bool> canShowScrollHead = true.obs;
+  // // OverlayEntry? selectionOverlayEntry;
+  // // PdfTextSelectionChangedDetails? textSelectionDetails;
+  // // Color? contextMenuColor;
+  // // Color? copyTextColor;
+  // OverlayEntry? textSearchOverlayEntry;
 
-  String? documentPath;
-  RxList<DocumentFile> files = <DocumentFile>[].obs;
-  StreamSubscription<DocumentFile>? _listener;
-
-  RxBool DoneScanning = false.obs;
-  String privacyLink =
-      "https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader";
-
-  // String shareApp =
-  //     "https://play.google.com/store/search?q=pdf.pdfreader.viewer.free.editor";
-  RxList<PDFModel> pdf_viewer_model = <PDFModel>[].obs;
+  // String? documentPath;
   // RxList<DocumentFile> files = <DocumentFile>[].obs;
   // StreamSubscription<DocumentFile>? _listener;
-  RxBool hasPermission = true.obs;
-  Uri? waURI;
-  bool searchPDF = true;
-  Directory? tempDir;
-  List<String> alreadyDownloadedFileName = [];
-  Rx<int> selectedindex = 0.obs;
 
-  String API29Folder =
-      'content://com.android.externalstorage.documents/tree/home%3A';
-  String API30Folder =
-      "content://com.android.externalstorage.documents/tree/home%3A";
+  // RxBool DoneScanning = false.obs;
+  // String privacyLink =
+  //     "https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader";
 
-  String kWppStatusFolderAccessed =
-      "content://com.android.externalstorage.documents/tree/home%3A";
+  // // String shareApp =
+  // //     "https://play.google.com/store/search?q=pdf.pdfreader.viewer.free.editor";
+  // RxList<PDFModel> pdf_viewer_model = <PDFModel>[].obs;
+  // // RxList<DocumentFile> files = <DocumentFile>[].obs;
+  // // StreamSubscription<DocumentFile>? _listener;
+  // RxBool hasPermission = true.obs;
+  // Uri? waURI;
+  // bool searchPDF = true;
+  // Directory? tempDir;
+  // List<String> alreadyDownloadedFileName = [];
+  // Rx<int> selectedindex = 0.obs;
 
-  @override
-  onInit() async {
-    super.onInit();
-    print("current: onit");
-    if (AppLovinProvider.instance.isInitialized.value) {
-      AppLovinMAX.setAppOpenAdListener(AppOpenAdListener(
-        onAdLoadedCallback: (ad) {
-          print("onAdLoadedCallback");
-        },
-        onAdLoadFailedCallback: (adUnitId, error) {
-          // print("onAdLoadFailedCallback");
-          print("onAdLoadFailedCallback: $error");
-        },
-        onAdDisplayedCallback: (ad) {
-          print("onAdDisplayedCallback");
-        },
-        onAdDisplayFailedCallback: (ad, error) {
-          AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-          print("onAdDisplayFailedCallback");
-        },
-        onAdClickedCallback: (ad) {
-          print("onAdClickedCallback");
-        },
-        onAdHiddenCallback: (ad) {
-          AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-        },
-        onAdRevenuePaidCallback: (ad) {
-          print("onAdRevenuePaidCallback");
-        },
-      ));
+  // String API29Folder =
+  //     'content://com.android.externalstorage.documents/tree/home%3A';
+  // String API30Folder =
+  //     "content://com.android.externalstorage.documents/tree/home%3A";
 
-      AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
-    }
+  // String kWppStatusFolderAccessed =
+  //     "content://com.android.externalstorage.documents/tree/home%3A";
 
-    // try {
-    //   getPdfFiles().then((value) {
-    //     print("GetPDFFiles Done");
-    //     nextPdf().then((value) => null);
-    //   });
-    // } on Exception catch (e) {
-    //   print("Error:$e");
-    // }
-  }
+//   @override
+//   onInit() async {
+//     super.onInit();
+//     print("current: onit");
+//     if (AppLovinProvider.instance.isInitialized.value) {
+//       AppLovinMAX.setAppOpenAdListener(AppOpenAdListener(
+//         onAdLoadedCallback: (ad) {
+//           print("onAdLoadedCallback");
+//         },
+//         onAdLoadFailedCallback: (adUnitId, error) {
+//           // print("onAdLoadFailedCallback");
+//           print("onAdLoadFailedCallback: $error");
+//         },
+//         onAdDisplayedCallback: (ad) {
+//           print("onAdDisplayedCallback");
+//         },
+//         onAdDisplayFailedCallback: (ad, error) {
+//           AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+//           print("onAdDisplayFailedCallback");
+//         },
+//         onAdClickedCallback: (ad) {
+//           print("onAdClickedCallback");
+//         },
+//         onAdHiddenCallback: (ad) {
+//           AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+//         },
+//         onAdRevenuePaidCallback: (ad) {
+//           print("onAdRevenuePaidCallback");
+//         },
+//       ));
 
-  openSafFolder() async {
-    final uri = await openDocumentTree(
-      initialUri: Uri.parse(kWppStatusFolderAccessed),
-    );
-// kWppStatusFolder=url.toString();
-    // waURI = uri;
-    // print("URL: $waURI");
+//       AppLovinMAX.loadAppOpenAd(AppStrings.MAX_APPOPEN_ID);
+//     }
 
-    if (uri == null) return;
+//     // try {
+//     //   getPdfFiles().then((value) {
+//     //     print("GetPDFFiles Done");
+//     //     nextPdf().then((value) => null);
+//     //   });
+//     // } on Exception catch (e) {
+//     //   print("Error:$e");
+//     // }
+//   }
 
-    // files = null;
-    files.clear();
+//   openSafFolder() async {
+//     final uri = await openDocumentTree(
+//       initialUri: Uri.parse(kWppStatusFolderAccessed),
+//     );
+// // kWppStatusFolder=url.toString();
+//     // waURI = uri;
+//     // print("URL: $waURI");
 
-    loadFiles(uri);
-  }
+//     if (uri == null) return;
 
-  void loadFiles(Uri uri) async {
-    hasPermission.value = await canRead(uri) ?? false;
+//     // files = null;
+//     files.clear();
 
-    if (!hasPermission.value) {
-      return;
-    }
-    final folderUri = Uri.parse(kWppStatusFolderAccessed);
+//     loadFiles(uri);
+//   }
 
-    const columns = [
-      DocumentFileColumn.displayName,
-      DocumentFileColumn.size,
-      DocumentFileColumn.lastModified,
-      DocumentFileColumn.mimeType,
-      // The column below is a optional column
-      // you can wether include or not here and
-      // it will be always available on the results
-      DocumentFileColumn.id,
-    ];
-    final fileListStream = listFiles(uri, columns: columns);
+//   void loadFiles(Uri uri) async {
+//     hasPermission.value = await canRead(uri) ?? false;
 
-    _listener = fileListStream.listen((docFile) async {
-      print("File Name: ${docFile.name} ");
+//     if (!hasPermission.value) {
+//       return;
+//     }
+//     final folderUri = Uri.parse(kWppStatusFolderAccessed);
 
-      // Uint8List? FileToStoreInList = await convertDocFileToFile(docFile);
+//     const columns = [
+//       DocumentFileColumn.displayName,
+//       DocumentFileColumn.size,
+//       DocumentFileColumn.lastModified,
+//       DocumentFileColumn.mimeType,
+//       // The column below is a optional column
+//       // you can wether include or not here and
+//       // it will be always available on the results
+//       DocumentFileColumn.id,
+//     ];
+//     final fileListStream = listFiles(uri, columns: columns);
 
-      // if (FileToStoreInList != null) {
-      if (docFile.name!.endsWith(".pdf")) {
-        print("Image: ${docFile.name}");
-        PDFModel pdf = PDFModel(
-            name: docFile.name!,
-            date: docFile.size!.toString(),
-            path: docFile.uri.toString(),
-            size: docFile.size!);
-        pdf_viewer_model.add(pdf);
-        // ImageFiles.add(FileToStoreInList);
-      }
+//     _listener = fileListStream.listen((docFile) async {
+//       print("File Name: ${docFile.name} ");
 
-      //? Add Video List
+//       // Uint8List? FileToStoreInList = await convertDocFileToFile(docFile);
 
-      // }
-    }, onDone: () {
-      // files.value = [...?files];
-      // _files.
-      print("Files1: ${pdf_viewer_model.length}");
-    });
-  }
+//       // if (FileToStoreInList != null) {
+//       if (docFile.name!.endsWith(".pdf")) {
+//         print("Image: ${docFile.name}");
+//         PDFModel pdf = PDFModel(
+//             name: docFile.name!,
+//             date: docFile.size!.toString(),
+//             path: docFile.uri.toString(),
+//             size: docFile.size!);
+//         pdf_viewer_model.add(pdf);
+//         // ImageFiles.add(FileToStoreInList);
+//       }
 
-  Future nextPdf() async {
-    DoneScanning.value = true;
-    for (var i = 0; i <= 50; i++) {
-      getPdfFiles();
-    }
-  }
+//       //? Add Video List
 
-  @override
-  void dispose() {
-    // WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
+//       // }
+//     }, onDone: () {
+//       // files.value = [...?files];
+//       // _files.
+//       print("Files1: ${pdf_viewer_model.length}");
+//     });
+//   }
 
-  Future SavePdfPath(pdfPath) async {
-    // Obtain shared preferences.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Save an String value to 'action' key.
-    await prefs.setString('pdfPath', '$pdfPath');
-  }
+//   Future nextPdf() async {
+//     DoneScanning.value = true;
+//     for (var i = 0; i <= 50; i++) {
+//       getPdfFiles();
+//     }
+//   }
 
-  Future<void> launchInBrowser(Uri url) async {
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
-      throw 'Could not launch $url';
-    }
-  }
+//   @override
+//   void dispose() {
+//     // WidgetsBinding.instance.removeObserver(this);
+//     super.dispose();
+//   }
 
-  Future<void> getPdfFiles() async {
-    print("inside getPdfFiles");
-    final pdfFiles = await channel.invokeMethod('getPdfFiles');
-    print("pdf files: $pdfFiles");
-    for (var eachpdfpath in pdfFiles) {
-      print("each:$eachpdfpath");
-      if (eachpdfpath != null) {
-        File file = File(eachpdfpath);
+//   Future SavePdfPath(pdfPath) async {
+//     // Obtain shared preferences.
+//     final SharedPreferences prefs = await SharedPreferences.getInstance();
+//     // Save an String value to 'action' key.
+//     await prefs.setString('pdfPath', '$pdfPath');
+//   }
 
-        // Get file name
-        String fileName = file.path.split('/').last;
+//   Future<void> launchInBrowser(Uri url) async {
+//     if (!await launchUrl(
+//       url,
+//       mode: LaunchMode.externalApplication,
+//     )) {
+//       throw 'Could not launch $url';
+//     }
+//   }
 
-        // Get file size
-        int fileSize = await file.length();
+//   Future<void> getPdfFiles() async {
+//     print("inside getPdfFiles");
+//     final pdfFiles = await channel.invokeMethod('getPdfFiles');
+//     print("pdf files: $pdfFiles");
+//     for (var eachpdfpath in pdfFiles) {
+//       print("each:$eachpdfpath");
+//       if (eachpdfpath != null) {
+//         File file = File(eachpdfpath);
 
-        // Get date created
-        DateTime dateCreated = await file.lastModified();
+//         // Get file name
+//         String fileName = file.path.split('/').last;
 
-        print("Name:${fileName}");
-        print("Size: ${fileSize}");
-        print("Date: ${dateCreated}");
+//         // Get file size
+//         int fileSize = await file.length();
 
-        PDFModel pdfFile = PDFModel(
-          name: fileName,
-          // file: uint8List,
-          // File: docFile,
-          path: eachpdfpath,
-          date: dateCreated.toString(),
-          // date: formatDateTime(dateCreated),
-          size: fileSize,
+//         // Get date created
+//         DateTime dateCreated = await file.lastModified();
 
-          // isdownloaded: false.obs
-        );
-        pdf_viewer_model.add(pdfFile);
-      }
+//         print("Name:${fileName}");
+//         print("Size: ${fileSize}");
+//         print("Date: ${dateCreated}");
 
-      // final document = await FlutterAbsolutePath.getAbsolutePath(pdfpath);
-      //     File tempFile = File(document);
-      // // var fileName = path.basename(file.path);
-      //   PDFModel pdfFile = PDFModel(
-      //             name: fileName,
-      //             // file: uint8List,
-      //             // File: docFile,
-      //             path: Uri.parse(file.path),
-      //             date: "",
-      //             size: 123
+//         PDFModel pdfFile = PDFModel(
+//           name: fileName,
+//           // file: uint8List,
+//           // File: docFile,
+//           path: eachpdfpath,
+//           date: dateCreated.toString(),
+//           // date: formatDateTime(dateCreated),
+//           size: fileSize,
 
-      //             // isdownloaded: false.obs
-      //             );
-      // whatsapp_images.add(waImage);
-      // pdf_viewer_model.add(pdfFile);
-      // print("PDF Path: ${file.path}");
-      print(eachpdfpath);
-    }
-    print("After getPdfFiles");
+//           // isdownloaded: false.obs
+//         );
+//         pdf_viewer_model.add(pdfFile);
+//       }
 
-    // print(pdfFiles);
-    return pdfFiles;
-  }
+//       // final document = await FlutterAbsolutePath.getAbsolutePath(pdfpath);
+//       //     File tempFile = File(document);
+//       // // var fileName = path.basename(file.path);
+//       //   PDFModel pdfFile = PDFModel(
+//       //             name: fileName,
+//       //             // file: uint8List,
+//       //             // File: docFile,
+//       //             path: Uri.parse(file.path),
+//       //             date: "",
+//       //             size: 123
 
-  // String formatDateTime(DateTime dateTime) {
-  //   String formattedDate = DateFormat('MMM, dd yyyy').format(dateTime);
-  //   return formattedDate;
-  // }
+//       //             // isdownloaded: false.obs
+//       //             );
+//       // whatsapp_images.add(waImage);
+//       // pdf_viewer_model.add(pdfFile);
+//       // print("PDF Path: ${file.path}");
+//       print(eachpdfpath);
+//     }
+//     print("After getPdfFiles");
 
-  ShareFile(String path) async {
-    Share.shareFiles([path], text: "PDF");
-  }
+//     // print(pdfFiles);
+//     return pdfFiles;
+//   }
 
-  //! new code
+//   // String formatDateTime(DateTime dateTime) {
+//   //   String formattedDate = DateFormat('MMM, dd yyyy').format(dateTime);
+//   //   return formattedDate;
+//   // }
 
-  @override
-  void onReady() {
-    super.onReady();
-    print("current:");
-    // for (var i = 0; i<=100; i++) {
-    // try {
-    //   getPdfFiles().then((value) => DoneScanning.value=true);
-    // } on Exception catch (e) {
-    //   print("Error:$e");
-    // }
-// }
-  }
+//   ShareFile(String path) async {
+//     Share.shareFiles([path], text: "PDF");
+//   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    resetMethodChannel();
-  }
+//   //! new code
 
-  String getReadableFileSize(int sizeInBytes) {
-    if (sizeInBytes < 1024) {
-      return '${sizeInBytes} B';
-    } else if (sizeInBytes < 1048576) {
-      return '${(sizeInBytes / 1024).toStringAsFixed(1)}KB';
-    } else if (sizeInBytes < 1073741824) {
-      return '${(sizeInBytes / 1048576).toStringAsFixed(1)}MB';
-    } else {
-      return '${(sizeInBytes / 1073741824).toStringAsFixed(1)}GB';
-    }
-  }
+//   @override
+//   void onReady() {
+//     super.onReady();
+//     print("current:");
+//     // for (var i = 0; i<=100; i++) {
+//     // try {
+//     //   getPdfFiles().then((value) => DoneScanning.value=true);
+//     // } on Exception catch (e) {
+//     //   print("Error:$e");
+//     // }
+// // }
+//   }
 
-  // Future<Uint8List?> convertDocFileToFile(DocumentFile docFile) async {
-  //   Uint8List? memoryFile = await getDocumentContent(docFile.uri);
+//   @override
+//   void onClose() {
+//     super.onClose();
+//     resetMethodChannel();
+//   }
 
-  //   return memoryFile;
-  // }
+//   String getReadableFileSize(int sizeInBytes) {
+//     if (sizeInBytes < 1024) {
+//       return '${sizeInBytes} B';
+//     } else if (sizeInBytes < 1048576) {
+//       return '${(sizeInBytes / 1024).toStringAsFixed(1)}KB';
+//     } else if (sizeInBytes < 1073741824) {
+//       return '${(sizeInBytes / 1048576).toStringAsFixed(1)}MB';
+//     } else {
+//       return '${(sizeInBytes / 1073741824).toStringAsFixed(1)}GB';
+//     }
+//   }
 
-  final Uri url =
-      Uri.parse('https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader');
+//   // Future<Uint8List?> convertDocFileToFile(DocumentFile docFile) async {
+//   //   Uint8List? memoryFile = await getDocumentContent(docFile.uri);
 
-  Future<void> LaunchUrl() async {
-    if (!await launchUrl(url)) {
-      throw 'Could not launch $url';
-    }
-  }
+//   //   return memoryFile;
+//   // }
 
-  void resetMethodChannel() async {
-    final result = await channel.invokeMethod('resetMethodChannel');
-    print("Reset MethodChannel: $result");
-  }
+//   final Uri url =
+//       Uri.parse('https://clarkkentad98.wixsite.com/moonlight/post/pdf-reader');
 
-  void deleteFile(String path, int index) async {
-    EasyLoading.show(status: "Deleting..");
+//   Future<void> LaunchUrl() async {
+//     if (!await launchUrl(url)) {
+//       throw 'Could not launch $url';
+//     }
+//   }
 
-    try {
-      final file = File(path);
-      if (await file.exists()) {
-        await file.delete();
-        EasyLoading.dismiss();
-        print("Length: Before${pdf_viewer_model.length}");
-        pdf_viewer_model.removeAt(index);
-        // pdf_viewer_model.remove(path);
-        print("Length: After ${pdf_viewer_model.length}");
+//   void resetMethodChannel() async {
+//     final result = await channel.invokeMethod('resetMethodChannel');
+//     print("Reset MethodChannel: $result");
+//   }
 
-        EasyLoading.showSuccess("Deleted Successfully");
-        print("File deleted successfully: $path");
-      } else {
-        EasyLoading.showError("File not found");
-        print("File not found: $path");
-      }
-    } catch (e) {
-      EasyLoading.showError("Error deleting file:");
+//   void deleteFile(String path, int index) async {
+//     EasyLoading.show(status: "Deleting..");
 
-      print("Error deleting file: $e");
-    }
-  }
+//     try {
+//       final file = File(path);
+//       if (await file.exists()) {
+//         await file.delete();
+//         EasyLoading.dismiss();
+//         print("Length: Before${pdf_viewer_model.length}");
+//         pdf_viewer_model.removeAt(index);
+//         // pdf_viewer_model.remove(path);
+//         print("Length: After ${pdf_viewer_model.length}");
+
+//         EasyLoading.showSuccess("Deleted Successfully");
+//         print("File deleted successfully: $path");
+//       } else {
+//         EasyLoading.showError("File not found");
+//         print("File not found: $path");
+//       }
+//     } catch (e) {
+//       EasyLoading.showError("Error deleting file:");
+
+//       print("Error deleting file: $e");
+//     }
+//   }
 }

@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latext/latext.dart';
-import 'package:launch_review/launch_review.dart';
+
 
 import 'package:shimmer/shimmer.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';

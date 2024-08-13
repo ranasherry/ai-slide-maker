@@ -3,73 +3,74 @@ import 'dart:typed_data';
 
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:get/get.dart';
-import 'package:shared_storage/shared_storage.dart';
+
 import 'package:slide_maker/app/data/pdf_viewer_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class ShowPPTController extends GetxController {
   //TODO: Implement ShowPDFController
 
-  final count = 0.obs;
+  // final count = 0.obs;
 
-  RxBool isUploaded = false.obs;
-  RxString uploadedUrl = "".obs;
+  // RxBool isUploaded = false.obs;
+  // RxString uploadedUrl = "".obs;
 
-  PDFModel? pdfModel;
+  // PDFModel? pdfModel;
 
-  @override
-  void onInit() {
-    super.onInit();
+  // @override
+  // void onInit() {
+  //   super.onInit();
 
-    print("ShowPPTController init start");
-    pdfModel = Get.arguments as PDFModel;
-    if (pdfModel != null) {
-      print("file path: ${pdfModel!.path}");
-      uploadFileToFirebase(pdfModel!.path);
-    } else {
-      print("Argument is null");
-    }
-  }
+  //   print("ShowPPTController init start");
+  //   pdfModel = Get.arguments as PDFModel;
+  //   if (pdfModel != null) {
+  //     print("file path: ${pdfModel!.path}");
+  //     uploadFileToFirebase(pdfModel!.path);
+  //   } else {
+  //     print("Argument is null");
+  //   }
+  // }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  // @override
+  // void onReady() {
+  //   super.onReady();
+  // }
 
-  @override
-  void onClose() {}
-  void increment() => count.value++;
+  // @override
+  // void onClose() {}
+  // void increment() => count.value++;
 
-  uploadFileToFirebase(String path) async {
-    print("FileUploading Start Path: $path");
-    Uri uri = Uri.parse(path);
-    Uint8List? memoryFile = await getDocumentContent(uri);
+  // uploadFileToFirebase(String path) async {
 
-    // return;
+  //   print("FileUploading Start Path: $path");
+  //   Uri uri = Uri.parse(path);
+  //   Uint8List? memoryFile = await getDocumentContent(uri);
 
-    try {
-      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child(
-              'ppt_files/${DateTime.now().millisecondsSinceEpoch}.pptx'); // Adjust path as needed
-      // ref.putData(memoryFile!);
-      // firebase_storage.UploadTask uploadTask = ref.putFile(File(path));
-      firebase_storage.UploadTask uploadTask = ref.putData(memoryFile!);
-      print("FileUploading Put File");
+  //   // return;
 
-      firebase_storage.TaskSnapshot snapshot = await uploadTask;
+  //   try {
+  //     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+  //         .ref()
+  //         .child(
+  //             'ppt_files/${DateTime.now().millisecondsSinceEpoch}.pptx'); // Adjust path as needed
+  //     // ref.putData(memoryFile!);
+  //     // firebase_storage.UploadTask uploadTask = ref.putFile(File(path));
+  //     firebase_storage.UploadTask uploadTask = ref.putData(memoryFile!);
+  //     print("FileUploading Put File");
 
-      String downloadUrl = await snapshot.ref.getDownloadURL();
+  //     firebase_storage.TaskSnapshot snapshot = await uploadTask;
 
-      String a = Uri.encodeFull("$downloadUrl");
+  //     String downloadUrl = await snapshot.ref.getDownloadURL();
 
-      uploadedUrl.value = a;
-      isUploaded.value = true;
+  //     String a = Uri.encodeFull("$downloadUrl");
 
-      print('File uploaded successfully: $downloadUrl');
-    } on firebase_storage.FirebaseException catch (e) {
-      print('Firebase storage error: $e');
-      // Handle error appropriately, e.g., display an error message to the user
-    }
-  }
+  //     uploadedUrl.value = a;
+  //     isUploaded.value = true;
+
+  //     print('File uploaded successfully: $downloadUrl');
+  //   } on firebase_storage.FirebaseException catch (e) {
+  //     print('Firebase storage error: $e');
+  //     // Handle error appropriately, e.g., display an error message to the user
+  //   }
+  // }
 }

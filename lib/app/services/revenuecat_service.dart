@@ -140,6 +140,7 @@ class RevenueCatService {
       RegExp('.{1,800}').allMatches(text).map((m) => m.group(0)).forEach(print);
 
   Future<void> purchaseSubscription(Package package) async {
+    // Purchases.purchaseProduct()
     try {
       final purchaserInfo =
           await Purchases.purchasePackage(package).then((value) {});

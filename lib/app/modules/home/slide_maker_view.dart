@@ -13,7 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:im_animations/im_animations.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:launch_review/launch_review.dart';
+
 import 'package:lottie/lottie.dart';
 
 import 'package:slide_maker/app/data/slideResponce.dart';

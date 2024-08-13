@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/modules/intro_screens/controllers/new_intro_screen_controller.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
+import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:slide_maker/app/utills/helprer_widgets/main_header_bg.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -63,14 +64,20 @@ class GenderAskingView extends GetView<newInroScreenCTL> {
                 Container(
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.blockSizeVertical * 35,
-                  child: Center(
-                    child: Text("Please choose your Gender",
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 6,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textfieldcolor),
-                        )),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      slide_header_name(),
+                      Center(
+                        child: Text("Please choose your Gender",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.textfieldcolor),
+                            )),
+                      ),
+                    ],
                   ),
                 ),
                 Align(

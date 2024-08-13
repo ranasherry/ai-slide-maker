@@ -88,7 +88,7 @@ class SplashController extends GetxController {
         //   Get.toNamed(Routes.SING_IN);
         //   return;
         // }
-        Get.offNamed(Routes.HomeView);
+        Get.offNamed(Routes.HOMEVIEW1);
         // Get.offNamed(Routes.NEW_INTRO_SCREENS);
       }
     });

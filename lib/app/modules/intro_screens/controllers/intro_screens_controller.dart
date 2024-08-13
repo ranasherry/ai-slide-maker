@@ -34,7 +34,7 @@ class IntroScreensController extends GetxController {
   void setFirstTime(bool bool) {
     prefs.then((SharedPreferences pref) {
       pref.setBool('first_time', bool);
-      Get.offNamed(Routes.HomeView);
+      Get.offNamed(Routes.HOMEVIEW1);
     });
   }
 }

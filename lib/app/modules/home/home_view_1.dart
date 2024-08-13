@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/colors.dart';
@@ -17,6 +18,7 @@ class HomeView1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: AppLovinProvider.instance.MyBannerAdWidget(),
       // backgroundColor: AppColors.mainColor,
       body: Container(
         height: SizeConfig.screenHeight,
@@ -90,7 +92,7 @@ class HomeView1 extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: "a click ahead", // Second line
+                      text: "a Click Ahead", // Second line
                       style: GoogleFonts.roboto(
                         textStyle: TextStyle(
                           fontSize: SizeConfig.blockSizeHorizontal * 6,
@@ -163,12 +165,13 @@ class HomeView1 extends StatelessWidget {
                                         width:
                                             SizeConfig.blockSizeHorizontal * 40,
                                         child: Text(
-                                          "AI Slide Maker GEN 2.0",
+                                          "Presentation AI 2.0",
+                                          textAlign: TextAlign.center,
                                           style: GoogleFonts.inter(
                                               textStyle: TextStyle(
                                                   fontSize: SizeConfig
                                                           .blockSizeHorizontal *
-                                                      5,
+                                                      3.5,
                                                   fontWeight: FontWeight.bold,
                                                   color: Color(0xFF585858))),
                                         ),
@@ -220,7 +223,7 @@ class HomeView1 extends StatelessWidget {
                                 Get.toNamed(Routes.NEWSLIDE_GENERATOR);
                               },
                               child:
-                                  modules(AppImages.slide, "AI Slider Maker")),
+                                  modules(AppImages.slide, "Presentation AI")),
                         ],
                       )
                     ],
@@ -243,6 +246,7 @@ class HomeView1 extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2), // Shadow color
+              // color: Colors.orange.withOpacity(0.3), // Shadow color
               spreadRadius: 2, // How much the shadow spreads
               blurRadius: 10, // How soft the shadow is
               offset: Offset(4, 4), // Position of the shadow (x, y)
@@ -269,7 +273,7 @@ class HomeView1 extends StatelessWidget {
                   text,
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 5,
+                          fontSize: SizeConfig.blockSizeHorizontal * 3.5,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF585858))),
                 ),

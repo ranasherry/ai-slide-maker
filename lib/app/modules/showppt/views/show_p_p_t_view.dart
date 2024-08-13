@@ -83,14 +83,14 @@ class ShowPPTView extends GetView<ShowPPTController> {
       //     File("storage/emulated/0/Download/gis_succinctly.pdf")),
       body: Container(
         margin: EdgeInsets.only(bottom: 60),
-        child: Obx(() => controller.isUploaded.value
-            ? EasyDocsViewer(
-                url: controller.uploadedUrl.value,
-              )
-            : Container(
-                // child: CircularProgressIndicator(),
-                child: _LoadingPPT(),
-              )),
+        // child: Obx(() => controller.isUploaded.value
+        //     ? EasyDocsViewer(
+        //         url: controller.uploadedUrl.value,
+        //       )
+        //     : Container(
+        //         // child: CircularProgressIndicator(),
+        //         child: _LoadingPPT(),
+        //       )),
       ),
     );
   }

@@ -24,12 +24,19 @@ class TitleSlide1 extends StatefulWidget {
 class __TitleSlide1State extends State<TitleSlide1> {
   int bgIndex = 0;
 
+  double titleFontSize = 34;
+
   @override
   // ignore: must_call_super
   initState() {
     setState(() {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
+      titleFontSize = widget.mySlide.slideSections[0].memoryImage != null
+          ? widget.size.height * 0.12
+          : widget.size.height * 0.15;
+
+      print("Title Font Size: $titleFontSize");
     });
     print(
         "initState Called: Image Bytes: ${widget.mySlide.slideSections[0].memoryImage}");
@@ -68,9 +75,9 @@ class __TitleSlide1State extends State<TitleSlide1> {
                       Text(
                         widget.mySlide.slideTitle,
                         style: widget.slidePallet.bigTitleTStyle
-                            .copyWith(fontSize: widget.size.width * 0.065),
+                            .copyWith(fontSize: titleFontSize),
                       ),
-                      verticalSpace(widget.size.height * 0.1),
+                      verticalSpace(widget.size.height * 0.05),
                       Text(
                         widget.mySlide.slideSections[0].sectionContent!,
                         style: widget.slidePallet.bigTitleTStyle

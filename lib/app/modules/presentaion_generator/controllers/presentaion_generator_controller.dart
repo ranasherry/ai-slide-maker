@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
@@ -8,6 +9,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
@@ -18,8 +20,8 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/services/myapi_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
-import 'package:slide_maker/app/utills/colors.dart';
-import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/helper_widgets.dart';
+
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
@@ -36,11 +38,15 @@ class PresentaionGeneratorController extends GetxController {
   Rx<String> selectedTextAmount = 'Brief'.obs;
   Rx<bool> isSelected = false.obs;
 
+  RxBool isWaitingForTime = false.obs;
+  RxString timerValue = "".obs;
   //-----------------------------------------------------------------------------------//
 
   //? Slide Outline Section
   RxList<String> plannedOutlines = <String>[].obs;
   RxBool isPlannedOutlinesGenerated = false.obs;
+
+  List<Uint8List> downloadedImages = [];
 
 //-------------------------------------------------------------------------------------//
   final count = 0.obs;
@@ -77,6 +83,8 @@ class PresentaionGeneratorController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
 
+    initializeTimer();
+
     // initdummyPresentation();
     // RequestPresentationPlan();
   }
@@ -96,6 +104,7 @@ class PresentaionGeneratorController extends GetxController {
   void RequestPresentationPlan() async {
     bool result = await InternetConnectionChecker().hasConnection;
     if (result == true) {
+      StartDownloadingImage(titleTextCTL.text);
       EasyLoading.show(status: "Generating Outlines..");
       plannedOutlines.value = await generateOutlines();
       if (plannedOutlines.length >= 0) {
@@ -372,21 +381,30 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // MySlide mySlide = MySlide.fromJson(apiRespnse);
 
         List<String> imageUrl =
-            await MyAPIService().fetchImageUrl("Flutter With Gaming") ?? [""];
+            await MyAPIService().fetchImageUrl("Flutter With Gaming", 1) ?? [];
 
         developer.log("ImageUrl: ${imageUrl}");
 
-        int index = 0;
-        for (var url in imageUrl) {
-          Uint8List? imageBytes = await MyAPIService().downloadImage(url);
-          if (imageBytes != null) {
-            slides[index].slideSections[0].memoryImage = imageBytes;
-            // memoryImage=imageBytes;
-            developer.log("Image Bytes: $imageBytes");
-          }
+        // int index = 0;
+        // for (var url in imageUrl) {
+        //   Uint8List? imageBytes = await MyAPIService().downloadImage(url);
+        //   if (imageBytes != null) {
+        //     slides[index].slideSections[0].memoryImage = imageBytes;
+        //     // memoryImage=imageBytes;
+        //     developer.log("Image Bytes: $imageBytes");
+        //   }
+        // }
+
+        int i = 0;
+
+        for (var image in downloadedImages) {
+          slides[i].slideSections[0].memoryImage = image;
         }
 
+        developer.log("Images Saved in Slides: ${i + 1}");
+
         myPresentation.value.slides.value = slides;
+        setNewTime();
 
         // coveredTitles.add(mySlide.slideTitle);
         developer
@@ -569,7 +587,153 @@ Always use correct json format. never use quotes inside text so I Can parse it i
     }
   }
 
+  Future<void> StartDownloadingImage(String title) async {
+    developer.log("Started Generating Images...");
+    final startTime = DateTime.now();
+    try {
+      // Record the start time
+      // List<String> imageUrl = [];
+      List<String> imageUrl =
+          await MyAPIService().fetchImageUrl("$title", 3) ?? [];
+
+      // imageUrl.add(
+      //     "https://cdn.britannica.com/84/203584-050-57D326E5/speed-internet-technology-background.jpg");
+      // imageUrl.add(
+      //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfOcYP2JM5nfHtZJai-LkaFynJpfx57yn2iA&s");
+      // imageUrl.add(
+      //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStJMEX3bKtfOgmU4tQzbneyAVCXJyW7As_kA&s");
+      // imageUrl.add(
+      //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBRH7oSi8-bTIBfSZjUCL9iWdBWyGUteUJPg&s");
+      // imageUrl.add(
+      //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7LyYFYMemkRO_G4Lc9mQSygeLfwP1482KHg&s");
+      // imageUrl.add(
+      //     "https://firebasestorage.googleapis.com/v0/b/ai-slide-generator.appspot.com/o/MathImages%2F1703165648901.jpg?alt=media&token=e584958d-c4f2-4a1d-9703-4755219efc1a");
+      // imageUrl.add("aqibsiddiqui.com/images/technology4.jpg");
+      // imageUrl.add("aqibsiddiqui.com/images/technology3.jpg");
+
+      developer.log("ImageUrls: $imageUrl");
+      for (var url in imageUrl) {
+        final startTimeIndividual = DateTime.now();
+
+        Uint8List? imageBytes = await MyAPIService().downloadImage(url);
+        if (imageBytes != null) {
+          downloadedImages.add(imageBytes);
+          final endTime1 = DateTime.now();
+          final duration1 = endTime1.difference(startTimeIndividual);
+          // memoryImage=imageBytes;
+          // downloadedImages[url] = imageBytes.length; // Store size in bytes
+          developer.log(
+              "Downloaded Image: $url (Size: ${imageBytes.length} bytes)   (Time: ${duration1.inMilliseconds})");
+        }
+      }
+    } on Exception catch (e) {
+      // TODO
+    }
+    final endTime = DateTime.now();
+
+    // Calculate the total time taken
+    final duration = endTime.difference(startTime);
+    developer.log(
+        "Total time taken to download all images: ${duration.inMilliseconds} ms");
+  }
+
   //-----------------------------------------------------------------------------------------------//
+
+  Future<void> initializeTimer() async {
+    try {
+      // Load last generation time from SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // DateTime? lastGenerationTime =
+      //     prefs.getString('lastGenerationTime') != null
+      //         ? DateTime.parse(prefs.getString('lastGenerationTime')!)
+      //         : null;
+
+      // Start a timer to update the variable periodically
+      Timer.periodic(Duration(seconds: 1), (timer) async {
+        try {
+          DateTime? lastGenerationTime =
+              prefs.getString('lastGenerationTime') != null
+                  ? DateTime.parse(prefs.getString('lastGenerationTime')!)
+                  : null;
+          if (lastGenerationTime != null) {
+            // Calculate the difference between last generation time and current time
+            Duration difference = DateTime.now().difference(lastGenerationTime);
+
+            // Calculate the remaining time as a countdown
+            Duration countdown = Duration(minutes: 5) - difference;
+            countdown = Duration(
+                seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
+
+            // Update the RxString with the formatted time difference
+
+            // If the countdown reaches zero, stop the timer
+            if (countdown.inSeconds <= 0) {
+              // timer.cancel();
+              timerValue.value = formatDuration(countdown);
+
+              isWaitingForTime.value = false;
+            } else {
+              timerValue.value = formatDuration(countdown);
+
+              isWaitingForTime.value = true;
+            }
+
+            // print("Last Generation: $lastGenerationTime");
+            // print("Difference: $difference");
+            // print("Timer: ${timerValue.value} ");
+          } else {
+            // Handle the case when lastGenerationTime is null
+            isWaitingForTime.value = false;
+            print("No lastGenerationTime available.");
+          }
+        } catch (e) {
+          print("Error in timer execution: $e");
+          // Handle the error gracefully without stopping the timer
+        }
+      });
+    } catch (e) {
+      print("Error in initializeTimer: $e");
+    }
+  }
+
+  String formatDuration(Duration duration) {
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> setNewTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('lastGenerationTime', DateTime.now().toIso8601String());
+    // initializeTimer();
+  }
+
+  Future<void> setRewardUnlock() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Set the last generation time to 10 minutes before the current time
+    DateTime lastGenerationTime =
+        DateTime.now().subtract(Duration(minutes: 20));
+
+    prefs.setString('lastGenerationTime', lastGenerationTime.toIso8601String());
+    // initializeTimer();
+  }
+
+  void showWatchRewardPrompt() {
+    // EasyLoading.showError("Wait for the time");
+    showWatchAdDialog(
+      onWatchAd: () {
+        // Implement logic to handle "Watch Ad" button click
+        print("Watch Ad clicked");
+        AppLovinProvider.instance.showRewardedAd(setRewardUnlock);
+      },
+      onCancel: () {
+        // Implement logic to handle "Cancel" button click
+        print("Cancel clicked");
+      },
+      timerText: timerValue,
+    );
+  }
 }
 
 enum TextAmount { Brief, Medium, Detailed }

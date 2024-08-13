@@ -12,9 +12,10 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_pptx/flutter_pptx.dart';
 import 'package:get/get.dart';
-import 'package:launch_review/launch_review.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_maker/app/modules/book_writer/controllers/book_generated_ctl.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
@@ -499,9 +500,10 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   }
 
   int reviewCount = 5;
-  Future<void> showReviewDialogue(BuildContext context) async {
+  Future<void> showReviewDialogue(BuildContext context,
+      {bool isSettings = false}) async {
     log("showReviewDialogue");
-    if (reviewCount < 5) {
+    if (reviewCount < 5 && !isSettings) {
       reviewCount++;
       return;
     }

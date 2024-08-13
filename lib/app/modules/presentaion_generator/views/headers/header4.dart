@@ -13,8 +13,8 @@ class Header4 extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "Check the generated",
-          // textAlign: TextAlign.center,
+          "Check the generated \nSlides",
+          textAlign: TextAlign.center,
           style: GoogleFonts.robotoFlex(
               textStyle: TextStyle(
             fontSize: SizeConfig.blockSizeHorizontal * 7.5,
@@ -22,17 +22,17 @@ class Header4 extends StatelessWidget {
             color: AppColors.textfieldcolor,
           )),
         ),
-        Text(
-          "slides",
-          textAlign: TextAlign.center,
-          style: GoogleFonts.robotoFlex(
-              textStyle: TextStyle(
-            height: 1.1,
-            fontSize: SizeConfig.blockSizeHorizontal * 8,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textfieldcolor,
-          )),
-        ),
+        // Text(
+        //   "slides",
+        //   textAlign: TextAlign.center,
+        //   style: GoogleFonts.robotoFlex(
+        //       textStyle: TextStyle(
+        //     height: 1.1,
+        //     fontSize: SizeConfig.blockSizeHorizontal * 8,
+        //     fontWeight: FontWeight.bold,
+        //     color: AppColors.textfieldcolor,
+        //   )),
+        // ),
         verticalSpace(SizeConfig.blockSizeVertical * 2),
         Container(
           width: SizeConfig.blockSizeHorizontal * 65,

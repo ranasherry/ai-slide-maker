@@ -16,12 +16,18 @@ class newInroScreenCTL extends GetxController {
   }
 
   final RxList<String> chipOptions = <String>[
+    'Teacher',
+    'Student',
+    'Corporate Trainer',
+    'Business Executive',
+    'Salesperson',
+    'Marketing Manager',
+    'Engineer',
     'Information Technology',
     'Creativity',
-    'Healthcare',
-    'Education',
-    'Engineering',
-    'Business Management',
+    'Healthcare Professional',
+    'Real Estate Agent',
+    'Public Speaker',
     'Law & Public Service',
     'Accounting & Finance',
     'Science & Research',
@@ -63,7 +69,8 @@ class newInroScreenCTL extends GetxController {
     prefs.then((SharedPreferences pref) {
       pref.setBool('first_time', bool);
 
-      Get.offNamed(Routes.HomeView);
+      // Get.offNamed(Routes.HomeView);
+      Get.offNamed(Routes.HOMEVIEW1);
     });
   }
 

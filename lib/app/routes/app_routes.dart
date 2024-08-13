@@ -5,6 +5,8 @@ abstract class Routes {
   Routes._();
 
   static const HomeView = _Paths.HomeView;
+  static const HOMEVIEW1 = _Paths.HOMEVIEW1;
+
   static const SubHomeView = _Paths.SubHomeView;
   static const SplashScreen = _Paths.SplashScreen;
   static const SlideMakerView = _Paths.SlideMakerView;
@@ -36,7 +38,6 @@ abstract class Routes {
   static const SING_IN = _Paths.SING_IN;
   static const SING_UP = _Paths.SING_UP;
   static const PRESENTAION_GENERATOR = _Paths.PRESENTAION_GENERATOR;
-  static const HOMEVIEW1 = _Paths.HOMEVIEW1;
   static const GenderAskingView = _Paths.GenderAskingView;
 }
 

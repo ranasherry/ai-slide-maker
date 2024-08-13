@@ -7,7 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:launch_review/launch_review.dart';
+import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
+
 import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
@@ -138,9 +139,11 @@ class SettingsView extends GetView<SettingsViewCTL> {
             // ),
             GestureDetector(
               onTap: () {
-                LaunchReview.launch(
-                  androidAppId: "com.genius.aislides.generator",
-                );
+                HomeViewCtl homeViewCtl = Get.find();
+                homeViewCtl.showReviewDialogue(context, isSettings: true);
+                // LaunchReview.launch(
+                //   androidAppId: "com.genius.aislides.generator",
+                // );
               },
               child: settings_btn(
                   "Rate Us",

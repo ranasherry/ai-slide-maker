@@ -51,9 +51,9 @@ class ShowPDFView extends GetView<PdfViewController> {
                     EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 5),
                 child: GestureDetector(
                     onTap: () {
-                      controller.ShareFile(controller
-                          .pdf_viewer_model[controller.selectedindex.value].path
-                          .toString());
+                      // controller.ShareFile(controller
+                      //     .pdf_viewer_model[controller.selectedindex.value].path
+                      //     .toString());
                       //! share file using unitlist
                       // Share.shareXFiles([
                       //   XFile.fromData(
@@ -76,49 +76,32 @@ class ShowPDFView extends GetView<PdfViewController> {
         margin: EdgeInsets.only(bottom: 60),
         child: Column(
           children: [
-            Expanded(
-              child: PDFView(
-                filePath: controller
-                    .pdf_viewer_model[controller.selectedindex.value].path,
-                enableSwipe: true,
-                swipeHorizontal: true,
-                autoSpacing: false,
-                pageFling: false,
-                onRender: (_pages) {
-                  // setState(() {
-                  //   pages = _pages;
-                  //   isReady = true;
-                  // });
-                },
-                onError: (error) {
-                  print(error.toString());
-                },
-                onPageError: (page, error) {
-                  print('$page: ${error.toString()}');
-                },
-                onViewCreated: (PDFViewController pdfViewController) {
-                  // _controller.complete(pdfViewController);
-                },
-                onPageChanged: (int? page, int? total) {
-                  print('page change: $page/$total');
-                },
-              ),
-            ),
             // Expanded(
-            //   child: SfPdfViewer.file(File(controller
-            //       .pdf_viewer_model[controller.selectedindex.value].path)),
-            // ),
-            // Expanded(
-            //   child: Obx(
-            //     () => SfPdfViewer.memory(
-            //       controller
-            //           .pdf_viewer_model[controller.selectedindex.value].file,
-            //       controller: controller.pdfViewerController,
-            //       key: controller.pdfViewerKey,
-            //       interactionMode: controller.interactionMode,
-            //       scrollDirection: controller.scrollDirection,
-            //       pageLayoutMode: controller.pageLayoutMode,
-            //     ),
+            //   child: PDFView(
+            //     filePath: controller
+            //         .pdf_viewer_model[controller.selectedindex.value].path,
+            //     enableSwipe: true,
+            //     swipeHorizontal: true,
+            //     autoSpacing: false,
+            //     pageFling: false,
+            //     onRender: (_pages) {
+            //       // setState(() {
+            //       //   pages = _pages;
+            //       //   isReady = true;
+            //       // });
+            //     },
+            //     onError: (error) {
+            //       print(error.toString());
+            //     },
+            //     onPageError: (page, error) {
+            //       print('$page: ${error.toString()}');
+            //     },
+            //     onViewCreated: (PDFViewController pdfViewController) {
+            //       // _controller.complete(pdfViewController);
+            //     },
+            //     onPageChanged: (int? page, int? total) {
+            //       print('page change: $page/$total');
+            //     },
             //   ),
             // ),
           ],

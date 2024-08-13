@@ -19,6 +19,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: footerWidget(),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -49,7 +50,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
               ),
             ),
           ),
-          footerWidget()
+          // footerWidget()
         ],
       ),
     );
@@ -670,77 +671,83 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
     );
   }
 
-  Align footerWidget() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Card(
-        // elevation: 5.0, // Set the elevation to the desired value
-        margin: EdgeInsets.zero, // Remove default margins if needed
-        child: Container(
-          width: SizeConfig.screenWidth,
-          height: SizeConfig.screenHeight * 0.17,
-          decoration: BoxDecoration(
-            color: AppColors.footerContainerColor,
-            border: Border(
-              top: BorderSide(
-                color: const Color.fromARGB(
-                    255, 207, 207, 207), // Set the color to grey
-                width: 1.0, // Set the width of the border
-              ),
+  Widget footerWidget() {
+    return Card(
+      // elevation: 5.0, // Set the elevation to the desired value
+      margin: EdgeInsets.zero, // Remove default margins if needed
+      child: Container(
+        width: SizeConfig.screenWidth,
+        height: SizeConfig.screenHeight * 0.17,
+        decoration: BoxDecoration(
+          color: AppColors.footerContainerColor,
+          border: Border(
+            top: BorderSide(
+              color: const Color.fromARGB(
+                  255, 207, 207, 207), // Set the color to grey
+              width: 1.0, // Set the width of the border
             ),
           ),
-          child: Container(
-            height: SizeConfig.blockSizeVertical * 18,
-            width: SizeConfig.screenWidth,
-            decoration: BoxDecoration(
-              color: AppColors.footerContainerColor,
-              // border: Border.fromBorderSide(
-              //     BorderSide(color: Colors.grey.shade300, width: 2)
+        ),
+        child: Container(
+          height: SizeConfig.blockSizeVertical * 18,
+          width: SizeConfig.screenWidth,
+          decoration: BoxDecoration(
+            color: AppColors.footerContainerColor,
+            // border: Border.fromBorderSide(
+            //     BorderSide(color: Colors.grey.shade300, width: 2)
 
-              //     )
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
+            //     )
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      if (!controller.isWaitingForTime.value) {
+                        // if (!controller.isWaitingForTime.value) {
                         controller.switchToSlidesOutlines();
-                      },
-                      child: Container(
-                        height: SizeConfig.blockSizeVertical * 7,
-                        width: SizeConfig.blockSizeHorizontal * 85,
-                        decoration: BoxDecoration(
-                            color: AppColors.mainColor,
-                            borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 8)),
-                        child: Center(
-                          child:
-                              Text("Generate a plan", style: AppStyle.button),
-                        ),
+                      } else {
+                        controller.showWatchRewardPrompt();
+                      }
+                      // controller.switchToSlidesOutlines();
+                    },
+                    child: Container(
+                      height: SizeConfig.blockSizeVertical * 7,
+                      width: SizeConfig.blockSizeHorizontal * 85,
+                      decoration: BoxDecoration(
+                          color: AppColors.mainColor,
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 8)),
+                      child: Center(
+                        child: Text("Generate a plan", style: AppStyle.button),
                       ),
                     ),
                   ),
                 ),
-                // Container(
-                //   height: SizeConfig.blockSizeVertical * 4,
-                //   width: SizeConfig.blockSizeHorizontal * 40,
-                //   decoration: BoxDecoration(
-                //       color: AppColors.textfieldcolor,
-                //       borderRadius: BorderRadius.circular(
-                //           SizeConfig.blockSizeHorizontal * 8)),
-                //   child: Center(
-                //     child: Text(
-                //       "1 free attempts left",
-                //       style: AppStyle.subHeadingText,
-                //     ),
-                //   ),
-                // )
-              ],
-            ),
+              ),
+              verticalSpace(SizeConfig.blockSizeVertical * 1),
+              Obx(() => controller.isWaitingForTime.value &&
+                      RevenueCatService().currentEntitlement.value ==
+                          Entitlement.free
+                  ? Container(
+                      height: SizeConfig.blockSizeVertical * 4,
+                      width: SizeConfig.blockSizeHorizontal * 40,
+                      decoration: BoxDecoration(
+                          color: AppColors.textfieldcolor,
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 8)),
+                      child: Center(
+                        child: Text(
+                          "Create in ${controller.timerValue.value}",
+                          style: AppStyle.subHeadingText,
+                        ),
+                      ),
+                    )
+                  : Container()),
+            ],
           ),
         ),
       ),

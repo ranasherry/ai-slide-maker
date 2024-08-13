@@ -15,7 +15,7 @@ class MyAPIService {
 
   MyAPIService._internal();
 
-  Future<List<String>?> fetchImageUrl(String prompt) async {
+  Future<List<String>?> fetchImageUrl(String prompt, int imageCount) async {
     final String apiUrl = 'http://aqibsiddiqui.com/image?url=true';
 
     try {
@@ -24,7 +24,10 @@ class MyAPIService {
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode({'prompt': prompt}),
+        body: json.encode({
+          'prompt': prompt,
+          // 'image_count': 1, // Add the image_count parameter here
+        }),
       );
       developer.log('MYAPITAG fetchImageUrl API Response: $response ');
 

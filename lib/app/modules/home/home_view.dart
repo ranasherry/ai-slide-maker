@@ -167,37 +167,41 @@ class HomeView extends GetView<HomeViewCtl> {
             ),
           ),
           verticalSpace(SizeConfig.blockSizeVertical * 2),
-          Obx(() =>
-              RevenueCatService().currentEntitlement.value == Entitlement.paid
-                  ? Container()
-                  : MaxAdView(
-                      adUnitId: Platform.isAndroid
-                          ? AppStrings.MAX_Mrec_ID
-                          : AppStrings.IOS_MAX_MREC_ID,
-                      adFormat: AdFormat.mrec,
-                      listener: AdViewAdListener(onAdLoadedCallback: (ad) {
-                        FirebaseAnalytics.instance.logAdImpression(
-                          adFormat: "Mrec",
-                          adSource: ad.networkName,
-                          value: ad.revenue,
-                        );
-                        print('Mrec widget ad loaded from ' + ad.networkName);
-                      }, onAdLoadFailedCallback: (adUnitId, error) {
-                        print('Mrec widget ad failed to load with error code ' +
-                            error.code.toString() +
-                            ' and message: ' +
-                            error.message);
-                      }, onAdClickedCallback: (ad) {
-                        print('Mrec widget ad clicked');
-                      }, onAdExpandedCallback: (ad) {
-                        print('Mrec widget ad expanded');
-                      }, onAdCollapsedCallback: (ad) {
-                        print('Mrec widget ad collapsed');
-                      }))),
+          MyBannerAdWidget(),
           verticalSpace(SizeConfig.blockSizeVertical),
         ],
       ),
     );
+  }
+
+  Obx MyBannerAdWidget() {
+    return Obx(() =>
+        RevenueCatService().currentEntitlement.value == Entitlement.paid
+            ? Container()
+            : MaxAdView(
+                adUnitId: Platform.isAndroid
+                    ? AppStrings.MAX_Mrec_ID
+                    : AppStrings.IOS_MAX_MREC_ID,
+                adFormat: AdFormat.mrec,
+                listener: AdViewAdListener(onAdLoadedCallback: (ad) {
+                  FirebaseAnalytics.instance.logAdImpression(
+                    adFormat: "Mrec",
+                    adSource: ad.networkName,
+                    value: ad.revenue,
+                  );
+                  print('Mrec widget ad loaded from ' + ad.networkName);
+                }, onAdLoadFailedCallback: (adUnitId, error) {
+                  print('Mrec widget ad failed to load with error code ' +
+                      error.code.toString() +
+                      ' and message: ' +
+                      error.message);
+                }, onAdClickedCallback: (ad) {
+                  print('Mrec widget ad clicked');
+                }, onAdExpandedCallback: (ad) {
+                  print('Mrec widget ad expanded');
+                }, onAdCollapsedCallback: (ad) {
+                  print('Mrec widget ad collapsed');
+                })));
   }
 
   Padding feedback_field(
