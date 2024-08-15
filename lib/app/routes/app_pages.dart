@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:slide_maker/app/modules/home/home_view_1.dart';
+import 'package:slide_maker/app/modules/in_app_purchases/bindings/new_in_app_purchase_binding.dart';
+import 'package:slide_maker/app/modules/in_app_purchases/views/new_in_app_purchase_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/gender_asking_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/new_intro_screen_view.dart';
@@ -241,5 +243,9 @@ class AppPages {
         binding: HomeBinding()
         // binding: ,
         ),
+    GetPage(
+        name: _Paths.NEWINAPPPURCHASEVIEW,
+        page: () => const newInAppPurchaseView(),
+        binding: newInAppPurchaseBinding()),
   ];
 }
