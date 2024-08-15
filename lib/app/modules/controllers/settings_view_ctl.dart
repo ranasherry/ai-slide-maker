@@ -56,4 +56,6 @@ class SettingsViewCTL extends GetxController {
       EasyLoading.showError("Could not delete the account");
     }
   }
+
+  Future contactUs() async {}
 }

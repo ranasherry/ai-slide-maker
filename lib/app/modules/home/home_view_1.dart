@@ -19,9 +19,12 @@ class HomeView1 extends GetView<HomeViewCtl> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
     return Scaffold(
       bottomNavigationBar: AppLovinProvider.instance.MyBannerAdWidget(),
-      // drawer: MyDrawer(),
+      drawer: MyDrawer(),
+      key: _scaffoldKey,
       // backgroundColor: AppColors.mainColor,
       body: Container(
         height: SizeConfig.screenHeight,
@@ -31,6 +34,26 @@ class HomeView1 extends GetView<HomeViewCtl> {
             MainHeaderBG(
               height: SizeConfig.blockSizeVertical * 35,
               width: SizeConfig.screenWidth,
+            ),
+            Positioned(
+              top: SizeConfig.blockSizeVertical * 4,
+              left: SizeConfig.blockSizeHorizontal * 4,
+              child: GestureDetector(
+                onTap: () {
+                  _scaffoldKey.currentState!.openDrawer();
+                },
+                child: Container(
+                    height: SizeConfig.blockSizeVertical * 5,
+                    width: SizeConfig.blockSizeHorizontal * 10,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.notes,
+                      color: AppColors.textfieldcolor,
+                    )),
+              ),
             ),
             Positioned(
               top: SizeConfig.blockSizeVertical * 4,
