@@ -55,6 +55,7 @@ class AppImages {
   static const discount = "assets/images/discount.png";
   static const limited = "assets/images/limited.png";
   static const hot = "assets/images/hot.png";
+  static const ads_purchase = "assets/images/ads_purchase.png";
 
   static const HeaderMainBgSVG = "assets/svg/header_bg.svg";
 
@@ -123,4 +124,7 @@ class AppImages {
   static const defaultAmount = "assets/svg/default.svg";
   static const medium = "assets/svg/medium.svg";
   static const pro = "assets/svg/pro.svg";
+  static const star_1 = "assets/svg/star_1.svg";
+  static const star_2 = "assets/svg/star_2.svg";
+  static const star_3 = "assets/svg/star_3.svg";
 }
