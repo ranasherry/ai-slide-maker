@@ -280,6 +280,7 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
               discountPercentage: RCVariables.discountPercentage,
               discountedPrice: product.price)
           .toStringAsFixed(2);
+
       text2 = "${orignalPrice}${product.currencyCode}";
 
       isHot = controller.getIsHot(product);
@@ -309,6 +310,37 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
           .price;
 
       final originalPrice = weeklyPrice * 4;
+      text2 = "${originalPrice.toStringAsFixed(1)}${product.currencyCode}";
+      discountPercentage = 100 - ((product.price / originalPrice) * 100);
+      String productPeriod = controller.getProductPeriod(product);
+
+      text3 = "${product.priceString}/${productPeriod}";
+      text4 = "${discountPercentage.toStringAsFixed(0)}%";
+    } else if (pID == "aislide_premium_1y:aislide-baseplan-yearly") {
+      isDiscounted = true;
+      // final weeklyPrice = products
+      //     .where((element) =>
+      //         element.identifier ==
+      //         "aislide_premium_1w:aislide-baseplan-weekly")
+      //     .first
+      //     .price;
+
+      final perWeek = product.price / 4;
+      final weeklyPrice = products
+          .firstWhere(
+              (element) =>
+                  element.identifier ==
+                  "aislide_premium_1w:aislide-baseplan-weekly",
+              orElse: () => StoreProduct(
+                  "aislide_premium_1w:aislide-baseplan-weekly",
+                  "Weekly",
+                  "Weekly",
+                  perWeek * 40,
+                  product.priceString,
+                  product.currencyCode))
+          .price;
+
+      final originalPrice = weeklyPrice * 52;
       text2 = "${originalPrice.toStringAsFixed(1)}${product.currencyCode}";
       discountPercentage = 100 - ((product.price / originalPrice) * 100);
       String productPeriod = controller.getProductPeriod(product);

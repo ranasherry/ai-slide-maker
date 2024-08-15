@@ -246,6 +246,7 @@ class AppPages {
     GetPage(
         name: _Paths.NEWINAPPPURCHASEVIEW,
         page: () => const newInAppPurchaseView(),
-        binding: newInAppPurchaseBinding()),
+        binding: newInAppPurchaseBinding(),
+        transition: Transition.downToUp),
   ];
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
@@ -13,14 +14,14 @@ import 'package:slide_maker/app/utills/helprer_widgets/main_header_bg.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-class HomeView1 extends StatelessWidget {
+class HomeView1 extends GetView<HomeViewCtl> {
   const HomeView1({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: AppLovinProvider.instance.MyBannerAdWidget(),
-      drawer: MyDrawer(),
+      // drawer: MyDrawer(),
       // backgroundColor: AppColors.mainColor,
       body: Container(
         height: SizeConfig.screenHeight,
@@ -47,9 +48,10 @@ class HomeView1 extends StatelessWidget {
                                         .currentEntitlement
                                         .value ==
                                     Entitlement.free) {
-                                  Get.toNamed(
-                                    Routes.IN_APP_PURCHASES,
-                                  );
+                                  // Get.toNamed(
+                                  //   Routes.NEWINAPPPURCHASEVIEW,
+                                  // );
+                                  RevenueCatService().GoToPurchaseScreen();
                                 }
                               },
                               child: Image.asset(

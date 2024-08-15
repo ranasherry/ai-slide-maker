@@ -38,7 +38,7 @@ class SettingsViewCTL extends GetxController {
     await FirebaseAuth.instance.signOut();
     await RevenueCatService().signOut();
     EasyLoading.dismiss();
-    Get.offAllNamed(Routes.HomeView);
+    Get.offAllNamed(Routes.HOMEVIEW1);
   }
 
   Future<void> deleteAccount() async {

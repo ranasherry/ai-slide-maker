@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,6 @@ class SplashController extends GetxController {
       checkFirstTime();
     });
     RevenueCatService().initialize(null);
-    // checkplatform();
   }
 
   @override

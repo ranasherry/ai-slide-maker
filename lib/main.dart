@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:intl/intl.dart';
 
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -94,7 +95,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeNotifier(),
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
@@ -107,7 +108,8 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
@@ -133,6 +135,7 @@ class MyApp extends StatelessWidget {
   static final facebookAppEvents = FacebookAppEvents();
   @override
   Widget build(BuildContext context) {
+    // String countryName = CountryNames.getCountryName(countryCode);
     // facebookAppEvents.lo
     facebookAppEvents.setAutoLogAppEventsEnabled(true);
     facebookAppEvents.setAdvertiserTracking(enabled: true);

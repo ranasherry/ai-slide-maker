@@ -19,7 +19,7 @@ class SignInView extends GetView<SignInController> {
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () {
-              Get.offAllNamed(Routes.HomeView);
+              Get.offAllNamed(Routes.HOMEVIEW1);
             },
             child: Icon(Icons.cancel)),
 

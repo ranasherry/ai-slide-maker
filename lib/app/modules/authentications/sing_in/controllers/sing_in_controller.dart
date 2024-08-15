@@ -121,7 +121,7 @@ class SignInController extends GetxController {
       }
 
       // Navigate to HomeScreen
-      Get.offAndToNamed(Routes.HomeView);
+      Get.offAndToNamed(Routes.HOMEVIEW1);
     } catch (e) {
       // Handle any errors here
       print('Error during login process: $e');

@@ -58,6 +58,7 @@ class AppImages {
   static const ads_purchase = "assets/images/ads_purchase.png";
 
   static const HeaderMainBgSVG = "assets/svg/header_bg.svg";
+  static const intro_themes = "assets/images/intro_themes.png";
 
   // SVG
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ class SplashScreen extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    
     // b = controller.isFirstTime;
     return Scaffold(
       body: SingleChildScrollView(
@@ -99,17 +102,14 @@ class SplashScreen extends GetView<SplashController> {
                                   color: Color(0xFFE35E1F)),
                             ),
                           ))
-                    
                     ],
                   ),
                 ),
               ),
-           
             ],
           ),
         ),
       ),
-  
     );
   }
 }
