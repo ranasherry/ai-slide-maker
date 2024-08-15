@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
@@ -19,6 +20,7 @@ class HomeView1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: AppLovinProvider.instance.MyBannerAdWidget(),
+      drawer: MyDrawer(),
       // backgroundColor: AppColors.mainColor,
       body: Container(
         height: SizeConfig.screenHeight,

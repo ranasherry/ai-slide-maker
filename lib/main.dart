@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -107,8 +109,26 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
+    analytics: analytics,
+    routeFilter: (route) {
+      final ignoredRoutes = [
+        Routes.SplashScreen,
+        Routes.NEW_INTRO_SCREENS,
+        Routes.GenderAskingView,
+        Routes.IN_APP_PURCHASES
+      ];
+      if (!ignoredRoutes.contains(route!.settings.name)) {
+        return true;
+      } else {
+        log("Screen Igronred: ${route.settings.name}");
+
+        return false;
+      }
+      // return !ignoredRoutes.contains(route.settings.name);
+    },
+  );
 
   static final facebookAppEvents = FacebookAppEvents();
   @override
