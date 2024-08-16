@@ -293,17 +293,32 @@ class RevenueCatService {
 
   int purchaseScreenCounter = 0;
 
+  bool isPurchaseScreenOpen = false;
+
   void GoToPurchaseScreen() {
     if (currentEntitlement.value == Entitlement.paid) return;
+    if (isPurchaseScreenOpen) {
+      dp.log("Screen is Already Opened");
+      return;
+    }
 
+    isPurchaseScreenOpen = true;
     if (purchaseScreenCounter % 2 == 0) {
       Get.toNamed(
         Routes.NEWINAPPPURCHASEVIEW,
-      );
+      )!
+          .then((value) {
+        isPurchaseScreenOpen = false;
+        dp.log("back from Purchase Screen");
+      });
     } else {
       Get.toNamed(
         Routes.IN_APP_PURCHASES,
-      );
+      )!
+          .then((value) {
+        isPurchaseScreenOpen = false;
+        dp.log("back from Purchase Screen");
+      });
     }
     purchaseScreenCounter++;
 

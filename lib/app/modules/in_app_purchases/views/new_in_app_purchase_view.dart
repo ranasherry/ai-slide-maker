@@ -63,16 +63,16 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    "${RCVariables.AppName} Pro",
-                    style: GoogleFonts.aBeeZee(
-                      textStyle: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 4,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textfieldcolor,
-                      ),
-                    ),
-                  ),
+                  child: Obx(() => Text(
+                        "${RCVariables.AppName.value} Pro",
+                        style: GoogleFonts.aBeeZee(
+                          textStyle: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 4,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textfieldcolor,
+                          ),
+                        ),
+                      )),
                 ),
               ),
             ],
@@ -451,14 +451,14 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
               ),
             ),
             horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
-            Text(
-              "${RCVariables.AppName} Pro includes",
-              style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 3.5,
-                ),
-              ),
-            ),
+            Obx(() => Text(
+                  "${RCVariables.AppName.value} Pro includes",
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 3.5,
+                    ),
+                  ),
+                )),
           ],
         ),
         Container(

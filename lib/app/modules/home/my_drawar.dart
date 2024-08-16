@@ -372,6 +372,9 @@ class MyDrawer extends GetView<SettingsViewCTL> {
     String userEmail = "user email";
     if (FirebaseAuth.instance.currentUser != null) {
       name = FirebaseAuth.instance.currentUser!.displayName ?? "Name";
+      if (name == "") {
+        name = 'Name';
+      }
       userEmail = FirebaseAuth.instance.currentUser!.email ?? "user email";
     }
 
