@@ -34,68 +34,73 @@ class HomeView1 extends GetView<HomeViewCtl> {
               height: SizeConfig.blockSizeVertical * 35,
               width: SizeConfig.screenWidth,
             ),
-
-//TODO: Uncomment in next release
             // Positioned(
             //   top: SizeConfig.blockSizeVertical * 4,
             //   left: SizeConfig.blockSizeHorizontal * 4,
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       _scaffoldKey.currentState!.openDrawer();
-            //     },
-            //     child: Container(
-            //         height: SizeConfig.blockSizeVertical * 5,
-            //         width: SizeConfig.blockSizeHorizontal * 10,
-            //         decoration: BoxDecoration(
-            //           color: Colors.red,
-            //           shape: BoxShape.circle,
-            //         ),
-            //         child: Icon(
-            //           Icons.notes,
-            //           color: AppColors.textfieldcolor,
-            //         )),
-            //   ),
+            //   child:
             // ),
-
             Positioned(
               top: SizeConfig.blockSizeVertical * 4,
-              left: SizeConfig.blockSizeHorizontal * 76,
-              child: Row(
-                children: [
-                  Obx(() => RevenueCatService().currentEntitlement.value ==
-                          Entitlement.free
-                      ? Container(
-                          height: SizeConfig.blockSizeVertical * 4,
-                          width: SizeConfig.blockSizeHorizontal * 8,
-                          child: GestureDetector(
-                              onTap: () {
-                                if (RevenueCatService()
-                                        .currentEntitlement
-                                        .value ==
-                                    Entitlement.free) {
-                                  // Get.toNamed(
-                                  //   Routes.NEWINAPPPURCHASEVIEW,
-                                  // );
-                                  RevenueCatService().GoToPurchaseScreen();
-                                }
-                              },
-                              child: Image.asset(
-                                AppImages.vip,
-                                // scale: 1.8,
-                              )))
-                      : Container()),
-                  horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
-                  GestureDetector(
-                    onTap: () {
-                      // Get.toNamed(Routes.SettingsView);
-                      Get.toNamed(Routes.POLLSCREENVIEW);
-                    },
-                    child: Container(
-                        height: SizeConfig.blockSizeVertical * 4,
-                        width: SizeConfig.blockSizeHorizontal * 8,
-                        child: Image.asset(AppImages.setting)),
-                  ),
-                ],
+              // left: SizeConfig.blockSizeHorizontal * 76,
+              child: Container(
+                width: SizeConfig.screenWidth,
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _scaffoldKey.currentState!.openDrawer();
+                      },
+                      child: Container(
+                          height: SizeConfig.blockSizeVertical * 5,
+                          width: SizeConfig.blockSizeHorizontal * 10,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.notes,
+                            color: AppColors.textfieldcolor,
+                          )),
+                    ),
+                    Obx(() => RevenueCatService().currentEntitlement.value ==
+                            Entitlement.free
+                        ? Container(
+                            height: SizeConfig.blockSizeVertical * 4,
+                            width: SizeConfig.blockSizeHorizontal * 8,
+                            child: GestureDetector(
+                                onTap: () {
+                                  if (RevenueCatService()
+                                          .currentEntitlement
+                                          .value ==
+                                      Entitlement.free) {
+                                    // Get.toNamed(
+                                    //   Routes.NEWINAPPPURCHASEVIEW,
+                                    // );
+                                    RevenueCatService().GoToPurchaseScreen();
+                                  }
+                                },
+                                child: Image.asset(
+                                  AppImages.vip,
+                                  // scale: 1.8,
+                                )))
+                        : Container()),
+                    // horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
+                    // ? settings button
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     // Get.toNamed(Routes.SettingsView);
+                    //     Get.toNamed(Routes.POLLSCREENVIEW);
+                    //   },
+                    //   child: Container(
+                    //       height: SizeConfig.blockSizeVertical * 4,
+                    //       width: SizeConfig.blockSizeHorizontal * 8,
+                    //       child: Image.asset(AppImages.setting)),
+                    // ),
+                  ],
+                ),
               ),
             ),
             Padding(
