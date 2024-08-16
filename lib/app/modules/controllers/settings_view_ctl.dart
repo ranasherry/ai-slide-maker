@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
@@ -9,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SettingsViewCTL extends GetxController {
   RxBool isDarkMode = false.obs;
+  String recipient = "codewithsherry@gmail.com";
   @override
   void onInit() {
     // TODO: implement onInit
@@ -57,5 +59,38 @@ class SettingsViewCTL extends GetxController {
     }
   }
 
-  Future contactUs() async {}
+  Future contactUs() async {
+    sendFeedBackEmail("");
+  }
+
+  Future<void> OpenManageSubscription() async {
+    final Uri _url =
+        Uri.parse("https://play.google.com/store/account/subscriptions");
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
+  Future<void> sendFeedBackEmail(String message) async {
+    final Email email = Email(
+      recipients: [recipient],
+      subject: "AI Slide Support",
+      body: "",
+    );
+
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+
+      // showReviewDialogue(Get.context!);
+    } catch (error) {
+      // showReviewDialogue(Get.context!);
+
+      platformResponse = error.toString();
+    }
+
+    // Get.snackbar('Email Sender', platformResponse);
+  }
 }

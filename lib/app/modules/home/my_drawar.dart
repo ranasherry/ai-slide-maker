@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -20,68 +21,11 @@ class MyDrawer extends GetView<SettingsViewCTL> {
       backgroundColor: AppColors.background,
       child: ListView(
         children: [
-          DrawerHeader(
-            margin: EdgeInsets.symmetric(
-                vertical: SizeConfig.blockSizeVertical * 5),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Name",
-                      style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 7,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.titles),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        height: SizeConfig.blockSizeVertical * 4,
-                        width: SizeConfig.blockSizeHorizontal * 20,
-                        decoration: BoxDecoration(
-                            color: AppColors.textfieldcolor,
-                            borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 7)),
-                        child: Center(
-                          child: Text(
-                            "free plan",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4,
-                                color: AppColors.titles),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                verticalSpace(SizeConfig.blockSizeVertical * 2),
-                Text(
-                  "user email",
-                  style: TextStyle(
-                      fontSize: SizeConfig.blockSizeHorizontal * 4,
-                      color: AppColors.titles),
-                ),
-              ],
-            ),
-            // padding: EdgeInsets.zero,
-            // child: UserAccountsDrawerHeader(
-            //   accountName: Text(
-            //     "Anonymous",
-            //     style: TextStyle(fontWeight: FontWeight.bold),
-            //   ),
-            //   accountEmail: Text("muazzamking30@gmail.com"),
-            //   // currentAccountPicture: CircleAvatar(
-            //   //   backgroundImage: AssetImage('assets/images/user2.png'),
-            //   // ),
-            //   decoration: BoxDecoration(color: AppColors.textfieldcolor),
-            // ),
-          ),
+          _myHeader(),
           GestureDetector(
-              onTap: () {},
+              onTap: () {
+                controller.OpenManageSubscription();
+              },
               child:
                   drawer_widgets(Icons.subscriptions_outlined, "Subscription")),
           GestureDetector(
@@ -353,6 +297,7 @@ class MyDrawer extends GetView<SettingsViewCTL> {
               : Container(),
           // verticalSpace(SizeConfig.blockSizeVertical * 1),
           FirebaseAuth.instance.currentUser != null
+              // true
               ? GestureDetector(
                   onTap: () {
                     controller.signOut();
@@ -419,6 +364,81 @@ class MyDrawer extends GetView<SettingsViewCTL> {
           // ),
         ],
       ),
+    );
+  }
+
+  Container _myHeader() {
+    String name = "Name";
+    String userEmail = "user email";
+    if (FirebaseAuth.instance.currentUser != null) {
+      name = FirebaseAuth.instance.currentUser!.displayName ?? "Name";
+      userEmail = FirebaseAuth.instance.currentUser!.email ?? "user email";
+    }
+
+    return Container(
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      height: SizeConfig.screenHeight * 0.2,
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                name,
+                style: TextStyle(
+                    fontSize: SizeConfig.blockSizeHorizontal * 7,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.titles),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  height: SizeConfig.blockSizeVertical * 4,
+                  width: SizeConfig.blockSizeHorizontal * 20,
+                  decoration: BoxDecoration(
+                      color: AppColors.textfieldcolor,
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 7)),
+                  child: Center(
+                    child: Obx(() => Text(
+                          RevenueCatService().currentEntitlement.value ==
+                                  Entitlement.free
+                              ? "Free Plan"
+                              : "Paid Plan",
+                          style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              color: AppColors.titles),
+                        )),
+                  ),
+                ),
+              )
+            ],
+          ),
+          verticalSpace(SizeConfig.blockSizeVertical * 2),
+          Text(
+            userEmail,
+            style: TextStyle(
+                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                color: AppColors.titles),
+          ),
+        ],
+      ),
+      // padding: EdgeInsets.zero,
+      // child: UserAccountsDrawerHeader(
+      //   accountName: Text(
+      //     "Anonymous",
+      //     style: TextStyle(fontWeight: FontWeight.bold),
+      //   ),
+      //   accountEmail: Text("muazzamking30@gmail.com"),
+      //   // currentAccountPicture: CircleAvatar(
+      //   //   backgroundImage: AssetImage('assets/images/user2.png'),
+      //   // ),
+      //   decoration: BoxDecoration(color: AppColors.textfieldcolor),
+      // ),
     );
   }
 
