@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/bindings/poll_screen_binding.dart';
 import 'package:slide_maker/app/modules/home/home_view_1.dart';
+import 'package:slide_maker/app/modules/home/poll_screen_view.dart';
 import 'package:slide_maker/app/modules/in_app_purchases/bindings/new_in_app_purchase_binding.dart';
 import 'package:slide_maker/app/modules/in_app_purchases/views/new_in_app_purchase_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
@@ -246,5 +248,11 @@ class AppPages {
         page: () => const newInAppPurchaseView(),
         binding: newInAppPurchaseBinding(),
         transition: Transition.downToUp),
+
+        GetPage(
+        name: _Paths.POLLSCREENVIEW,
+        page: () => const PollScreenView(),
+        binding: PollScreenBinding(),
+       ),
   ];
 }

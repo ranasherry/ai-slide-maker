@@ -87,7 +87,8 @@ class HomeView1 extends GetView<HomeViewCtl> {
                   horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(Routes.SettingsView);
+                      // Get.toNamed(Routes.SettingsView);
+                      Get.toNamed(Routes.POLLSCREENVIEW);
                     },
                     child: Container(
                         height: SizeConfig.blockSizeVertical * 4,

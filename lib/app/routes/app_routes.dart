@@ -40,6 +40,7 @@ abstract class Routes {
   static const PRESENTAION_GENERATOR = _Paths.PRESENTAION_GENERATOR;
   static const GenderAskingView = _Paths.GenderAskingView;
   static const NEWINAPPPURCHASEVIEW = _Paths.NEWINAPPPURCHASEVIEW;
+  static const POLLSCREENVIEW = _Paths.POLLSCREENVIEW;
 }
 
 abstract class _Paths {
@@ -78,4 +79,5 @@ abstract class _Paths {
   static const HOMEVIEW1 = '/HOMEVIEW1';
   static const GenderAskingView = '/GenderAskingView';
   static const NEWINAPPPURCHASEVIEW = '/NEWINAPPPURCHASEVIEW';
+  static const POLLSCREENVIEW = '/POLLSCREENVIEW';
 }
