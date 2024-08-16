@@ -66,16 +66,16 @@ class HomeView1 extends GetView<HomeViewCtl> {
                           )),
                     ),
                     //? To do comment before push/release
-                    GestureDetector(
-                      onTap: () {
-                        // Get.toNamed(Routes.SettingsView);
-                        Get.toNamed(Routes.POLLSCREENVIEW);
-                      },
-                      child: Container(
-                          height: SizeConfig.blockSizeVertical * 4,
-                          width: SizeConfig.blockSizeHorizontal * 8,
-                          child: Image.asset(AppImages.setting)),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     // Get.toNamed(Routes.SettingsView);
+                    //     Get.toNamed(Routes.POLLSCREENVIEW);
+                    //   },
+                    //   child: Container(
+                    //       height: SizeConfig.blockSizeVertical * 4,
+                    //       width: SizeConfig.blockSizeHorizontal * 8,
+                    //       child: Image.asset(AppImages.setting)),
+                    // ),
                     // // // //       // // // //
                     Obx(() => RevenueCatService().currentEntitlement.value ==
                             Entitlement.free
