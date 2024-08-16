@@ -34,12 +34,12 @@ class MyDrawer extends GetView<SettingsViewCTL> {
                     .openURL("https://sites.google.com/view/appgeniusx/home");
               },
               child: drawer_widgets(Icons.privacy_tip, "Privacy Policy")),
-          GestureDetector(
-              onTap: () {
-                controller
-                    .openURL("https://sites.google.com/view/appgeniusx/home");
-              },
-              child: drawer_widgets(Icons.verified, "Rights")),
+          // GestureDetector(
+          //     onTap: () {
+          //       controller
+          //           .openURL("https://sites.google.com/view/appgeniusx/home");
+          //     },
+          //     child: drawer_widgets(Icons.verified, "Rights")),
           GestureDetector(
               onTap: () {
                 controller.ShareApp();
@@ -379,9 +379,23 @@ class MyDrawer extends GetView<SettingsViewCTL> {
     }
 
     return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
-      height: SizeConfig.screenHeight * 0.2,
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.blockSizeHorizontal * 5,
+      ),
+      margin: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2),
+      height: SizeConfig.screenHeight * 0.15,
+      decoration: BoxDecoration(
+        // color: AppColors.mainColor,
+        gradient: AppColors.mainHeaderGradient,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.4), // Shadow color
+            spreadRadius: 2, // How much the shadow spreads
+            blurRadius: 5, // How soft the shadow is
+            offset: Offset(5, 5), // Position of the shadow (x, y)
+          ),
+        ],
+      ),
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -395,15 +409,17 @@ class MyDrawer extends GetView<SettingsViewCTL> {
                 style: TextStyle(
                     fontSize: SizeConfig.blockSizeHorizontal * 7,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.titles),
+                    color: AppColors.textfieldcolor),
               ),
               GestureDetector(
                 onTap: () {},
                 child: Container(
-                  height: SizeConfig.blockSizeVertical * 4,
-                  width: SizeConfig.blockSizeHorizontal * 20,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 1.5),
+                  height: SizeConfig.blockSizeVertical * 3,
+                  // width: SizeConfig.blockSizeHorizontal * 20,
                   decoration: BoxDecoration(
-                      color: AppColors.textfieldcolor,
+                      color: AppColors.background,
                       borderRadius: BorderRadius.circular(
                           SizeConfig.blockSizeHorizontal * 7)),
                   child: Center(
@@ -414,19 +430,19 @@ class MyDrawer extends GetView<SettingsViewCTL> {
                               : "Paid Plan",
                           style: TextStyle(
                               fontSize: SizeConfig.blockSizeHorizontal * 4,
-                              color: AppColors.titles),
+                              color: Colors.grey.shade700),
                         )),
                   ),
                 ),
               )
             ],
           ),
-          verticalSpace(SizeConfig.blockSizeVertical * 2),
+          verticalSpace(SizeConfig.blockSizeVertical * 1),
           Text(
             userEmail,
             style: TextStyle(
                 fontSize: SizeConfig.blockSizeHorizontal * 4,
-                color: AppColors.titles),
+                color: AppColors.textfieldcolor),
           ),
         ],
       ),
