@@ -109,6 +109,29 @@ class AppImages {
     "assets/slidy/style4/4.png",
   ];
 
+  static const slidy_style5 = [
+    "assets/slidy/style5/1.png",
+    "assets/slidy/style5/2.png",
+  ];
+
+  static const slidy_style6 = [
+    "assets/slidy/style6/1.png",
+    "assets/slidy/style6/2.png",
+  ];
+  static const slidy_style7 = [
+    "assets/slidy/style7/1.png",
+    "assets/slidy/style7/2.png",
+  ];
+  static const slidy_style8 = [
+    "assets/slidy/style8/1.png",
+    "assets/slidy/style8/2.png",
+  ];
+  static const slidy_style9 = [
+    "assets/slidy/style9/1.png",
+    "assets/slidy/style9/2.png",
+    "assets/slidy/style9/3.png",
+  ];
+
   static const magic_stick = "assets/images/magic_stick.png";
   static const slide_beta = "assets/images/slide_beta.png";
   static const slide = "assets/images/slide.png";

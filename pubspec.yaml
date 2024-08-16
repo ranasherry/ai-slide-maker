@@ -190,6 +190,11 @@ flutter:
     - assets/slidy/style2/
     - assets/slidy/style3/
     - assets/slidy/style4/
+    - assets/slidy/style5/
+    - assets/slidy/style6/
+    - assets/slidy/style7/
+    - assets/slidy/style8/
+    - assets/slidy/style9/
 
     - assets/lottie/fBBmyrlUDl.json
     # - assets/lottie/77323-profile-lock.json
