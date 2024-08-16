@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 import '../../routes/app_pages.dart';
 import '../../utills/colors.dart';
@@ -19,7 +20,7 @@ class SplashScreen extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    
+
     // b = controller.isFirstTime;
     return Scaffold(
       body: SingleChildScrollView(
@@ -59,18 +60,19 @@ class SplashScreen extends GetView<SplashController> {
                     Padding(
                       padding: EdgeInsets.only(
                           top: SizeConfig.blockSizeVertical * 15),
-                      child: Text("AI Slide Maker",
+                      child: Obx(() => Text("${RCVariables.AppName.value}",
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontSize: SizeConfig.blockSizeHorizontal * 6,
-                              fontWeight: FontWeight.bold)),
+                              fontWeight: FontWeight.bold))),
                     ),
                     verticalSpace(SizeConfig.blockSizeVertical * 1),
-                    Text("Create your slide in one click",
+                    Obx(() => Text(
+                        "Create your slide in one click with ${RCVariables.AppName.value}",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize: SizeConfig.blockSizeHorizontal * 3,
-                            fontWeight: FontWeight.bold)),
+                            fontWeight: FontWeight.bold))),
                   ],
                 ),
               ),

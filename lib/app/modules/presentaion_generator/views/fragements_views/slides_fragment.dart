@@ -13,6 +13,7 @@ import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
+import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class SlidesFragment extends GetView<PresentaionGeneratorController> {
   const SlidesFragment({Key? key}) : super(key: key);
@@ -76,7 +77,29 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                         height: SizeConfig.screenHeight * 0.5,
                         child: Center(child: CircularProgressIndicator()),
                       ))),
-            footerWidget()
+            footerWidget(),
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 5),
+                child: GestureDetector(
+                  onTap: () {
+                    int index =
+                        palletList.indexOf(controller.selectedPallet.value);
+                    index++;
+                    if (index < palletList.length) {
+                      controller.selectedPallet.value = palletList[index];
+                    } else {
+                      controller.selectedPallet.value = palletList[0];
+                    }
+                  },
+                  child: Container(
+                    child: Icon(Icons.switch_access_shortcut),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -93,25 +116,25 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
           vertical: SizeConfig.blockSizeVertical),
       child: Builder(builder: (context) {
         if (index == 0) {
-          return TitleSlide1(
-            mySlide: controller.myPresentation.value!.slides[index],
-            slidePallet: controller.selectedPallet.value,
-            size: size,
-          );
+          return Obx(() => TitleSlide1(
+                mySlide: controller.myPresentation.value.slides[index],
+                slidePallet: controller.selectedPallet.value,
+                size: size,
+              ));
         } else {
           //? Sections
           if (index == 1) {
-            return SectionedSlide2(
-              mySlide: controller.myPresentation.value!.slides[index],
-              slidePallet: controller.selectedPallet.value,
-              size: size,
-            );
+            return Obx(() => SectionedSlide2(
+                  mySlide: controller.myPresentation.value.slides[index],
+                  slidePallet: controller.selectedPallet.value,
+                  size: size,
+                ));
           } else {
-            return SectionedSlide1(
-              mySlide: controller.myPresentation.value!.slides[index],
-              slidePallet: controller.selectedPallet.value,
-              size: size,
-            );
+            return Obx(() => SectionedSlide1(
+                  mySlide: controller.myPresentation.value.slides[index],
+                  slidePallet: controller.selectedPallet.value,
+                  size: size,
+                ));
           }
         }
       }),

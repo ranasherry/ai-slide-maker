@@ -61,6 +61,7 @@ class RemoteConfigService {
     AppStrings.JsonTrendTopics = remoteConfig.getString('topicslist');
     RCVariables.isNewSLideUI.value = remoteConfig.getBool('isNewSLideUI');
     RCVariables.GeminiAPIKey = remoteConfig.getString('GeminiProKey');
+    RCVariables.AppName.value = remoteConfig.getString('AppName');
     RCVariables.discountPercentage =
         remoteConfig.getInt('discountPercentage').toDouble();
 

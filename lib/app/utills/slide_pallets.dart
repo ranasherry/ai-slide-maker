@@ -94,6 +94,7 @@ SlidePallet pallet3 = SlidePallet(
   imageList: AppImages.slidy_style3,
   fadeColor: Color.fromARGB(0, 187, 222, 251),
 );
+
 SlidePallet pallet4 = SlidePallet(
   id: 3,
   name: "Green",
