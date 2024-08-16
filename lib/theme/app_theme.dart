@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 ThemeData lightMode = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    appBarTheme: AppBarTheme(backgroundColor: Color(0xFFE7EBFA)),
-    scaffoldBackgroundColor: Color(0xFFE7EBFA),
+    // appBarTheme: AppBarTheme(backgroundColor: Color(0xFFE7EBFA)),
+    appBarTheme: AppBarTheme(backgroundColor: Color(0xFFF5F6F8)),
+    // scaffoldBackgroundColor: Color(0xFFE7EBFA),
+    scaffoldBackgroundColor: Color(0xFFF5F6F8),
     colorScheme: ColorScheme.light(
-        background: Color(0xFFE7EBFA),
+        // background: Color(0xFFE7EBFA),
+        background: Color(0xFFF5F6F8),
         primary: Colors.grey.shade900,
         secondary: Colors.white,
         tertiary: Colors.white,

@@ -229,7 +229,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
       children: [
         verticalSpace(SizeConfig.blockSizeVertical * 3),
         Text(
-          "Up to 30 AI generation per day, up to 12 AI",
+          "Generate up to 30 AI Presentations daily, including up to",
           style: GoogleFonts.inter(
             textStyle: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 3.5,
@@ -238,7 +238,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
           ),
         ),
         Text(
-          "generation slides, pro styles and much more",
+          "200 AI Prompts, pro templates, and more.",
           style: GoogleFonts.inter(
             textStyle: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 3.5,
@@ -424,11 +424,10 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             ),
             children: [
               TextSpan(
-                text:
-                    "Get instant access to all features. You will be able to \n ",
+                text: "Access all features instantly. You can cancel \n ",
               ),
               TextSpan(
-                text: "cancel your subscription at any time",
+                text: "your subscription at any time",
               ),
             ],
           ),
@@ -664,8 +663,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             ),
             children: [
               TextSpan(
-                text:
-                    "If you have any further questions, feel free to email \n ",
+                text: "If you have more questions, feel free to contact  \n ",
               ),
               TextSpan(
                 text: "us by clicking the button below.",

@@ -21,18 +21,64 @@ class MyDrawer extends GetView<SettingsViewCTL> {
       child: ListView(
         children: [
           DrawerHeader(
-            padding: EdgeInsets.zero,
-            child: UserAccountsDrawerHeader(
-              accountName: Text(
-                "Anonymous",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              accountEmail: Text("muazzamking30@gmail.com"),
-              // currentAccountPicture: CircleAvatar(
-              //   backgroundImage: AssetImage('assets/images/user2.png'),
-              // ),
-              decoration: BoxDecoration(color: AppColors.textfieldcolor),
+            margin: EdgeInsets.symmetric(
+                vertical: SizeConfig.blockSizeVertical * 5),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Name",
+                      style: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 7,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.titles),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        height: SizeConfig.blockSizeVertical * 4,
+                        width: SizeConfig.blockSizeHorizontal * 20,
+                        decoration: BoxDecoration(
+                            color: AppColors.textfieldcolor,
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 7)),
+                        child: Center(
+                          child: Text(
+                            "free plan",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                color: AppColors.titles),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                verticalSpace(SizeConfig.blockSizeVertical * 2),
+                Text(
+                  "user email",
+                  style: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 4,
+                      color: AppColors.titles),
+                ),
+              ],
             ),
+            // padding: EdgeInsets.zero,
+            // child: UserAccountsDrawerHeader(
+            //   accountName: Text(
+            //     "Anonymous",
+            //     style: TextStyle(fontWeight: FontWeight.bold),
+            //   ),
+            //   accountEmail: Text("muazzamking30@gmail.com"),
+            //   // currentAccountPicture: CircleAvatar(
+            //   //   backgroundImage: AssetImage('assets/images/user2.png'),
+            //   // ),
+            //   decoration: BoxDecoration(color: AppColors.textfieldcolor),
+            // ),
           ),
           GestureDetector(
               onTap: () {},
@@ -66,6 +112,7 @@ class MyDrawer extends GetView<SettingsViewCTL> {
                 homeViewCtl.showReviewDialogue(context, isSettings: true);
               },
               child: drawer_widgets(Icons.star, "Rate us")),
+
           // Padding(
           //   padding: const EdgeInsets.all(8.0),
           //   child: Row(
