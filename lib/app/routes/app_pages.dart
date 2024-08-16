@@ -238,9 +238,7 @@ class AppPages {
       binding: PresentaionGeneratorBinding(),
     ),
     GetPage(
-        name: _Paths.HOMEVIEW1,
-        page: () => const HomeView1(),
-        binding: HomeBinding()
+        name: _Paths.HOMEVIEW1, page: () => HomeView1(), binding: HomeBinding()
         // binding: ,
         ),
     GetPage(

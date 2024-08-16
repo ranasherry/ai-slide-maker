@@ -15,12 +15,11 @@ import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class HomeView1 extends GetView<HomeViewCtl> {
-  const HomeView1({super.key});
+  HomeView1({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldKey =
-        new GlobalKey<ScaffoldState>();
     return Scaffold(
       bottomNavigationBar: AppLovinProvider.instance.MyBannerAdWidget(),
       drawer: MyDrawer(),
@@ -35,26 +34,29 @@ class HomeView1 extends GetView<HomeViewCtl> {
               height: SizeConfig.blockSizeVertical * 35,
               width: SizeConfig.screenWidth,
             ),
-            Positioned(
-              top: SizeConfig.blockSizeVertical * 4,
-              left: SizeConfig.blockSizeHorizontal * 4,
-              child: GestureDetector(
-                onTap: () {
-                  _scaffoldKey.currentState!.openDrawer();
-                },
-                child: Container(
-                    height: SizeConfig.blockSizeVertical * 5,
-                    width: SizeConfig.blockSizeHorizontal * 10,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.notes,
-                      color: AppColors.textfieldcolor,
-                    )),
-              ),
-            ),
+
+//TODO: Uncomment in next release
+            // Positioned(
+            //   top: SizeConfig.blockSizeVertical * 4,
+            //   left: SizeConfig.blockSizeHorizontal * 4,
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       _scaffoldKey.currentState!.openDrawer();
+            //     },
+            //     child: Container(
+            //         height: SizeConfig.blockSizeVertical * 5,
+            //         width: SizeConfig.blockSizeHorizontal * 10,
+            //         decoration: BoxDecoration(
+            //           color: Colors.red,
+            //           shape: BoxShape.circle,
+            //         ),
+            //         child: Icon(
+            //           Icons.notes,
+            //           color: AppColors.textfieldcolor,
+            //         )),
+            //   ),
+            // ),
+
             Positioned(
               top: SizeConfig.blockSizeVertical * 4,
               left: SizeConfig.blockSizeHorizontal * 76,
