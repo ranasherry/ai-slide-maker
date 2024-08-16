@@ -141,6 +141,7 @@ dependencies:
   flutter_signin_button: ^2.0.0
   linear_progress_bar: ^1.1.2
   # country_codes: ^3.1.0+2
+  flutter_polls: ^0.1.6
 
   flutter_localizations:
     sdk: flutter
