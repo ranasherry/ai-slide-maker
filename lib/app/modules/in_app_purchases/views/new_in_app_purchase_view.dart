@@ -513,6 +513,26 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             ],
           ),
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 6,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              slides_features(
+                "Remove watermark",
+                "Easily remove watermark",
+                "from slides",
+              ),
+              slides_features(
+                "write e-book",
+                "Create e-book with ease",
+                "using AI assistant",
+              ),
+            ],
+          ),
+        ),
         verticalSpace(SizeConfig.blockSizeVertical * 1),
         Padding(
           padding: EdgeInsets.symmetric(
@@ -847,7 +867,9 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 1),
+          margin: EdgeInsets.only(
+            top: SizeConfig.blockSizeVertical * 1,
+          ),
           height: SizeConfig.blockSizeVertical * 13,
           width: SizeConfig.blockSizeHorizontal * 40,
           decoration: BoxDecoration(
@@ -891,20 +913,12 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             width: SizeConfig.blockSizeHorizontal * 6,
           ),
         ),
-        Positioned(
-          top: SizeConfig.blockSizeVertical * 5,
-          left: SizeConfig.blockSizeHorizontal * 5,
-          child: Column(
-            children: [
-              Text(
-                text1,
-                style: GoogleFonts.aBeeZee(
-                    textStyle: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 4,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.mainColor)),
-              ),
-              RichText(
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              width: SizeConfig.blockSizeHorizontal * 35,
+              child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   style: GoogleFonts.inter(
@@ -915,6 +929,13 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                   ),
                   children: [
                     TextSpan(
+                        text: "$text1 \n ",
+                        style: GoogleFonts.aBeeZee(
+                            textStyle: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.mainColor))),
+                    TextSpan(
                       text: "$text2 \n",
                     ),
                     TextSpan(
@@ -923,7 +944,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                   ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ],
