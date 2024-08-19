@@ -20,6 +20,7 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/services/myapi_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
 
 import 'dart:developer' as developer;
@@ -732,6 +733,53 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         print("Cancel clicked");
       },
       timerText: timerValue,
+    );
+  }
+
+  void showNavigateBackWarning(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.orange[100],
+          title: Text(
+            'Warning',
+            style: TextStyle(
+              color: AppColors.mainColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'You will lose any unsaved progress if you go back. Do you want to continue?',
+            style: TextStyle(
+                // color: Colors.orange[800],
+                ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Navigator.of(context).pop(); // Dismiss the dialog
+                Get.back();
+              },
+              child: Text(
+                'Cancel',
+                // style: TextStyle(color: Colors.orange[900]),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                Navigator.of(context).maybePop(); // Navigate back
+                // currentIndex.value = 0;
+              },
+              child: Text(
+                'Continue',
+                style: TextStyle(color: Colors.orange[900]),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

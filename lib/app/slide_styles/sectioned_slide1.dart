@@ -33,7 +33,7 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
   initState() {
     setState(() {
       final random = Random();
-      bgIndex = random.nextInt(widget.slidePallet.imageList.length);
+      bgIndex = random.nextInt(widget.slidePallet.imageList.length - 1);
       print("BG Index: $bgIndex");
       print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
     });
