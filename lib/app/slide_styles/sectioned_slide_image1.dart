@@ -7,16 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/slide_styles/water_mark.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class SectionedSlideImage1 extends StatefulWidget {
-  SectionedSlideImage1(
-      {super.key,
-      required this.mySlide,
-      required this.slidePallet,
-      required this.size,
-      // this.memoryImage
-      });
+  SectionedSlideImage1({
+    super.key,
+    required this.mySlide,
+    required this.slidePallet,
+    required this.size,
+    // this.memoryImage
+  });
 
   MySlide mySlide;
   SlidePallet slidePallet;
@@ -36,8 +38,10 @@ class __SectionedSlideImage1State extends State<SectionedSlideImage1> {
     setState(() {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
+      print("BG Index: $bgIndex");
+      print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
     });
-    print("initState Called");
+    print("initState Called: ");
   }
 
   @override
@@ -88,16 +92,30 @@ class __SectionedSlideImage1State extends State<SectionedSlideImage1> {
               ],
             ),
           ),
-          if (widget.mySlide.slideSections.length >0 && widget.mySlide.slideSections[0].memoryImage != null)
+          if (widget.mySlide.slideSections.length > 0 &&
+              widget.mySlide.slideSections[0].memoryImage != null)
             Positioned(
               top: widget.size.height * 0.02,
               right: widget.size.width * 0.02,
               child: Container(
                 width: widget.size.width * 0.2,
                 height: widget.size.height * 0.2,
-                child: Image.memory(widget.mySlide.slideSections[0].memoryImage!, fit: BoxFit.cover),
+                child: Image.memory(
+                    widget.mySlide.slideSections[0].memoryImage!,
+                    fit: BoxFit.cover),
               ),
             ),
+          RevenueCatService().currentEntitlement.value == Entitlement.free
+              ? Container(
+                  width: widget.size.width * 1,
+                  height: widget.size.height * 1,
+                  child: WaterMark(
+                      fontSize: widget.size.width * 0.025,
+                      size: widget.size,
+                      color: widget.slidePallet.bigTitleTStyle.color ??
+                          Colors.white),
+                )
+              : Container()
         ],
       ),
     );

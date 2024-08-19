@@ -200,7 +200,7 @@ class InAppPurchasesController extends GetxController {
       return "Month";
     } else if (product.identifier ==
         "aislide_premium_1y:aislide-baseplan-yearly") {
-      return "Month";
+      return "Year";
     } else {
       log("Product ID: ${product.identifier}");
       return product.description;
@@ -208,7 +208,9 @@ class InAppPurchasesController extends GetxController {
   }
 
   bool getIsHot(StoreProduct product) {
-    if (product.identifier == "aislide_adremove_1") {
+    if (product.identifier == "aislide_premium_1y:aislide-baseplan-yearly")
+    // if (product.identifier == "aislide_adremove_1")
+    {
       return true;
     } else {
       return false;

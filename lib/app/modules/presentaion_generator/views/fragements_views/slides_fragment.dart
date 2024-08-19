@@ -79,7 +79,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                       ))),
             footerWidget(),
             Align(
-              alignment: Alignment.topRight,
+              alignment: Alignment.centerRight,
               child: Container(
                 margin: EdgeInsets.symmetric(
                     horizontal: SizeConfig.blockSizeHorizontal * 5),
@@ -95,7 +95,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                     }
                   },
                   child: Container(
-                    child: Icon(Icons.switch_access_shortcut),
+                    child: Icon(Icons.arrow_forward_ios),
                   ),
                 ),
               ),

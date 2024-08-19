@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/slide_styles/water_mark.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class SectionedSlide2 extends StatefulWidget {
@@ -27,6 +29,8 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
     setState(() {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
+      print("BG Index: $bgIndex");
+      print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
     });
     print("initState Called");
   }
@@ -139,6 +143,17 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
               ],
             ),
           ),
+          RevenueCatService().currentEntitlement.value == Entitlement.free
+              ? Container(
+                  width: widget.size.width * 1,
+                  height: widget.size.height * 1,
+                  child: WaterMark(
+                      fontSize: widget.size.width * 0.025,
+                      size: widget.size,
+                      color: widget.slidePallet.bigTitleTStyle.color ??
+                          Colors.white),
+                )
+              : Container()
         ],
       ),
     );

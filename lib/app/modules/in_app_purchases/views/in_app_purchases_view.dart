@@ -37,6 +37,8 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                   if (snapshot.hasData) {
                     if (snapshot.data != null) {
                       final products = snapshot.data!;
+                      products.removeWhere(
+                          (p) => p.identifier == "aislide_adremove_1");
                       controller.selectedIndex.value = products.length - 1;
                       if (products[controller.selectedIndex.value].identifier ==
                           "aislide_adremove_1") {
@@ -346,6 +348,8 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
       String productPeriod = controller.getProductPeriod(product);
 
       text3 = "${product.priceString}/${productPeriod}";
+      isHot = controller.getIsHot(product);
+
       text4 = "${discountPercentage.toStringAsFixed(0)}%";
     } else if (pID == "aislide_adremove_1") {
       isDiscounted = true;

@@ -3,7 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/services/remoteconfig_services.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/slide_styles/water_mark.dart';
 import 'package:slide_maker/app/utills/clip_shapes/hexagon_clipper.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class TitleSlide1 extends StatefulWidget {
@@ -33,13 +37,15 @@ class __TitleSlide1State extends State<TitleSlide1> {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
       titleFontSize = widget.mySlide.slideSections[0].memoryImage != null
-          ? widget.size.height * 0.12
+          ? widget.size.height * 0.10
           : widget.size.height * 0.15;
 
       print("Title Font Size: $titleFontSize");
+      print("BG Index: $bgIndex");
+      print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
     });
-    print(
-        "initState Called: Image Bytes: ${widget.mySlide.slideSections[0].memoryImage}");
+    // print(
+    //     "initState Called: Image Bytes: ${widget.mySlide.slideSections[0].memoryImage}");
   }
 
   @override
@@ -95,6 +101,17 @@ class __TitleSlide1State extends State<TitleSlide1> {
               ],
             ),
           ),
+          RevenueCatService().currentEntitlement.value == Entitlement.free
+              ? Container(
+                  width: widget.size.width * 1,
+                  height: widget.size.height * 1,
+                  child: WaterMark(
+                      fontSize: widget.size.width * 0.025,
+                      size: widget.size,
+                      color: widget.slidePallet.bigTitleTStyle.color ??
+                          Colors.white),
+                )
+              : Container()
         ],
       ),
     );
