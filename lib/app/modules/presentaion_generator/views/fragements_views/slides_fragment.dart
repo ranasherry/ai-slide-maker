@@ -78,28 +78,28 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                         child: Center(child: CircularProgressIndicator()),
                       ))),
             footerWidget(),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeHorizontal * 5),
-                child: GestureDetector(
-                  onTap: () {
-                    int index =
-                        palletList.indexOf(controller.selectedPallet.value);
-                    index++;
-                    if (index < palletList.length) {
-                      controller.selectedPallet.value = palletList[index];
-                    } else {
-                      controller.selectedPallet.value = palletList[0];
-                    }
-                  },
-                  child: Container(
-                    child: Icon(Icons.arrow_forward_ios),
-                  ),
-                ),
-              ),
-            )
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: Container(
+            //     margin: EdgeInsets.symmetric(
+            //         horizontal: SizeConfig.blockSizeHorizontal * 5),
+            //     child: GestureDetector(
+            //       onTap: () {
+            //         int index =
+            //             palletList.indexOf(controller.selectedPallet.value);
+            //         index++;
+            //         if (index < palletList.length) {
+            //           controller.selectedPallet.value = palletList[index];
+            //         } else {
+            //           controller.selectedPallet.value = palletList[0];
+            //         }
+            //       },
+            //       child: Container(
+            //         child: Icon(Icons.arrow_forward_ios),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

@@ -28,7 +28,7 @@ class PresentaionGeneratorView extends GetView<PresentaionGeneratorController> {
       // ),
       body: Column(
         children: [
-          headerWidget(),
+          headerWidget(context),
           Obx(() => Expanded(
                 child: IndexedStack(
                   index: controller.currentIndex.value,
@@ -121,7 +121,7 @@ class PresentaionGeneratorView extends GetView<PresentaionGeneratorController> {
     );
   }
 
-  Widget headerWidget() {
+  Widget headerWidget(BuildContext context) {
     return Stack(
       children: [
         MainHeaderBG(
@@ -151,7 +151,11 @@ class PresentaionGeneratorView extends GetView<PresentaionGeneratorController> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.back();
+                        if (controller.currentIndex.value > 1) {
+                          controller.showNavigateBackWarning(context);
+                        } else {
+                          Get.back();
+                        }
                       },
                       child: Container(
                         height: SizeConfig.blockSizeVertical * 6,
