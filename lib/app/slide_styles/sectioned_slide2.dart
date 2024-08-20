@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
-import 'package:slide_maker/app/services/revenuecat_service.dart';
-import 'package:slide_maker/app/slide_styles/water_mark.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class SectionedSlide2 extends StatefulWidget {
@@ -29,8 +27,6 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
     setState(() {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
-      print("BG Index: $bgIndex");
-      print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
     });
     print("initState Called");
   }
@@ -67,11 +63,8 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                   child: Text(
                     widget.mySlide.slideTitle,
                     // overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: widget.size.width * 0.050,
-                        color: Color(widget.slidePallet.bigTitleTColor)),
-                    // style: widget.slidePallet.bigTitleTStyle
-                    //     .copyWith(fontSize: widget.size.width * 0.050),
+                    style: widget.slidePallet.bigTitleTStyle
+                        .copyWith(fontSize: widget.size.width * 0.050),
                   ),
                 ),
                 verticalSpace(widget.size.height * 0.05),
@@ -88,18 +81,10 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                                 style: widget.mySlide.slideSections[0]
                                             .sectionHeader !=
                                         null
-                                    ? TextStyle(
-                                        fontSize: widget.size.width * 0.035,
-                                        color: Color(
-                                            widget.slidePallet.bigTitleTColor))
-                                    : TextStyle(),
-                                // style: widget.mySlide.slideSections[0]
-                                //             .sectionHeader !=
-                                //         null
-                                //     ? widget.slidePallet.bigTitleTStyle
-                                //         .copyWith(
-                                //             fontSize: widget.size.width * 0.035)
-                                //     : widget.slidePallet.bigTitleTStyle,
+                                    ? widget.slidePallet.bigTitleTStyle
+                                        .copyWith(
+                                            fontSize: widget.size.width * 0.035)
+                                    : widget.slidePallet.bigTitleTStyle,
                               ),
                               verticalSpace(widget.size.height * 0.01),
                               Text(
@@ -107,20 +92,12 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                                         .sectionContent ??
                                     '',
                                 style: widget.mySlide.slideSections[0]
-                                            .sectionHeader !=
+                                            .sectionContent !=
                                         null
-                                    ? TextStyle(
-                                        fontSize: widget.size.width * 0.018,
-                                        color: Color(
-                                            widget.slidePallet.bigTitleTColor))
-                                    : TextStyle(),
-                                // style: widget.mySlide.slideSections[0]
-                                //             .sectionContent !=
-                                //         null
-                                //     ? widget.slidePallet.bigTitleTStyle
-                                //         .copyWith(
-                                //             fontSize: widget.size.width * 0.018)
-                                //     : widget.slidePallet.bigTitleTStyle,
+                                    ? widget.slidePallet.bigTitleTStyle
+                                        .copyWith(
+                                            fontSize: widget.size.width * 0.018)
+                                    : widget.slidePallet.bigTitleTStyle,
                               ),
                             ],
                           )
@@ -133,21 +110,13 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                               Text(
                                 widget.mySlide.slideSections[1].sectionHeader ??
                                     '',
-                                // style: widget.mySlide.slideSections[1]
-                                //             .sectionHeader !=
-                                //         null
-                                //     ? widget.slidePallet.bigTitleTStyle
-                                //         .copyWith(
-                                //             fontSize: widget.size.width * 0.035)
-                                //     : widget.slidePallet.bigTitleTStyle,
                                 style: widget.mySlide.slideSections[1]
                                             .sectionHeader !=
                                         null
-                                    ? TextStyle(
-                                        fontSize: widget.size.width * 0.035,
-                                        color: Color(
-                                            widget.slidePallet.bigTitleTColor))
-                                    : TextStyle(),
+                                    ? widget.slidePallet.bigTitleTStyle
+                                        .copyWith(
+                                            fontSize: widget.size.width * 0.035)
+                                    : widget.slidePallet.bigTitleTStyle,
                               ),
                               verticalSpace(widget.size.height * 0.01),
                               Text(
@@ -155,20 +124,12 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                                         .sectionContent ??
                                     '',
                                 style: widget.mySlide.slideSections[1]
-                                            .sectionHeader !=
+                                            .sectionContent !=
                                         null
-                                    ? TextStyle(
-                                        fontSize: widget.size.width * 0.018,
-                                        color: Color(
-                                            widget.slidePallet.bigTitleTColor))
-                                    : TextStyle(),
-                                // style: widget.mySlide.slideSections[1]
-                                //             .sectionContent !=
-                                //         null
-                                //     ? widget.slidePallet.bigTitleTStyle
-                                //         .copyWith(
-                                //             fontSize: widget.size.width * 0.018)
-                                //     : widget.slidePallet.bigTitleTStyle,
+                                    ? widget.slidePallet.bigTitleTStyle
+                                        .copyWith(
+                                            fontSize: widget.size.width * 0.018)
+                                    : widget.slidePallet.bigTitleTStyle,
                               ),
                             ],
                           )
@@ -178,16 +139,6 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
               ],
             ),
           ),
-          RevenueCatService().currentEntitlement.value == Entitlement.free
-              ? Container(
-                  width: widget.size.width * 1,
-                  height: widget.size.height * 1,
-                  child: WaterMark(
-                      fontSize: widget.size.width * 0.025,
-                      size: widget.size,
-                      color: Color(widget.slidePallet.bigTitleTColor)),
-                )
-              : Container()
         ],
       ),
     );

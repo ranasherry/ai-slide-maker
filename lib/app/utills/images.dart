@@ -55,10 +55,8 @@ class AppImages {
   static const discount = "assets/images/discount.png";
   static const limited = "assets/images/limited.png";
   static const hot = "assets/images/hot.png";
-  static const ads_purchase = "assets/images/ads_purchase.png";
 
   static const HeaderMainBgSVG = "assets/svg/header_bg.svg";
-  static const intro_themes = "assets/images/intro_themes.png";
 
   // SVG
 
@@ -109,29 +107,6 @@ class AppImages {
     "assets/slidy/style4/4.png",
   ];
 
-  static const slidy_style5 = [
-    "assets/slidy/style5/1.png",
-    "assets/slidy/style5/2.png",
-  ];
-
-  static const slidy_style6 = [
-    "assets/slidy/style6/1.png",
-    "assets/slidy/style6/2.png",
-  ];
-  static const slidy_style7 = [
-    "assets/slidy/style7/1.png",
-    "assets/slidy/style7/2.png",
-  ];
-  static const slidy_style8 = [
-    "assets/slidy/style8/1.png",
-    "assets/slidy/style8/2.png",
-  ];
-  static const slidy_style9 = [
-    "assets/slidy/style9/1.png",
-    "assets/slidy/style9/2.png",
-    "assets/slidy/style9/3.png",
-  ];
-
   static const magic_stick = "assets/images/magic_stick.png";
   static const slide_beta = "assets/images/slide_beta.png";
   static const slide = "assets/images/slide.png";
@@ -148,7 +123,4 @@ class AppImages {
   static const defaultAmount = "assets/svg/default.svg";
   static const medium = "assets/svg/medium.svg";
   static const pro = "assets/svg/pro.svg";
-  static const star_1 = "assets/svg/star_1.svg";
-  static const star_2 = "assets/svg/star_2.svg";
-  static const star_3 = "assets/svg/star_3.svg";
 }

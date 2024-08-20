@@ -500,11 +500,10 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   }
 
   int reviewCount = 5;
-
   Future<void> showReviewDialogue(BuildContext context,
       {bool isSettings = false}) async {
     log("showReviewDialogue");
-    if (reviewCount < 3 && !isSettings) {
+    if (reviewCount < 5 && !isSettings) {
       reviewCount++;
       return;
     }

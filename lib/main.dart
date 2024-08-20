@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'package:intl/intl.dart';
-
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -95,7 +92,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeNotifier(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -108,34 +105,14 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
+  const MyApp({super.key});
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
-    analytics: analytics,
-    routeFilter: (route) {
-      final ignoredRoutes = [
-        Routes.SplashScreen,
-        Routes.NEW_INTRO_SCREENS,
-        Routes.GenderAskingView,
-        Routes.IN_APP_PURCHASES
-      ];
-      if (!ignoredRoutes.contains(route!.settings.name)) {
-        return true;
-      } else {
-        log("Screen Igronred: ${route.settings.name}");
-
-        return false;
-      }
-      // return !ignoredRoutes.contains(route.settings.name);
-    },
-  );
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   static final facebookAppEvents = FacebookAppEvents();
   @override
   Widget build(BuildContext context) {
-    // String countryName = CountryNames.getCountryName(countryCode);
     // facebookAppEvents.lo
     facebookAppEvents.setAutoLogAppEventsEnabled(true);
     facebookAppEvents.setAdvertiserTracking(enabled: true);

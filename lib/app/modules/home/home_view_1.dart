@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
-import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
@@ -14,16 +12,13 @@ import 'package:slide_maker/app/utills/helprer_widgets/main_header_bg.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-class HomeView1 extends GetView<HomeViewCtl> {
-  HomeView1({super.key});
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+class HomeView1 extends StatelessWidget {
+  const HomeView1({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: AppLovinProvider.instance.MyBannerAdWidget(),
-      drawer: MyDrawer(),
-      key: _scaffoldKey,
       // backgroundColor: AppColors.mainColor,
       body: Container(
         height: SizeConfig.screenHeight,
@@ -34,85 +29,43 @@ class HomeView1 extends GetView<HomeViewCtl> {
               height: SizeConfig.blockSizeVertical * 35,
               width: SizeConfig.screenWidth,
             ),
-            // Positioned(
-            //   top: SizeConfig.blockSizeVertical * 4,
-            //   left: SizeConfig.blockSizeHorizontal * 4,
-            //   child:
-            // ),
             Positioned(
               top: SizeConfig.blockSizeVertical * 4,
-              // left: SizeConfig.blockSizeHorizontal * 76,
-              child: Container(
-                width: SizeConfig.screenWidth,
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeHorizontal * 3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _scaffoldKey.currentState!.openDrawer();
-                      },
-                      child: Container(
-                          height: SizeConfig.blockSizeVertical * 5,
-                          width: SizeConfig.blockSizeHorizontal * 10,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.notes,
-                            color: AppColors.textfieldcolor,
-                          )),
-                    ),
-                    //? To do comment before push/release
-                    GestureDetector(
-                      onTap: () {
-                        // Get.toNamed(Routes.SettingsView);
-                        Get.toNamed(Routes.POLLSCREENVIEW);
-                      },
-                      child: Container(
+              left: SizeConfig.blockSizeHorizontal * 76,
+              child: Row(
+                children: [
+                  Obx(() => RevenueCatService().currentEntitlement.value ==
+                          Entitlement.free
+                      ? Container(
                           height: SizeConfig.blockSizeVertical * 4,
                           width: SizeConfig.blockSizeHorizontal * 8,
-                          child: Image.asset(AppImages.setting)),
-                    ),
-                    // // // //       // // // //
-                    Obx(() => RevenueCatService().currentEntitlement.value ==
-                            Entitlement.free
-                        ? Container(
-                            height: SizeConfig.blockSizeVertical * 4,
-                            width: SizeConfig.blockSizeHorizontal * 8,
-                            child: GestureDetector(
-                                onTap: () {
-                                  if (RevenueCatService()
-                                          .currentEntitlement
-                                          .value ==
-                                      Entitlement.free) {
-                                    // Get.toNamed(
-                                    //   Routes.NEWINAPPPURCHASEVIEW,
-                                    // );
-                                    RevenueCatService().GoToPurchaseScreen();
-                                  }
-                                },
-                                child: Image.asset(
-                                  AppImages.vip,
-                                  // scale: 1.8,
-                                )))
-                        : Container()),
-                    // horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
-                    // ? settings button
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     // Get.toNamed(Routes.SettingsView);
-                    //     Get.toNamed(Routes.POLLSCREENVIEW);
-                    //   },
-                    //   child: Container(
-                    //       height: SizeConfig.blockSizeVertical * 4,
-                    //       width: SizeConfig.blockSizeHorizontal * 8,
-                    //       child: Image.asset(AppImages.setting)),
-                    // ),
-                  ],
-                ),
+                          child: GestureDetector(
+                              onTap: () {
+                                if (RevenueCatService()
+                                        .currentEntitlement
+                                        .value ==
+                                    Entitlement.free) {
+                                  Get.toNamed(
+                                    Routes.IN_APP_PURCHASES,
+                                  );
+                                }
+                              },
+                              child: Image.asset(
+                                AppImages.vip,
+                                // scale: 1.8,
+                              )))
+                      : Container()),
+                  horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.SettingsView);
+                    },
+                    child: Container(
+                        height: SizeConfig.blockSizeVertical * 4,
+                        width: SizeConfig.blockSizeHorizontal * 8,
+                        child: Image.asset(AppImages.setting)),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -271,8 +224,16 @@ class HomeView1 extends GetView<HomeViewCtl> {
                               },
                               child:
                                   modules(AppImages.slide, "Presentation AI")),
+                       
                         ],
-                      )
+                      ), 
+                      // GestureDetector(
+                      //         onTap: () {
+                      //           // AI Slide Maker Screen
+                      //           Get.toNamed(Routes.PresentationHistoryView);
+                      //         },
+                      //         child:
+                      //             modules(AppImages.slide, "Presentation History")),
                     ],
                   ),
                 ),

@@ -446,9 +446,7 @@ class AppLovinProvider {
   Obx MyBannerAdWidget() {
     return Obx(() =>
         RevenueCatService().currentEntitlement.value == Entitlement.paid
-            ? Container(
-                height: 0,
-              )
+            ? Container()
             : MaxAdView(
                 adUnitId: Platform.isAndroid
                     ? AppStrings.MAX_BANNER_ID

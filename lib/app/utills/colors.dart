@@ -26,10 +26,6 @@ class AppColors {
 
   //? New Colors
   static const headerContainerGradient = [Color(0xFFD33800), Color(0xFFD33800)];
-  static const mainHeaderGradient = LinearGradient(
-      colors: [AppColors.mainColor, Color(0xFFF8875E)],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter);
 
   static const footerContainerColor = Color(0xFFF5F6F8);
   static const fragmantBGColor = Color(0xFFE7EBFA);

@@ -162,7 +162,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                                                 color: Colors.white,
                                                 fontSize: 11),
                                           ),
-                                          backgroundColor: AppColors.mainColor,
+                                          backgroundColor: Colors.indigo,
 
                                           // Theme.of(context).primaryColor,
                                           elevation: 4,
@@ -187,8 +187,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                         strokeCap: StrokeCap.round,
                         padding:
                             EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
-                        // color: Theme.of(context).colorScheme.primary,
-                        color: AppColors.mainColor,
+                        color: Theme.of(context).colorScheme.primary,
                         // Color(0xFF0049C8),
                         // dashPattern: [19, 2, 6, 3],
                         dashPattern: [6, 1, 8, 11],
@@ -214,9 +213,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                             ],
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              // color: Theme.of(context).colorScheme.primary,
-                              color: AppColors.mainColor,
-                            ),
+                                color: Theme.of(context).colorScheme.primary),
                           ),
                           child: controller.showInside.value
                               ? Padding(
@@ -225,9 +222,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       outField(context),
-                                      Divider(
-                                        color: AppColors.mainColor,
-                                      ),
+                                      Divider(),
                                       inputField(context),
                                     ],
                                   ),
@@ -268,11 +263,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                   width: SizeConfig.blockSizeHorizontal * 100,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        // colors: [Color(0xFFD5E4FF), Color(0xFFDFEBFF)],
-                        colors: [
-                          Color.fromARGB(255, 253, 141, 101),
-                          Color.fromARGB(255, 255, 200, 180)
-                        ],
+                        colors: [Color(0xFFD5E4FF), Color(0xFFDFEBFF)],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight),
                     // color: Color(0xFFD5E4FF),
@@ -296,12 +287,10 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                       child: Text(
                     "Note: This Content is AI generated",
                     style: TextStyle(
-                      fontSize: SizeConfig.blockSizeHorizontal * 4,
-                      fontWeight: FontWeight.bold,
-                      // color: Color(0xFF013961)
-                      // color: Colors.indigo.shade700,
-                      color: AppColors.mainColor,
-                    ),
+                        fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        fontWeight: FontWeight.bold,
+                        // color: Color(0xFF013961)
+                        color: Colors.indigo.shade700),
                   )),
                 ),
               ],
@@ -350,24 +339,22 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
             duration: Duration(milliseconds: 500),
             curve: Curves.fastOutSlowIn,
             decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow, // Shadow color
-                  spreadRadius: 2, // Spread radius
-                  blurRadius: 10, // Blur radius
-                  offset: Offset(0, 5), // Offset in x and y direction
-                ),
-              ],
-              borderRadius:
-                  BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
-              // border: Border.all(color: AppColors.icon_color),
-              color: AppColors.mainColor,
-              // gradient: LinearGradient(
-              //     colors: [Colors.indigoAccent, Colors.indigo],
-
-              //     begin: Alignment.topCenter,
-              //     end: Alignment.bottomCenter)
-            ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).colorScheme.shadow, // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 10, // Blur radius
+                    offset: Offset(0, 5), // Offset in x and y direction
+                  ),
+                ],
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 8),
+                // border: Border.all(color: AppColors.icon_color),
+                // color: AppColors.neonBorder,
+                gradient: LinearGradient(
+                    colors: [Colors.indigoAccent, Colors.indigo],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter)),
             child: Obx(
               () => controller.showInside.value
                   ? Column(
@@ -527,7 +514,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                   BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4),
               // borderSide: BorderSide.none
               borderSide: BorderSide(
-                color: AppColors.mainColor, // Border color when focused
+                color: Colors.indigo, // Border color when focused
                 // width: 3.0, // Border width when focused
               ),
             ),
@@ -617,7 +604,7 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                       child: Row(
                         children: [
                           Image.asset(AppImages.drawer,
-                              color: AppColors.mainColor),
+                              color: Colors.indigoAccent),
                           SizedBox(
                             width: 10,
                           ),

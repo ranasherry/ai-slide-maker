@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:slide_maker/app/modules/bindings/poll_screen_binding.dart';
+import 'package:slide_maker/app/modules/bindings/presentation_history_bindings.dart';
 import 'package:slide_maker/app/modules/home/home_view_1.dart';
-import 'package:slide_maker/app/modules/home/poll_screen_view.dart';
-import 'package:slide_maker/app/modules/in_app_purchases/bindings/new_in_app_purchase_binding.dart';
-import 'package:slide_maker/app/modules/in_app_purchases/views/new_in_app_purchase_view.dart';
+import 'package:slide_maker/app/modules/home/presentation_history_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/gender_asking_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/new_intro_screen_view.dart';
@@ -240,19 +238,16 @@ class AppPages {
       binding: PresentaionGeneratorBinding(),
     ),
     GetPage(
-        name: _Paths.HOMEVIEW1, page: () => HomeView1(), binding: HomeBinding()
+        name: _Paths.HOMEVIEW1,
+        page: () => const HomeView1(),
+        binding: HomeBinding()
         // binding: ,
         ),
-    GetPage(
-        name: _Paths.NEWINAPPPURCHASEVIEW,
-        page: () => const newInAppPurchaseView(),
-        binding: newInAppPurchaseBinding(),
-        transition: Transition.downToUp),
-
-        GetPage(
-        name: _Paths.POLLSCREENVIEW,
-        page: () => const PollScreenView(),
-        binding: PollScreenBinding(),
-       ),
+    // GetPage(
+    // name: _Paths.PresentationHistoryView,
+    // page: () => const PresentationHistoryView(),
+    // binding: PresentationHistoryBindings()
+    // // binding: ,
+    // ),
   ];
 }

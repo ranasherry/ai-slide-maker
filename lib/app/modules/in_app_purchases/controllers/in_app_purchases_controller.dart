@@ -36,6 +36,8 @@ class InAppPurchasesController extends GetxController {
     super.onClose();
   }
 
+  void increment() => count.value++;
+
   Future<void> recordInAppImpression() async {
     final today = DateTime.now();
     final dateString =
@@ -180,9 +182,6 @@ class InAppPurchasesController extends GetxController {
     } else if (product.identifier ==
         "aislide_premium_1m:aislide-baseplan-monthly") {
       return "Monthly";
-    } else if (product.identifier ==
-        "aislide_premium_1y:aislide-baseplan-yearly") {
-      return "Annually";
     } else {
       log("Product ID: ${product.identifier}");
       return product.title;
@@ -198,9 +197,6 @@ class InAppPurchasesController extends GetxController {
     } else if (product.identifier ==
         "aislide_premium_1m:aislide-baseplan-monthly") {
       return "Month";
-    } else if (product.identifier ==
-        "aislide_premium_1y:aislide-baseplan-yearly") {
-      return "Year";
     } else {
       log("Product ID: ${product.identifier}");
       return product.description;
@@ -208,9 +204,7 @@ class InAppPurchasesController extends GetxController {
   }
 
   bool getIsHot(StoreProduct product) {
-    if (product.identifier == "aislide_premium_1y:aislide-baseplan-yearly")
-    // if (product.identifier == "aislide_adremove_1")
-    {
+    if (product.identifier == "aislide_adremove_1") {
       return true;
     } else {
       return false;

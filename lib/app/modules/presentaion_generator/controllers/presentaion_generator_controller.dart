@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
-import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
+import 'package:slide_maker/app/modules/controllers/presentation_history_ctl.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_outline_frag.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_styles_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
@@ -21,7 +21,6 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/services/myapi_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
-import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
 
 import 'dart:developer' as developer;
@@ -30,6 +29,7 @@ import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
+  PresentationHistoryCTL presentationHistoryCTL = Get.put(PresentationHistoryCTL());
   //TODO: Implement PresentaionGeneratorController
 
   //? Input Fragment Variables
@@ -98,14 +98,6 @@ class PresentaionGeneratorController extends GetxController {
 
   @override
   void onClose() {
-    @override
-    void onClose() {
-      HomeViewCtl homeViewCtl = Get.find();
-      homeViewCtl.showReviewDialogue(Get.context!);
-
-      super.onClose();
-    }
-
     super.onClose();
   }
 
@@ -419,6 +411,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // coveredTitles.add(mySlide.slideTitle);
         developer
             .log("SavedSlides Length: ${myPresentation.value.slides.length}");
+             presentationHistoryCTL.insertPresentation(myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -446,7 +439,9 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       developer.log("SavedSlides: ${slide.toMap()}");
     }
 
+
     isSlidesGenerated.value = true;
+    
 
     currentIndex.value = 3;
   }
@@ -513,6 +508,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       presentationTitle: "Solar Eclipse",
       slides: mySlidesList,
     );
+
   }
 
   //?  Input Fragment
@@ -588,6 +584,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
           mySlides: myPresentation.value.slides,
           Title: myPresentation.value.presentationTitle,
           slidePallet: selectedPallet.value);
+
 
       await ComFunction().downloadPresentation(pres);
     } on Exception catch (e) {
@@ -670,6 +667,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
             Duration difference = DateTime.now().difference(lastGenerationTime);
 
             // Calculate the remaining time as a countdown
+            // Duration countdown = Duration(minutes: 0) - difference;
             Duration countdown = Duration(minutes: 5) - difference;
             countdown = Duration(
                 seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
@@ -742,53 +740,6 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         print("Cancel clicked");
       },
       timerText: timerValue,
-    );
-  }
-
-  void showNavigateBackWarning(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.orange[100],
-          title: Text(
-            'Warning',
-            style: TextStyle(
-              color: AppColors.mainColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Text(
-            'You will lose any unsaved progress if you go back. Do you want to continue?',
-            style: TextStyle(
-                // color: Colors.orange[800],
-                ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Navigator.of(context).pop(); // Dismiss the dialog
-                Get.back();
-              },
-              child: Text(
-                'Cancel',
-                // style: TextStyle(color: Colors.orange[900]),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
-                Navigator.of(context).maybePop(); // Navigate back
-                // currentIndex.value = 0;
-              },
-              child: Text(
-                'Continue',
-                style: TextStyle(color: Colors.orange[900]),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

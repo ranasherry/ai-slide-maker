@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.0.2+58
+version: 2.0.1+57
 
 environment:
   sdk: ">=3.0.2 <4.0.0"
@@ -140,8 +140,6 @@ dependencies:
   in_app_review: ^2.0.9
   flutter_signin_button: ^2.0.0
   linear_progress_bar: ^1.1.2
-  # country_codes: ^3.1.0+2
-  flutter_polls: ^0.1.6
 
   flutter_localizations:
     sdk: flutter
@@ -190,11 +188,6 @@ flutter:
     - assets/slidy/style2/
     - assets/slidy/style3/
     - assets/slidy/style4/
-    - assets/slidy/style5/
-    - assets/slidy/style6/
-    - assets/slidy/style7/
-    - assets/slidy/style8/
-    - assets/slidy/style9/
 
     - assets/lottie/fBBmyrlUDl.json
     # - assets/lottie/77323-profile-lock.json

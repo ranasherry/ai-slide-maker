@@ -8,13 +8,11 @@ class MySlide {
   String slideTitle;
   List<SlideSection> slideSections;
   SlideType slideType;
-  // int StyleID;
 
   MySlide(
       {this.id,
       required this.slideTitle,
       required this.slideSections,
-      // required this.StyleID,
       required this.slideType});
 
   Map<String, dynamic> toMap() {

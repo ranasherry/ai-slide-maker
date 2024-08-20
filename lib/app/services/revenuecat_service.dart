@@ -136,31 +136,6 @@ class RevenueCatService {
     return allProducts;
   }
 
-  Future<StoreProduct?> getLifeTimeSubscription() async {
-    // Get offerings
-    final offerings = await Purchases.getOfferings();
-
-    // Check if "premium_subscription" offering exists
-    final premiumOffering = offerings.getOffering("premium_subscription");
-    if (premiumOffering == null) {
-      return null; // Return empty list if offering is not found
-    }
-
-    // Get available packages for the offering
-    final packages = premiumOffering.availablePackages;
-
-    // Extract products from each package and combine into a single list
-    final List<StoreProduct> allProducts = [];
-    for (var package in packages) {
-      if (package.storeProduct.identifier == 'aislide_adremove_1') {
-        return package.storeProduct;
-      }
-      allProducts.add(package.storeProduct);
-    }
-
-    return null;
-  }
-
   void printWrapped(String text) =>
       RegExp('.{1,800}').allMatches(text).map((m) => m.group(0)).forEach(print);
 
@@ -291,40 +266,11 @@ class RevenueCatService {
     }
   }
 
-  int purchaseScreenCounter = 0;
-
-  bool isPurchaseScreenOpen = false;
-
   void GoToPurchaseScreen() {
     if (currentEntitlement.value == Entitlement.paid) return;
-    if (isPurchaseScreenOpen) {
-      dp.log("Screen is Already Opened");
-      return;
-    }
-
-    isPurchaseScreenOpen = true;
-    if (purchaseScreenCounter % 2 == 0) {
-      Get.toNamed(
-        Routes.NEWINAPPPURCHASEVIEW,
-      )!
-          .then((value) {
-        isPurchaseScreenOpen = false;
-        dp.log("back from Purchase Screen");
-      });
-    } else {
-      Get.toNamed(
-        Routes.IN_APP_PURCHASES,
-      )!
-          .then((value) {
-        isPurchaseScreenOpen = false;
-        dp.log("back from Purchase Screen");
-      });
-    }
-    purchaseScreenCounter++;
-
-    // Get.toNamed(
-    //   Routes.IN_APP_PURCHASES,
-    // );
+    Get.toNamed(
+      Routes.IN_APP_PURCHASES,
+    );
   }
 
   Future<SharedPreferences> getSharedPrefs() async {
@@ -406,7 +352,7 @@ class RevenueCatService {
       cancel: ElevatedButton(
         onPressed: () {
           // Get.back();
-          Get.offAllNamed(Routes.HOMEVIEW1);
+          Get.offAllNamed(Routes.HomeView);
         },
         child: Text("Later"),
       ),
