@@ -71,8 +71,11 @@ class __SectionedSlideImage1State extends State<SectionedSlideImage1> {
                   width: widget.size.width,
                   child: Text(
                     widget.mySlide.slideTitle,
-                    style: widget.slidePallet.bigTitleTStyle
-                        .copyWith(fontSize: widget.size.width * 0.050),
+                    style: TextStyle(
+                        fontSize: widget.size.width * 0.050,
+                        color: Color(widget.slidePallet.bigTitleTColor)),
+                    // style: widget.slidePallet.bigTitleTStyle
+                    //     .copyWith(fontSize: widget.size.width * 0.050),
                   ),
                 ),
                 verticalSpace(widget.size.height * 0.05),
@@ -112,8 +115,7 @@ class __SectionedSlideImage1State extends State<SectionedSlideImage1> {
                   child: WaterMark(
                       fontSize: widget.size.width * 0.025,
                       size: widget.size,
-                      color: widget.slidePallet.bigTitleTStyle.color ??
-                          Colors.white),
+                      color: Color(widget.slidePallet.bigTitleTColor)),
                 )
               : Container()
         ],
@@ -144,17 +146,27 @@ class __SectionedSlideImage1State extends State<SectionedSlideImage1> {
           Text(
             widget.mySlide.slideSections[i].sectionHeader ?? '',
             style: widget.mySlide.slideSections[i].sectionHeader != null
-                ? widget.slidePallet.bigTitleTStyle
-                    .copyWith(fontSize: sectionFontSize * 2)
-                : widget.slidePallet.bigTitleTStyle,
+                ? TextStyle(
+                    fontSize: sectionFontSize * 2,
+                    color: Color(widget.slidePallet.bigTitleTColor))
+                : TextStyle(),
+            // style: widget.mySlide.slideSections[i].sectionHeader != null
+            //     ? widget.slidePallet.bigTitleTStyle
+            //         .copyWith(fontSize: sectionFontSize * 2)
+            //     : widget.slidePallet.bigTitleTStyle,
           ),
           verticalSpace(widget.size.height * 0.04),
           Text(
             widget.mySlide.slideSections[i].sectionContent ?? '',
-            style: widget.mySlide.slideSections[i].sectionContent != null
-                ? widget.slidePallet.bigTitleTStyle
-                    .copyWith(fontSize: sectionFontSize)
-                : widget.slidePallet.bigTitleTStyle,
+            style: widget.mySlide.slideSections[i].sectionHeader != null
+                ? TextStyle(
+                    fontSize: sectionFontSize,
+                    color: Color(widget.slidePallet.bigTitleTColor))
+                : TextStyle(),
+            // style: widget.mySlide.slideSections[i].sectionContent != null
+            //     ? widget.slidePallet.bigTitleTStyle
+            //         .copyWith(fontSize: sectionFontSize)
+            //     : widget.slidePallet.bigTitleTStyle,
           ),
         ],
       ),

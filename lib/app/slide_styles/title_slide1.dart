@@ -80,14 +80,20 @@ class __TitleSlide1State extends State<TitleSlide1> {
                       verticalSpace(widget.size.height * 0.1),
                       Text(
                         widget.mySlide.slideTitle,
-                        style: widget.slidePallet.bigTitleTStyle
-                            .copyWith(fontSize: titleFontSize),
+                        style: TextStyle(
+                            fontSize: titleFontSize,
+                            color: Color(widget.slidePallet.bigTitleTColor)),
+                        // style: widget.slidePallet.bigTitleTStyle
+                        //     .copyWith(fontSize: titleFontSize),
                       ),
                       verticalSpace(widget.size.height * 0.05),
                       Text(
                         widget.mySlide.slideSections[0].sectionContent!,
-                        style: widget.slidePallet.bigTitleTStyle
-                            .copyWith(fontSize: widget.size.width * 0.03),
+                        style: TextStyle(
+                            fontSize: widget.size.width * 0.03,
+                            color: Color(widget.slidePallet.bigTitleTColor)),
+                        // style: widget.slidePallet.bigTitleTStyle
+                        //     .copyWith(fontSize: widget.size.width * 0.03),
                       ),
                     ],
                   ),
@@ -108,8 +114,7 @@ class __TitleSlide1State extends State<TitleSlide1> {
                   child: WaterMark(
                       fontSize: widget.size.width * 0.025,
                       size: widget.size,
-                      color: widget.slidePallet.bigTitleTStyle.color ??
-                          Colors.white),
+                      color: Color(widget.slidePallet.bigTitleTColor)),
                 )
               : Container()
         ],

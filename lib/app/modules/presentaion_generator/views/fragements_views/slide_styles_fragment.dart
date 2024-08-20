@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -52,62 +53,96 @@ class SlideStylesFrag extends GetView<PresentaionGeneratorController> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       print("hello2");
-                      return GestureDetector(
-                        onTap: () {
-                          controller.selectedPallet.value = palletList[index];
-                        },
-                        child: Obx(() => Container(
-                              margin: EdgeInsets.all(4),
-                              // padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                    SizeConfig.blockSizeHorizontal * 2,
-                                  ),
-                                  border: Border.all(
-                                      color: controller.selectedPallet.value ==
-                                              palletList[index]
-                                          ? Colors.blue
-                                          : Colors.transparent,
-                                      width: 1)),
-                              child: Container(
-                                margin: EdgeInsets.all(7),
-                                padding: EdgeInsets.all(10),
-                                width: SizeConfig.blockSizeHorizontal * 65,
-                                height: SizeConfig.blockSizeHorizontal * 10,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                        palletList[index].imageList.first,
-                                      ),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(
-                                    SizeConfig.blockSizeHorizontal * 3,
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Title",
-                                      style:
-                                          palletList[index].sectionHeaderTStyle,
-                                    ),
-                                    verticalSpace(
-                                        SizeConfig.blockSizeVertical * 2),
-                                    Text(
-                                      "Description",
-                                      style: palletList[index].normalDescTStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                      );
+                      return _StyleSelectionObject(index);
                     }),
               )
             ],
           ),
         )));
+  }
+
+  Widget _StyleSelectionObject(int index) {
+    return GestureDetector(
+      onTap: () {
+        if (RevenueCatService().currentEntitlement.value == Entitlement.free &&
+            palletList[index].isPaid) {
+          RevenueCatService().GoToPurchaseScreen();
+        } else {
+          controller.selectedPallet.value = palletList[index];
+        }
+      },
+      child: Container(
+        width: SizeConfig.blockSizeHorizontal * 65,
+        height: SizeConfig.blockSizeHorizontal * 43,
+        child: Stack(
+          children: [
+            Obx(() => Container(
+                  margin: EdgeInsets.all(4),
+                  // padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 2,
+                      ),
+                      border: Border.all(
+                          color: controller.selectedPallet.value ==
+                                  palletList[index]
+                              ? Colors.blue
+                              : Colors.transparent,
+                          width: 1)),
+                  child: Container(
+                    margin: EdgeInsets.all(7),
+                    padding: EdgeInsets.all(10),
+                    width: SizeConfig.blockSizeHorizontal * 65,
+                    // height: SizeConfig.blockSizeHorizontal * 10,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            palletList[index].imageList.first,
+                          ),
+                          fit: BoxFit.cover),
+                      borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 3,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Title",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Color(palletList[index].bigTitleTColor)),
+                          // style:
+                          //     palletList[index].sectionHeaderTStyle,
+                        ),
+                        verticalSpace(SizeConfig.blockSizeVertical * 2),
+                        Text(
+                          "Description",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color(palletList[index].normalDescTColor)),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+            Obx(() => RevenueCatService().currentEntitlement.value ==
+                        Entitlement.free &&
+                    palletList[index].isPaid
+                ? Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      margin: EdgeInsets.all(20),
+                      width: SizeConfig.blockSizeHorizontal * 5,
+                      height: SizeConfig.blockSizeHorizontal * 5,
+                      child: Image.asset(AppImages.vip),
+                    ),
+                  )
+                : Container())
+          ],
+        ),
+      ),
+    );
   }
 
   Widget footerWidget() {

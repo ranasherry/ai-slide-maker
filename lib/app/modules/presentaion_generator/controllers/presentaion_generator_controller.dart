@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_outline_frag.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_styles_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
@@ -97,6 +98,14 @@ class PresentaionGeneratorController extends GetxController {
 
   @override
   void onClose() {
+    @override
+    void onClose() {
+      HomeViewCtl homeViewCtl = Get.find();
+      homeViewCtl.showReviewDialogue(Get.context!);
+
+      super.onClose();
+    }
+
     super.onClose();
   }
 

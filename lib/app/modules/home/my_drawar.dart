@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -34,6 +35,13 @@ class MyDrawer extends GetView<SettingsViewCTL> {
                     .openURL("https://sites.google.com/view/appgeniusx/home");
               },
               child: drawer_widgets(Icons.privacy_tip, "Privacy Policy")),
+          kDebugMode
+              ? GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.POLLSCREENVIEW);
+                  },
+                  child: drawer_widgets(Icons.privacy_tip, "Testing"))
+              : Container(),
           // GestureDetector(
           //     onTap: () {
           //       controller

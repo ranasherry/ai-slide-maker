@@ -67,8 +67,11 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                   child: Text(
                     widget.mySlide.slideTitle,
                     // overflow: TextOverflow.ellipsis,
-                    style: widget.slidePallet.bigTitleTStyle
-                        .copyWith(fontSize: widget.size.width * 0.050),
+                    style: TextStyle(
+                        fontSize: widget.size.width * 0.050,
+                        color: Color(widget.slidePallet.bigTitleTColor)),
+                    // style: widget.slidePallet.bigTitleTStyle
+                    //     .copyWith(fontSize: widget.size.width * 0.050),
                   ),
                 ),
                 verticalSpace(widget.size.height * 0.05),
@@ -85,10 +88,18 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                                 style: widget.mySlide.slideSections[0]
                                             .sectionHeader !=
                                         null
-                                    ? widget.slidePallet.bigTitleTStyle
-                                        .copyWith(
-                                            fontSize: widget.size.width * 0.035)
-                                    : widget.slidePallet.bigTitleTStyle,
+                                    ? TextStyle(
+                                        fontSize: widget.size.width * 0.035,
+                                        color: Color(
+                                            widget.slidePallet.bigTitleTColor))
+                                    : TextStyle(),
+                                // style: widget.mySlide.slideSections[0]
+                                //             .sectionHeader !=
+                                //         null
+                                //     ? widget.slidePallet.bigTitleTStyle
+                                //         .copyWith(
+                                //             fontSize: widget.size.width * 0.035)
+                                //     : widget.slidePallet.bigTitleTStyle,
                               ),
                               verticalSpace(widget.size.height * 0.01),
                               Text(
@@ -96,12 +107,20 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                                         .sectionContent ??
                                     '',
                                 style: widget.mySlide.slideSections[0]
-                                            .sectionContent !=
+                                            .sectionHeader !=
                                         null
-                                    ? widget.slidePallet.bigTitleTStyle
-                                        .copyWith(
-                                            fontSize: widget.size.width * 0.018)
-                                    : widget.slidePallet.bigTitleTStyle,
+                                    ? TextStyle(
+                                        fontSize: widget.size.width * 0.018,
+                                        color: Color(
+                                            widget.slidePallet.bigTitleTColor))
+                                    : TextStyle(),
+                                // style: widget.mySlide.slideSections[0]
+                                //             .sectionContent !=
+                                //         null
+                                //     ? widget.slidePallet.bigTitleTStyle
+                                //         .copyWith(
+                                //             fontSize: widget.size.width * 0.018)
+                                //     : widget.slidePallet.bigTitleTStyle,
                               ),
                             ],
                           )
@@ -114,13 +133,21 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                               Text(
                                 widget.mySlide.slideSections[1].sectionHeader ??
                                     '',
+                                // style: widget.mySlide.slideSections[1]
+                                //             .sectionHeader !=
+                                //         null
+                                //     ? widget.slidePallet.bigTitleTStyle
+                                //         .copyWith(
+                                //             fontSize: widget.size.width * 0.035)
+                                //     : widget.slidePallet.bigTitleTStyle,
                                 style: widget.mySlide.slideSections[1]
                                             .sectionHeader !=
                                         null
-                                    ? widget.slidePallet.bigTitleTStyle
-                                        .copyWith(
-                                            fontSize: widget.size.width * 0.035)
-                                    : widget.slidePallet.bigTitleTStyle,
+                                    ? TextStyle(
+                                        fontSize: widget.size.width * 0.035,
+                                        color: Color(
+                                            widget.slidePallet.bigTitleTColor))
+                                    : TextStyle(),
                               ),
                               verticalSpace(widget.size.height * 0.01),
                               Text(
@@ -128,12 +155,20 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                                         .sectionContent ??
                                     '',
                                 style: widget.mySlide.slideSections[1]
-                                            .sectionContent !=
+                                            .sectionHeader !=
                                         null
-                                    ? widget.slidePallet.bigTitleTStyle
-                                        .copyWith(
-                                            fontSize: widget.size.width * 0.018)
-                                    : widget.slidePallet.bigTitleTStyle,
+                                    ? TextStyle(
+                                        fontSize: widget.size.width * 0.018,
+                                        color: Color(
+                                            widget.slidePallet.bigTitleTColor))
+                                    : TextStyle(),
+                                // style: widget.mySlide.slideSections[1]
+                                //             .sectionContent !=
+                                //         null
+                                //     ? widget.slidePallet.bigTitleTStyle
+                                //         .copyWith(
+                                //             fontSize: widget.size.width * 0.018)
+                                //     : widget.slidePallet.bigTitleTStyle,
                               ),
                             ],
                           )
@@ -150,8 +185,7 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                   child: WaterMark(
                       fontSize: widget.size.width * 0.025,
                       size: widget.size,
-                      color: widget.slidePallet.bigTitleTStyle.color ??
-                          Colors.white),
+                      color: Color(widget.slidePallet.bigTitleTColor)),
                 )
               : Container()
         ],
