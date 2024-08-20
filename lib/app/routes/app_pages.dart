@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/bindings/presentation_history_bindings.dart';
 import 'package:slide_maker/app/modules/home/home_view_1.dart';
+import 'package:slide_maker/app/modules/home/presentation_history_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/gender_asking_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/new_intro_screen_view.dart';
@@ -241,5 +243,11 @@ class AppPages {
         binding: HomeBinding()
         // binding: ,
         ),
+    // GetPage(
+    // name: _Paths.PresentationHistoryView,
+    // page: () => const PresentationHistoryView(),
+    // binding: PresentationHistoryBindings()
+    // // binding: ,
+    // ),
   ];
 }

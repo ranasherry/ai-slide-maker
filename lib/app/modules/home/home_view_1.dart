@@ -224,8 +224,16 @@ class HomeView1 extends StatelessWidget {
                               },
                               child:
                                   modules(AppImages.slide, "Presentation AI")),
+                       
                         ],
-                      )
+                      ), 
+                      // GestureDetector(
+                      //         onTap: () {
+                      //           // AI Slide Maker Screen
+                      //           Get.toNamed(Routes.PresentationHistoryView);
+                      //         },
+                      //         child:
+                      //             modules(AppImages.slide, "Presentation History")),
                     ],
                   ),
                 ),
