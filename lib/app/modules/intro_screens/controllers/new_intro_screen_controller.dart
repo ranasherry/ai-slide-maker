@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/shared_pref_services.dart';
 
 class newInroScreenCTL extends GetxController {
   var selectedChoice = ''.obs;
@@ -79,6 +80,7 @@ class newInroScreenCTL extends GetxController {
     await FirebaseAnalytics.instance
         .setUserProperty(name: 'Profession', value: profession);
     await updateProfessionCount(profession);
+    await SharedPrefService().setProfession(profession);
     EasyLoading.dismiss();
 
     goToHomePage();
@@ -106,6 +108,7 @@ class newInroScreenCTL extends GetxController {
         .setUserProperty(name: 'Gender', value: gender);
 
     await updateGenderCount(gender);
+    await SharedPrefService().setGender(gender);
     EasyLoading.dismiss();
     // goToHomePage();
     goToProfessionPage();

@@ -7,7 +7,7 @@ import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helprer_widgets/main_header_bg.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-class PollScreenView extends GetView<pollScreenCTL> {
+class PollScreenView extends GetView<PollScreenCTL> {
   const PollScreenView({super.key});
 
   @override
@@ -102,7 +102,7 @@ class PollScreenView extends GetView<pollScreenCTL> {
                       onVoted:
                           (PollOption pollOption, int newTotalVotes) async {
                         return await controller.onVoted(
-                            poll['id'].toString(), pollOption.toString());
+                            poll['id'].toString(), pollOption.id.toString());
                       },
                       votedBackgroundColor: AppColors.textfieldcolor,
                       votedProgressColor: Color(0xFFF8875E),
