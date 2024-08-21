@@ -7,18 +7,29 @@ class MyPresentation {
   int presentationId;
   String presentationTitle;
   RxList<MySlide> slides;
+  //variables added by rizwan
+  String styleId;
+  String createrId;
+  int timestamp;
   // String slideStyleID;
 
   MyPresentation(
       {required this.presentationId,
       required this.presentationTitle,
-      required this.slides});
+      required this.slides,
+      required this. styleId,
+      required this.createrId,
+      required this.timestamp});
 
   Map<String, dynamic> toMap() {
     return {
       'presentationId': presentationId,
       'presentationTitle': presentationTitle,
       'slides': slides?.map((x) => x.toMap()).toList(),
+      //key,values added by rizwan
+      'styleId': styleId,
+      'createrId': createrId,
+      'timestamp': timestamp,
     };
   }
 // method below added by rizwan
@@ -27,8 +38,12 @@ Map<String, dynamic> toMapDatabase() {
       'presentationId': presentationId,
       'presentationTitle': presentationTitle,
       'slides': jsonEncode(slides?.map((x) => x.toMap()).toList()),
+      //key,values added by rizwan
+      'styleId': styleId,
+      'createrId': createrId,
+      'timestamp': timestamp,
     };
-  }
+    }
 
   factory MyPresentation.fromMap(Map<String, dynamic> map) {
     return MyPresentation(
@@ -38,6 +53,10 @@ Map<String, dynamic> toMapDatabase() {
           ?.map((x) => MySlide.fromMap(x as Map<String, dynamic>))
           .toList()
           .obs,
+      //key,values added by rizwan
+      styleId: map['styleId'] ?? "" as String,
+      createrId: map['createrId'] ?? "" as String,
+      timestamp: map['timestamp'] ?? 0 as int,
     );
   }
   // method below added by rizwan
@@ -49,7 +68,10 @@ Map<String, dynamic> toMapDatabase() {
         (jsonDecode(map['slides']) as List<dynamic>)  
           .map((x) => MySlide.fromMap(x as Map<String, dynamic>))
           .toList(),
-      )
+      ),
+      styleId: map['styleId'] ?? "" as String,
+      createrId: map['createrId'] ?? "" as String,
+      timestamp: map['timestamp'] ?? 0 as int,
     );
   }
 
@@ -57,4 +79,5 @@ Map<String, dynamic> toMapDatabase() {
 
   factory MyPresentation.fromJson(String source) =>
       MyPresentation.fromMap(json.decode(source) as Map<String, dynamic>);
-}
+
+  }
