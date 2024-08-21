@@ -32,7 +32,8 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
 //line below added by rizwan
-  PresentationHistoryCTL presentationHistoryCTL = Get.put(PresentationHistoryCTL());
+  PresentationHistoryCTL presentationHistoryCTL =
+      Get.put(PresentationHistoryCTL());
 
   //TODO: Implement PresentaionGeneratorController
 
@@ -76,8 +77,13 @@ class PresentaionGeneratorController extends GetxController {
 
   //? Section Related to Slides Screens
   Rx<MyPresentation> myPresentation = MyPresentation(
-          presentationId: 0, presentationTitle: "", slides: <MySlide>[].obs)
-      .obs;
+    presentationId: 0,
+    presentationTitle: "",
+    slides: <MySlide>[].obs,
+    createrId: null,
+    timestamp: DateTime.now().millisecondsSinceEpoch,
+    styleId: '1',
+  ).obs;
 
   Rx<SlidePallet> selectedPallet = palletList.first.obs;
 
@@ -324,6 +330,9 @@ class PresentaionGeneratorController extends GetxController {
       presentationId: DateTime.now().millisecondsSinceEpoch,
       presentationTitle: titleTextCTL.text,
       slides: <MySlide>[].obs,
+      createrId: null,
+      timestamp: DateTime.now().millisecondsSinceEpoch,
+      styleId: selectedPallet.value.id.toString(),
     );
     List<String> coveredTitles = [];
     // for (var outline in plannedOutlines) {
@@ -423,8 +432,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // coveredTitles.add(mySlide.slideTitle);
         developer
             .log("SavedSlides Length: ${myPresentation.value.slides.length}");
-            //line below added by rizwan
-             presentationHistoryCTL.insertPresentation(myPresentation.value);
+        //line below added by rizwan
+        presentationHistoryCTL.insertPresentation(myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -518,6 +527,9 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       presentationId: DateTime.now().millisecondsSinceEpoch,
       presentationTitle: "Solar Eclipse",
       slides: mySlidesList,
+      createrId: null,
+      timestamp: DateTime.now().millisecondsSinceEpoch,
+      styleId: selectedPallet.value.id.toString(),
     );
   }
 
