@@ -41,6 +41,7 @@ abstract class Routes {
   static const GenderAskingView = _Paths.GenderAskingView;
   static const NEWINAPPPURCHASEVIEW = _Paths.NEWINAPPPURCHASEVIEW;
   static const POLLSCREENVIEW = _Paths.POLLSCREENVIEW;
+  static const PROFILEVIEW = _Paths.PROFILEVIEW;
   static const PRESENTATION_HOME =
       _Paths.NEWSLIDE_GENERATOR + _Paths.PRESENTATION_HOME;
 }
@@ -82,5 +83,6 @@ abstract class _Paths {
   static const GenderAskingView = '/GenderAskingView';
   static const NEWINAPPPURCHASEVIEW = '/NEWINAPPPURCHASEVIEW';
   static const POLLSCREENVIEW = '/POLLSCREENVIEW';
+  static const PROFILEVIEW = '/PROFILEVIEW';
   static const PRESENTATION_HOME = '/presentation-home';
 }

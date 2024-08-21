@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/profile_view/binding/profile_view_binding.dart';
+import 'package:slide_maker/app/modules/profile_view/view/profile_view.dart';
 
 import '../modules/authentications/sing_in/bindings/sing_in_binding.dart';
 import '../modules/authentications/sing_in/views/sing_in_view.dart';
@@ -262,6 +264,16 @@ class AppPages {
       name: _Paths.POLLSCREENVIEW,
       page: () => const PollScreenView(),
       binding: PollScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.POLLSCREENVIEW,
+      page: () => const PollScreenView(),
+      binding: PollScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILEVIEW,
+      page: () => const ProfileView(),
+      binding: ProfileViewBinding(),
     ),
   ];
 }

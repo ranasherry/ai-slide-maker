@@ -38,7 +38,10 @@ Future _createDB(Database db, int version) async{
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   presentationId INTEGER,
   presentationTitle TEXT NOT NULL,
-  slides TEXT NOT NULL
+  slides TEXT NOT NULL,
+  styleId TEXT NOT NULL,
+  createrId TEXT NOT NULL,
+  timestamp INTEGER
   )
 ''');
 }  
