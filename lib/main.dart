@@ -20,6 +20,7 @@ import 'package:slide_maker/app/notificationservice/local_notification_service.d
 import 'package:slide_maker/app/provider/google_sign_in.dart';
 import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/services/rizwan_apiservices.dart';
+import 'package:slide_maker/app/services/shared_pref_services.dart';
 import 'package:slide_maker/app/utills/ThemeNotifier.dart';
 import 'package:slide_maker/theme/app_theme.dart';
 
@@ -90,6 +91,8 @@ void main() async {
     }
     return true;
   };
+
+  SharedPrefService().init();
   // await ApiService.getImageBytes("Flutter in Gaming");
   // return;
   runApp(

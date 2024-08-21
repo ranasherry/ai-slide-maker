@@ -19,7 +19,10 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/title_input_fragment.dart.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/myapi_services.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/services/shared_pref_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
@@ -47,6 +50,7 @@ class PresentaionGeneratorController extends GetxController {
 
   RxBool isWaitingForTime = false.obs;
   RxString timerValue = "".obs;
+
   //-----------------------------------------------------------------------------------//
 
   //? Slide Outline Section
@@ -91,12 +95,17 @@ class PresentaionGeneratorController extends GetxController {
 
 //? Slides Fragment
   RxBool isSlidesGenerated = false.obs;
+
+  //? User related Data
+
+  String profession = "";
   @override
   Future<void> onInit() async {
     super.onInit();
 
     initializeTimer();
 
+    getUserRelatedData();
     // initdummyPresentation();
     // RequestPresentationPlan();
   }
@@ -108,13 +117,15 @@ class PresentaionGeneratorController extends GetxController {
 
   @override
   void onClose() {
-    @override
-    void onClose() {
+    if (profession.toLowerCase() == "student") {
+      developer.log("Profession is student");
+      Get.toNamed(Routes.POLLSCREENVIEW);
+    } else {
       HomeViewCtl homeViewCtl = Get.find();
       homeViewCtl.showReviewDialogue(Get.context!);
-
-      super.onClose();
     }
+
+    super.onClose();
 
     super.onClose();
   }
@@ -688,7 +699,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
             Duration difference = DateTime.now().difference(lastGenerationTime);
 
             // Calculate the remaining time as a countdown
-            Duration countdown = Duration(minutes: 5) - difference;
+            Duration countdown = Duration(minutes: 10) - difference;
             countdown = Duration(
                 seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
 
@@ -757,6 +768,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       },
       onCancel: () {
         // Implement logic to handle "Cancel" button click
+        RevenueCatService().GoToPurchaseScreen();
         print("Cancel clicked");
       },
       timerText: timerValue,
@@ -808,6 +820,10 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         );
       },
     );
+  }
+
+  void getUserRelatedData() {
+    profession = SharedPrefService().getProfession() ?? "";
   }
 }
 
