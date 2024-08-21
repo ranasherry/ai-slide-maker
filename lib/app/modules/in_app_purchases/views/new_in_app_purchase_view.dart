@@ -578,9 +578,13 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                         ],
                       ),
                     ),
-                    Image.asset(
-                      AppImages.intro_themes,
-                      scale: 2,
+                    Container(
+                      height: SizeConfig.blockSizeVertical * 7,
+                      width: SizeConfig.blockSizeHorizontal * 30,
+                      child: Image.asset(
+                        AppImages.intro_themes,
+                        scale: 1,
+                      ),
                     )
                   ],
                 ),
