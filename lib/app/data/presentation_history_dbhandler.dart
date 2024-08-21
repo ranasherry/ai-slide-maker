@@ -12,7 +12,7 @@ static final PresentationHistoryDatabaseHandler db = PresentationHistoryDatabase
 PresentationHistoryDatabaseHandler._init();
 
 static Database? _database;
-static final _databaseName = 'presentation_database.db';
+static final _databaseName = 'presentation_test.db';
 static final _tableName = 'slides_history';
 
 Future<Database> get myDatabase async {
@@ -27,7 +27,7 @@ Future<Database> _initDB(String filePath) async {
   print('initializing DB');
   final dbPath = await getDatabasesPath();
   final path = join(dbPath, filePath);
-  return await openDatabase(path, version: 5, onCreate : _createDB);
+  return await openDatabase(path, version: 1, onCreate : _createDB);
 
 }
 
@@ -39,9 +39,9 @@ Future _createDB(Database db, int version) async{
   presentationId INTEGER,
   presentationTitle TEXT NOT NULL,
   slides TEXT NOT NULL,
-  styleId TEXT NOT NULL,
-  createrId TEXT NOT NULL,
-  timestamp INTEGER
+ styleId TEXT NOT NULL,
+ createrId TEXT,
+ timestamp INTEGER
   )
 ''');
 }  
