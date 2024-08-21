@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -178,7 +179,11 @@ class HomeView1 extends GetView<HomeViewCtl> {
                               GestureDetector(
                                 onTap: () {
                                   // Slide beta Screen
-                                  Get.toNamed(Routes.PRESENTAION_GENERATOR);
+                                  if (kDebugMode) {
+                                    Get.toNamed(Routes.PRESENTATION_HOME);
+                                  } else {
+                                    Get.toNamed(Routes.PRESENTAION_GENERATOR);
+                                  }
                                 },
                                 child: Container(
                                   height: SizeConfig.blockSizeVertical * 22.5,

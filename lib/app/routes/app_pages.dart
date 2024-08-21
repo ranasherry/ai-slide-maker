@@ -1,13 +1,5 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:slide_maker/app/modules/bindings/poll_screen_binding.dart';
-import 'package:slide_maker/app/modules/home/home_view_1.dart';
-import 'package:slide_maker/app/modules/home/poll_screen_view.dart';
-import 'package:slide_maker/app/modules/in_app_purchases/bindings/new_in_app_purchase_binding.dart';
-import 'package:slide_maker/app/modules/in_app_purchases/views/new_in_app_purchase_view.dart';
-import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
-import 'package:slide_maker/app/modules/intro_screens/views/gender_asking_view.dart';
-import 'package:slide_maker/app/modules/intro_screens/views/new_intro_screen_view.dart';
 
 import '../modules/authentications/sing_in/bindings/sing_in_binding.dart';
 import '../modules/authentications/sing_in/views/sing_in_view.dart';
@@ -18,6 +10,7 @@ import '../modules/bindings/history_binding.dart';
 import '../modules/bindings/history_slide_binding.dart';
 import '../modules/bindings/home_view_binding.dart';
 import '../modules/bindings/maths_solver_binding.dart';
+import '../modules/bindings/poll_screen_binding.dart';
 import '../modules/bindings/settings_view_binding.dart';
 import '../modules/bindings/slide_assistant_binding.dart';
 import '../modules/bindings/slide_maker_binding.dart';
@@ -30,7 +23,9 @@ import '../modules/home/gems_view_view.dart';
 import '../modules/home/history_slide_view.dart';
 import '../modules/home/history_view.dart';
 import '../modules/home/home_view.dart';
+import '../modules/home/home_view_1.dart';
 import '../modules/home/maths_solver_view.dart';
+import '../modules/home/poll_screen_view.dart';
 import '../modules/home/settings_screen_view.dart';
 import '../modules/home/short_question_view.dart';
 import '../modules/home/slide_assistant.dart';
@@ -39,9 +34,14 @@ import '../modules/home/splash_screen.dart';
 import '../modules/home/sub_home_view.dart';
 import '../modules/home/sub_slide_maker_view.dart';
 import '../modules/in_app_purchases/bindings/in_app_purchases_binding.dart';
+import '../modules/in_app_purchases/bindings/new_in_app_purchase_binding.dart';
 import '../modules/in_app_purchases/views/in_app_purchases_view.dart';
+import '../modules/in_app_purchases/views/new_in_app_purchase_view.dart';
 import '../modules/intro_screens/bindings/intro_screens_binding.dart';
+import '../modules/intro_screens/bindings/new_intro_screen_binding.dart';
+import '../modules/intro_screens/views/gender_asking_view.dart';
 import '../modules/intro_screens/views/intro_screens_view.dart';
+import '../modules/intro_screens/views/new_intro_screen_view.dart';
 import '../modules/invitation_maker/bindings/invitation_maker_binding.dart';
 import '../modules/invitation_maker/bindings/weddinginvitation_binding.dart';
 import '../modules/invitation_maker/views/b.templates/b_template1.dart';
@@ -49,6 +49,8 @@ import '../modules/invitation_maker/views/invitation_maker_view.dart';
 import '../modules/invitation_maker/views/wedding_invite_view.dart';
 import '../modules/newslide_generator/bindings/newslide_generator_binding.dart';
 import '../modules/newslide_generator/bindings/slide_generated_detailed_binding.dart';
+import '../modules/newslide_generator/presentation_home/bindings/presentation_home_binding.dart';
+import '../modules/newslide_generator/presentation_home/views/presentation_home_view.dart';
 import '../modules/newslide_generator/views/newslide_generator_view.dart';
 import '../modules/newslide_generator/views/slide_detailed_generated_view.dart';
 import '../modules/pdfPermission/bindings/pdf_permission_binding.dart';
@@ -202,6 +204,13 @@ class AppPages {
       name: _Paths.NEWSLIDE_GENERATOR,
       page: () => const NewslideGeneratorView(),
       binding: NewslideGeneratorBinding(),
+      children: [
+        GetPage(
+          name: _Paths.PRESENTATION_HOME,
+          page: () => const PresentationHomeView(),
+          binding: PresentationHomeBinding(),
+        ),
+      ],
     ),
 
     GetPage(
@@ -249,10 +258,10 @@ class AppPages {
         binding: newInAppPurchaseBinding(),
         transition: Transition.downToUp),
 
-        GetPage(
-        name: _Paths.POLLSCREENVIEW,
-        page: () => const PollScreenView(),
-        binding: PollScreenBinding(),
-       ),
+    GetPage(
+      name: _Paths.POLLSCREENVIEW,
+      page: () => const PollScreenView(),
+      binding: PollScreenBinding(),
+    ),
   ];
 }
