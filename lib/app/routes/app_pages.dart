@@ -8,6 +8,8 @@ import 'package:slide_maker/app/modules/in_app_purchases/views/new_in_app_purcha
 import 'package:slide_maker/app/modules/intro_screens/bindings/new_intro_screen_binding.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/gender_asking_view.dart';
 import 'package:slide_maker/app/modules/intro_screens/views/new_intro_screen_view.dart';
+import 'package:slide_maker/app/modules/profile_view/binding/profile_view_binding.dart';
+import 'package:slide_maker/app/modules/profile_view/view/profile_view.dart';
 
 import '../modules/authentications/sing_in/bindings/sing_in_binding.dart';
 import '../modules/authentications/sing_in/views/sing_in_view.dart';
@@ -249,10 +251,15 @@ class AppPages {
         binding: newInAppPurchaseBinding(),
         transition: Transition.downToUp),
 
-        GetPage(
-        name: _Paths.POLLSCREENVIEW,
-        page: () => const PollScreenView(),
-        binding: PollScreenBinding(),
-       ),
+    GetPage(
+      name: _Paths.POLLSCREENVIEW,
+      page: () => const PollScreenView(),
+      binding: PollScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILEVIEW,
+      page: () => const ProfileView(),
+      binding: ProfileViewBinding(),
+    ),
   ];
 }

@@ -151,4 +151,5 @@ class AppImages {
   static const star_1 = "assets/svg/star_1.svg";
   static const star_2 = "assets/svg/star_2.svg";
   static const star_3 = "assets/svg/star_3.svg";
+  static const profile_background = "assets/svg/profile_background.svg";
 }
