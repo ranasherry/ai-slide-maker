@@ -23,13 +23,17 @@ import 'package:slide_maker/app/services/myapi_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
-
+// import by rizwan
+import 'package:slide_maker/app/modules/controllers/presentation_history_ctl.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
+//line below added by rizwan
+  PresentationHistoryCTL presentationHistoryCTL = Get.put(PresentationHistoryCTL());
+
   //TODO: Implement PresentaionGeneratorController
 
   //? Input Fragment Variables
@@ -419,6 +423,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // coveredTitles.add(mySlide.slideTitle);
         developer
             .log("SavedSlides Length: ${myPresentation.value.slides.length}");
+            //line below added by rizwan
+             presentationHistoryCTL.insertPresentation(myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
