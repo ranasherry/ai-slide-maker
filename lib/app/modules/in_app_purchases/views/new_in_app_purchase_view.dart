@@ -228,24 +228,24 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
     return Column(
       children: [
         verticalSpace(SizeConfig.blockSizeVertical * 3),
-        Text(
-          "Generate up to 30 AI Presentations daily, including up to",
-          style: GoogleFonts.inter(
-            textStyle: TextStyle(
-              fontSize: SizeConfig.blockSizeHorizontal * 3.5,
-              color: AppColors.titles,
-            ),
-          ),
-        ),
-        Text(
-          "200 AI Prompts, pro templates, and more.",
-          style: GoogleFonts.inter(
-            textStyle: TextStyle(
-              fontSize: SizeConfig.blockSizeHorizontal * 3.5,
-              color: AppColors.titles,
-            ),
-          ),
-        ),
+        // Text(
+        //   "Generate up to 30 AI Presentations daily, including up to",
+        //   style: GoogleFonts.inter(
+        //     textStyle: TextStyle(
+        //       fontSize: SizeConfig.blockSizeHorizontal * 3.5,
+        //       color: AppColors.titles,
+        //     ),
+        //   ),
+        // ),
+        // Text(
+        //   "200 AI Prompts, pro templates, and more.",
+        //   style: GoogleFonts.inter(
+        //     textStyle: TextStyle(
+        //       fontSize: SizeConfig.blockSizeHorizontal * 3.5,
+        //       color: AppColors.titles,
+        //     ),
+        //   ),
+        // ),
         Container(
           height: SizeConfig.blockSizeVertical * 10,
           child: Stack(
@@ -477,7 +477,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                "No ad breaks",
+                "No Ad breaks",
                 style: GoogleFonts.inter(
                   textStyle: TextStyle(
                     fontSize: SizeConfig.blockSizeHorizontal * 5,
@@ -526,8 +526,8 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                 "from slides",
               ),
               slides_features(
-                "write e-book",
-                "Create e-book with ease",
+                "Write E-book",
+                "Create your own e-book with ease",
                 "using AI assistant",
               ),
             ],
