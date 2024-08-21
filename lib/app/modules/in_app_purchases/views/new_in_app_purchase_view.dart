@@ -49,7 +49,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
               ),
               Container(
                 margin: EdgeInsets.only(
-                  left: SizeConfig.blockSizeHorizontal * 15,
+                  left: SizeConfig.blockSizeHorizontal * 20,
                   top: SizeConfig.blockSizeVertical * 4,
                 ),
                 padding: EdgeInsets.symmetric(
@@ -462,6 +462,50 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
           ],
         ),
         Container(
+          padding: EdgeInsets.symmetric(
+              vertical: SizeConfig.blockSizeVertical * 1.5,
+              horizontal: SizeConfig.blockSizeHorizontal * 2),
+          height: SizeConfig.blockSizeVertical * 10,
+          width: SizeConfig.blockSizeHorizontal * 85,
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius:
+                  BorderRadius.circular(SizeConfig.blockSizeHorizontal * 7)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "AI Generated Images",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 5,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.titles,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Add the finishing touch with AI selected images",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 2,
+                        color: AppColors.titles,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Image.asset(
+                AppImages.more_features,
+                scale: 10,
+              )
+            ],
+          ),
+        ),
+        Container(
           margin: EdgeInsets.only(
             top: SizeConfig.blockSizeVertical * 1,
           ),
@@ -662,6 +706,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             ],
           ),
         ),
+
         verticalSpace(SizeConfig.blockSizeVertical * 2),
         Text(
           "Have more questions ?",
