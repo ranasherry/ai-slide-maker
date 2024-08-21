@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 
 import '../controllers/presentation_home_controller.dart';
 
@@ -11,7 +12,9 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 248, 244, 244),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(Routes.PRESENTAION_GENERATOR);
+        },
         child: Icon(
           Icons.add,
           size: 30,
