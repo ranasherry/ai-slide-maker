@@ -26,17 +26,23 @@ import 'package:slide_maker/app/services/shared_pref_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
-// import by rizwan
+// imports by rizwan
 import 'package:slide_maker/app/modules/controllers/presentation_history_ctl.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
+//
+
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
-//line below added by rizwan
+//lines below added by rizwan
   PresentationHistoryCTL presentationHistoryCTL =
       Get.put(PresentationHistoryCTL());
+      FirestoreService firestoreService = FirestoreService();
+//
+
 
   //TODO: Implement PresentaionGeneratorController
 
@@ -455,6 +461,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
         presentationHistoryCTL.insertPresentation(myPresentation.value);
+        
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
