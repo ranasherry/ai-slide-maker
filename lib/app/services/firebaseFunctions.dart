@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:slide_maker/app/data/book_page_model.dart';
+import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/user.dart';
 
 class FirestoreService {
@@ -17,6 +18,8 @@ class FirestoreService {
       'history'; // Customizable subcollection path
 
   String UserID = "temp";
+  //added by rizwan
+  String presentationCollectionPath = "presentation";
 
   /// Creates a new user document with an empty history list, generationCount of 0, and tokensConsumed of 0.
   Future<void> createUser({required String uid}) async {
@@ -106,5 +109,13 @@ class FirestoreService {
     return querySnapshot.docs
         .map((docSnapshot) => SlideItem.fromMap(docSnapshot.data()!))
         .toList();
+  }
+
+//method below added by rizwan
+  Future<void> insertPresentationHistory(MyPresentation presentationHistory, String presentationId) async{
+    final docRef = await _firestore
+    .collection(presentationCollectionPath)
+    .doc(presentationId);
+   await docRef.set(presentationHistory.toMapDatabase());
   }
 }
