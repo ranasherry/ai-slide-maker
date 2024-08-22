@@ -146,7 +146,7 @@ class __TitleSlide1State extends State<TitleSlide1> {
       return ClipPath(
         clipper: HexagonClipper(),
         child: CachedNetworkImage(
-          imageUrl: "http://${widget.mySlide.slideSections[0].imageReference!}",
+          imageUrl: "${widget.mySlide.slideSections[0].imageReference!}",
           // imageUrl: "http://aqibsiddiqui.com/images/technology5.jpg",
           width: widget.size.width * 0.3,
           height: widget.size.width * 0.3,
