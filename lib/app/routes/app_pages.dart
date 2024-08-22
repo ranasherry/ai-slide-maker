@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/bindings/presentation_open_binding.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_open_view.dart';
 import 'package:slide_maker/app/modules/profile_view/binding/profile_view_binding.dart';
 import 'package:slide_maker/app/modules/profile_view/view/profile_view.dart';
 
@@ -51,8 +53,8 @@ import '../modules/invitation_maker/views/invitation_maker_view.dart';
 import '../modules/invitation_maker/views/wedding_invite_view.dart';
 import '../modules/newslide_generator/bindings/newslide_generator_binding.dart';
 import '../modules/newslide_generator/bindings/slide_generated_detailed_binding.dart';
-import '../modules/newslide_generator/presentation_home/bindings/presentation_home_binding.dart';
-import '../modules/newslide_generator/presentation_home/views/presentation_home_view.dart';
+import '../modules/presentaion_generator/presentation_home/bindings/presentation_home_binding.dart';
+import '../modules/presentaion_generator/presentation_home/views/presentation_home_view.dart';
 import '../modules/newslide_generator/views/newslide_generator_view.dart';
 import '../modules/newslide_generator/views/slide_detailed_generated_view.dart';
 import '../modules/pdfPermission/bindings/pdf_permission_binding.dart';
@@ -274,6 +276,11 @@ class AppPages {
       name: _Paths.PROFILEVIEW,
       page: () => const ProfileView(),
       binding: ProfileViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.PresentationOpenView,
+      page: () => const PresentationOpenView(),
+      binding: PresentationOpenBinding(),
     ),
   ];
 }

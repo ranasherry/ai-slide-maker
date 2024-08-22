@@ -77,6 +77,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                         height: SizeConfig.screenHeight * 0.5,
                         child: Center(child: CircularProgressIndicator()),
                       ))),
+
             footerWidget(),
             // Align(
             //   alignment: Alignment.centerRight,
