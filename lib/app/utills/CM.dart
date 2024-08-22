@@ -197,7 +197,7 @@ class ComFunction {
     int i = 1;
     for (final MySlide slide in mySlides) {
       // developer.log("Page Data: ${page.ChapData}");
-      if (i == 0) {
+      if (i == 1) {
         await pres.addWidgetSlide(
           (size) => TitleSlide1(
             mySlide: slide,

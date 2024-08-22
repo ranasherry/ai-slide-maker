@@ -59,7 +59,9 @@ class PresentaionGeneratorController extends GetxController {
 
   List<Uint8List> downloadedImages = [];
   // added by rizwan
-  List<String> imagesUrl = [];
+  List<String> imagesUrl = [
+    "https://unsplash.com/photos/hVXF42obfYY/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzI0MzA2MzkwfA&force=true&w=640"
+  ];
 
 //-------------------------------------------------------------------------------------//
   final count = 0.obs;
@@ -416,10 +418,10 @@ Always use correct json format. never use quotes inside text so I Can parse it i
 
         // MySlide mySlide = MySlide.fromJson(apiRespnse);
 
-        List<String> imageUrl =
-            await MyAPIService().fetchImageUrl("Flutter With Gaming", 1) ?? [];
+        // List<String> imageUrl =
+        //     await MyAPIService().fetchImageUrl("Flutter With Gaming", 1) ?? [];
 
-        developer.log("ImageUrl: ${imageUrl}");
+        // developer.log("ImageUrl: ${imageUrl}");
 
         // int index = 0;
         // for (var url in imageUrl) {
@@ -437,7 +439,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
           slides[i].slideSections[0].memoryImage = image;
         }
         // loop added by rizwan
-        for (var reference in imagesUrl){
+        for (var reference in imagesUrl) {
           slides[i].slideSections[0].imageReference = reference;
         }
 
@@ -450,11 +452,9 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         developer
             .log("SavedSlides Length: ${myPresentation.value.slides.length}");
         //lines below added by rizwan
-        // myPresentation.value.slides[i].slideSections[0].memoryImage = null; 
-        print(myPresentation.value);       
+        // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
+        print(myPresentation.value);
         presentationHistoryCTL.insertPresentation(myPresentation.value);
-
-
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -660,7 +660,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       // imageUrl.add("aqibsiddiqui.com/images/technology4.jpg");
       // imageUrl.add("aqibsiddiqui.com/images/technology3.jpg");
 
-    imagesUrl = imageUrl;
+      imagesUrl = imageUrl;
 
       developer.log("ImageUrls: $imageUrl");
       for (var url in imageUrl) {

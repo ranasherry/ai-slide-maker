@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -706,7 +707,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
-                      if (!controller.isWaitingForTime.value) {
+                      if (!controller.isWaitingForTime.value || kDebugMode) {
                         // if (!controller.isWaitingForTime.value) {
                         controller.switchToSlidesOutlines();
                       } else {
