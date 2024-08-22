@@ -58,6 +58,8 @@ class PresentaionGeneratorController extends GetxController {
   RxBool isPlannedOutlinesGenerated = false.obs;
 
   List<Uint8List> downloadedImages = [];
+  // added by rizwan
+  List<String> imagesUrl = [];
 
 //-------------------------------------------------------------------------------------//
   final count = 0.obs;
@@ -434,6 +436,10 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         for (var image in downloadedImages) {
           slides[i].slideSections[0].memoryImage = image;
         }
+        // loop added by rizwan
+        for (var reference in imagesUrl){
+          slides[i].slideSections[0].imageReference = reference;
+        }
 
         developer.log("Images Saved in Slides: ${i + 1}");
 
@@ -443,8 +449,12 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // coveredTitles.add(mySlide.slideTitle);
         developer
             .log("SavedSlides Length: ${myPresentation.value.slides.length}");
-        //line below added by rizwan
+        //lines below added by rizwan
+        // myPresentation.value.slides[i].slideSections[0].memoryImage = null; 
+        print(myPresentation.value);       
         presentationHistoryCTL.insertPresentation(myPresentation.value);
+
+
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -649,6 +659,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       //     "https://firebasestorage.googleapis.com/v0/b/ai-slide-generator.appspot.com/o/MathImages%2F1703165648901.jpg?alt=media&token=e584958d-c4f2-4a1d-9703-4755219efc1a");
       // imageUrl.add("aqibsiddiqui.com/images/technology4.jpg");
       // imageUrl.add("aqibsiddiqui.com/images/technology3.jpg");
+
+    imagesUrl = imageUrl;
 
       developer.log("ImageUrls: $imageUrl");
       for (var url in imageUrl) {

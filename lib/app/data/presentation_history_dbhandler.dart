@@ -51,7 +51,12 @@ Future<int> insertPresentationHistory(MyPresentation presentationHistory) async{
   print('inserting into database $presentationHistory');
 
   final database = await myDatabase;
+  int i = 0;
+    presentationHistory.slides[i].slideSections[0].memoryImage = null; 
+
+
   Map<String, Object?> dataToInsert = presentationHistory.toMapDatabase();
+  print(dataToInsert);
 
   return await database.insert(_tableName, dataToInsert);
   }
