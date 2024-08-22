@@ -7,7 +7,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/services/shared_pref_services.dart';
+import 'package:uuid/uuid.dart';
 
 class SignInController extends GetxController {
   //TODO: Implement SingInController
@@ -86,9 +89,18 @@ class SignInController extends GetxController {
 
   Future<void> onLoginSuccess(User user) async {
     try {
+      String? userUUID = SharedPrefService().getUUID();
+      String finalUID = "";
+      if (userUUID != null) {
+        finalUID = userUUID;
+      } else {
+        finalUID = Uuid().v4(); // Generate a new UUID
+        await SharedPrefService().setUUID(finalUID);
+      }
       // Check if User Already Exists
-      final docRef =
-          FirebaseFirestore.instance.collection('users').doc(user.uid);
+      final docRef = FirebaseFirestore.instance
+          .collection(FirestoreService().userCollectionPath)
+          .doc(finalUID);
       final docSnapshot = await docRef.get();
 
       if (docSnapshot.exists) {
