@@ -123,12 +123,27 @@ class FirestoreService {
    await docRef.set(presentationHistory.toMapDatabase());
   }
 
-  // Future<MyPresentation> fetchPresentationHistory() async{
-  //   final querySnapshot = await _firestore
-  //   .collection(presentationCollectionPath)
-  //   .doc()
-  //   .get();
-  //   return querySnapshot.docs
-  //   .map((docSnapshot) =>)
-  // }
+  Future <List<MyPresentation>> fetchPresentationHistoryFirestore() async{
+    final querySnapshot = await _firestore
+    .collection(presentationCollectionPath)
+    .get();
+    print("these are presenatations ${querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList()}");
+    return querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList();
+  }
+  Future <List<MyPresentation>> fetchPresentationHistoryByCreaterIdFirestore(String createrId) async{
+    final querySnapshot = await _firestore
+    .collection(presentationCollectionPath)
+    .where("createrId", isEqualTo: createrId)
+    .get();
+    print("these are presenatations by creater id ${querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList()}");
+    return querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList();
+  }
 }

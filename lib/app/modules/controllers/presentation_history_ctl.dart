@@ -14,6 +14,8 @@ class PresentationHistoryCTL extends GetxController{
   void onInit(){
     super.onInit();
     fetchPresentationHistory();
+    firestoreService.fetchPresentationHistoryFirestore();
+    
   }
 
   @override
