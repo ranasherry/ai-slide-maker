@@ -118,4 +118,13 @@ class FirestoreService {
     .doc(presentationId);
    await docRef.set(presentationHistory.toMapDatabase());
   }
+
+  Future<MyPresentation> fetchPresentationHistory() async{
+    final querySnapshot = await _firestore
+    .collection(presentationCollectionPath)
+    .doc()
+    .get();
+    return querySnapshot.docs
+    .map((docSnapshot) =>)
+  }
 }
