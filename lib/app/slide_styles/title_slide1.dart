@@ -1,5 +1,7 @@
 import 'dart:math';
+import 'dart:developer' as developer;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
@@ -36,7 +38,8 @@ class __TitleSlide1State extends State<TitleSlide1> {
     setState(() {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
-      titleFontSize = widget.mySlide.slideSections[0].memoryImage != null
+      titleFontSize = widget.mySlide.slideSections[0].memoryImage != null ||
+              widget.mySlide.slideSections[0].imageReference != null
           ? widget.size.height * 0.10
           : widget.size.height * 0.15;
 
@@ -46,6 +49,8 @@ class __TitleSlide1State extends State<TitleSlide1> {
     });
     // print(
     //     "initState Called: Image Bytes: ${widget.mySlide.slideSections[0].memoryImage}");
+    print(
+        "initState Called: Image reference: ${widget.mySlide.slideSections[0].imageReference}");
   }
 
   @override
@@ -72,7 +77,8 @@ class __TitleSlide1State extends State<TitleSlide1> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: widget.mySlide.slideSections[0].memoryImage != null
+                  width: widget.mySlide.slideSections[0].memoryImage != null ||
+                          widget.mySlide.slideSections[0].imageReference != null
                       ? widget.size.width * 0.5
                       : widget.size.width * 0.9,
                   child: Column(
@@ -98,7 +104,8 @@ class __TitleSlide1State extends State<TitleSlide1> {
                     ],
                   ),
                 ),
-                widget.mySlide.slideSections[0].memoryImage != null
+                widget.mySlide.slideSections[0].memoryImage != null ||
+                        widget.mySlide.slideSections[0].imageReference != null
                     ? Container(
                         width: widget.size.width * 0.45,
                         height: widget.size.height,
@@ -122,15 +129,47 @@ class __TitleSlide1State extends State<TitleSlide1> {
     );
   }
 
+  // Widget _ImageWidget() {
+  //   return ClipPath(
+  //     clipper: HexagonClipper(),
+  //     child: Image.memory(
+  //       widget.mySlide.slideSections[0].memoryImage!,
+  //       width: widget.size.width * 0.3,
+  //       height: widget.size.width * 0.3,
+  //       fit: BoxFit.fill,
+  //     ),
+  //   );
+  // }
+
   Widget _ImageWidget() {
-    return ClipPath(
-      clipper: HexagonClipper(),
-      child: Image.memory(
-        widget.mySlide.slideSections[0].memoryImage!,
-        width: widget.size.width * 0.3,
-        height: widget.size.width * 0.3,
-        fit: BoxFit.fill,
-      ),
-    );
+    if (widget.mySlide.slideSections[0].imageReference != null) {
+      return ClipPath(
+        clipper: HexagonClipper(),
+        child: CachedNetworkImage(
+          imageUrl: "http://${widget.mySlide.slideSections[0].imageReference!}",
+          // imageUrl: "http://aqibsiddiqui.com/images/technology5.jpg",
+          width: widget.size.width * 0.3,
+          height: widget.size.width * 0.3,
+          fit: BoxFit.fill,
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) {
+            developer.log("Error Cached Network: $error");
+            return Icon(Icons.error);
+          },
+        ),
+      );
+    } else if (widget.mySlide.slideSections[0].memoryImage != null) {
+      return ClipPath(
+        clipper: HexagonClipper(),
+        child: Image.memory(
+          widget.mySlide.slideSections[0].memoryImage!,
+          width: widget.size.width * 0.3,
+          height: widget.size.width * 0.3,
+          fit: BoxFit.fill,
+        ),
+      );
+    } else {
+      return Container(); // Handle the case where no image is available
+    }
   }
 }

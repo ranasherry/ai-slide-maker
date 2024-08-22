@@ -19,7 +19,10 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/title_input_fragment.dart.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/myapi_services.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/services/shared_pref_services.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
@@ -47,6 +50,7 @@ class PresentaionGeneratorController extends GetxController {
 
   RxBool isWaitingForTime = false.obs;
   RxString timerValue = "".obs;
+
   //-----------------------------------------------------------------------------------//
 
   //? Slide Outline Section
@@ -54,6 +58,10 @@ class PresentaionGeneratorController extends GetxController {
   RxBool isPlannedOutlinesGenerated = false.obs;
 
   List<Uint8List> downloadedImages = [];
+  // added by rizwan
+  List<String> imagesUrl = [
+    "https://unsplash.com/photos/hVXF42obfYY/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzI0MzA2MzkwfA&force=true&w=640"
+  ];
 
 //-------------------------------------------------------------------------------------//
   final count = 0.obs;
@@ -91,12 +99,17 @@ class PresentaionGeneratorController extends GetxController {
 
 //? Slides Fragment
   RxBool isSlidesGenerated = false.obs;
+
+  //? User related Data
+
+  String profession = "";
   @override
   Future<void> onInit() async {
     super.onInit();
 
     initializeTimer();
 
+    getUserRelatedData();
     // initdummyPresentation();
     // RequestPresentationPlan();
   }
@@ -108,13 +121,15 @@ class PresentaionGeneratorController extends GetxController {
 
   @override
   void onClose() {
-    @override
-    void onClose() {
+    if (profession.toLowerCase() == "student") {
+      developer.log("Profession is student");
+      Get.toNamed(Routes.POLLSCREENVIEW);
+    } else {
       HomeViewCtl homeViewCtl = Get.find();
       homeViewCtl.showReviewDialogue(Get.context!);
-
-      super.onClose();
     }
+
+    super.onClose();
 
     super.onClose();
   }
@@ -403,10 +418,10 @@ Always use correct json format. never use quotes inside text so I Can parse it i
 
         // MySlide mySlide = MySlide.fromJson(apiRespnse);
 
-        List<String> imageUrl =
-            await MyAPIService().fetchImageUrl("Flutter With Gaming", 1) ?? [];
+        // List<String> imageUrl =
+        //     await MyAPIService().fetchImageUrl("Flutter With Gaming", 1) ?? [];
 
-        developer.log("ImageUrl: ${imageUrl}");
+        // developer.log("ImageUrl: ${imageUrl}");
 
         // int index = 0;
         // for (var url in imageUrl) {
@@ -423,6 +438,10 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         for (var image in downloadedImages) {
           slides[i].slideSections[0].memoryImage = image;
         }
+        // loop added by rizwan
+        for (var reference in imagesUrl) {
+          slides[i].slideSections[0].imageReference = reference;
+        }
 
         developer.log("Images Saved in Slides: ${i + 1}");
 
@@ -432,7 +451,9 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // coveredTitles.add(mySlide.slideTitle);
         developer
             .log("SavedSlides Length: ${myPresentation.value.slides.length}");
-        //line below added by rizwan
+        //lines below added by rizwan
+        // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
+        print(myPresentation.value);
         presentationHistoryCTL.insertPresentation(myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
@@ -639,6 +660,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       // imageUrl.add("aqibsiddiqui.com/images/technology4.jpg");
       // imageUrl.add("aqibsiddiqui.com/images/technology3.jpg");
 
+      imagesUrl = imageUrl;
+
       developer.log("ImageUrls: $imageUrl");
       for (var url in imageUrl) {
         final startTimeIndividual = DateTime.now();
@@ -688,7 +711,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
             Duration difference = DateTime.now().difference(lastGenerationTime);
 
             // Calculate the remaining time as a countdown
-            Duration countdown = Duration(minutes: 5) - difference;
+            Duration countdown = Duration(minutes: 10) - difference;
             countdown = Duration(
                 seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
 
@@ -757,6 +780,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       },
       onCancel: () {
         // Implement logic to handle "Cancel" button click
+        RevenueCatService().GoToPurchaseScreen();
         print("Cancel clicked");
       },
       timerText: timerValue,
@@ -808,6 +832,10 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         );
       },
     );
+  }
+
+  void getUserRelatedData() {
+    profession = SharedPrefService().getProfession() ?? "";
   }
 }
 
