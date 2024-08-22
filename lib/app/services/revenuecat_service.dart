@@ -370,7 +370,9 @@ class RevenueCatService {
   Future<void> updateRevenueCatUserID(String userID) async {
     dp.log("Updating RevenueCatUserID: $userID");
     User user = FirebaseAuth.instance.currentUser!;
-    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final docRef = FirebaseFirestore.instance
+        .collection(FirestoreService().userCollectionPath)
+        .doc(user.uid);
     final docSnapshot = await docRef.get();
     if (docSnapshot.exists) {
       // User exists, handle existing user data

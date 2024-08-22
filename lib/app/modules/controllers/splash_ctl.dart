@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/platform.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/services/shared_pref_services.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
@@ -106,7 +107,10 @@ class SplashController extends GetxController {
       await SharedPrefService().setUUID(uuid);
 
       // Save the UUID in Firestore
-      await _firestore.collection('testUsers').doc(uuid).set({
+      await _firestore
+          .collection(FirestoreService().userCollectionPath)
+          .doc(uuid)
+          .set({
         'uuid': uuid,
       });
 

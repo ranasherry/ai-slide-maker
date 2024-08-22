@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/user.dart';
@@ -13,6 +14,9 @@ class FirestoreService {
   }
   FirestoreService._internal();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final String userCollectionPath =
+      kDebugMode ? 'testUser' : 'users'; // Customizable collection path
+
   final String _collectionPath = 'premiumUsers'; // Customizable collection path
   final String _historySubcollectionPath =
       'history'; // Customizable subcollection path
@@ -119,12 +123,12 @@ class FirestoreService {
    await docRef.set(presentationHistory.toMapDatabase());
   }
 
-  Future<MyPresentation> fetchPresentationHistory() async{
-    final querySnapshot = await _firestore
-    .collection(presentationCollectionPath)
-    .doc()
-    .get();
-    return querySnapshot.docs
-    .map((docSnapshot) =>)
-  }
+  // Future<MyPresentation> fetchPresentationHistory() async{
+  //   final querySnapshot = await _firestore
+  //   .collection(presentationCollectionPath)
+  //   .doc()
+  //   .get();
+  //   return querySnapshot.docs
+  //   .map((docSnapshot) =>)
+  // }
 }
