@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_open_ctl.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
@@ -19,6 +20,7 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
       // backgroundColor: const Color.fromARGB(255, 248, 244, 244),
       body: Column(
         children: [
@@ -70,15 +72,8 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                             child: Container(
                               // width: SizeConfig.screenWidth * 0.92,
                               height: SizeConfig.screenWidth * 0.5,
-                              child: Obx(() => Container(
-                                    width: SizeConfig.screenWidth * 0.92,
-                                    height: SizeConfig.screenWidth * 0.5,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.blue
-                                        // clipBehavior:
-                                        //     Clip.hardEdge, // Ensures clipping
-                                        ),
+                              child: Obx(() => ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
                                     child: individualSlideMethod(
                                       controller.currentSelectedIndex.value,
                                       controller.myPresentation,
@@ -90,16 +85,19 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                           ),
                         ),
                         Obx(() => GridView.builder(
+                            padding: EdgeInsets.only(
+                                left: SizeConfig.blockSizeHorizontal * 5,
+                                right: SizeConfig.blockSizeHorizontal * 5),
                             shrinkWrap: true,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount:
                                   3, // Number of children in each row
-                              // crossAxisSpacing: 10.0, // Spacing between columns
-                              // mainAxisSpacing: 10.0, // Spacing between rows
+                              crossAxisSpacing: 10.0, // Spacing between columns
+                              mainAxisSpacing: 10.0, // Spacing between rows
                               childAspectRatio: (SizeConfig
                                           .blockSizeHorizontal *
-                                      90) /
+                                      85) /
                                   (SizeConfig.blockSizeHorizontal *
                                       45), // Adjust based on the size you want for the items
                             ),
@@ -107,7 +105,7 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                 controller.myPresentation.value.slides.length,
                             itemBuilder: (context, index) {
                               Size size = Size(
-                                  (SizeConfig.blockSizeHorizontal * 90) /
+                                  (SizeConfig.blockSizeHorizontal * 85) /
                                       3, // Width of each grid item
                                   (SizeConfig.blockSizeHorizontal *
                                       45) // Height of each grid item
@@ -117,15 +115,36 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                 onTap: () {
                                   controller.currentSelectedIndex.value = index;
                                 },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  child: individualSlideMethod(
-                                    index,
-                                    controller.myPresentation,
-                                    size,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: SizedBox(
+                                    width: size.width,
+                                    height: size.height,
+                                    child: Stack(
+                                      children: [
+                                        individualSlideMethod(
+                                          index,
+                                          controller.myPresentation,
+                                          size,
+                                        ),
+                                        Obx(() => controller
+                                                    .currentSelectedIndex
+                                                    .value ==
+                                                index
+                                            ? Container(
+                                                width: size.width,
+                                                height: size.height,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.black
+                                                        .withOpacity(0.1)),
+                                                child: Center(
+                                                  child: Icon(Icons.check),
+                                                ),
+                                              )
+                                            : Container())
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );

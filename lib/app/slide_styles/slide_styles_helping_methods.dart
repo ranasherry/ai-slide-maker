@@ -20,9 +20,9 @@ Widget individualSlideMethod(
           (element) => int.parse(myPresentation.value.styleId) == element.id)
       : 0];
   return Container(
-    margin: EdgeInsets.symmetric(
-        horizontal: SizeConfig.blockSizeHorizontal * 2,
-        vertical: SizeConfig.blockSizeVertical),
+    // margin: EdgeInsets.symmetric(
+    //     horizontal: SizeConfig.blockSizeHorizontal * 2,
+    //     vertical: SizeConfig.blockSizeVertical),
     child: Builder(builder: (context) {
       if (index == 0) {
         return Obx(() => TitleSlide1(
