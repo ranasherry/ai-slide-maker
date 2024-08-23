@@ -1,12 +1,15 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/title_slide.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 
@@ -17,57 +20,56 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 248, 244, 244),
+      // backgroundColor: const Color.fromARGB(255, 248, 244, 244),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.toNamed(Routes.PRESENTAION_GENERATOR);
         },
+        shape: CircleBorder(),
         child: Icon(
           Icons.add,
-          size: 30,
-          color: Colors.white,
+          size: SizeConfig.blockSizeHorizontal * 7,
+          color: AppColors.textfieldcolor,
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: AppColors.mainColor,
       ),
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 55),
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 4,
+                vertical: SizeConfig.blockSizeVertical * 6),
             // color: Colors.blue,
             // height: 120,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
+                  height: SizeConfig.blockSizeVertical * 5,
+                  width: SizeConfig.blockSizeHorizontal * 10,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Icon(
-                      Icons.menu_rounded,
-                      size: 35,
-                      color: Colors.black,
-                    ),
+                      color: Colors.white, shape: BoxShape.circle),
+                  child: Icon(
+                    Icons.menu_rounded,
+                    color: Colors.black,
+                    size: SizeConfig.blockSizeHorizontal * 8,
                   ),
                 ),
                 Text(
                   "Welcome",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(
+                    fontSize: SizeConfig.blockSizeHorizontal * 5,
+                  ),
                 ),
                 Container(
+                  height: SizeConfig.blockSizeVertical * 5,
+                  width: SizeConfig.blockSizeHorizontal * 10,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Icon(
-                      Icons.search,
-                      size: 35,
-                      color: Colors.black,
-                    ),
+                      color: Colors.white, shape: BoxShape.circle),
+                  child: Icon(
+                    Icons.search,
+                    size: SizeConfig.blockSizeHorizontal * 8,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -76,56 +78,61 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
           Expanded(
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
+                GestureDetector(
+                  onTap: () {},
                   child: Container(
+                    height: SizeConfig.blockSizeVertical * 14,
+                    width: SizeConfig.blockSizeHorizontal * 90,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 5),
                       color: Colors.white,
                     ),
-                    height: 100,
-                    width: 400,
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 235, 232, 232),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Icon(
-                              Icons.filter_alt_outlined,
-                              color: Colors.deepPurple,
-                              size: 65,
-                            ),
+                        Container(
+                          height: SizeConfig.blockSizeVertical * 8,
+                          width: SizeConfig.blockSizeHorizontal * 16,
+                          decoration: BoxDecoration(
+                              color: AppColors.background,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Icon(
+                            Icons.filter_alt_outlined,
+                            color: AppColors.mainColor,
+                            size: SizeConfig.blockSizeHorizontal * 10,
                           ),
                         ),
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(top: 10),
-                                  // color: Colors.black87,
-                                  child: Text(
-                                    "Unlock Slidey Pro",
-                                    style: TextStyle(
+                            Obx(
+                              () => Text(
+                                  "Unlock ${RCVariables.AppName.value} pro",
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 22,
-                                        color: Colors.deepPurple),
-                                  ),
-                                ),
-                                Container(
-                                    width: 200,
-                                    // color: Colors.red,
-                                    child: Text(
-                                      "Up to 30 AI generation per day, up to 12 AI generation slides, Pro styles and much more",
-                                      style: TextStyle(color: Colors.grey),
-                                    ))
-                              ],
+                                        fontSize:
+                                            SizeConfig.blockSizeHorizontal * 5,
+                                        color: AppColors.mainColor),
+                                  )),
                             ),
+                            Container(
+                                margin: EdgeInsets.only(
+                                    top: SizeConfig.blockSizeVertical * 0.5),
+                                width: SizeConfig.blockSizeHorizontal * 55,
+                                // color: Colors.red,
+                                child: Text(
+                                    "Up to 30 AI generation per day, up to 12 AI generation slides, Pro styles and much more",
+                                    style: GoogleFonts.inter(
+                                      textStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  3),
+                                    )))
                           ],
                         ),
                       ],
@@ -158,8 +165,9 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
             arguments: [controller.presentations[index]]);
       },
       child: Container(
-        margin:
-            EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 0.5),
+        margin: EdgeInsets.symmetric(
+            vertical: SizeConfig.blockSizeVertical * 0.5,
+            horizontal: SizeConfig.blockSizeHorizontal * 2),
         padding: EdgeInsets.symmetric(
             horizontal: SizeConfig.blockSizeHorizontal * 4),
         height: SizeConfig.blockSizeVertical * 10,
@@ -233,29 +241,28 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
   Column _noPreviousSlideAvailable() {
     return Column(
       children: [
-        SizedBox(
-          height: 150,
-        ),
+        verticalSpace(SizeConfig.blockSizeVertical * 20),
         Container(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 4),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  // padding: EdgeInsets.all(30),
-                  child: Text(
-                    "Create your first presentation",
-                    style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
-                  ),
+                  child: Text("Create your first presentation",
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 10,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ),
                 Container(
-                  margin: EdgeInsets.all(1),
                   child: Text(
-                    "Press plus button to create your first project. it wont take too much time Just Select the template, personalize it and fill the content",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-                  ),
+                      "Press plus button to create your first project. it wont take too much time Just Select the template, personalize it and fill the content",
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 5,
+                            color: Colors.grey.shade600),
+                      )),
                 ),
               ],
             ),
