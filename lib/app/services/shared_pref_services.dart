@@ -72,4 +72,13 @@ class SharedPrefService {
   Future<void> setProfession(String p) async {
     await _prefs.setString('selectedProfession', p);
   }
+
+  String? getUUID() {
+    String? p = _prefs.getString('user_uuid');
+    return p;
+  }
+
+  Future<void> setUUID(String p) async {
+    await _prefs.setString('user_uuid', p);
+  }
 }

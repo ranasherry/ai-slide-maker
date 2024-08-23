@@ -168,12 +168,12 @@ class HomeView1 extends GetView<HomeViewCtl> {
                               GestureDetector(
                                 onTap: () {
                                   // Slide beta Screen
-                                  // if (kDebugMode) {
-                                  //   Get.toNamed(Routes.PRESENTATION_HOME);
-                                  // } else {
-                                  //   Get.toNamed(Routes.PRESENTAION_GENERATOR);
-                                  // }
-                                  Get.toNamed(Routes.PRESENTAION_GENERATOR);
+                                  if (kDebugMode) {
+                                    Get.toNamed(Routes.PRESENTATION_HOME);
+                                  } else {
+                                    Get.toNamed(Routes.PRESENTAION_GENERATOR);
+                                  }
+                                  // Get.toNamed(Routes.PRESENTAION_GENERATOR);
                                 },
                                 child: Container(
                                   height: SizeConfig.blockSizeVertical * 22.5,

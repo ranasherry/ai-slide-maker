@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
@@ -13,8 +14,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/platform.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/services/shared_pref_services.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../routes/app_pages.dart';
 
@@ -22,6 +26,7 @@ class SplashController extends GetxController {
   //TODO: Implement HomeControlle
   bool isFirstTime = true;
   final prefs = SharedPreferences.getInstance();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   // AppLovin_CTL appLovin_CTL = Get.find();
   // GoogleAdsCTL googleAdsCT=Get.find();
 
@@ -92,5 +97,26 @@ class SplashController extends GetxController {
         // Get.offNamed(Routes.NEW_INTRO_SCREENS);
       }
     });
+  }
+
+  Future<void> _checkAndAssignUUID() async {
+    String? uuid = SharedPrefService().getUUID();
+
+    if (uuid == null) {
+      uuid = Uuid().v4(); // Generate a new UUID
+      await SharedPrefService().setUUID(uuid);
+
+      // Save the UUID in Firestore
+      await _firestore
+          .collection(FirestoreService().userCollectionPath)
+          .doc(uuid)
+          .set({
+        'uuid': uuid,
+      });
+
+      print("New UUID assigned: $uuid");
+    } else {
+      print("Existing UUID: $uuid");
+    }
   }
 }

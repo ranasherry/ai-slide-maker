@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:slide_maker/app/data/book_page_model.dart';
+import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/user.dart';
 
 class FirestoreService {
@@ -12,11 +14,16 @@ class FirestoreService {
   }
   FirestoreService._internal();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final String userCollectionPath =
+      kDebugMode ? 'testUser' : 'users'; // Customizable collection path
+
   final String _collectionPath = 'premiumUsers'; // Customizable collection path
   final String _historySubcollectionPath =
       'history'; // Customizable subcollection path
 
   String UserID = "temp";
+  //added by rizwan
+  String presentationCollectionPath = "presentation";
 
   /// Creates a new user document with an empty history list, generationCount of 0, and tokensConsumed of 0.
   Future<void> createUser({required String uid}) async {
@@ -106,5 +113,37 @@ class FirestoreService {
     return querySnapshot.docs
         .map((docSnapshot) => SlideItem.fromMap(docSnapshot.data()!))
         .toList();
+  }
+
+//method below added by rizwan
+  Future<void> insertPresentationHistory(MyPresentation presentationHistory, String presentationId) async{
+    final docRef = await _firestore
+    .collection(presentationCollectionPath)
+    .doc(presentationId);
+   await docRef.set(presentationHistory.toMapDatabase());
+  }
+
+  Future <List<MyPresentation>> fetchPresentationHistoryFirestore() async{
+    final querySnapshot = await _firestore
+    .collection(presentationCollectionPath)
+    .get();
+    print("these are presenatations ${querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList()}");
+    return querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList();
+  }
+  Future <List<MyPresentation>> fetchPresentationHistoryByCreaterIdFirestore(String createrId) async{
+    final querySnapshot = await _firestore
+    .collection(presentationCollectionPath)
+    .where("createrId", isEqualTo: createrId)
+    .get();
+    print("these are presenatations by creater id ${querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList()}");
+    return querySnapshot.docs
+    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
+    .toList();
   }
 }

@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/presentation_history_dbhandler.dart';
 
 class PresentationHomeController extends GetxController {
   //TODO: Implement PresentationHomeController
 
-  var presentations = <MyPresentation>[].obs;
+  RxList<MyPresentation> presentations = <MyPresentation>[].obs;
 
   @override
   void onInit() {
@@ -27,5 +28,10 @@ class PresentationHomeController extends GetxController {
     await PresentationHistoryDatabaseHandler.db
         .insertPresentationHistory(myPresentation);
     fetchPresentationHistory();
+  }
+
+  String formatDate(DateTime date) {
+    final DateFormat formatter = DateFormat('MMMM d, yyyy');
+    return formatter.format(date);
   }
 }
