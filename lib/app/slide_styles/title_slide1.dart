@@ -40,8 +40,8 @@ class __TitleSlide1State extends State<TitleSlide1> {
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
       titleFontSize = widget.mySlide.slideSections[0].memoryImage != null ||
               widget.mySlide.slideSections[0].imageReference != null
-          ? widget.size.height * 0.10
-          : widget.size.height * 0.15;
+          ? widget.size.width * 0.05
+          : widget.size.width * 0.06;
 
       print("Title Font Size: $titleFontSize");
       print("BG Index: $bgIndex");
@@ -71,7 +71,7 @@ class __TitleSlide1State extends State<TitleSlide1> {
             height: widget.size.height,
             padding: EdgeInsets.symmetric(
                 horizontal: widget.size.width * 0.02,
-                vertical: widget.size.height * 0.04),
+                vertical: widget.size.width * 0.04),
             decoration: BoxDecoration(color: widget.slidePallet.fadeColor),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,7 +83,7 @@ class __TitleSlide1State extends State<TitleSlide1> {
                       : widget.size.width * 0.9,
                   child: Column(
                     children: [
-                      verticalSpace(widget.size.height * 0.1),
+                      verticalSpace(widget.size.height * 0.00),
                       Text(
                         widget.mySlide.slideTitle,
                         style: TextStyle(
@@ -92,11 +92,11 @@ class __TitleSlide1State extends State<TitleSlide1> {
                         // style: widget.slidePallet.bigTitleTStyle
                         //     .copyWith(fontSize: titleFontSize),
                       ),
-                      verticalSpace(widget.size.height * 0.05),
+                      verticalSpace(widget.size.width * 0.01),
                       Text(
                         widget.mySlide.slideSections[0].sectionContent!,
                         style: TextStyle(
-                            fontSize: widget.size.width * 0.03,
+                            fontSize: widget.size.width * 0.02,
                             color: Color(widget.slidePallet.bigTitleTColor)),
                         // style: widget.slidePallet.bigTitleTStyle
                         //     .copyWith(fontSize: widget.size.width * 0.03),
@@ -107,7 +107,7 @@ class __TitleSlide1State extends State<TitleSlide1> {
                 widget.mySlide.slideSections[0].memoryImage != null ||
                         widget.mySlide.slideSections[0].imageReference != null
                     ? Container(
-                        width: widget.size.width * 0.45,
+                        width: widget.size.width * 0.42,
                         height: widget.size.height,
                         child: Center(child: _ImageWidget()))
                     : Container(),

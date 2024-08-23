@@ -58,7 +58,7 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
             height: widget.size.height,
             padding: EdgeInsets.symmetric(
                 horizontal: widget.size.width * 0.02,
-                vertical: widget.size.height * 0.04),
+                vertical: widget.size.height * 0.02),
             decoration: BoxDecoration(color: widget.slidePallet.fadeColor),
             child: Column(
               children: [
@@ -76,7 +76,7 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
                     //     .copyWith(fontSize: widget.size.width * 0.050),
                   ),
                 ),
-                verticalSpace(widget.size.height * 0.05),
+                verticalSpace(widget.size.height * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,23 +123,23 @@ class __SectionedSlide1State extends State<SectionedSlide1> {
       developer.log("Content Length ${text.length}");
     }
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: widget.size.width * 0.01),
+      padding: EdgeInsets.symmetric(horizontal: widget.size.width * 0.000),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.mySlide.slideSections[i].sectionHeader ?? '',
-                    style: widget.mySlide.slideSections[i].sectionHeader != null
+            style: widget.mySlide.slideSections[i].sectionHeader != null
                 ? TextStyle(
                     fontSize: sectionFontSize,
                     color: Color(widget.slidePallet.bigTitleTColor))
                 : TextStyle(),
           ),
-          verticalSpace(widget.size.height * 0.04),
+          verticalSpace(widget.size.height * 0.01),
           Text(
             widget.mySlide.slideSections[i].sectionContent ?? '',
-                     style: widget.mySlide.slideSections[i].sectionHeader != null
+            style: widget.mySlide.slideSections[i].sectionHeader != null
                 ? TextStyle(
                     fontSize: sectionFontSize,
                     color: Color(widget.slidePallet.bigTitleTColor))

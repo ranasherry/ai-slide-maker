@@ -52,31 +52,91 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-                width: SizeConfig.screenWidth,
-                padding:
-                    EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.03),
-                decoration: BoxDecoration(
-                    // color: AppColors.fragmantBGColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child: Obx(() => !controller.myPresentation.value.slides.isEmpty
-                    ? Obx(() => ListView.builder(
-                        itemCount:
-                            controller.myPresentation.value.slides.length,
-                        itemBuilder: (context, index) {
-                          print("hello2");
-                          return individualSlideMethod(
-                              index, controller.myPresentation);
-                        }))
-                    : Container(
-                        width: SizeConfig.screenWidth,
-                        height: SizeConfig.screenHeight * 0.5,
-                        child: Center(child: CircularProgressIndicator()),
-                      ))),
-          ),
+          Container(
+              width: SizeConfig.screenWidth,
+              padding: EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.03),
+              decoration: BoxDecoration(
+                  // color: AppColors.fragmantBGColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10))),
+              child: Obx(() => !controller.myPresentation.value.slides.isEmpty
+                  ? Column(
+                      children: [
+                        Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight * 0.5,
+                          child: Center(
+                            child: Container(
+                              // width: SizeConfig.screenWidth * 0.92,
+                              height: SizeConfig.screenWidth * 0.5,
+                              child: Obx(() => Container(
+                                    width: SizeConfig.screenWidth * 0.92,
+                                    height: SizeConfig.screenWidth * 0.5,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: Colors.blue
+                                        // clipBehavior:
+                                        //     Clip.hardEdge, // Ensures clipping
+                                        ),
+                                    child: individualSlideMethod(
+                                      controller.currentSelectedIndex.value,
+                                      controller.myPresentation,
+                                      Size(SizeConfig.screenWidth * 0.9,
+                                          SizeConfig.screenWidth * 0.5),
+                                    ),
+                                  )),
+                            ),
+                          ),
+                        ),
+                        Obx(() => GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount:
+                                  3, // Number of children in each row
+                              // crossAxisSpacing: 10.0, // Spacing between columns
+                              // mainAxisSpacing: 10.0, // Spacing between rows
+                              childAspectRatio: (SizeConfig
+                                          .blockSizeHorizontal *
+                                      90) /
+                                  (SizeConfig.blockSizeHorizontal *
+                                      45), // Adjust based on the size you want for the items
+                            ),
+                            itemCount:
+                                controller.myPresentation.value.slides.length,
+                            itemBuilder: (context, index) {
+                              Size size = Size(
+                                  (SizeConfig.blockSizeHorizontal * 90) /
+                                      3, // Width of each grid item
+                                  (SizeConfig.blockSizeHorizontal *
+                                      45) // Height of each grid item
+                                  );
+                              print("hello2");
+                              return GestureDetector(
+                                onTap: () {
+                                  controller.currentSelectedIndex.value = index;
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  child: individualSlideMethod(
+                                    index,
+                                    controller.myPresentation,
+                                    size,
+                                  ),
+                                ),
+                              );
+                            })),
+                      ],
+                    )
+                  : Container(
+                      width: SizeConfig.screenWidth,
+                      height: SizeConfig.screenHeight * 0.5,
+                      child: Center(child: CircularProgressIndicator()),
+                    ))),
         ],
       ),
     );
