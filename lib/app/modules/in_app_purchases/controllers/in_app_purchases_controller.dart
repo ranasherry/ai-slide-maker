@@ -190,19 +190,25 @@ class InAppPurchasesController extends GetxController {
   }
 
   String getProductPeriod(StoreProduct product) {
+    log("Product ID: ${product.identifier}");
+
     if (product.identifier == "aislide_adremove_1") {
+      log("Matched: Life Time");
       return "Life Time";
     } else if (product.identifier ==
         "aislide_premium_1w:aislide-baseplan-weekly") {
+      log("Matched: Week");
       return "Week";
     } else if (product.identifier ==
         "aislide_premium_1m:aislide-baseplan-monthly") {
+      log("Matched: Month");
       return "Month";
     } else if (product.identifier ==
         "aislide_premium_1y:aislide-baseplan-yearly") {
+      log("Matched: Year");
       return "Year";
     } else {
-      log("Product ID: ${product.identifier}");
+      log("Unknown Product ID: ${product.identifier}");
       return product.description;
     }
   }

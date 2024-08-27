@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -119,7 +121,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                 SingleChildScrollView(
                   child: Container(
                     padding:
-                        EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+                        EdgeInsets.only(top: SizeConfig.blockSizeVertical * 0),
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
@@ -136,9 +138,9 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                               ),
                             ),
                           ),
-                          child: FutureBuilder<StoreProduct?>(
-                              future:
-                                  RevenueCatService().getLifeTimeSubscription(),
+                          child: FutureBuilder<List<StoreProduct>>(
+                              future: RevenueCatService()
+                                  .getAllSubscriptionProducts(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   print(snapshot
@@ -154,19 +156,26 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                                   case ConnectionState.done:
                                     if (snapshot.hasData) {
                                       if (snapshot.data != null) {
-                                        final product = snapshot.data!;
+                                        final products = snapshot.data!;
                                         // controller.selectedProduct.value =
                                         //     product;
                                         WidgetsBinding.instance
                                             .addPostFrameCallback((_) {
+                                          int index = products.length - 1;
+                                          if (products[index].identifier ==
+                                              "aislide_adremove_1") {
+                                            controller.showTimer.value = true;
+                                          } else {
+                                            controller.showTimer.value = false;
+                                          }
                                           controller.selectedProduct.value =
-                                              product;
+                                              products[index];
                                         });
                                         // final withoutDiscountPrice = controller.getOriginalPrice(
                                         //     discountPercentage: RCVariables.discountPercentage,
                                         //     discountedPrice: removeAdProduct.price);
 
-                                        return _mainContent(product);
+                                        return _mainContent(products);
                                       } else {
                                         // Handle the case where StoreProduct is null
                                         Get.back();
@@ -217,137 +226,32 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
     );
   }
 
-  Column _mainContent(StoreProduct product) {
-    final orignalPrice = controller
-        .getOriginalPrice(
-            discountPercentage: RCVariables.discountPercentage,
-            discountedPrice: product.price)
-        .toStringAsFixed(2);
-
-    final OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+  Column _mainContent(List<StoreProduct> products) {
     return Column(
       children: [
-        verticalSpace(SizeConfig.blockSizeVertical * 3),
-        // Text(
-        //   "Generate up to 30 AI Presentations daily, including up to",
-        //   style: GoogleFonts.inter(
-        //     textStyle: TextStyle(
-        //       fontSize: SizeConfig.blockSizeHorizontal * 3.5,
-        //       color: AppColors.titles,
-        //     ),
-        //   ),
         // ),
-        // Text(
-        //   "200 AI Prompts, pro templates, and more.",
-        //   style: GoogleFonts.inter(
-        //     textStyle: TextStyle(
-        //       fontSize: SizeConfig.blockSizeHorizontal * 3.5,
-        //       color: AppColors.titles,
-        //     ),
-        //   ),
-        // ),
+
         Container(
-          height: SizeConfig.blockSizeVertical * 10,
-          child: Stack(
-            children: [
-              Container(
-                margin: EdgeInsets.only(
-                  top: SizeConfig.blockSizeVertical * 2,
-                ),
-                height: SizeConfig.blockSizeVertical * 7,
-                width: SizeConfig.blockSizeHorizontal * 85,
-                decoration: BoxDecoration(
-                  color: AppColors.textfieldcolor,
-                  borderRadius: BorderRadius.circular(
-                    SizeConfig.blockSizeHorizontal * 8,
-                  ),
-                  border: Border.all(
-                    color: AppColors.mainColor,
-                    width: 2,
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeHorizontal * 2,
-                  ),
-                  child: Row(
-                    children: [
-                      Radio(
-                        value: 1,
-                        groupValue: 1,
-                        onChanged: (_) {},
-                        activeColor: AppColors.mainColor,
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "${OriginalPriceString}",
-                            style: GoogleFonts.aBeeZee(
-                              textStyle: TextStyle(
-                                decoration: TextDecoration.lineThrough,
-                                decorationColor: Colors.black26,
-                                fontSize: SizeConfig.blockSizeHorizontal * 3,
-                                color: Colors.black26,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "${product.priceString}/ Life Time",
-                            style: GoogleFonts.aBeeZee(
-                              textStyle: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 4,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Text(
-                        "Pay Once",
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 3,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: SizeConfig.blockSizeHorizontal * 60,
-                top: SizeConfig.blockSizeVertical * 0.7,
-                child: Container(
-                  height: SizeConfig.blockSizeVertical * 2.7,
-                  width: SizeConfig.blockSizeHorizontal * 18,
-                  decoration: BoxDecoration(
-                    color: AppColors.mainColor,
-                    borderRadius: BorderRadius.circular(
-                      SizeConfig.blockSizeHorizontal * 8,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Save ${RCVariables.discountPercentage.toInt()}%",
-                      style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 3,
-                          color: AppColors.textfieldcolor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          width: SizeConfig.screenWidth,
+          // color: Colors.red,
+          child: Center(
+            child: ListView.builder(
+                padding: EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  // if (products[index].identifier == "aislide_adremove_1") {
+                  //   return _hotProductItem(products[index]);
+                  // } else {
+                  //   return _productItem(products[index]);
+                  // }
+                  return _productItem(products[index], products, index);
+                }),
           ),
         ),
+        // _productItem(product),
+
         Obx(() => controller.showTimer.value
             ? Container(
                 margin:
@@ -778,6 +682,313 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
           ),
         ),
       ],
+    );
+  }
+
+  Container _productItem(
+      StoreProduct product, List<StoreProduct> products, int index) {
+    bool isDiscounted = false;
+
+    var orignalPrice = controller
+        .getOriginalPrice(
+            discountPercentage: RCVariables.discountPercentage,
+            discountedPrice: product.price)
+        .toStringAsFixed(2);
+    String productTitle = controller.getProductTitle(product);
+    String productPeriod = controller.getProductPeriod(product);
+    developer.log("ID: ${product.identifier}  period: $productPeriod");
+    var OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+    int discountPercentage = RCVariables.discountPercentage.toInt();
+
+    final pID = product.identifier;
+
+    if (pID == "aislide_premium_1w:aislide-baseplan-weekly") {
+      isDiscounted = false;
+      orignalPrice = controller
+          .getOriginalPrice(
+              discountPercentage: RCVariables.discountPercentage,
+              discountedPrice: product.price)
+          .toStringAsFixed(2);
+
+      OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+    } else if (pID == "aislide_premium_1m:aislide-baseplan-monthly") {
+      isDiscounted = true;
+      final perWeek = product.price / 4;
+      final weeklyPrice = products
+          .firstWhere(
+              (element) =>
+                  element.identifier ==
+                  "aislide_premium_1w:aislide-baseplan-weekly",
+              orElse: () => StoreProduct(
+                  "aislide_premium_1w:aislide-baseplan-weekly",
+                  "Weekly",
+                  "Weekly",
+                  perWeek * 2.7,
+                  product.priceString,
+                  product.currencyCode))
+          .price;
+
+      final orignalPrice = weeklyPrice * 4;
+      OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+      discountPercentage =
+          (100 - ((product.price / orignalPrice) * 100)).toInt();
+      String productPeriod = controller.getProductPeriod(product);
+
+      // text4 = "${discountPercentage.toStringAsFixed(0)}%";
+    } else if (pID == "aislide_premium_1y:aislide-baseplan-yearly") {
+      isDiscounted = true;
+      final perWeek = product.price / 4;
+      final weeklyPrice = products
+          .firstWhere(
+              (element) =>
+                  element.identifier ==
+                  "aislide_premium_1w:aislide-baseplan-weekly",
+              orElse: () => StoreProduct(
+                  "aislide_premium_1w:aislide-baseplan-weekly",
+                  "Weekly",
+                  "Weekly",
+                  perWeek * 40,
+                  product.priceString,
+                  product.currencyCode))
+          .price;
+
+      final orignalPrice = weeklyPrice * 52;
+      OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+      discountPercentage =
+          (100 - ((product.price / orignalPrice) * 100)).toInt();
+      String productPeriod = controller.getProductPeriod(product);
+    } else if (pID == "aislide_adremove_1") {
+      isDiscounted = true;
+      final orignalPrice = controller
+          .getOriginalPrice(
+              discountPercentage: RCVariables.discountPercentage,
+              discountedPrice: product.price)
+          .toStringAsFixed(2);
+      OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+    }
+
+    String saveText = "Save ${discountPercentage}%";
+
+    return Container(
+      // height: SizeConfig.blockSizeVertical * 10,
+      width: SizeConfig.screenWidth,
+      child: Center(
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                top: SizeConfig.blockSizeVertical * 2,
+              ),
+              height: SizeConfig.blockSizeVertical * 7,
+              width: SizeConfig.blockSizeHorizontal * 85,
+              decoration: BoxDecoration(
+                color: AppColors.textfieldcolor,
+                borderRadius: BorderRadius.circular(
+                  SizeConfig.blockSizeHorizontal * 8,
+                ),
+                border: Border.all(
+                  color: AppColors.mainColor,
+                  width: 2,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 2,
+                ),
+                child: Row(
+                  children: [
+                    Radio(
+                      value: 1,
+                      groupValue: 1,
+                      onChanged: (_) {},
+                      activeColor: AppColors.mainColor,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${OriginalPriceString}",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: Colors.black26,
+                              fontSize: SizeConfig.blockSizeHorizontal * 3,
+                              color: Colors.black26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          // "${product.priceString}/ Life Time",
+                          "${product.priceString}/ ${productPeriod}",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Text(
+                      "$productTitle",
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 3,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: SizeConfig.blockSizeHorizontal * 60,
+              top: SizeConfig.blockSizeVertical * 0.7,
+              child: Container(
+                height: SizeConfig.blockSizeVertical * 2.7,
+                width: SizeConfig.blockSizeHorizontal * 18,
+                decoration: BoxDecoration(
+                  color: AppColors.mainColor,
+                  borderRadius: BorderRadius.circular(
+                    SizeConfig.blockSizeHorizontal * 8,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "$saveText",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 3,
+                        color: AppColors.textfieldcolor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container _hotProductItem(StoreProduct product) {
+    final orignalPrice = controller
+        .getOriginalPrice(
+            discountPercentage: RCVariables.discountPercentage,
+            discountedPrice: product.price)
+        .toStringAsFixed(2);
+
+    final OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+    return Container(
+      height: SizeConfig.blockSizeVertical * 10,
+      width: SizeConfig.screenWidth,
+      child: Center(
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                top: SizeConfig.blockSizeVertical * 2,
+              ),
+              height: SizeConfig.blockSizeVertical * 7,
+              width: SizeConfig.blockSizeHorizontal * 85,
+              decoration: BoxDecoration(
+                color: AppColors.textfieldcolor,
+                borderRadius: BorderRadius.circular(
+                  SizeConfig.blockSizeHorizontal * 8,
+                ),
+                border: Border.all(
+                  color: AppColors.mainColor,
+                  width: 2,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 2,
+                ),
+                child: Row(
+                  children: [
+                    Radio(
+                      value: 1,
+                      groupValue: 1,
+                      onChanged: (_) {},
+                      activeColor: AppColors.mainColor,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    horizontalSpace(SizeConfig.blockSizeHorizontal * 3),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${OriginalPriceString}",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: Colors.black26,
+                              fontSize: SizeConfig.blockSizeHorizontal * 3,
+                              color: Colors.black26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "${product.priceString}/ Life Time",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Text(
+                      "Pay Once",
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 3,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: SizeConfig.blockSizeHorizontal * 60,
+              top: SizeConfig.blockSizeVertical * 0.7,
+              child: Container(
+                height: SizeConfig.blockSizeVertical * 2.7,
+                width: SizeConfig.blockSizeHorizontal * 18,
+                decoration: BoxDecoration(
+                  color: AppColors.mainColor,
+                  borderRadius: BorderRadius.circular(
+                    SizeConfig.blockSizeHorizontal * 8,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Save ${RCVariables.discountPercentage.toInt()}%",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 3,
+                        color: AppColors.textfieldcolor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
