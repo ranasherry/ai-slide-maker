@@ -73,6 +73,8 @@ class RemoteConfigService {
     initGemini(RCVariables.GeminiAPIKey);
     topicListParser();
     keysListParser(jsonKeys);
+    //line added by rizwan
+    keysListParserSlideAssistant(jsonKeys);
   }
 
   void initGemini(String geminiAPIKey) {
@@ -103,5 +105,18 @@ class RemoteConfigService {
     //   dp.log("RCKeys: $topic"); // Prints each topic individually
     // }
     RCVariables.geminiAPIKeys = tempList;
+  }
+  
+// method added by rizwan
+  void keysListParserSlideAssistant(String jsonList) {
+    dynamic jsonData = jsonDecode(jsonList);
+    List<String> tempList = jsonData['keysSlideAssistant'].cast<String>();
+    print(
+        tempList); // Output: ["CES 2024 Highlights", "Volcano Erupts in Iceland"]
+
+    // for (String topic in tempList) {
+    //   dp.log("RCKeys: $topic"); // Prints each topic individually
+    // }
+    RCVariables.geminiAPIKeysSlideAssistant = tempList;
   }
 }
