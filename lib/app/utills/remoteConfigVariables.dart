@@ -9,4 +9,6 @@ class RCVariables {
   static int discountTimeLeft = 123;
   static RxInt slotLeft = 20.obs;
   static List<String> geminiAPIKeys = [];
+  // line added by rizwan
+  static List<String> geminiAPIKeysSlideAssistant = [];
 }

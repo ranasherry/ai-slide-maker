@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
@@ -17,6 +18,7 @@ import 'package:slide_maker/app/data/helping_enums.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 class BookGeneratedCTL extends GetxController {
   //TODO: Implement BookWriterController
@@ -65,7 +67,7 @@ class BookGeneratedCTL extends GetxController {
   }
 
   Future<void> generateBookOutlines(String apirequest) async {
-    String? rawResponse = await gemeniAPICall(apirequest);
+    String? rawResponse = await geminiAPICall(apirequest);
     if (rawResponse != null) {
       List<String> listOfOutlines = parseStringToList(rawResponse);
       OutlinesinMarkdown.value = convertListToMarkdownToc(listOfOutlines);
@@ -104,31 +106,91 @@ class BookGeneratedCTL extends GetxController {
     return sb.toString();
   }
 
-  Future<String?> gemeniAPICall(String request) async {
-    final gemini = Gemini.instance;
-    List<Content> chatContent = [];
+  // Future<String?> gemeniAPICall(String request) async {
+  //   final gemini = Gemini.instance;
+  //   List<Content> chatContent = [];
+  //   Content userInstruction =
+  //       Content(parts: [Parts(text: request)], role: 'user');
+  //   chatContent.add(userInstruction);
+
+  //   try {
+  //     var value = await gemini.chat(chatContent,
+  //         // safetySettings: safetySettings,
+  //         generationConfig: GenerationConfig(
+  //           temperature: 0.5,
+  //         ));
+  //     String? generatedMessage = value?.output;
+
+  //     // developer.log(value?.output ?? 'without output');
+  //     // developer.log("${value}");
+  //     developer.log(value?.output ?? 'No Gemini Output');
+  //     developer.log(" Gemini Output ${value}");
+  //     return generatedMessage;
+  //   } catch (e) {
+  //     developer.log('Gemini Error $e', error: e);
+  //     return null;
+
+  //     // generatedMessage = "Error Message $e";
+  //   }
+  // }
+int geminiRequestCounter = 0 ; 
+  Future<String?> geminiAPICall(String request) async{
+    String? generatedMessage;
+    print('inside gemini api call');
+    final String apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
+    print("This is api key. $apiKey");
+  Gemini.reInitialize(apiKey: apiKey,enableDebugging: kDebugMode);
+    
+    final Gemini gemini = Gemini.instance;
+    List<SafetySetting>? safetySettings = <SafetySetting>[
+      SafetySetting(
+        category: SafetyCategory.sexuallyExplicit,
+        threshold: SafetyThreshold.blockOnlyHigh,
+      ),
+    ];
+   List<Content> chatContent = [];
     Content userInstruction =
         Content(parts: [Parts(text: request)], role: 'user');
     chatContent.add(userInstruction);
-
     try {
       var value = await gemini.chat(chatContent,
-          // safetySettings: safetySettings,
+          safetySettings: safetySettings,
           generationConfig: GenerationConfig(
             temperature: 0.5,
           ));
-      String? generatedMessage = value?.output;
+      generatedMessage = value?.output;
+      print("this is generated message $generatedMessage");
+      if (generatedMessage != null) {
+        
+        geminiRequestCounter = 0;
 
-      // developer.log(value?.output ?? 'without output');
-      // developer.log("${value}");
-      developer.log(value?.output ?? 'No Gemini Output');
-      developer.log(" Gemini Output ${value}");
-      return generatedMessage;
+        developer.log("Gemini Response: $generatedMessage");
+        return generatedMessage;
+      } else {
+        if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+          geminiRequestCounter = 0;
+
+          return null;
+        } else {
+          geminiRequestCounter++;
+          await Future.delayed(Duration(seconds: 1));
+          String? generatedMessage = await geminiAPICall(request);
+          return generatedMessage;
+        }
+      }
     } catch (e) {
-      developer.log('Gemini Error $e', error: e);
-      return null;
+      if (kDebugMode) developer.log('Gemini Error $e key: $apiKey  ', error: e);
+      // return "Could not generate due to some techniqal issue. please try again after a few minutes ";
+      if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+        geminiRequestCounter = 0;
 
-      // generatedMessage = "Error Message $e";
+        return null;
+      } else {
+        geminiRequestCounter++;
+        await Future.delayed(Duration(seconds: 1));
+        String? generatedMessage = await geminiAPICall(request);
+        return generatedMessage;
+      }
     }
   }
 
@@ -148,7 +210,7 @@ class BookGeneratedCTL extends GetxController {
       Note: Do not write anything else then the required chapter.
        ''';
 
-      String? chapterContent = await gemeniAPICall(request);
+      String? chapterContent = await geminiAPICall(request);
       if (chapterContent != null) {
         BookPageModel page = BookPageModel(
             ChapName: outline,
