@@ -4,6 +4,9 @@ class RCVariables {
   static RxString AppName = "Presentation AI".obs;
 
   static RxBool isNewSLideUI = false.obs;
+  static RxBool showBothInApp = true.obs;
+  static RxBool showNewInapp = true.obs;
+
   static String GeminiAPIKey = "";
   static double discountPercentage = 90;
   static int discountTimeLeft = 123;

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 // import '../modules/home/controllers/nav_view_ctl.dart';
 // import '../modules/utills/Gems_rates.dart';
@@ -131,6 +132,33 @@ class RevenueCatService {
     final List<StoreProduct> allProducts = [];
     for (var package in packages) {
       allProducts.add(package.storeProduct);
+    }
+
+    return allProducts;
+  }
+
+  Future<List<StoreProduct>> getFilteredSubscriptionProducts() async {
+    // Get offerings
+    final offerings = await Purchases.getOfferings();
+
+    // Check if "premium_subscription" offering exists
+    final premiumOffering = offerings.getOffering("premium_subscription");
+    if (premiumOffering == null) {
+      return []; // Return empty list if offering is not found
+    }
+
+    // Get available packages for the offering
+    final packages = premiumOffering.availablePackages;
+
+    // Extract products from each package and combine into a single list
+    final List<StoreProduct> allProducts = [];
+    for (var package in packages) {
+      if (package.storeProduct.identifier !=
+          'aislide_premium_1y:aislide-baseplan-yearly') {
+        allProducts.add(package.storeProduct);
+      } else {
+        dp.log("removed: ${package.storeProduct.identifier}");
+      }
     }
 
     return allProducts;
@@ -303,23 +331,44 @@ class RevenueCatService {
     }
 
     isPurchaseScreenOpen = true;
-    if (purchaseScreenCounter % 2 == 0) {
-      Get.toNamed(
-        Routes.NEWINAPPPURCHASEVIEW,
-      )!
-          .then((value) {
-        isPurchaseScreenOpen = false;
-        dp.log("back from Purchase Screen");
-      });
+    if (RCVariables.showBothInApp.value) {
+      if (purchaseScreenCounter % 2 == 0) {
+        Get.toNamed(
+          Routes.NEWINAPPPURCHASEVIEW,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      } else {
+        Get.toNamed(
+          Routes.IN_APP_PURCHASES,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      }
     } else {
-      Get.toNamed(
-        Routes.IN_APP_PURCHASES,
-      )!
-          .then((value) {
-        isPurchaseScreenOpen = false;
-        dp.log("back from Purchase Screen");
-      });
+      if (RCVariables.showNewInapp.value) {
+        Get.toNamed(
+          Routes.NEWINAPPPURCHASEVIEW,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      } else {
+        Get.toNamed(
+          Routes.IN_APP_PURCHASES,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      }
     }
+
     purchaseScreenCounter++;
 
     // Get.toNamed(
