@@ -1,84 +1,239 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_open_ctl.dart';
-import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
-import 'package:slide_maker/app/slide_styles/title_slide1.dart';
-import 'package:slide_maker/app/utills/SlidesWidgets/title_slide.dart';
 import 'package:slide_maker/app/utills/colors.dart';
-import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
-import 'package:slide_maker/app/utills/slide_pallets.dart';
-
-import '../controllers/presentation_home_controller.dart';
 
 class PresentationOpenView extends GetView<PresentationOpenCtl> {
-  const PresentationOpenView({super.key});
+  PresentationOpenView({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
+      key: _scaffoldKey,
+      bottomNavigationBar: Container(
+        height: SizeConfig.blockSizeVertical * 7,
+        width: SizeConfig.screenWidth,
+        decoration: BoxDecoration(
+            color: AppColors.textfieldcolor,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(SizeConfig.blockSizeHorizontal * 3),
+                topRight: Radius.circular(SizeConfig.blockSizeHorizontal * 3))),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.blockSizeHorizontal * 1),
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              bottom_navi_bar_items(Icons.copy, "Dupicate"),
+              bottom_navi_bar_items(Icons.share, "Share"),
+              bottom_navi_bar_items(Icons.delete, "Delete"),
+              bottom_navi_bar_items(
+                  Icons.published_with_changes_outlined, "Change Template"),
+            ],
+          ),
+        ),
+      ),
+
       // backgroundColor: const Color.fromARGB(255, 248, 244, 244),
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 55),
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 6,
+                vertical: SizeConfig.blockSizeVertical * 0),
+            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
             // color: Colors.blue,
             // height: 120,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
+                GestureDetector(
+                  onTap: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  child: Container(
+                    height: SizeConfig.blockSizeVertical * 5,
+                    width: SizeConfig.blockSizeHorizontal * 10,
+                    decoration: BoxDecoration(
+                        color: Colors.white, shape: BoxShape.circle),
                     child: Icon(
-                      Icons.menu_rounded,
-                      size: 35,
+                      Icons.notes,
                       color: Colors.black,
+                      size: SizeConfig.blockSizeHorizontal * 8,
                     ),
                   ),
                 ),
                 Spacer(),
-                Obx(() => Text(
-                      controller.presentationTitle.value,
-                      style: TextStyle(fontSize: 20),
+                Obx(() => Container(
+                      padding: EdgeInsets.only(
+                          right: SizeConfig.blockSizeHorizontal * 5),
+                      child: Text(
+                        controller.presentationTitle.value,
+                        style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 5),
+                      ),
                     )),
                 Spacer()
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-                width: SizeConfig.screenWidth,
-                padding:
-                    EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.03),
-                decoration: BoxDecoration(
-                    // color: AppColors.fragmantBGColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child: Obx(() => !controller.myPresentation.value.slides.isEmpty
-                    ? Obx(() => ListView.builder(
-                        itemCount:
-                            controller.myPresentation.value.slides.length,
-                        itemBuilder: (context, index) {
-                          print("hello2");
-                          return individualSlideMethod(
-                              index, controller.myPresentation);
-                        }))
-                    : Container(
-                        width: SizeConfig.screenWidth,
-                        height: SizeConfig.screenHeight * 0.5,
-                        child: Center(child: CircularProgressIndicator()),
-                      ))),
-          ),
+          Container(
+              width: SizeConfig.screenWidth,
+              // padding: EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.03),
+              decoration: BoxDecoration(
+                  // color: AppColors.fragmantBGColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft:
+                          Radius.circular(SizeConfig.blockSizeHorizontal * 4),
+                      topRight:
+                          Radius.circular(SizeConfig.blockSizeHorizontal * 4))),
+              child: Obx(() => !controller.myPresentation.value.slides.isEmpty
+                  ? Column(
+                      children: [
+                        Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight * 0.45,
+                          child: Center(
+                            child: Container(
+                              // width: SizeConfig.screenWidth * 0.92,
+                              height: SizeConfig.screenWidth * 0.5,
+                              child: Obx(() => ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: individualSlideMethod(
+                                      controller.currentSelectedIndex.value,
+                                      controller.myPresentation,
+                                      Size(SizeConfig.screenWidth * 0.9,
+                                          SizeConfig.screenWidth * 0.5),
+                                    ),
+                                  )),
+                            ),
+                          ),
+                        ),
+                        Obx(() => Container(
+                              height: SizeConfig.blockSizeVertical * 33,
+                              padding: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 2,
+                                  bottom: SizeConfig.blockSizeVertical * 2),
+                              decoration: BoxDecoration(
+                                  color: AppColors.textfieldcolor,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(
+                                          SizeConfig.blockSizeHorizontal * 4),
+                                      topLeft: Radius.circular(
+                                          SizeConfig.blockSizeHorizontal * 4))),
+                              child: GridView.builder(
+                                  padding: EdgeInsets.only(
+                                      left: SizeConfig.blockSizeHorizontal * 5,
+                                      right:
+                                          SizeConfig.blockSizeHorizontal * 5),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount:
+                                        3, // Number of children in each row
+                                    crossAxisSpacing:
+                                        10.0, // Spacing between columns
+                                    mainAxisSpacing:
+                                        10.0, // Spacing between rows
+                                    childAspectRatio: (SizeConfig
+                                                .blockSizeHorizontal *
+                                            85) /
+                                        (SizeConfig.blockSizeHorizontal *
+                                            45), // Adjust based on the size you want for the items
+                                  ),
+                                  itemCount: controller
+                                      .myPresentation.value.slides.length,
+                                  itemBuilder: (context, index) {
+                                    Size size = Size(
+                                        (SizeConfig.blockSizeHorizontal * 85) /
+                                            3, // Width of each grid item
+                                        (SizeConfig.blockSizeHorizontal *
+                                            45) // Height of each grid item
+                                        );
+                                    print("hello2");
+                                    return GestureDetector(
+                                      onTap: () {
+                                        controller.currentSelectedIndex.value =
+                                            index;
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            SizeConfig.blockSizeHorizontal * 2),
+                                        clipBehavior: Clip.hardEdge,
+                                        child: SizedBox(
+                                          width: size.width,
+                                          height: size.height,
+                                          child: Stack(
+                                            children: [
+                                              individualSlideMethod(
+                                                index,
+                                                controller.myPresentation,
+                                                size,
+                                              ),
+                                              Obx(() => controller
+                                                          .currentSelectedIndex
+                                                          .value ==
+                                                      index
+                                                  ? Container(
+                                                      width: size.width,
+                                                      height: size.height,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.black
+                                                              .withOpacity(
+                                                                  0.1)),
+                                                      child: Center(
+                                                        child:
+                                                            Icon(Icons.check),
+                                                      ),
+                                                    )
+                                                  : Container())
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            )),
+                      ],
+                    )
+                  : Container(
+                      width: SizeConfig.screenWidth,
+                      height: SizeConfig.screenHeight * 0.5,
+                      child: Center(child: CircularProgressIndicator()),
+                    ))),
         ],
       ),
+    );
+  }
+
+  Column bottom_navi_bar_items(IconData icon, String text) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Icon(
+          icon,
+          size: SizeConfig.blockSizeHorizontal * 5,
+          color: AppColors.mainColor,
+        ),
+        Container(
+          width: SizeConfig.blockSizeHorizontal * 16,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              text,
+              style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 3,
+                      color: AppColors.titles)),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

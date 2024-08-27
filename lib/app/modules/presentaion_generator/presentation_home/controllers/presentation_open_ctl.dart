@@ -12,6 +12,7 @@ class PresentationOpenCtl extends GetxController {
   RxList<MyPresentation> presentations = <MyPresentation>[].obs;
 
   RxString presentationTitle = "".obs;
+  RxInt currentSelectedIndex = 0.obs;
 
   Rx<MyPresentation> myPresentation = MyPresentation(
     presentationId: 0,

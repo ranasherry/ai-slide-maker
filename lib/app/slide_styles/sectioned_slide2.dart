@@ -55,7 +55,7 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
             height: widget.size.height,
             padding: EdgeInsets.symmetric(
                 horizontal: widget.size.width * 0.02,
-                vertical: widget.size.height * 0.04),
+                vertical: widget.size.height * 0.02),
             decoration: BoxDecoration(color: widget.slidePallet.fadeColor),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,13 +68,13 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                     widget.mySlide.slideTitle,
                     // overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontSize: widget.size.width * 0.050,
+                        fontSize: widget.size.width * 0.040,
                         color: Color(widget.slidePallet.bigTitleTColor)),
                     // style: widget.slidePallet.bigTitleTStyle
                     //     .copyWith(fontSize: widget.size.width * 0.050),
                   ),
                 ),
-                verticalSpace(widget.size.height * 0.05),
+                verticalSpace(widget.size.height * 0.01),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -125,7 +125,7 @@ class __SectionedSlide1State extends State<SectionedSlide2> {
                             ],
                           )
                         : Container(),
-                    verticalSpace(widget.size.height * 0.03),
+                    verticalSpace(widget.size.height * 0.02),
                     widget.mySlide.slideSections.length >= 2
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
