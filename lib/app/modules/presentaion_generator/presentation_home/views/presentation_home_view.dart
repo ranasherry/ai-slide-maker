@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
@@ -16,10 +17,13 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 import '../controllers/presentation_home_controller.dart';
 
 class PresentationHomeView extends GetView<PresentationHomeController> {
-  const PresentationHomeView({super.key});
+  PresentationHomeView({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
+      key: _scaffoldKey,
       // backgroundColor: const Color.fromARGB(255, 248, 244, 244),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -42,36 +46,44 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
             // color: Colors.blue,
             // height: 120,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                GestureDetector(
+                  onTap: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  child: Container(
+                    height: SizeConfig.blockSizeVertical * 5,
+                    width: SizeConfig.blockSizeHorizontal * 10,
+                    decoration: BoxDecoration(
+                        color: Colors.white, shape: BoxShape.circle),
+                    child: Icon(
+                      Icons.notes,
+                      color: Colors.black,
+                      size: SizeConfig.blockSizeHorizontal * 8,
+                    ),
+                  ),
+                ),
                 Container(
-                  height: SizeConfig.blockSizeVertical * 5,
-                  width: SizeConfig.blockSizeHorizontal * 10,
-                  decoration: BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.menu_rounded,
-                    color: Colors.black,
-                    size: SizeConfig.blockSizeHorizontal * 8,
+                  margin: EdgeInsets.only(
+                      left: SizeConfig.blockSizeHorizontal * 27),
+                  child: Text(
+                    "Welcome",
+                    style: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 5,
+                    ),
                   ),
                 ),
-                Text(
-                  "Welcome",
-                  style: TextStyle(
-                    fontSize: SizeConfig.blockSizeHorizontal * 5,
-                  ),
-                ),
-                Container(
-                  height: SizeConfig.blockSizeVertical * 5,
-                  width: SizeConfig.blockSizeHorizontal * 10,
-                  decoration: BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.search,
-                    size: SizeConfig.blockSizeHorizontal * 8,
-                    color: Colors.black,
-                  ),
-                ),
+                // Container(
+                //   height: SizeConfig.blockSizeVertical * 5,
+                //   width: SizeConfig.blockSizeHorizontal * 10,
+                //   decoration: BoxDecoration(
+                //       color: Colors.white, shape: BoxShape.circle),
+                //   child: Icon(
+                //     Icons.search,
+                //     size: SizeConfig.blockSizeHorizontal * 8,
+                //     color: Colors.black,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -86,7 +98,7 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                           SizeConfig.blockSizeHorizontal * 5),
-                      color: Colors.white,
+                      color: AppColors.textfieldcolor,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
