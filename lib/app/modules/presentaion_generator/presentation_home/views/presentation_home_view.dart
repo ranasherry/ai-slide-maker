@@ -203,12 +203,12 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                     mySlide: controller.presentations[index].slides[0],
                     slidePallet: palletList[palletList.indexWhere((element) =>
                                     int.parse(controller
-                                        .presentations[index].styleId) ==
+                                        .presentations[index].styleId.value) ==
                                     element.id) !=
                                 -1
                             ? palletList.indexWhere((element) =>
-                                int.parse(
-                                    controller.presentations[index].styleId) ==
+                                int.parse(controller
+                                    .presentations[index].styleId.value) ==
                                 element.id)
                             : 0 // Return 0 if not found
                         ],

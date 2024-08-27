@@ -60,6 +60,9 @@ class RemoteConfigService {
 
     AppStrings.JsonTrendTopics = remoteConfig.getString('topicslist');
     RCVariables.isNewSLideUI.value = remoteConfig.getBool('isNewSLideUI');
+    RCVariables.showBothInApp.value = remoteConfig.getBool('showBothInApp');
+    RCVariables.showNewInapp.value = remoteConfig.getBool('showNewInapp');
+
     RCVariables.GeminiAPIKey = remoteConfig.getString('GeminiProKey');
     RCVariables.AppName.value = remoteConfig.getString('AppName');
     RCVariables.discountPercentage =
@@ -106,7 +109,7 @@ class RemoteConfigService {
     // }
     RCVariables.geminiAPIKeys = tempList;
   }
-  
+
 // method added by rizwan
   void keysListParserSlideAssistant(String jsonList) {
     dynamic jsonData = jsonDecode(jsonList);

@@ -3,6 +3,7 @@ import 'dart:developer' as dp;
 // import 'package:flutter_gif/flutter_gif.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -36,6 +37,7 @@ class RevenueCatService {
     // Purchases.setEmail(email)
     return _instance;
   }
+  static final facebookAppEvents = FacebookAppEvents();
   String UserID = "";
 
   RevenueCatService._internal();
@@ -207,6 +209,12 @@ class RevenueCatService {
   }
 
   Future<void> purchaseSubscriptionWithProduct(StoreProduct product) async {
+    facebookAppEvents.logAddToWishlist(
+        id: product.identifier,
+        type: "InApp",
+        currency: product.currencyCode,
+        price: product.price);
+
     try {
       EasyLoading.show(status: "Please wait...");
       // final purchaserInfo = await Purchases.purchaseStoreProduct(product);
@@ -232,6 +240,9 @@ class RevenueCatService {
                 AnalyticsEventItem(
                     itemId: product.identifier, price: product.price)
               ]);
+
+          facebookAppEvents.logPurchase(
+              amount: product.price, currency: product.currencyCode);
         }
 
         // TODO: Check if user is logged in or not. if logged in, update Revenue Cat User ID else Goto Signin Page
