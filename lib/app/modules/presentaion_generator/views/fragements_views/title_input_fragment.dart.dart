@@ -617,7 +617,8 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
   Widget selectedSlidesPro(int slidesNumber) {
     return GestureDetector(
       onTap: () {
-        if (RevenueCatService().currentEntitlement == Entitlement.paid) {
+        if (RevenueCatService().currentEntitlement == Entitlement.paid ||
+            kDebugMode) {
           controller.noOfSlide.value = slidesNumber;
           Get.back();
         } else {

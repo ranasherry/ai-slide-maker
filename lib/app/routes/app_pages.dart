@@ -211,7 +211,7 @@ class AppPages {
       children: [
         GetPage(
           name: _Paths.PRESENTATION_HOME,
-          page: () => const PresentationHomeView(),
+          page: () => PresentationHomeView(),
           binding: PresentationHomeBinding(),
         ),
       ],
@@ -279,7 +279,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PresentationOpenView,
-      page: () => const PresentationOpenView(),
+      page: () => PresentationOpenView(),
       binding: PresentationOpenBinding(),
     ),
   ];
