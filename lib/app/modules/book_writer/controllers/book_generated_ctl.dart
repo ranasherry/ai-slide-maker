@@ -105,7 +105,7 @@ class BookGeneratedCTL extends GetxController {
     }
     return sb.toString();
   }
-
+ // commented by rizwan
   // Future<String?> gemeniAPICall(String request) async {
   //   final gemini = Gemini.instance;
   //   List<Content> chatContent = [];
@@ -133,6 +133,8 @@ class BookGeneratedCTL extends GetxController {
   //     // generatedMessage = "Error Message $e";
   //   }
   // }
+
+  // added by rizwan
 int geminiRequestCounter = 0 ; 
   Future<String?> geminiAPICall(String request) async{
     String? generatedMessage;
@@ -193,6 +195,8 @@ int geminiRequestCounter = 0 ;
       }
     }
   }
+
+  
 
   List<String> parseStringToList(String text) {
     final parsedList = text.split(',');
