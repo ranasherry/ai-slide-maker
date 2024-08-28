@@ -1,4 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,6 +25,39 @@ class AuthService {
       return false;
     }
   }
+
+  
+  //start of code added by rizwan
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  Future<void> signInWithGoogle() async{
+    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    if(googleSignInAccount != null){
+      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+      final AuthCredential authCredential = GoogleAuthProvider.credential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken
+      );
+      
+      // getting users credentials
+      UserCredential result = await firebaseAuth.signInWithCredential(authCredential);
+      User? user = result.user;
+
+      print(user?.email);
+      if(result != null){
+        Get.toNamed(Routes.AiSlideAssistant);
+      }
+
+    }
+    
+  }
+
+  Future<void> signOutWithGoogle()async {
+    await googleSignIn.signOut();
+    await firebaseAuth.signOut();
+  }
+  // end of code added by rizwan
 
   // Other sign-in methods (e.g., sign in with Google) can be added here
 }
