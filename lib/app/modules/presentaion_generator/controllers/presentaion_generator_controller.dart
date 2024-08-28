@@ -40,9 +40,8 @@ class PresentaionGeneratorController extends GetxController {
 //lines below added by rizwan
   PresentationHistoryCTL presentationHistoryCTL =
       Get.put(PresentationHistoryCTL());
-      FirestoreService firestoreService = FirestoreService();
+  FirestoreService firestoreService = FirestoreService();
 //
-
 
   //TODO: Implement PresentaionGeneratorController
 
@@ -96,7 +95,7 @@ class PresentaionGeneratorController extends GetxController {
     slides: <MySlide>[].obs,
     createrId: null,
     timestamp: DateTime.now().millisecondsSinceEpoch,
-    styleId: '1',
+    styleId: '1'.obs,
   ).obs;
 
   Rx<SlidePallet> selectedPallet = palletList.first.obs;
@@ -127,13 +126,16 @@ class PresentaionGeneratorController extends GetxController {
 
   @override
   void onClose() {
-    if (profession.toLowerCase() == "student") {
-      developer.log("Profession is student");
-      Get.toNamed(Routes.POLLSCREENVIEW);
-    } else {
-      HomeViewCtl homeViewCtl = Get.find();
-      homeViewCtl.showReviewDialogue(Get.context!);
-    }
+    // if (profession.toLowerCase() == "student") {
+    //   developer.log("Profession is student");
+    //   Get.toNamed(Routes.POLLSCREENVIEW);
+    // } else {
+    //   HomeViewCtl homeViewCtl = Get.find();
+    //   homeViewCtl.showReviewDialogue(Get.context!);
+    // }
+
+    HomeViewCtl homeViewCtl = Get.find();
+    homeViewCtl.showReviewDialogue(Get.context!);
 
     super.onClose();
 
@@ -353,7 +355,7 @@ class PresentaionGeneratorController extends GetxController {
       slides: <MySlide>[].obs,
       createrId: null,
       timestamp: DateTime.now().millisecondsSinceEpoch,
-      styleId: selectedPallet.value.id.toString(),
+      styleId: selectedPallet.value.id.toString().obs,
     );
     List<String> coveredTitles = [];
     // for (var outline in plannedOutlines) {
@@ -461,7 +463,6 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
         presentationHistoryCTL.insertPresentation(myPresentation.value);
-        
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -557,7 +558,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       slides: mySlidesList,
       createrId: null,
       timestamp: DateTime.now().millisecondsSinceEpoch,
-      styleId: selectedPallet.value.id.toString(),
+      styleId: selectedPallet.value.id.toString().obs,
     );
   }
 

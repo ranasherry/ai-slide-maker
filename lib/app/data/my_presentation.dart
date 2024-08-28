@@ -8,7 +8,7 @@ class MyPresentation {
   String presentationTitle;
   RxList<MySlide> slides;
   //variables added by rizwan
-  String styleId;
+  RxString styleId;
   String? createrId;
   int timestamp;
   // String slideStyleID;
@@ -27,7 +27,7 @@ class MyPresentation {
       'presentationTitle': presentationTitle,
       'slides': slides?.map((x) => x.toMap()).toList(),
       //key,values added by rizwan
-      'styleId': styleId,
+      'styleId': styleId.value,
       'createrId': createrId,
       'timestamp': timestamp,
     };
@@ -40,7 +40,7 @@ class MyPresentation {
       'presentationTitle': presentationTitle,
       'slides': jsonEncode(slides?.map((x) => x.toMap()).toList()),
       //key,values added by rizwan
-      'styleId': styleId,
+      'styleId': styleId.value,
       'createrId': createrId,
       'timestamp': timestamp,
     };
@@ -55,7 +55,7 @@ class MyPresentation {
           .toList()
           .obs,
       //key,values added by rizwan
-      styleId: map['styleId'] ?? "" as String,
+      styleId: (map['styleId'] ?? "").toString().obs, // Corrected
       createrId: map['createrId'] ?? null as String?,
       timestamp: map['timestamp'] ?? 0 as int,
     );
@@ -70,7 +70,7 @@ class MyPresentation {
             .map((x) => MySlide.fromMap(x as Map<String, dynamic>))
             .toList(),
       ),
-      styleId: map['styleId'] ?? "" as String,
+      styleId: (map['styleId'] ?? "").toString().obs, // Corrected,
       createrId: map['createrId'] ?? null as String?,
       timestamp: map['timestamp'] ?? 0 as int,
     );
