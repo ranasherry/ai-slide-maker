@@ -12,7 +12,20 @@
           "package_name": "com.genius.aislides.generator"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "980994258161-8mdgsdali0tn3bj51en1l8e8ojlfp9bg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.genius.aislides.generator",
+            "certificate_hash": "1918c73b1857f1fd36c6629650f6f508301aa23b"
+          }
+        },
+        {
+          "client_id": "980994258161-bm79j7lgr5tq9ch1201dsmfl2uftknfi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAyrWprbGaFpvcHjPQ0XuoVsP1fU--JntI"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980994258161-bm79j7lgr5tq9ch1201dsmfl2uftknfi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "980994258161-67s3k4jtg9el69lceceb5nj5ojs62v6n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slideMaker.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }
