@@ -25,6 +25,8 @@ class PresentationOpenCtl extends GetxController {
     createrId: null,
     timestamp: DateTime.now().millisecondsSinceEpoch,
     styleId: '1'.obs,
+    likesCount: 0,
+    commentsCount: 0
   ).obs;
 
   @override
