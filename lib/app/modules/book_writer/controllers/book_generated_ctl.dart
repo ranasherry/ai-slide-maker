@@ -105,7 +105,7 @@ class BookGeneratedCTL extends GetxController {
     }
     return sb.toString();
   }
- // commented by rizwan
+  // commented by rizwan
   // Future<String?> gemeniAPICall(String request) async {
   //   final gemini = Gemini.instance;
   //   List<Content> chatContent = [];
@@ -135,14 +135,15 @@ class BookGeneratedCTL extends GetxController {
   // }
 
   // added by rizwan
-int geminiRequestCounter = 0 ; 
-  Future<String?> geminiAPICall(String request) async{
+  int geminiRequestCounter = 0;
+  Future<String?> geminiAPICall(String request) async {
     String? generatedMessage;
     print('inside gemini api call');
-    final String apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
+    final String apiKey =
+        RCVariables.geminiAPIKeysSlideAssistant[geminiRequestCounter];
     print("This is api key. $apiKey");
-  Gemini.reInitialize(apiKey: apiKey,enableDebugging: kDebugMode);
-    
+    Gemini.reInitialize(apiKey: apiKey, enableDebugging: kDebugMode);
+
     final Gemini gemini = Gemini.instance;
     List<SafetySetting>? safetySettings = <SafetySetting>[
       SafetySetting(
@@ -150,7 +151,7 @@ int geminiRequestCounter = 0 ;
         threshold: SafetyThreshold.blockOnlyHigh,
       ),
     ];
-   List<Content> chatContent = [];
+    List<Content> chatContent = [];
     Content userInstruction =
         Content(parts: [Parts(text: request)], role: 'user');
     chatContent.add(userInstruction);
@@ -163,13 +164,13 @@ int geminiRequestCounter = 0 ;
       generatedMessage = value?.output;
       print("this is generated message $generatedMessage");
       if (generatedMessage != null) {
-        
         geminiRequestCounter = 0;
 
         developer.log("Gemini Response: $generatedMessage");
         return generatedMessage;
       } else {
-        if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+        if (geminiRequestCounter >=
+            RCVariables.geminiAPIKeysSlideAssistant.length - 1) {
           geminiRequestCounter = 0;
 
           return null;
@@ -183,7 +184,8 @@ int geminiRequestCounter = 0 ;
     } catch (e) {
       if (kDebugMode) developer.log('Gemini Error $e key: $apiKey  ', error: e);
       // return "Could not generate due to some techniqal issue. please try again after a few minutes ";
-      if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+      if (geminiRequestCounter >=
+          RCVariables.geminiAPIKeysSlideAssistant.length - 1) {
         geminiRequestCounter = 0;
 
         return null;
@@ -195,8 +197,6 @@ int geminiRequestCounter = 0 ;
       }
     }
   }
-
-  
 
   List<String> parseStringToList(String text) {
     final parsedList = text.split(',');

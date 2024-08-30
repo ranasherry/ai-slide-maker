@@ -71,13 +71,14 @@ class RemoteConfigService {
     RCVariables.discountTimeLeft = remoteConfig.getInt('discountTimeLeft');
     RCVariables.slotLeft.value = remoteConfig.getInt('slotLeft');
     String jsonKeys = remoteConfig.getString('GeminiKeysList');
+    String assitantKeys = remoteConfig.getString('geminiAPIKeysSlideAssistant');
 
     dp.log("discountTimeLeft: ${RCVariables.discountTimeLeft}");
     initGemini(RCVariables.GeminiAPIKey);
     topicListParser();
     keysListParser(jsonKeys);
     //line added by rizwan
-    keysListParserSlideAssistant(jsonKeys);
+    keysListParserSlideAssistant(assitantKeys);
   }
 
   void initGemini(String geminiAPIKey) {
@@ -101,8 +102,7 @@ class RemoteConfigService {
   void keysListParser(String jsonList) {
     dynamic jsonData = jsonDecode(jsonList);
     List<String> tempList = jsonData['keys'].cast<String>();
-    print(
-        tempList); // Output: ["CES 2024 Highlights", "Volcano Erupts in Iceland"]
+    // Output: ["CES 2024 Highlights", "Volcano Erupts in Iceland"]
 
     // for (String topic in tempList) {
     //   dp.log("RCKeys: $topic"); // Prints each topic individually
@@ -113,13 +113,11 @@ class RemoteConfigService {
 // method added by rizwan
   void keysListParserSlideAssistant(String jsonList) {
     dynamic jsonData = jsonDecode(jsonList);
-    List<String> tempList = jsonData['keysSlideAssistant'].cast<String>();
-    print(
-        tempList); // Output: ["CES 2024 Highlights", "Volcano Erupts in Iceland"]
+    List<String> tempList = jsonData['keys'].cast<String>();
 
-    // for (String topic in tempList) {
-    //   dp.log("RCKeys: $topic"); // Prints each topic individually
-    // }
+    for (String topic in tempList) {
+      dp.log("RCKeys: $topic"); // Prints each topic individually
+    }
     RCVariables.geminiAPIKeysSlideAssistant = tempList;
   }
 }

@@ -787,7 +787,7 @@ class AiSlideAssistantCTL extends GetxController
     });
 
     developer.log("chatContent $chatContent");
-  //commeted by rizwan 
+    //commeted by rizwan
     // final gemini = Gemini.instance;
     // List<SafetySetting>? safetySettings = <SafetySetting>[
     //   SafetySetting(
@@ -815,38 +815,55 @@ class AiSlideAssistantCTL extends GetxController
     // }
 
     // code  and method added by rizwan
-  int geminiRequestCounter = 0 ;
-  print('gemini api call ready');
-  Future<String?> geminiAPICall(List<Content> chatContent) async{
-    print('inside gemini api call');
-    final String apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
-    print("This is api key. $apiKey");
-  Gemini.reInitialize(apiKey: apiKey,enableDebugging: kDebugMode);
-    
-    final Gemini gemini = Gemini.instance;
-    List<SafetySetting>? safetySettings = <SafetySetting>[
-      SafetySetting(
-        category: SafetyCategory.sexuallyExplicit,
-        threshold: SafetyThreshold.blockOnlyHigh,
-      ),
-    ];
+    int geminiRequestCounter = 0;
+    print('gemini api call ready');
+    Future<String?> geminiAPICall(List<Content> chatContent) async {
+      print('inside gemini api call');
+      final String apiKey =
+          RCVariables.geminiAPIKeysSlideAssistant[geminiRequestCounter];
+      print("This is api key. $apiKey");
+      Gemini.reInitialize(apiKey: apiKey, enableDebugging: kDebugMode);
 
-    try {
-      var value = await gemini.chat(chatContent,
-          safetySettings: safetySettings,
-          generationConfig: GenerationConfig(
-            temperature: 0.5,
-          ));
-      generatedMessage = value?.output;
-      print("this is generated message $generatedMessage");
-      if (generatedMessage != null) {
-        
-        geminiRequestCounter = 0;
+      final Gemini gemini = Gemini.instance;
+      List<SafetySetting>? safetySettings = <SafetySetting>[
+        SafetySetting(
+          category: SafetyCategory.sexuallyExplicit,
+          threshold: SafetyThreshold.blockOnlyHigh,
+        ),
+      ];
 
-        developer.log("Gemini Response: $generatedMessage");
-        return generatedMessage;
-      } else {
-        if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+      try {
+        var value = await gemini.chat(chatContent,
+            safetySettings: safetySettings,
+            generationConfig: GenerationConfig(
+              temperature: 0.5,
+            ));
+        generatedMessage = value?.output;
+        print("this is generated message $generatedMessage");
+        if (generatedMessage != null) {
+          geminiRequestCounter = 0;
+
+          developer.log("Gemini Response: $generatedMessage");
+          return generatedMessage;
+        } else {
+          if (geminiRequestCounter >=
+              RCVariables.geminiAPIKeysSlideAssistant.length - 1) {
+            geminiRequestCounter = 0;
+
+            return null;
+          } else {
+            geminiRequestCounter++;
+            await Future.delayed(Duration(seconds: 1));
+            String? generatedMessage = await geminiAPICall(chatContent);
+            return generatedMessage;
+          }
+        }
+      } catch (e) {
+        if (kDebugMode)
+          developer.log('Gemini Error $e key: $apiKey  ', error: e);
+        // return "Could not generate due to some techniqal issue. please try again after a few minutes ";
+        if (geminiRequestCounter >=
+            RCVariables.geminiAPIKeysSlideAssistant.length - 1) {
           geminiRequestCounter = 0;
 
           return null;
@@ -856,29 +873,13 @@ class AiSlideAssistantCTL extends GetxController
           String? generatedMessage = await geminiAPICall(chatContent);
           return generatedMessage;
         }
-      }
-    } catch (e) {
-      if (kDebugMode) developer.log('Gemini Error $e key: $apiKey  ', error: e);
-      // return "Could not generate due to some techniqal issue. please try again after a few minutes ";
-      if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
-        geminiRequestCounter = 0;
 
-        return null;
-      } else {
-        geminiRequestCounter++;
-        await Future.delayed(Duration(seconds: 1));
-        String? generatedMessage = await geminiAPICall(chatContent);
-        return generatedMessage;
+        // generatedMessage = "Error Message $e";
       }
-
-      // generatedMessage = "Error Message $e";
-    
-      }
-
-  }
+    }
 
     return await geminiAPICall(chatContent);
-      }
+  }
 
   void ShareMessage(String message) {
     Share.share(message);
