@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/remoteconfig_services.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/title_slide.dart';
 import 'package:slide_maker/app/utills/colors.dart';
@@ -18,12 +19,12 @@ import '../controllers/presentation_home_controller.dart';
 
 class PresentationHomeView extends GetView<PresentationHomeController> {
   PresentationHomeView({super.key});
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
-      key: _scaffoldKey,
+      // drawer: MyDrawer(),
+      // key: _scaffoldKey,
       // backgroundColor: const Color.fromARGB(255, 248, 244, 244),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -49,7 +50,8 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _scaffoldKey.currentState!.openDrawer();
+                    // _scaffoldKey.currentState!.openDrawer();
+                    Get.back();
                   },
                   child: Container(
                     height: SizeConfig.blockSizeVertical * 5,
@@ -57,7 +59,7 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                     decoration: BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
                     child: Icon(
-                      Icons.notes,
+                      Icons.arrow_back,
                       color: Colors.black,
                       size: SizeConfig.blockSizeHorizontal * 8,
                     ),
@@ -91,7 +93,9 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    RevenueCatService().GoToPurchaseScreen();
+                  },
                   child: Container(
                     height: SizeConfig.blockSizeVertical * 14,
                     width: SizeConfig.blockSizeHorizontal * 90,

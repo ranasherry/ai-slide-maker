@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class WatchAdDialog extends StatefulWidget {
@@ -161,42 +162,31 @@ Container card_widgets(Color color1, Color color2, String image, String text,
     ),
   );
 }
+
 Widget slide_header_name() {
-    return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: SizeConfig.blockSizeVertical * 4.5,
-                  width: SizeConfig.blockSizeHorizontal * 15,
-                  decoration: BoxDecoration(
-                      color: AppColors.textfieldcolor,
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 2)),
-                  child: Center(
-                    child: Text(
-                      "AI",
-                      style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 8,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.mainColor)),
-                    ),
-                  ),
-                ),
-                horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
-                Container(
-                  child: Text(
-                    "Slide Maker",
-                    style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 9,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textfieldcolor)),
-                  ),
-                ),
-              ],
-            );
-  }
+  return FittedBox(
+    child: Container(
+      height: SizeConfig.blockSizeVertical * 5,
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3),
+      // width: SizeConfig.blockSizeHorizontal * 25,
+      decoration: BoxDecoration(
+          color: AppColors.textfieldcolor,
+          borderRadius:
+              BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
+      child: Center(
+        child: Obx(() => Text(
+              "${RCVariables.AppName.value.toUpperCase()}",
+              style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 8,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.mainColor)),
+            )),
+      ),
+    ),
+  );
+}
 
 // Example usage:
 // RxString timerText = ''.obs; // Define as observable string

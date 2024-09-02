@@ -146,12 +146,18 @@ class MyDrawer extends GetView<SettingsViewCTL> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                name,
-                style: TextStyle(
-                    fontSize: SizeConfig.blockSizeHorizontal * 7,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textfieldcolor),
+              Container(
+                width: SizeConfig.screenWidth * 0.3,
+                child: FittedBox(
+                  child: Text(
+                    name,
+                    overflow: TextOverflow.fade,
+                    style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 7,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textfieldcolor),
+                  ),
+                ),
               ),
               GestureDetector(
                 onTap: () {},

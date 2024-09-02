@@ -9,6 +9,7 @@ import 'package:markdown_widget/widget/markdown.dart';
 import 'package:slide_maker/app/modules/controllers/slide_assistant_controller.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -319,7 +320,7 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: AssetImage(AppImages.chatbot))),
+                          image: AssetImage(AppImages.mainIcon))),
                 ),
               )
             ],
@@ -398,13 +399,18 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
             ),
             if (isSender) ...[
               Padding(
-                padding:
-                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 1),
-                child: Image.asset(
-                  AppImages.bot,
-                  // scale: 12,
-                ),
-              )
+                  padding: EdgeInsets.only(
+                      right: SizeConfig.blockSizeHorizontal * 1),
+                  child: Icon(
+                    Icons.person,
+                    color: AppColors.mainColor,
+                    size: 30,
+                  )
+                  //  Image.asset(
+                  //   AppImages.bot,
+                  //   // scale: 12,
+                  // ),
+                  )
             ],
           ],
         ),

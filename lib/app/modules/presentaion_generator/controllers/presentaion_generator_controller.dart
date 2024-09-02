@@ -14,6 +14,7 @@ import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_home_controller.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_outline_frag.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_styles_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
@@ -38,8 +39,7 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
 //lines below added by rizwan
-  PresentationHistoryCTL presentationHistoryCTL =
-      Get.put(PresentationHistoryCTL());
+  PresentationHomeController presentationHomeController = Get.find();
   FirestoreService firestoreService = FirestoreService();
 //
 
@@ -90,15 +90,15 @@ class PresentaionGeneratorController extends GetxController {
 
   //? Section Related to Slides Screens
   Rx<MyPresentation> myPresentation = MyPresentation(
-    presentationId: 0,
-    presentationTitle: "",
-    slides: <MySlide>[].obs,
-    createrId: null,
-    timestamp: DateTime.now().millisecondsSinceEpoch,
-    styleId: '1'.obs,
-    likesCount: 0,
-    commentsCount: 0
-  ).obs;
+          presentationId: 0,
+          presentationTitle: "",
+          slides: <MySlide>[].obs,
+          createrId: null,
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          styleId: '1'.obs,
+          likesCount: 0,
+          commentsCount: 0)
+      .obs;
 
   Rx<SlidePallet> selectedPallet = palletList.first.obs;
 
@@ -352,16 +352,15 @@ class PresentaionGeneratorController extends GetxController {
       contentLength = "75 words";
     }
     myPresentation.value = MyPresentation(
-      presentationId: DateTime.now().millisecondsSinceEpoch,
-      presentationTitle: titleTextCTL.text,
-      // keys,values below added by rizwan
-      slides: <MySlide>[].obs,
-      createrId: null,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
-      styleId: selectedPallet.value.id.toString().obs,
-      likesCount: 0,
-      commentsCount: 0
-    );
+        presentationId: DateTime.now().millisecondsSinceEpoch,
+        presentationTitle: titleTextCTL.text,
+        // keys,values below added by rizwan
+        slides: <MySlide>[].obs,
+        createrId: null,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        styleId: selectedPallet.value.id.toString().obs,
+        likesCount: 0,
+        commentsCount: 0);
     List<String> coveredTitles = [];
     // for (var outline in plannedOutlines) {
 
@@ -467,7 +466,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         //lines below added by rizwan
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
-        presentationHistoryCTL.insertPresentation(myPresentation.value);
+        presentationHomeController.insertPresentation(myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -558,16 +557,15 @@ Always use correct json format. never use quotes inside text so I Can parse it i
     final mySlidesList = [slide1, slide2, slide3, slide4].obs;
 
     myPresentation.value = MyPresentation(
-      presentationId: DateTime.now().millisecondsSinceEpoch,
-      presentationTitle: "Solar Eclipse",
-      slides: mySlidesList,
-      // keys,values added by rizwan
-      createrId: null,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
-      styleId: selectedPallet.value.id.toString().obs,
-      likesCount: 0,
-      commentsCount: 0
-    );
+        presentationId: DateTime.now().millisecondsSinceEpoch,
+        presentationTitle: "Solar Eclipse",
+        slides: mySlidesList,
+        // keys,values added by rizwan
+        createrId: null,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        styleId: selectedPallet.value.id.toString().obs,
+        likesCount: 0,
+        commentsCount: 0);
   }
 
   //?  Input Fragment

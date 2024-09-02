@@ -9,12 +9,12 @@ import 'package:slide_maker/app/utills/size_config.dart';
 
 class PresentationOpenView extends GetView<PresentationOpenCtl> {
   PresentationOpenView({super.key});
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
-      key: _scaffoldKey,
+      // drawer: MyDrawer(),
+      // key: _scaffoldKey,
       bottomNavigationBar: Container(
         height: SizeConfig.blockSizeVertical * 7,
         width: SizeConfig.screenWidth,
@@ -61,7 +61,8 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _scaffoldKey.currentState!.openDrawer();
+                    // _scaffoldKey.currentState!.openDrawer();
+                    Get.back();
                   },
                   child: Container(
                     height: SizeConfig.blockSizeVertical * 5,
@@ -69,7 +70,7 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                     decoration: BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
                     child: Icon(
-                      Icons.notes,
+                      Icons.arrow_back,
                       color: Colors.black,
                       size: SizeConfig.blockSizeHorizontal * 8,
                     ),
