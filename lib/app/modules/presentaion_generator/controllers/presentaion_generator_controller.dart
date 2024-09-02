@@ -96,6 +96,8 @@ class PresentaionGeneratorController extends GetxController {
     createrId: null,
     timestamp: DateTime.now().millisecondsSinceEpoch,
     styleId: '1'.obs,
+    likesCount: 0,
+    commentsCount: 0
   ).obs;
 
   Rx<SlidePallet> selectedPallet = palletList.first.obs;
@@ -352,10 +354,13 @@ class PresentaionGeneratorController extends GetxController {
     myPresentation.value = MyPresentation(
       presentationId: DateTime.now().millisecondsSinceEpoch,
       presentationTitle: titleTextCTL.text,
+      // keys,values below added by rizwan
       slides: <MySlide>[].obs,
       createrId: null,
       timestamp: DateTime.now().millisecondsSinceEpoch,
       styleId: selectedPallet.value.id.toString().obs,
+      likesCount: 0,
+      commentsCount: 0
     );
     List<String> coveredTitles = [];
     // for (var outline in plannedOutlines) {
@@ -556,9 +561,12 @@ Always use correct json format. never use quotes inside text so I Can parse it i
       presentationId: DateTime.now().millisecondsSinceEpoch,
       presentationTitle: "Solar Eclipse",
       slides: mySlidesList,
+      // keys,values added by rizwan
       createrId: null,
       timestamp: DateTime.now().millisecondsSinceEpoch,
       styleId: selectedPallet.value.id.toString().obs,
+      likesCount: 0,
+      commentsCount: 0
     );
   }
 
