@@ -5,6 +5,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/auth_services.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,9 +39,14 @@ class SettingsViewCTL extends GetxController {
   Future<void> signOut() async {
     EasyLoading.show(status: "Logging out...");
     await FirebaseAuth.instance.signOut();
-    await RevenueCatService().signOut();
+
+    bool isSignout = await AuthService().signOutofApp();
     EasyLoading.dismiss();
-    Get.offAllNamed(Routes.HOMEVIEW1);
+    if (isSignout) {
+      Get.offAllNamed(Routes.HOMEVIEW1);
+    } else {
+      //TODO: could Not Signed Out. dialogue bos
+    }
   }
 
   Future<void> deleteAccount() async {

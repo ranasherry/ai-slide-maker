@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/services/shared_pref_services.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -26,38 +28,68 @@ class AuthService {
     }
   }
 
-  
   //start of code added by rizwan
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<void> signInWithGoogle() async{
-    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-    if(googleSignInAccount != null){
-      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
-      final AuthCredential authCredential = GoogleAuthProvider.credential(
-        idToken: googleSignInAuthentication.idToken,
-        accessToken: googleSignInAuthentication.accessToken
-      );
-      
-      // getting users credentials
-      UserCredential result = await firebaseAuth.signInWithCredential(authCredential);
-      User? user = result.user;
+  Future<User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
 
-      print(user?.email);
-      if(result != null){
-        Get.toNamed(Routes.AiSlideAssistant);
+        final AuthCredential authCredential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken,
+        );
+
+        // Getting user credentials
+        UserCredential result =
+            await firebaseAuth.signInWithCredential(authCredential);
+        User? user = result.user;
+
+        print(user?.email);
+
+        return user;
       }
-
+    } catch (e) {
+      print('Error signing in with Google: $e');
+      return null;
     }
-    
+    return null;
   }
 
-  Future<void> signOutWithGoogle()async {
+  // end of code added by rizwan
+  Future<void> signOutWithGoogle() async {
     await googleSignIn.signOut();
     await firebaseAuth.signOut();
   }
-  // end of code added by rizwan
+
+  Future<bool> signOutofApp() async {
+    try {
+      // Sign out from Google if the user is signed in with Google
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.signOut();
+      }
+
+      // Sign out from Firebase (covers email/password, Google, and other providers)
+      await firebaseAuth.signOut();
+
+      // Optionally, clear any locally stored data like UUID in shared preferences
+      await SharedPrefService().clearUUID();
+      await RevenueCatService().signOut();
+      // Navigate the user to the login screen or perform other actions after sign-out
+      // Get.offAllNamed(Routes.LOGINVIEW);
+      print('User successfully signed out.');
+
+      return true;
+    } catch (e) {
+      print('Error during sign-out: $e');
+      return false;
+    }
+  }
 
   // Other sign-in methods (e.g., sign in with Google) can be added here
 }

@@ -45,7 +45,7 @@ class RemoteConfigService {
       await remoteConfig.setDefaults(const {
         "GeminiProKey": "GeminiProKey",
         "discountPercentage": 50,
-        "slotLeft": 20,
+        "slotLeft": 8,
       });
 
       await remoteConfig.fetchAndActivate();

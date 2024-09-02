@@ -81,4 +81,8 @@ class SharedPrefService {
   Future<void> setUUID(String p) async {
     await _prefs.setString('user_uuid', p);
   }
+
+  Future<void> clearUUID() async {
+    await _prefs.remove('user_uuid');
+  }
 }
