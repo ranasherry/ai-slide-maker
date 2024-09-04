@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/creation_view/binding/creation_view_binding.dart';
+import 'package:slide_maker/app/modules/creation_view/view/creation_view.dart';
+import 'package:slide_maker/app/modules/nav_bar_view/binding/nav_view_binding.dart';
+import 'package:slide_maker/app/modules/nav_bar_view/view/nav_view.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/bindings/presentation_open_binding.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_open_view.dart';
 import 'package:slide_maker/app/modules/profile_view/binding/profile_view_binding.dart';
@@ -281,6 +285,16 @@ class AppPages {
       name: _Paths.PresentationOpenView,
       page: () => PresentationOpenView(),
       binding: PresentationOpenBinding(),
+    ),
+    GetPage(
+      name: _Paths.NAVVIEW,
+      page: () => NavView(),
+      binding: NavViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATIONVIEW,
+      page: () => CreationView(),
+      binding: CreationViewBinding(),
     ),
   ];
 }
