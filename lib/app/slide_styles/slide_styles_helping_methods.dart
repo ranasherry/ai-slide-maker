@@ -13,17 +13,25 @@ Widget individualSlideMethod(
   // Size size = Size(
   //     SizeConfig.blockSizeHorizontal * 90, SizeConfig.blockSizeHorizontal * 45);
 
-  SlidePallet selectedPallet = palletList[palletList.indexWhere((element) =>
-              int.parse(myPresentation.value.styleId) == element.id) !=
-          -1
-      ? palletList.indexWhere(
-          (element) => int.parse(myPresentation.value.styleId) == element.id)
-      : 0];
+  // SlidePallet selectedPallet = palletList[palletList.indexWhere((element) =>
+  //             int.parse(myPresentation.value.styleId) == element.id) !=
+  //         -1
+  //     ? palletList.indexWhere(
+  //         (element) => int.parse(myPresentation.value.styleId) == element.id)
+  //     : 0];
   return Container(
     // margin: EdgeInsets.symmetric(
     //     horizontal: SizeConfig.blockSizeHorizontal * 2,
     //     vertical: SizeConfig.blockSizeVertical),
-    child: Builder(builder: (context) {
+    child: Obx(() {
+      SlidePallet selectedPallet = palletList[palletList.indexWhere((element) =>
+                  int.parse(myPresentation.value.styleId.value) ==
+                  element.id) !=
+              -1
+          ? palletList.indexWhere((element) =>
+              int.parse(myPresentation.value.styleId.value) == element.id)
+          : 0];
+
       if (index == 0) {
         return Obx(() => TitleSlide1(
               mySlide: myPresentation.value.slides[index],

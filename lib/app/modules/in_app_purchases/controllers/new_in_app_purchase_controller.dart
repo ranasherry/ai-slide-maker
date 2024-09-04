@@ -12,6 +12,7 @@ class newInAppPurchaseCTL extends GetxController {
   RxString timeLeft = "".obs;
 
   RxBool showTimer = true.obs;
+  Rx<int> selectedIndex = 0.obs;
 
   Rx<StoreProduct?> selectedProduct = Rx<StoreProduct?>(null);
 

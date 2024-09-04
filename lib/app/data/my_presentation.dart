@@ -8,9 +8,9 @@ class MyPresentation {
   String presentationTitle;
   RxList<MySlide> slides;
   //variables added by rizwan
-  String styleId;
+  RxString styleId;
   String? createrId;
-  int timestamp;
+  int timestamp,likesCount,commentsCount;
   // String slideStyleID;
 
   MyPresentation(
@@ -19,7 +19,10 @@ class MyPresentation {
       required this.slides,
       required this.styleId,
       required this.createrId,
-      required this.timestamp});
+      required this.timestamp,
+      required this.likesCount,
+      required this.commentsCount,
+      });
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,9 +30,11 @@ class MyPresentation {
       'presentationTitle': presentationTitle,
       'slides': slides?.map((x) => x.toMap()).toList(),
       //key,values added by rizwan
-      'styleId': styleId,
+      'styleId': styleId.value,
       'createrId': createrId,
       'timestamp': timestamp,
+      'likesCount': likesCount,
+      'commentsCount': commentsCount
     };
   }
 
@@ -40,9 +45,11 @@ class MyPresentation {
       'presentationTitle': presentationTitle,
       'slides': jsonEncode(slides?.map((x) => x.toMap()).toList()),
       //key,values added by rizwan
-      'styleId': styleId,
+      'styleId': styleId.value,
       'createrId': createrId,
       'timestamp': timestamp,
+      'likesCount': likesCount,
+      'commentsCount': commentsCount
     };
   }
 
@@ -55,9 +62,11 @@ class MyPresentation {
           .toList()
           .obs,
       //key,values added by rizwan
-      styleId: map['styleId'] ?? "" as String,
+      styleId: (map['styleId'] ?? "").toString().obs, // Corrected
       createrId: map['createrId'] ?? null as String?,
       timestamp: map['timestamp'] ?? 0 as int,
+      likesCount: map['likesCount'] ?? 0 as int,
+      commentsCount : map['commentsCount'] ?? 0 as int,
     );
   }
   // method below added by rizwan
@@ -70,9 +79,11 @@ class MyPresentation {
             .map((x) => MySlide.fromMap(x as Map<String, dynamic>))
             .toList(),
       ),
-      styleId: map['styleId'] ?? "" as String,
+      styleId: (map['styleId'] ?? "").toString().obs, // Corrected,
       createrId: map['createrId'] ?? null as String?,
       timestamp: map['timestamp'] ?? 0 as int,
+      likesCount: map['likesCount'] ?? 0 as int,
+      commentsCount : map['commentsCount'] ?? 0 as int,
     );
   }
 

@@ -3,6 +3,7 @@ import 'dart:developer' as dp;
 // import 'package:flutter_gif/flutter_gif.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 // import '../modules/home/controllers/nav_view_ctl.dart';
 // import '../modules/utills/Gems_rates.dart';
@@ -35,6 +37,7 @@ class RevenueCatService {
     // Purchases.setEmail(email)
     return _instance;
   }
+  static final facebookAppEvents = FacebookAppEvents();
   String UserID = "";
 
   RevenueCatService._internal();
@@ -136,6 +139,33 @@ class RevenueCatService {
     return allProducts;
   }
 
+  Future<List<StoreProduct>> getFilteredSubscriptionProducts() async {
+    // Get offerings
+    final offerings = await Purchases.getOfferings();
+
+    // Check if "premium_subscription" offering exists
+    final premiumOffering = offerings.getOffering("premium_subscription");
+    if (premiumOffering == null) {
+      return []; // Return empty list if offering is not found
+    }
+
+    // Get available packages for the offering
+    final packages = premiumOffering.availablePackages;
+
+    // Extract products from each package and combine into a single list
+    final List<StoreProduct> allProducts = [];
+    for (var package in packages) {
+      if (package.storeProduct.identifier !=
+          'aislide_premium_1y:aislide-baseplan-yearly') {
+        allProducts.add(package.storeProduct);
+      } else {
+        dp.log("removed: ${package.storeProduct.identifier}");
+      }
+    }
+
+    return allProducts;
+  }
+
   Future<StoreProduct?> getLifeTimeSubscription() async {
     // Get offerings
     final offerings = await Purchases.getOfferings();
@@ -179,6 +209,12 @@ class RevenueCatService {
   }
 
   Future<void> purchaseSubscriptionWithProduct(StoreProduct product) async {
+    facebookAppEvents.logAddToWishlist(
+        id: product.identifier,
+        type: "InApp",
+        currency: product.currencyCode,
+        price: product.price);
+
     try {
       EasyLoading.show(status: "Please wait...");
       // final purchaserInfo = await Purchases.purchaseStoreProduct(product);
@@ -204,6 +240,9 @@ class RevenueCatService {
                 AnalyticsEventItem(
                     itemId: product.identifier, price: product.price)
               ]);
+
+          facebookAppEvents.logPurchase(
+              amount: product.price, currency: product.currencyCode);
         }
 
         // TODO: Check if user is logged in or not. if logged in, update Revenue Cat User ID else Goto Signin Page
@@ -303,23 +342,44 @@ class RevenueCatService {
     }
 
     isPurchaseScreenOpen = true;
-    if (purchaseScreenCounter % 2 == 0) {
-      Get.toNamed(
-        Routes.NEWINAPPPURCHASEVIEW,
-      )!
-          .then((value) {
-        isPurchaseScreenOpen = false;
-        dp.log("back from Purchase Screen");
-      });
+    if (RCVariables.showBothInApp.value) {
+      if (purchaseScreenCounter % 2 == 0) {
+        Get.toNamed(
+          Routes.NEWINAPPPURCHASEVIEW,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      } else {
+        Get.toNamed(
+          Routes.IN_APP_PURCHASES,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      }
     } else {
-      Get.toNamed(
-        Routes.IN_APP_PURCHASES,
-      )!
-          .then((value) {
-        isPurchaseScreenOpen = false;
-        dp.log("back from Purchase Screen");
-      });
+      if (RCVariables.showNewInapp.value) {
+        Get.toNamed(
+          Routes.NEWINAPPPURCHASEVIEW,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      } else {
+        Get.toNamed(
+          Routes.IN_APP_PURCHASES,
+        )!
+            .then((value) {
+          isPurchaseScreenOpen = false;
+          dp.log("back from Purchase Screen");
+        });
+      }
     }
+
     purchaseScreenCounter++;
 
     // Get.toNamed(

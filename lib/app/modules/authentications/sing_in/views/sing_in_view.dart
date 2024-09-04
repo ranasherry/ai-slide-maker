@@ -226,11 +226,11 @@ class SignInView extends GetView<SignInController> {
                           SizeConfig.blockSizeVertical * 2), // Add spacing
 
                       // Sign in with Google button
-                      // SignInButton(
-                      //   Buttons.Google,
-                      //   text: 'Sign in with Google',
-                      //   onPressed: () => controller.signInWithGoogle(),
-                      // ),
+                      SignInButton(
+                        Buttons.Google,
+                        text: 'Sign in with Google',
+                        onPressed: () => controller.signInWithGoogle(),
+                      ),
                       // const SizedBox(height: 10.0), // Add spacing
 
                       // Sign up button with border and text color

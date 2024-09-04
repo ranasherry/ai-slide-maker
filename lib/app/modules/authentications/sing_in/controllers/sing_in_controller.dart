@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/auth_services.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/services/shared_pref_services.dart';
@@ -40,7 +41,14 @@ class SignInController extends GetxController {
 
   void increment() => count.value++;
 
-  signInWithGoogle() {}
+  signInWithGoogle() async {
+    User? user = await AuthService().signInWithGoogle();
+    if (user != null) {
+      await onLoginSuccess(user);
+    } else {
+      //TODO: Could not Signed in Dialogue
+    }
+  }
 
   signInWithEmail() async {
     String email = emailCTL.text; // Replace with actual email value
@@ -89,18 +97,22 @@ class SignInController extends GetxController {
 
   Future<void> onLoginSuccess(User user) async {
     try {
-      String? userUUID = SharedPrefService().getUUID();
-      String finalUID = "";
-      if (userUUID != null) {
-        finalUID = userUUID;
-      } else {
-        finalUID = Uuid().v4(); // Generate a new UUID
-        await SharedPrefService().setUUID(finalUID);
-      }
+      // String? userUUID = SharedPrefService().getUUID();
+      // String finalUID = "";
+
+      // if (userUUID != null) {
+      //   finalUID = userUUID;
+      // } else {
+      //   finalUID = Uuid().v4(); // Generate a new UUID
+      //   await SharedPrefService().setUUID(finalUID);
+      // }
+      await SharedPrefService().setUUID(user.uid);
+
       // Check if User Already Exists
       final docRef = FirebaseFirestore.instance
           .collection(FirestoreService().userCollectionPath)
-          .doc(finalUID);
+          .doc(user.uid);
+
       final docSnapshot = await docRef.get();
 
       if (docSnapshot.exists) {

@@ -28,12 +28,19 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               horizontal: SizeConfig.blockSizeHorizontal * 1),
           child: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              bottom_navi_bar_items(Icons.copy, "Dupicate"),
-              bottom_navi_bar_items(Icons.share, "Share"),
-              bottom_navi_bar_items(Icons.delete, "Delete"),
-              bottom_navi_bar_items(
-                  Icons.published_with_changes_outlined, "Change Template"),
+              // bottom_navi_bar_items(Icons.copy, "Dupicate", () {}),
+              bottom_navi_bar_items(Icons.share, "Share", () {
+                controller.createPresentation();
+              }),
+              // bottom_navi_bar_items(Icons.delete, "Delete", () {
+              //   controller.deleteSlide(controller.currentSelectedIndex.value);
+              // }),
+              // bottom_navi_bar_items(
+              //     Icons.published_with_changes_outlined, "Change Template", () {
+              //   controller.changePallet();
+              // }),
             ],
           ),
         ),
@@ -211,29 +218,34 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
     );
   }
 
-  Column bottom_navi_bar_items(IconData icon, String text) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Icon(
-          icon,
-          size: SizeConfig.blockSizeHorizontal * 5,
-          color: AppColors.mainColor,
-        ),
-        Container(
-          width: SizeConfig.blockSizeHorizontal * 16,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              text,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      fontSize: SizeConfig.blockSizeHorizontal * 3,
-                      color: AppColors.titles)),
-            ),
+  Widget bottom_navi_bar_items(IconData icon, String text, Function onTap) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(
+            icon,
+            size: SizeConfig.blockSizeHorizontal * 5,
+            color: AppColors.mainColor,
           ),
-        )
-      ],
+          Container(
+            width: SizeConfig.blockSizeHorizontal * 16,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                text,
+                style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 3,
+                        color: AppColors.titles)),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

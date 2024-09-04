@@ -142,7 +142,6 @@ class MyApp extends StatelessWidget {
     // facebookAppEvents.lo
     facebookAppEvents.setAutoLogAppEventsEnabled(true);
     facebookAppEvents.setAdvertiserTracking(enabled: true);
-
     analytics.setAnalyticsCollectionEnabled(true);
     // facebookAppEvents.logStartTrial(orderId: "1234");
     final themeNotifier = Provider.of<ThemeNotifier>(context);
