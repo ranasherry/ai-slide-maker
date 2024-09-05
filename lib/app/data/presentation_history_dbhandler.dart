@@ -41,7 +41,9 @@ Future _createDB(Database db, int version) async{
   slides TEXT NOT NULL,
  styleId TEXT NOT NULL,
  createrId TEXT,
- timestamp INTEGER
+ timestamp INTEGER,
+ likesCount INTEGER,
+ commentsCount INTEGER
   )
 ''');
 }  
@@ -81,10 +83,10 @@ Future <MyPresentation?> fetchPresentationHistoryById(int id) async {
   return results.isNotEmpty ? MyPresentation.fromMap(results.first) : null;
 }
 
-Future <int> updatePresentationHistory(int id, MyPresentation presentationHistory) async {
+Future <int> updatePresentationHistory(int presentationId, MyPresentation presentationHistory) async {
   final database = await myDatabase;
-  return await database.update(_tableName, presentationHistory.toMap(),
-  where: 'id = ?', whereArgs: [id]);
+  return await database.update(_tableName, presentationHistory.toMapDatabase(),
+  where: 'presentationId = ?', whereArgs: [presentationId]);
 }
 
 

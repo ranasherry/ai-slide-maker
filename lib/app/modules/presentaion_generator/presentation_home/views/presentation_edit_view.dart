@@ -1,105 +1,151 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:slide_maker/app/data/my_presentation.dart';
-import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_view.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:slide_maker/app/data/comment.dart';
+import 'package:slide_maker/app/data/like.dart';
 import 'package:slide_maker/app/modules/home/my_drawar.dart';
-import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_open_ctl.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_home_controller.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
-import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
+import 'package:slide_maker/app/services/firebaseFunctions.dart';
+import 'package:slide_maker/app/slide_styles/slide_styles_editing_methods.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
+import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_edit_ctl.dart';
 
-class PresentationOpenView extends GetView<PresentationOpenCtl> {
-  PresentationOpenView({super.key});
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+class PresentationEditView extends GetView<PresentationEditCtl> {
+  PresentationEditView({Key? key}) : super(key: key);
+  PresentationHomeController homeCtl = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MyDrawer(),
-      key: _scaffoldKey,
       bottomNavigationBar: Container(
-        height: SizeConfig.blockSizeVertical * 7,
-        width: SizeConfig.screenWidth,
+        // padding: EdgeInsets.only(
+        //     top: SizeConfig.blockSizeVertical * 3,
+        //     bottom: SizeConfig.blockSizeVertical * 3
+        //   ),
+        height: SizeConfig.blockSizeVertical * 8,
         decoration: BoxDecoration(
-            color: AppColors.textfieldcolor,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(SizeConfig.blockSizeHorizontal * 3),
-                topRight: Radius.circular(SizeConfig.blockSizeHorizontal * 3))),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: SizeConfig.blockSizeHorizontal * 1),
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // bottom_navi_bar_items(Icons.copy, "Dupicate", () {}),
-              bottom_navi_bar_items(Icons.share, "Share", () {
-                controller.createPresentation();
-              }),
-              bottom_navi_bar_items(Icons.edit, "Edit", () {
-                Get.toNamed(Routes.PresentationEditView, arguments: [controller.myPresentation.value]);
-              }),
-              // bottom_navi_bar_items(Icons.delete, "Delete", () {
-              //   controller.deleteSlide(controller.currentSelectedIndex.value);
-              // }),
-              // bottom_navi_bar_items(
-              //     Icons.published_with_changes_outlined, "Change Template", () {
-              //   controller.changePallet();
-              // }),
-            ],
-          ),
-        ),
-      ),
-
-      // backgroundColor: const Color.fromARGB(255, 248, 244, 244),
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 6,
-                vertical: SizeConfig.blockSizeVertical * 0),
-            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
-            // color: Colors.blue,
-            // height: 120,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    _scaffoldKey.currentState!.openDrawer();
-                  },
-                  child: Container(
-                    height: SizeConfig.blockSizeVertical * 5,
-                    width: SizeConfig.blockSizeHorizontal * 10,
-                    decoration: BoxDecoration(
-                        color: Colors.white, shape: BoxShape.circle),
-                    child: Icon(
-                      Icons.notes,
-                      color: Colors.black,
-                      size: SizeConfig.blockSizeHorizontal * 8,
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Obx(() => Container(
-                      padding: EdgeInsets.only(
-                          right: SizeConfig.blockSizeHorizontal * 5),
-                      child: Text(
-                        controller.presentationTitle.value,
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 5),
-                      ),
-                    )),
-                Spacer()
-              ],
+          border: Border(
+            top: BorderSide(
+              width: SizeConfig.blockSizeHorizontal * 0.5,
+              color: Colors.red
+            ),
+            right: BorderSide(
+              width: SizeConfig.blockSizeHorizontal * 0.5,
+              color: Colors.red
+            ),
+            left: BorderSide(
+              width: SizeConfig.blockSizeHorizontal * 0.5,
+              color: Colors.red
             ),
           ),
-          Container(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          )
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            botton_navi_button("Save", () async{
+              print("${controller.myEditedPresentation.value.presentationId}"); 
+              await homeCtl.updatePresentation(controller.myEditedPresentation.value, controller.myEditedPresentation.value.presentationId);
+              Get.toNamed(Routes.PRESENTATION_HOME, arguments: ["Presentation Updated"]);
+              print("Presentation Updated");
+            }),
+            
+          ],
+        ),
+      ),
+      body: 
+      // Padding(
+      //   padding: EdgeInsets.only(
+          // top: SizeConfig.blockSizeVertical * 6,
+          // right: SizeConfig.blockSizeHorizontal * 2,
+          // left: SizeConfig.blockSizeHorizontal * 2,
+      //   ),
+        // child: 
+        Container(
+          child: Stack(
+            children: [
+              Container(
+                      padding: EdgeInsets.only(
+                        top: SizeConfig.blockSizeVertical * 6.5,
+                        bottom: SizeConfig.blockSizeVertical * 3
+                    
+                      ),
+                      width: SizeConfig.screenWidth,
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color:  Colors.black
+                          )
+                        )
+                      ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                     Padding(
+                      padding: EdgeInsets.only(
+                        left: SizeConfig.blockSizeHorizontal * 5 ,
+                        right: SizeConfig.blockSizeHorizontal * 18 
+                      ),
+                       child :  GestureDetector(
+                            onTap: (){
+                              Get.back();
+                            },
+                    child: Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.text_color,),
+                    ),
+                       
+                     ),
+                    Container(
+                      
+                child: Text("Presentation Editor",
+                       style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 5,
+                        color: AppColors.text_color,
+                        fontWeight: FontWeight.bold
+                       ),
+                       ),
+                    ),
+                  ],
+                ),
+              ),
+              
+                // body content
+                        Container(
+                          width: SizeConfig.screenWidth,
+                          margin: EdgeInsets.only(
+                            top: SizeConfig.blockSizeVertical * 12
+                          ),
+                           decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            )
+                          ),
+
+                          child: Container(
+                          //   margin: EdgeInsets.symmetric(
+                          //   vertical: SizeConfig.blockSizeVertical * 4,
+                          //   horizontal: SizeConfig.blockSizeHorizontal * 6,
+                          // ),
+                            child:  Container(
               width: SizeConfig.screenWidth,
               // padding: EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.03),
               decoration: BoxDecoration(
-                  // color: AppColors.fragmantBGColor,
+                  // color: AppColors.fra
+                  // gmantBGColor,
                   borderRadius: BorderRadius.only(
                       topLeft:
                           Radius.circular(SizeConfig.blockSizeHorizontal * 4),
@@ -110,14 +156,14 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                       children: [
                         Container(
                           width: SizeConfig.screenWidth,
-                          height: SizeConfig.screenHeight * 0.45,
+                          height: SizeConfig.screenHeight * 0.3,
                           child: Center(
                             child: Container(
                               // width: SizeConfig.screenWidth * 0.92,
                               height: SizeConfig.screenWidth * 0.5,
                               child: Obx(() => ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: individualSlideMethod(
+                                    child: individualSlideEditorMethod(
                                       controller.currentSelectedIndex.value,
                                       controller.myPresentation,
                                       Size(SizeConfig.screenWidth * 0.9,
@@ -219,39 +265,30 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                       height: SizeConfig.screenHeight * 0.5,
                       child: Center(child: CircularProgressIndicator()),
                     ))),
-        ],
-      ),
-    );
+                          ),
+                        )
+                        
+                        
+            ],
+          ),
+        ),
+      );
+    
   }
 
-  Widget bottom_navi_bar_items(IconData icon, String text, Function onTap) {
-    return GestureDetector(
-      onTap: () {
-        onTap();
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(
-            icon,
-            size: SizeConfig.blockSizeHorizontal * 5,
-            color: AppColors.mainColor,
-          ),
-          Container(
-            width: SizeConfig.blockSizeHorizontal * 16,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                text,
-                style: GoogleFonts.inter(
-                    textStyle: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 3,
-                        color: AppColors.titles)),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+  ElevatedButton botton_navi_button(String buttonText,Function onPressed) {
+    return ElevatedButton.icon(
+            onPressed: (){
+              onPressed();
+            },
+             label: Text(buttonText),
+             
+             style: ElevatedButton.styleFrom(
+              fixedSize: Size(100,50),
+              backgroundColor: AppColors.buttonBGColor,
+              foregroundColor: AppColors.text_color
+              
+             ),
+          );
   }
 }

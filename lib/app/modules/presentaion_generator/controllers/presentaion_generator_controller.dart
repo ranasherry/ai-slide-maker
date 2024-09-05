@@ -14,6 +14,7 @@ import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_home_controller.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_outline_frag.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_styles_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
@@ -38,8 +39,8 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
 //lines below added by rizwan
-  PresentationHistoryCTL presentationHistoryCTL =
-      Get.put(PresentationHistoryCTL());
+  PresentationHomeController presentationHomeCTL =
+      Get.put(PresentationHomeController());
   FirestoreService firestoreService = FirestoreService();
 //
 
@@ -467,7 +468,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         //lines below added by rizwan
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
-        presentationHistoryCTL.insertPresentation(myPresentation.value);
+        presentationHomeCTL.insertPresentation(myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -727,7 +728,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
             Duration difference = DateTime.now().difference(lastGenerationTime);
 
             // Calculate the remaining time as a countdown
-            Duration countdown = Duration(minutes: 10) - difference;
+            Duration countdown = Duration(minutes: 0) - difference;
             countdown = Duration(
                 seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
 

@@ -45,6 +45,8 @@ abstract class Routes {
   static const PresentationOpenView = _Paths.PresentationOpenView;
   static const PRESENTATION_HOME =
       _Paths.NEWSLIDE_GENERATOR + _Paths.PRESENTATION_HOME;
+  static const PresentationEditView = _Paths.PresentationEditView;
+
 }
 
 abstract class _Paths {
@@ -87,4 +89,5 @@ abstract class _Paths {
   static const PROFILEVIEW = '/PROFILEVIEW';
   static const PRESENTATION_HOME = '/presentation-home';
   static const PresentationOpenView = '/PresentationOpenView';
+  static const PresentationEditView = '/PresentationEditView';
 }

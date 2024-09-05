@@ -6,8 +6,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:get/get.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_view.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide1.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
@@ -161,13 +163,13 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
               ),
             ),
           ),
-          child: Column(
+          child: Row(
             children: [
               Container(
                   margin: EdgeInsets.symmetric(
                       horizontal: SizeConfig.blockSizeHorizontal * 6,
                       vertical: SizeConfig.blockSizeVertical),
-                  width: SizeConfig.screenWidth,
+                  width: SizeConfig.screenWidth * 0.4,
                   height: SizeConfig.blockSizeVertical * 6.5,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -185,7 +187,31 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                               duration: Durations.extralong2);
                         }
                       },
-                      child: Text("Save & Share")))
+                      child: Text("Save & Share"))),
+                       Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 6,
+                      vertical: SizeConfig.blockSizeVertical),
+                  width: SizeConfig.screenWidth * 0.3,
+                  height: SizeConfig.blockSizeVertical * 6.5,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors
+                              .buttonBGColor, // Button background color
+                          foregroundColor: Colors.white),
+                      onPressed: () {
+                        // controller.RequestPresentationPlan();
+                        if (controller.isSlidesGenerated.value) {
+                          Get.toNamed(Routes.PresentationEditView, arguments: [controller.myPresentation.value]);
+                          AppLovinProvider.instance.showInterstitial(() {});
+                        } else {
+                          EasyLoading.showToast(
+                              "Please Wait for remaining slides to be Generated..",
+                              duration: Durations.extralong2);
+                        }
+                      },
+                      child: Text("Edit"))),
+                     
             ],
           ),
         ),

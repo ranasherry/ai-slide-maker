@@ -153,6 +153,13 @@ class FirestoreService {
     .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
     .toList();
   }
+  // Method below added by rizwan
+  Future<void> updatePresentationHistory(MyPresentation presentationHistory, String presentationId) async{
+    final docRef = _firestore
+    .collection(presentationCollectionPath)
+    .doc(presentationId);
+   await docRef.set(presentationHistory.toMapDatabase(), SetOptions(merge: false));
+  }
   // Method added by rizwan
   Future<void> updateCommentsCount(String presentationId, int change) async{
     final docRef = _firestore
