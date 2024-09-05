@@ -10,19 +10,19 @@ class MyPresentation {
   //variables added by rizwan
   RxString styleId;
   String? createrId;
-  int timestamp,likesCount,commentsCount;
+  int timestamp, likesCount, commentsCount;
   // String slideStyleID;
 
-  MyPresentation(
-      {required this.presentationId,
-      required this.presentationTitle,
-      required this.slides,
-      required this.styleId,
-      required this.createrId,
-      required this.timestamp,
-      required this.likesCount,
-      required this.commentsCount,
-      });
+  MyPresentation({
+    required this.presentationId,
+    required this.presentationTitle,
+    required this.slides,
+    required this.styleId,
+    required this.createrId,
+    required this.timestamp,
+    required this.likesCount,
+    required this.commentsCount,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,8 +48,8 @@ class MyPresentation {
       'styleId': styleId.value,
       'createrId': createrId,
       'timestamp': timestamp,
-      'likesCount': likesCount,
-      'commentsCount': commentsCount
+      // 'likesCount': likesCount,
+      // 'commentsCount': commentsCount
     };
   }
 
@@ -66,7 +66,7 @@ class MyPresentation {
       createrId: map['createrId'] ?? null as String?,
       timestamp: map['timestamp'] ?? 0 as int,
       likesCount: map['likesCount'] ?? 0 as int,
-      commentsCount : map['commentsCount'] ?? 0 as int,
+      commentsCount: map['commentsCount'] ?? 0 as int,
     );
   }
   // method below added by rizwan
@@ -83,7 +83,7 @@ class MyPresentation {
       createrId: map['createrId'] ?? null as String?,
       timestamp: map['timestamp'] ?? 0 as int,
       likesCount: map['likesCount'] ?? 0 as int,
-      commentsCount : map['commentsCount'] ?? 0 as int,
+      commentsCount: map['commentsCount'] ?? 0 as int,
     );
   }
 

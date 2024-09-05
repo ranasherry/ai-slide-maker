@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
@@ -27,10 +28,13 @@ class PresentationHomeController extends GetxController {
   Future<void> fetchPresentationHistory() async {
     presentations.value = await PresentationHistoryDatabaseHandler.db
         .fetchAllPresentationHistory();
+    developer.log("Fetched Presentation: $presentations");
   }
 
   Future<void> insertPresentation(MyPresentation myPresentation) async {
-    await PresentationHistoryDatabaseHandler.db
+    developer.log("Presentation to be inserted: ${presentations.toJson()}");
+
+    int returnResult = await PresentationHistoryDatabaseHandler.db
         .insertPresentationHistory(myPresentation);
         await fs.insertPresentationHistory(myPresentation, myPresentation.presentationId.toString());
 //    fetchPresentationHistory();

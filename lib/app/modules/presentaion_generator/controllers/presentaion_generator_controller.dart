@@ -3,17 +3,22 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:language_picker/language_picker_cupertino.dart';
+import 'package:language_picker/language_picker_dropdown.dart';
+import 'package:language_picker/languages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_home_controller.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_home_controller.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_outline_frag.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slide_styles_fragment.dart';
@@ -39,8 +44,7 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
 //lines below added by rizwan
-  PresentationHomeController presentationHomeCTL =
-      Get.put(PresentationHomeController());
+  PresentationHomeController presentationHomeController = Get.find();
   FirestoreService firestoreService = FirestoreService();
 //
 
@@ -56,6 +60,7 @@ class PresentaionGeneratorController extends GetxController {
 
   RxBool isWaitingForTime = false.obs;
   RxString timerValue = "".obs;
+  Rx<Language> selectedDropdownLanguage = Languages.english.obs;
 
   //-----------------------------------------------------------------------------------//
 
@@ -91,15 +96,15 @@ class PresentaionGeneratorController extends GetxController {
 
   //? Section Related to Slides Screens
   Rx<MyPresentation> myPresentation = MyPresentation(
-    presentationId: 0,
-    presentationTitle: "",
-    slides: <MySlide>[].obs,
-    createrId: null,
-    timestamp: DateTime.now().millisecondsSinceEpoch,
-    styleId: '1'.obs,
-    likesCount: 0,
-    commentsCount: 0
-  ).obs;
+          presentationId: 0,
+          presentationTitle: "",
+          slides: <MySlide>[].obs,
+          createrId: null,
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          styleId: '1'.obs,
+          likesCount: 0,
+          commentsCount: 0)
+      .obs;
 
   Rx<SlidePallet> selectedPallet = palletList.first.obs;
 
@@ -145,7 +150,33 @@ class PresentaionGeneratorController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void openCupertinoLanguagePicker() {
+    // showCupertinoModalPopup<void>(
+    //   context: Get.context!,
+    //   builder: (BuildContext context) {
+    //     return LanguagePickerCupertino(
+    //       pickerSheetHeight: 200.0,
+    //       onValuePicked: (Language language) {
+    //         selectedDropdownLanguage.value = language;
+    //         print(selectedDropdownLanguage.value.name);
+    //         print(selectedDropdownLanguage.value.isoCode);
+    //       },
+    //     );
+    //   });
+
+    showCupertinoModalPopup<void>(
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return LanguagePickerCupertino(
+            pickerSheetHeight: 200.0,
+            onValuePicked: (Language language) {
+              selectedDropdownLanguage.value = language;
+              print(selectedDropdownLanguage.value.name);
+              print(selectedDropdownLanguage.value.isoCode);
+            },
+          );
+        });
+  }
 
   void RequestPresentationPlan() async {
     bool result = await InternetConnectionChecker().hasConnection;
@@ -179,7 +210,7 @@ class PresentaionGeneratorController extends GetxController {
   Future<List<String>> generateOutlines() async {
     // noOfSlide.value = 14;
     String apiRequest =
-        ''' Generate the Main Titles for the presentation slide on the Topic ${titleTextCTL.text}
+        ''' Generate the Main Titles for the presentation slide on the Topic ${titleTextCTL.text} in ${selectedDropdownLanguage.value.name} Language
     For Example For the Topic AI Following will be Your response for the titles:
     Intro of AI , How AI Works , IS AI safe to Use , AI Advantages , AI Disadvantages , Conclusion
 
@@ -353,16 +384,15 @@ class PresentaionGeneratorController extends GetxController {
       contentLength = "75 words";
     }
     myPresentation.value = MyPresentation(
-      presentationId: DateTime.now().millisecondsSinceEpoch,
-      presentationTitle: titleTextCTL.text,
-      // keys,values below added by rizwan
-      slides: <MySlide>[].obs,
-      createrId: null,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
-      styleId: selectedPallet.value.id.toString().obs,
-      likesCount: 0,
-      commentsCount: 0
-    );
+        presentationId: DateTime.now().millisecondsSinceEpoch,
+        presentationTitle: titleTextCTL.text,
+        // keys,values below added by rizwan
+        slides: <MySlide>[].obs,
+        createrId: null,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        styleId: selectedPallet.value.id.toString().obs,
+        likesCount: 0,
+        commentsCount: 0);
     List<String> coveredTitles = [];
     // for (var outline in plannedOutlines) {
 
@@ -377,6 +407,7 @@ class PresentaionGeneratorController extends GetxController {
       
       Your writing style will be: ${writingStyle}
       write maximum word in sectionContent: ${contentLength}
+      Your writing language: ${selectedDropdownLanguage.value.name}
 
       you are only require to give your response on require json formate enclosed in curly braces{} and no other text will 
 return. if format contains section then generate only maximum 3 sections.
@@ -468,7 +499,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         //lines below added by rizwan
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
-        presentationHomeCTL.insertPresentation(myPresentation.value);
+        presentationHomeController.insertPresentation(myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -559,16 +590,15 @@ Always use correct json format. never use quotes inside text so I Can parse it i
     final mySlidesList = [slide1, slide2, slide3, slide4].obs;
 
     myPresentation.value = MyPresentation(
-      presentationId: DateTime.now().millisecondsSinceEpoch,
-      presentationTitle: "Solar Eclipse",
-      slides: mySlidesList,
-      // keys,values added by rizwan
-      createrId: null,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
-      styleId: selectedPallet.value.id.toString().obs,
-      likesCount: 0,
-      commentsCount: 0
-    );
+        presentationId: DateTime.now().millisecondsSinceEpoch,
+        presentationTitle: "Solar Eclipse",
+        slides: mySlidesList,
+        // keys,values added by rizwan
+        createrId: null,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        styleId: selectedPallet.value.id.toString().obs,
+        likesCount: 0,
+        commentsCount: 0);
   }
 
   //?  Input Fragment
@@ -728,7 +758,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
             Duration difference = DateTime.now().difference(lastGenerationTime);
 
             // Calculate the remaining time as a countdown
-            Duration countdown = Duration(minutes: 0) - difference;
+            Duration countdown =
+                Duration(minutes: RCVariables.delayMinutes) - difference;
             countdown = Duration(
                 seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
 

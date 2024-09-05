@@ -8,6 +8,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:language_picker/language_picker_dropdown.dart';
+import 'package:language_picker/languages.dart';
+import 'package:language_picker/languages.g.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
@@ -41,8 +44,10 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 children: [
                   verticalSpace(SizeConfig.blockSizeVertical * 2),
                   inputTitle(),
-                  verticalSpace(SizeConfig.blockSizeVertical * 5),
+                  verticalSpace(SizeConfig.blockSizeVertical * 2.5),
                   noOfSlides(),
+                  verticalSpace(SizeConfig.blockSizeVertical * 2.5),
+                  selectLanguage(),
                   verticalSpace(SizeConfig.blockSizeVertical * 4),
                   ToneOfVoice(),
                   AmountOfText(),
@@ -192,6 +197,66 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                   Obx(
                     () => Text(
                       "${controller.noOfSlide.value} Slides",
+                      style: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: SizeConfig.blockSizeHorizontal * 7,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column selectLanguage() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 7),
+          child: Text(
+            "Language",
+            style: AppStyle.headingText,
+          ),
+        ),
+        Container(
+          width: SizeConfig.blockSizeHorizontal * 90,
+          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 7),
+          child: Text(
+            "Choose your presentation language",
+            style: AppStyle.subHeadingText,
+          ),
+        ),
+        Center(
+          child: GestureDetector(
+            onTap: () {
+              controller.openCupertinoLanguagePicker();
+              // Get.toNamed(Routes.TESTINGSCREEN);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeVertical * 2),
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
+              height: SizeConfig.blockSizeVertical * 6,
+              width: SizeConfig.blockSizeHorizontal * 90,
+              decoration: BoxDecoration(
+                  color: AppColors.textfieldcolor,
+                  borderRadius: BorderRadius.circular(
+                      SizeConfig.blockSizeHorizontal * 8)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(
+                    () => Text(
+                      "${controller.selectedDropdownLanguage.value.name}",
                       style: TextStyle(
                           fontSize: SizeConfig.blockSizeHorizontal * 4.5,
                           fontWeight: FontWeight.bold,
@@ -708,11 +773,13 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
-                      if (!controller.isWaitingForTime.value || kDebugMode) {
+                      if (!controller.isWaitingForTime.value) {
+                        // if (!controller.isWaitingForTime.value || kDebugMode) {
                         // if (!controller.isWaitingForTime.value) {
                         controller.switchToSlidesOutlines();
                       } else {
-                        controller.showWatchRewardPrompt();
+                        RevenueCatService().GoToPurchaseScreen();
+                        // controller.showWatchRewardPrompt();
                       }
                       // controller.switchToSlidesOutlines();
                     },
@@ -753,6 +820,17 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDropdownItem(Language language) {
+    return Row(
+      children: <Widget>[
+        const SizedBox(
+          width: 8.0,
+        ),
+        Text("${language.name} (${language.isoCode})"),
+      ],
     );
   }
 }

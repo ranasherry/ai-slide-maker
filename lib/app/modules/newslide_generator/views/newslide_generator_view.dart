@@ -144,14 +144,15 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                                           onPressed: () {
                                             controller.userInput.value =
                                                 suggestion;
+                                            // if (!controller
+                                            //         .isWaitingForTime.value ||
+                                            //     kDebugMode) {
                                             if (!controller
-                                                    .isWaitingForTime.value ||
-                                                kDebugMode) {
-                                              // if (!controller.isWaitingForTime.value) {
+                                                .isWaitingForTime.value) {
                                               controller.validate_user_input();
                                             } else {
-                                              controller
-                                                  .showWatchRewardPrompt();
+                                              RevenueCatService()
+                                                  .GoToPurchaseScreen();
                                             }
 
                                             // controller.NoOfSlides = 1;
@@ -322,26 +323,16 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
   Widget createButton(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          // controller.increaseOutputHeight();
-          // controller.tempList(); //? commmented by jamal
+          if (!controller.isWaitingForTime.value) {
+            // if (!controller.isWaitingForTime.value || kDebugMode) {
+            // if (!controller.isWaitingForTime.value) {
+            controller.validate_user_input();
+          } else {
+            RevenueCatService().GoToPurchaseScreen();
+            // controller.showWatchRewardPrompt();
+          }
 
-          //Just for now
-          // if (kReleaseMode) {
-          //   if (MetaAdsProvider.instance.isInterstitialAdLoaded) {
-          //     MetaAdsProvider.instance.showInterstitialAd();
-          //   } else {
-          //     AppLovinProvider.instance.showInterstitial(() {});
-          //   }
-          // }
-          // AdMobAdsProvider.instance.showInterstitialAd(() {});
-          // if (!controller.isWaitingForTime.value || kDebugMode) {
-          //   // if (!controller.isWaitingForTime.value) {
-          //   controller.validate_user_input();
-          // } else {
-          //   controller.showWatchRewardPrompt();
-          // }
-
-          controller.validate_user_input();
+          // controller.validate_user_input();
         },
         child: AnimatedContainer(
             width: controller.create_box_width.value,

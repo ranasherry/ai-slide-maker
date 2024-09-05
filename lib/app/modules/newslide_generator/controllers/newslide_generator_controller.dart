@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -52,6 +54,8 @@ class NewslideGeneratorController extends GetxController {
     Future.delayed(Duration(seconds: 1), () {
       show_create_button();
     });
+
+    initializeTimer();
   }
 
   @override
@@ -299,32 +303,73 @@ class NewslideGeneratorController extends GetxController {
     }
   }
 
-  // Future<String?> gemeniAPICall(String request) async {
-  //   final gemini = Gemini.instance;
-  //   List<Content> chatContent = [];
-  //   Content userInstruction =
-  //       Content(parts: [Parts(text: request)], role: 'user');
-  //   chatContent.add(userInstruction);
+  Future<void> initializeTimer() async {
+    try {
+      // Load last generation time from SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // DateTime? lastGenerationTime =
+      //     prefs.getString('lastGenerationTime') != null
+      //         ? DateTime.parse(prefs.getString('lastGenerationTime')!)
+      //         : null;
 
-  //   try {
-  //     var value = await gemini.chat(chatContent,
-  //         // safetySettings: safetySettings,
-  //         generationConfig: GenerationConfig(
-  //           maxOutputTokens: 100,
-  //           temperature: 1,
-  //         ));
-  //     String? generatedMessage = value?.output;
+      // Start a timer to update the variable periodically
+      Timer.periodic(Duration(seconds: 1), (timer) async {
+        try {
+          DateTime? lastGenerationTime =
+              prefs.getString('lastGenerationTime') != null
+                  ? DateTime.parse(prefs.getString('lastGenerationTime')!)
+                  : null;
+          if (lastGenerationTime != null) {
+            // Calculate the difference between last generation time and current time
+            Duration difference = DateTime.now().difference(lastGenerationTime);
 
-  //     // developer.log(value?.output ?? 'without output');
-  //     // developer.log("${value}");
-  //     developer.log(value?.output ?? 'No Gemini Output');
-  //     developer.log(" Gemini Output ${value}");
-  //     return generatedMessage;
-  //   } catch (e) {
-  //     developer.log('Gemini Error $e', error: e);
-  //     return null;
+            // Calculate the remaining time as a countdown
+            Duration countdown =
+                Duration(minutes: RCVariables.delayMinutes) - difference;
+            countdown = Duration(
+                seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
 
-  //     // generatedMessage = "Error Message $e";
-  //   }
-  // }
+            // Update the RxString with the formatted time difference
+
+            // If the countdown reaches zero, stop the timer
+            if (countdown.inSeconds <= 0) {
+              // timer.cancel();
+              timerValue.value = formatDuration(countdown);
+
+              isWaitingForTime.value = false;
+            } else {
+              timerValue.value = formatDuration(countdown);
+
+              isWaitingForTime.value = true;
+            }
+
+            // print("Last Generation: $lastGenerationTime");
+            // print("Difference: $difference");
+            // print("Timer: ${timerValue.value} ");
+          } else {
+            // Handle the case when lastGenerationTime is null
+            isWaitingForTime.value = false;
+            print("No lastGenerationTime available.");
+          }
+        } catch (e) {
+          print("Error in timer execution: $e");
+          // Handle the error gracefully without stopping the timer
+        }
+      });
+    } catch (e) {
+      print("Error in initializeTimer: $e");
+    }
+  }
+
+  String formatDuration(Duration duration) {
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> setNewTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('lastGenerationTime', DateTime.now().toIso8601String());
+    // initializeTimer();
+  }
 }

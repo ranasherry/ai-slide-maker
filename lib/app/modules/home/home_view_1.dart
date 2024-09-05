@@ -108,7 +108,12 @@ class HomeView1 extends GetView<HomeViewCtl> {
             Padding(
               padding: EdgeInsets.symmetric(
                   vertical: SizeConfig.blockSizeVertical * 10),
-              child: slide_header_name(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  slide_header_name(),
+                ],
+              ),
             ),
             Positioned(
               top: SizeConfig.blockSizeVertical *
