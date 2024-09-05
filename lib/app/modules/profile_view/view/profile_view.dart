@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -13,37 +14,25 @@ class ProfileView extends GetView<ProfileViewCTL> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: SizeConfig.blockSizeVertical * 30,
-                width: SizeConfig.screenWidth,
-                // color: AppColors.Bright_Pink_color,
-                child: SvgPicture.asset(
-                  AppImages.profile_background,
-                  alignment: Alignment.centerLeft,
-                ),
-              ),
-              Positioned(
-                top: SizeConfig.blockSizeVertical * 8,
-                left: SizeConfig.blockSizeHorizontal * 10,
-                child: Container(
+      body: Padding(
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
                   height: SizeConfig.blockSizeVertical * 10,
                   width: SizeConfig.blockSizeHorizontal * 20,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: AppColors.textfieldcolor),
+                      border: Border.all(color: AppColors.background_color),
+                      shape: BoxShape.circle,
+                      color: AppColors.textfieldcolor),
                   child: Icon(
-                    Icons.account_circle_outlined,
-                    size: SizeConfig.blockSizeHorizontal * 10,
+                    CupertinoIcons.person_circle,
                   ),
                 ),
-              ),
-              Positioned(
-                top: SizeConfig.blockSizeVertical * 7,
-                left: SizeConfig.blockSizeHorizontal * 36,
-                child: Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Rana mehar Gujjar",
@@ -66,102 +55,109 @@ class ProfileView extends GetView<ProfileViewCTL> {
                     ),
                   ],
                 ),
-              ),
-              Positioned(
-                top: SizeConfig.blockSizeVertical * 22,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        followers_method("Followers : 0"),
-                        horizontalSpace(SizeConfig.blockSizeHorizontal * 10),
-                        followers_method("Following : 100")
-                      ]),
-                ),
-              )
-            ],
-          ),
-          Container(
-            height: SizeConfig.blockSizeVertical * 7,
-            width: SizeConfig.screenWidth,
-            decoration: BoxDecoration(color: AppColors.mainColor),
-            child: Center(
-              child: Text(
-                "Your Creations",
-                style: GoogleFonts.inter(
-                    textStyle: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 6,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textfieldcolor)),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 4,
-                  vertical: SizeConfig.blockSizeVertical * 1),
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 4),
-                  height: SizeConfig.blockSizeVertical * 10,
-                  width: SizeConfig.blockSizeHorizontal * 60,
-                  decoration: BoxDecoration(
-                      color: AppColors.textfieldcolor,
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 7)),
-                  child: Row(
-                    children: [
-                      Container(
-                          height: SizeConfig.blockSizeVertical * 7,
-                          width: SizeConfig.blockSizeHorizontal * 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 3)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 3),
-                            child: Image.asset(
-                              AppImages.slidy_style8[0],
-                              fit: BoxFit.cover,
-                            ),
-                          )),
-                      horizontalSpace(SizeConfig.blockSizeHorizontal * 4),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Solar Flair",
-                            style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 4,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.titles)),
-                          ),
-                          Text(
-                            "Date/Time",
-                            style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 3,
-                                    color: AppColors.titles)),
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                          onTap: () {}, child: Icon(Icons.more_vert))
-                    ],
-                  ),
-                )
               ],
             ),
-          )
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 4,
+                vertical: SizeConfig.blockSizeVertical * 2,
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    followers_method("Followers : 0"),
+                    followers_method("Following : 100")
+                  ]),
+            ),
+            Container(
+              height: SizeConfig.blockSizeVertical * 7,
+              width: SizeConfig.screenWidth,
+              decoration: BoxDecoration(
+                  // color: AppColors.textfieldcolor,
+                  borderRadius: BorderRadius.only(
+                      topLeft:
+                          Radius.circular(SizeConfig.blockSizeHorizontal * 4),
+                      topRight:
+                          Radius.circular(SizeConfig.blockSizeHorizontal * 4)),
+                  border: Border(
+                      bottom:
+                          BorderSide(color: AppColors.mainColor, width: 1))),
+              child: Center(
+                child: Text(
+                  "Your Creations",
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 5,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.mainColor)),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 2,
+                    vertical: SizeConfig.blockSizeVertical * 1),
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeHorizontal * 4),
+                    height: SizeConfig.blockSizeVertical * 10,
+                    width: SizeConfig.blockSizeHorizontal * 60,
+                    decoration: BoxDecoration(
+                        color: AppColors.textfieldcolor,
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeHorizontal * 7)),
+                    child: Row(
+                      children: [
+                        Container(
+                            height: SizeConfig.blockSizeVertical * 7,
+                            width: SizeConfig.blockSizeHorizontal * 25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    SizeConfig.blockSizeHorizontal * 3)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 3),
+                              child: Image.asset(
+                                AppImages.slidy_style8[0],
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                        horizontalSpace(SizeConfig.blockSizeHorizontal * 4),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "Solar Flair",
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 4,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.titles)),
+                            ),
+                            Text(
+                              "Date/Time",
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 3,
+                                      color: AppColors.titles)),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                            onTap: () {}, child: Icon(Icons.more_vert))
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
