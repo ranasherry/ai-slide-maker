@@ -9,8 +9,8 @@ import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
-  const SlidesOutlinesFrag({super.key});
-
+  SlidesOutlinesFrag({super.key});
+  List<TextEditingController> textCTLs = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +85,12 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
   }
 
   Container outline_tiles(String title, int index) {
+    // Initialize the controller if it doesn't exist
+    if (textCTLs.length <= index) {
+      textCTLs.add(TextEditingController(text: title));
+    } else if (textCTLs[index].text != title) {
+      textCTLs[index].text = title; // Update the text if it has changed
+    }
     return Container(
       key: ValueKey(index),
       margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
@@ -101,7 +107,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
         onChanged: (value) {
           controller.plannedOutlines[index] = value;
         },
-        controller: TextEditingController(text: title),
+        controller: textCTLs[index],
         cursorColor: AppColors.mainColor,
         textAlignVertical: TextAlignVertical.top,
         style: TextStyle(
@@ -129,6 +135,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
               GestureDetector(
                 onTap: () {
                   controller.removeSlide(index);
+                  textCTLs.removeAt(index); // Remove the controller
                 },
                 child: Icon(
                   Icons.delete,
@@ -139,7 +146,6 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
               ReorderableDragStartListener(
                 index: index,
                 child: Container(
-                  // width: SizeConfig.blockSizeHorizontal * 5,
                   child: Icon(Icons.more_vert),
                 ),
               )

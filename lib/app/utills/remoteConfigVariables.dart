@@ -14,4 +14,6 @@ class RCVariables {
   static List<String> geminiAPIKeys = [];
   // line added by rizwan
   static List<String> geminiAPIKeysSlideAssistant = [];
+
+  static int delayMinutes = 60;
 }

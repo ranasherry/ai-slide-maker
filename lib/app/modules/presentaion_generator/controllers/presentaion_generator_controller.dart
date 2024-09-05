@@ -3,12 +3,16 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:language_picker/language_picker_cupertino.dart';
+import 'package:language_picker/language_picker_dropdown.dart';
+import 'package:language_picker/languages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
@@ -55,6 +59,7 @@ class PresentaionGeneratorController extends GetxController {
 
   RxBool isWaitingForTime = false.obs;
   RxString timerValue = "".obs;
+  Rx<Language> selectedDropdownLanguage = Languages.english.obs;
 
   //-----------------------------------------------------------------------------------//
 
@@ -144,7 +149,33 @@ class PresentaionGeneratorController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void openCupertinoLanguagePicker() {
+    // showCupertinoModalPopup<void>(
+    //   context: Get.context!,
+    //   builder: (BuildContext context) {
+    //     return LanguagePickerCupertino(
+    //       pickerSheetHeight: 200.0,
+    //       onValuePicked: (Language language) {
+    //         selectedDropdownLanguage.value = language;
+    //         print(selectedDropdownLanguage.value.name);
+    //         print(selectedDropdownLanguage.value.isoCode);
+    //       },
+    //     );
+    //   });
+
+    showCupertinoModalPopup<void>(
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return LanguagePickerCupertino(
+            pickerSheetHeight: 200.0,
+            onValuePicked: (Language language) {
+              selectedDropdownLanguage.value = language;
+              print(selectedDropdownLanguage.value.name);
+              print(selectedDropdownLanguage.value.isoCode);
+            },
+          );
+        });
+  }
 
   void RequestPresentationPlan() async {
     bool result = await InternetConnectionChecker().hasConnection;
@@ -178,7 +209,7 @@ class PresentaionGeneratorController extends GetxController {
   Future<List<String>> generateOutlines() async {
     // noOfSlide.value = 14;
     String apiRequest =
-        ''' Generate the Main Titles for the presentation slide on the Topic ${titleTextCTL.text}
+        ''' Generate the Main Titles for the presentation slide on the Topic ${titleTextCTL.text} in ${selectedDropdownLanguage.value.name} Language
     For Example For the Topic AI Following will be Your response for the titles:
     Intro of AI , How AI Works , IS AI safe to Use , AI Advantages , AI Disadvantages , Conclusion
 
@@ -375,6 +406,7 @@ class PresentaionGeneratorController extends GetxController {
       
       Your writing style will be: ${writingStyle}
       write maximum word in sectionContent: ${contentLength}
+      Your writing language: ${selectedDropdownLanguage.value.name}
 
       you are only require to give your response on require json formate enclosed in curly braces{} and no other text will 
 return. if format contains section then generate only maximum 3 sections.
@@ -725,7 +757,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
             Duration difference = DateTime.now().difference(lastGenerationTime);
 
             // Calculate the remaining time as a countdown
-            Duration countdown = Duration(minutes: 10) - difference;
+            Duration countdown =
+                Duration(minutes: RCVariables.delayMinutes) - difference;
             countdown = Duration(
                 seconds: countdown.inSeconds < 0 ? 0 : countdown.inSeconds);
 

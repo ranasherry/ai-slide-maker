@@ -22,8 +22,7 @@ import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/big_fact_slides.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/flutter_deck_app.dart';
-import 'package:slide_maker/packages/slick_slides/slick_slides.dart';
-import 'package:slide_maker/packages/slick_slides/src/deck/deck_controls.dart';
+
 import '../../provider/admob_ads_provider.dart';
 import '../../routes/app_pages.dart';
 import '../../utills/app_strings.dart';
@@ -32,10 +31,6 @@ import '../../utills/images.dart';
 import '../../utills/size_config.dart';
 import '../../utills/style.dart';
 import '../controllers/slide_maker_controller.dart';
-
-const _defaultTransition = SlickFadeTransition(
-  color: Colors.white,
-);
 
 class SlideMakerView extends GetView<SlideMakerController> {
   SlideMakerView({Key? key}) : super(key: key);
@@ -462,32 +457,8 @@ class SlideMakerView extends GetView<SlideMakerController> {
     return Container(
         // height: SizeConfig.blockSizeVertical * 20,
         // width: SizeConfig.screenWidth,
-        child: SlideDeck(
-            // presenterView: true,
-            theme: SlideThemeData.light(
-                backgroundBuilder: (context) {
-                  return Image.asset(AppImages.PPT_BG3);
-                },
-                textTheme: SlideTextThemeData.light(
-                    body: TextStyle(
-                        fontFamily: 'Inter',
-                        color: Colors.black,
-                        fontSize: 55.0,
-                        fontWeight: FontWeight.w600,
-                        fontVariations: [dartui.FontVariation('wght', 400)]))),
-            slides: List.generate(
-              slideResponseList.length,
-              (index) {
-                List<String> _bullets =
-                    slideResponseList[index].slideDescription.split(".");
-                return BulletsSlide(
-                  title: slideResponseList[index].slideTitle,
-                  bulletByBullet: true,
-                  bullets: _bullets,
-                  transition: _defaultTransition,
-                );
-              },
-            )));
+
+        );
   }
 
   Widget NextButton(BuildContext context) {
@@ -864,31 +835,31 @@ class EditSlideContent extends StatelessWidget {
                   )),
             ],
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 3,
-                  vertical: SizeConfig.blockSizeVertical),
-              width: SizeConfig.blockSizeHorizontal * 40,
-              child: DeckControls(
-                visible: true,
-                onPrevious: () {
-                  if (currentSelectedIndex.value > 0) {
-                    currentSelectedIndex.value--;
-                    descriptionFocusNode.requestFocus();
-                  }
-                },
-                onNext: () {
-                  if (currentSelectedIndex.value <
-                      controller.editableSlideResponseList.length - 1) {
-                    currentSelectedIndex.value++;
-                    descriptionFocusNode.requestFocus();
-                  }
-                },
-              ),
-            ),
-          )
+          // Align(
+          //   alignment: Alignment.bottomRight,
+          //   child: Container(
+          //     margin: EdgeInsets.symmetric(
+          //         horizontal: SizeConfig.blockSizeHorizontal * 3,
+          //         vertical: SizeConfig.blockSizeVertical),
+          //     width: SizeConfig.blockSizeHorizontal * 40,
+          //     child: DeckControls(
+          //       visible: true,
+          //       onPrevious: () {
+          //         if (currentSelectedIndex.value > 0) {
+          //           currentSelectedIndex.value--;
+          //           descriptionFocusNode.requestFocus();
+          //         }
+          //       },
+          //       onNext: () {
+          //         if (currentSelectedIndex.value <
+          //             controller.editableSlideResponseList.length - 1) {
+          //           currentSelectedIndex.value++;
+          //           descriptionFocusNode.requestFocus();
+          //         }
+          //       },
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

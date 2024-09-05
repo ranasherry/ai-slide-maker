@@ -20,8 +20,6 @@ import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../../../packages/slick_slides/slick_slides.dart';
-
 // const _defaultTransition = SlickFadeTransition(
 //   color: Colors.white,
 // );

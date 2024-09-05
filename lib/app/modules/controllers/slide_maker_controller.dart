@@ -30,7 +30,7 @@ import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
 import 'package:slide_maker/app/utills/images.dart';
-import 'package:slide_maker/packages/slick_slides/slick_slides.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/slideResponce.dart';
