@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:developer' as developer;
 
 // import 'package:applovin_max/applovin_max.dart';
 
@@ -60,14 +61,14 @@ class AppLovinProvider {
 
     final isAdRemoved = await RevenueCatService().CheckRemoveAdsForUser();
 
-    // if (kDebugMode) {
-    //   AppLovinMAX.setConsentFlowDebugUserGeography(
-    //       ConsentFlowUserGeography.gdpr);
-    //   AppLovinMAX.showMediationDebugger();
-    //   print("Show Mediation Debugger called...");
-    //   await initializePlugin();
-    //   showAppLovinConsentFlow();
-    // }
+    if (kDebugMode) {
+      AppLovinMAX.setConsentFlowDebugUserGeography(
+          ConsentFlowUserGeography.gdpr);
+      AppLovinMAX.showMediationDebugger();
+      print("Show Mediation Debugger called...");
+      await initializePlugin();
+      showAppLovinConsentFlow();
+    }
 
     if (!isAdRemoved && kReleaseMode) {
       await initializePlugin();
@@ -436,10 +437,16 @@ class AppLovinProvider {
   }
 
   void showAppLovinConsentFlow() async {
+    if (kDebugMode)
+      AppLovinMAX.setConsentFlowDebugUserGeography(
+          ConsentFlowUserGeography.gdpr);
     MaxCMPError? error = await AppLovinMAX.showCmpForExistingUser();
 
     if (error == null) {
+      developer.log("The CMP alert was shown successfully");
       // The CMP alert was shown successfully.
+    } else {
+      developer.log("CMP Error: ${error}");
     }
   }
 
