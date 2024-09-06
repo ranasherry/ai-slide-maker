@@ -291,7 +291,7 @@ class AppPages {
     GetPage(
       name: _Paths.PresentationEditView,
       page: () => PresentationEditView(),
-      binding: PresentationEditBinding(),
+      // binding: PresentationEditBinding(),
 
 
     ),

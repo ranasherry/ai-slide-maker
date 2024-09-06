@@ -773,8 +773,8 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
-                      if (!controller.isWaitingForTime.value) {
-                        // if (!controller.isWaitingForTime.value || kDebugMode) {
+                      // if (!controller.isWaitingForTime.value) {
+                        if (!controller.isWaitingForTime.value || kDebugMode) {
                         // if (!controller.isWaitingForTime.value) {
                         controller.switchToSlidesOutlines();
                       } else {

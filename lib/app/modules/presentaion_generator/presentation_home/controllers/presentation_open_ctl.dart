@@ -12,7 +12,7 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentationOpenCtl extends GetxController {
   //TODO: Implement PresentationHomeController
-
+ 
   RxList<MyPresentation> presentations = <MyPresentation>[].obs;
 
   RxString presentationTitle = "".obs;
