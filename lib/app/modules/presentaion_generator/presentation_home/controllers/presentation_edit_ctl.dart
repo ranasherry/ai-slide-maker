@@ -20,6 +20,9 @@ class PresentationEditCtl extends GetxController {
   late List<TextEditingController> slideTitles;
   late List<List<TextEditingController>> slideSectionHeaders;
   late List<List<TextEditingController>> slideSectionContents;
+  late List<double> slideTitlesFontValue;
+  late List<List<double>> slideSectionHeadersFontValue;
+  late List<List<double>> slideSectionContentsFontValue;
   // late TextEditingController slideSection1SlideTitle;
   // late List<TextEditingController> slideSection1SectionHeaders;
   // late List<TextEditingController> slideSection1SectionContents;
@@ -146,6 +149,35 @@ class PresentationEditCtl extends GetxController {
       return slides.slideSections.map(
         (slideSection){
           return TextEditingController(text : slideSection.sectionContent ?? "");
+          }).toList();
+    })
+    .toList();
+  }
+
+  void createFontList(){
+
+
+    slideTitlesFontValue = myEditedPresentation.value.slides.map(
+      (slides){
+         return 0.0;
+    }).toList();
+
+
+    slideSectionHeadersFontValue = myEditedPresentation.value.slides.map(
+      (slides){
+      return slides.slideSections.map(
+        (slideSection){
+          return 0.0;
+          }).toList();
+    })
+    .toList();
+
+
+    slideSectionContentsFontValue = myEditedPresentation.value.slides.map(
+      (slides){
+      return slides.slideSections.map(
+        (slideSection){
+          return 0.0;
           }).toList();
     })
     .toList();

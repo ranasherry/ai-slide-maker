@@ -164,6 +164,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
             ),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                   margin: EdgeInsets.symmetric(

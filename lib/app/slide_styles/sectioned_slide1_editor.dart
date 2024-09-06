@@ -213,7 +213,6 @@ class __SectionedSlide1State extends State<SectionedSlide1Editor> {
       //         _sectionHeaderValues.forEach((value){
       //         print("SectionHeaders :$value ");
       // });
-
             },
             style: widget.mySlide.slideSections[i].sectionHeader != null
                 ? TextStyle(
