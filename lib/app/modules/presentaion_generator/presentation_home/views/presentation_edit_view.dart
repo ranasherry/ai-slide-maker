@@ -117,6 +117,7 @@ class PresentationEditView extends GetView<PresentationEditCtl> {
                        ),
                        ),
                     ),
+                    
                   ],
                 ),
               ),
@@ -168,6 +169,7 @@ class PresentationEditView extends GetView<PresentationEditCtl> {
                                       controller.myPresentation,
                                       Size(SizeConfig.screenWidth * 0.9,
                                           SizeConfig.screenWidth * 0.5),
+                                          false
                                     ),
                                   )),
                             ),
@@ -229,10 +231,11 @@ class PresentationEditView extends GetView<PresentationEditCtl> {
                                           height: size.height,
                                           child: Stack(
                                             children: [
-                                              individualSlideMethod(
+                                              individualSlideEditorMethod(
                                                 index,
                                                 controller.myPresentation,
                                                 size,
+                                                true
                                               ),
                                               Obx(() => controller
                                                           .currentSelectedIndex

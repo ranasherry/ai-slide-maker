@@ -16,12 +16,14 @@ class SectionedSlide2Editor extends StatefulWidget {
       required this.mySlide,
       required this.slidePallet,
       required this.size,
-      required this.index});
+      required this.index,
+      required this.isReadOnly});
 
   MySlide mySlide;
   SlidePallet slidePallet;
   Size size;
   int index;
+  bool isReadOnly;
 
   @override
   State<SectionedSlide2Editor> createState() => __SectionedSlide1State();
@@ -30,31 +32,43 @@ class SectionedSlide2Editor extends StatefulWidget {
 class __SectionedSlide1State extends State<SectionedSlide2Editor> {
   final PresentationEditCtl controller = Get.find();
 
-  late TextEditingController _slideTitle = TextEditingController(text : widget.mySlide.slideTitle),
-   _sectionHeader0 = TextEditingController(text :widget.mySlide.slideSections[0].sectionHeader ?? '' ),
-    _sectionContent0 = TextEditingController(text :  widget.mySlide.slideSections[0].sectionContent ?? ''),
-     _sectionHeader1 = TextEditingController(text : widget.mySlide.slideSections[1].sectionHeader ?? ''),
-      _sectionContent1 = TextEditingController(text : widget.mySlide.slideSections[1].sectionContent ?? '');
+  // late TextEditingController _slideTitle,_sectionHeader0,_sectionContent0,_sectionHeader1,_sectionContent1;
+   
 
-  String slideTitleValue = "",
-   sectionHeader0Value = "",
-    sectionContent0Value = "",
-     sectionHeader1Value = "",
-      sectionContent1Value = "";
+  // String slideTitleValue = "",
+  //  sectionHeader0Value = "",
+  //   sectionContent0Value = "",
+  //    sectionHeader1Value = "",
+  //     sectionContent1Value = "";
 
   int bgIndex = 0;
+  @override
   initState() {
+    super.initState();
+// if(widget.isReadOnly){
+
+// }else{
+
+// }
     setState(() {
+    //    _slideTitle = TextEditingController(text : widget.mySlide.slideTitle);
+    //    _sectionHeader0 = TextEditingController(text :widget.mySlide.slideSections[0].sectionHeader ?? '' );
+    // _sectionContent0 = TextEditingController(text :  widget.mySlide.slideSections[0].sectionContent ?? '');
+    //  _sectionHeader1 = TextEditingController(text : widget.mySlide.slideSections[1].sectionHeader ?? '');
+    //   _sectionContent1 = TextEditingController(text : widget.mySlide.slideSections[1].sectionContent ?? '');
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
       print("BG Index: $bgIndex");
       print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
     });
+
+
     print("initState Called");
   }
 
   @override
   Widget build(BuildContext context) {
+    controller.initializeSlidesTextController();
     return Container(
       width: widget.size.width,
       height: widget.size.height,
@@ -82,7 +96,9 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                 Container(
                   width: widget.size.width,
                   // height: widget.size.height * 0.2,
-                  child: EditableText(
+                  child: IgnorePointer(
+                    ignoring: widget.isReadOnly,
+                    child: EditableText(
                     cursorColor:  Colors.black,
                     backgroundCursorColor: Colors.white,
                     focusNode: FocusNode(),
@@ -90,9 +106,10 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                     //           border: InputBorder.none
                     //         ),
                             maxLines: null,
-                            controller : _slideTitle,
+                            controller : controller.slideTitles[widget.index],
+                            readOnly: widget.isReadOnly,
                             onChanged: (value){
-                              slideTitleValue = value;
+                              // slideTitleValue = value;
                               controller.myEditedPresentation.value.slides[widget.index].slideTitle = value ;
                               print(value);
                             },
@@ -103,7 +120,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                         color: Color(widget.slidePallet.bigTitleTColor)),
                     // style: widget.slidePallet.bigTitleTStyle
                     //     .copyWith(fontSize: widget.size.width * 0.050),
-                  ),
+                  )),
                 ),
                 verticalSpace(widget.size.height * 0.01),
                 Column(
@@ -113,7 +130,9 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              EditableText(
+                              IgnorePointer(
+                    ignoring: widget.isReadOnly,
+                                child: EditableText(
                     cursorColor:  Colors.black,
                     backgroundCursorColor: Colors.white,
                     focusNode: FocusNode(),
@@ -121,9 +140,10 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                             //   border: InputBorder.none
                             // ),
                             maxLines: null,
-                            controller : _sectionHeader0,
+                            readOnly: widget.isReadOnly,
+                            controller : controller.slideSectionHeaders[widget.index][0],
                             onChanged: (value){
-                              sectionHeader0Value = value;
+                              // sectionHeader0Value = value;
                               controller.myEditedPresentation.value.slides[widget.index].slideSections[0].sectionHeader = value ;
                               print(value);
                             },
@@ -142,9 +162,12 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                 //         .copyWith(
                                 //             fontSize: widget.size.width * 0.035)
                                 //     : widget.slidePallet.bigTitleTStyle,
+                                   )
                               ),
                               verticalSpace(widget.size.height * 0.01),
-                              EditableText(
+                              IgnorePointer(
+                    ignoring: widget.isReadOnly,
+                                child: EditableText(
                     cursorColor:  Colors.black,
                     backgroundCursorColor: Colors.white,
                     focusNode: FocusNode(),
@@ -152,9 +175,10 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                             //   border: InputBorder.none
                             // ),
                             maxLines: null,
-                            controller : _sectionContent0,
+                            readOnly: widget.isReadOnly,
+                            controller : controller.slideSectionContents[widget.index][0],
                             onChanged: (value){
-                              sectionContent0Value = value;
+                              // sectionContent0Value = value;
                               print(value);
                               controller.myEditedPresentation.value.slides[widget.index].slideSections[0].sectionContent = value;
                             },   
@@ -173,7 +197,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                 //         .copyWith(
                                 //             fontSize: widget.size.width * 0.018)
                                 //     : widget.slidePallet.bigTitleTStyle,
-                              ),
+                              )),
                             ],
                           )
                         : Container(),
@@ -182,7 +206,9 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              EditableText(
+                              IgnorePointer(
+                                  ignoring: widget.isReadOnly,
+                                child: EditableText(
                     cursorColor:  Colors.black,
                     backgroundCursorColor: Colors.white,
                     focusNode: FocusNode(),
@@ -190,9 +216,10 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                             //   border: InputBorder.none
                             // ),
                             maxLines: null,
-                            controller : _sectionHeader1,
+                            readOnly: widget.isReadOnly,
+                            controller : controller.slideSectionHeaders[widget.index][1],
                             onChanged: (value){
-                              sectionHeader1Value = value;
+                              // sectionHeader1Value = value;
                               controller.myEditedPresentation.value.slides[widget.index].slideSections[1].sectionHeader = value ;
                               print(value);
                             },
@@ -211,9 +238,12 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                         color: Color(
                                             widget.slidePallet.bigTitleTColor))
                                     : TextStyle(),
+                                    )
                               ),
                               verticalSpace(widget.size.height * 0.01),
-                              EditableText(
+                              IgnorePointer(
+                                ignoring: widget.isReadOnly,
+                                child: EditableText(
                     cursorColor:  Colors.black,
                     backgroundCursorColor: Colors.white,
                     focusNode: FocusNode(),
@@ -221,9 +251,10 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                             //   border: InputBorder.none
                             // ),
                             maxLines: null,
-                            controller : _sectionContent1,
+                            readOnly: widget.isReadOnly,
+                            controller : controller.slideSectionContents[widget.index][1],
                             onChanged: (value){
-                              sectionContent1Value = value;
+                              // sectionContent1Value = value;
                               print(value);
                               controller.myEditedPresentation.value..slides[widget.index].slideSections[1].sectionContent = value ;
                             },
@@ -243,6 +274,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                 //         .copyWith(
                                 //             fontSize: widget.size.width * 0.018)
                                 //     : widget.slidePallet.bigTitleTStyle,
+                                    )
                               ),
                             ],
                           )

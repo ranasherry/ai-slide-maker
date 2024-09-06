@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
+import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_edit_ctl.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_view.dart';
 import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_open_ctl.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/slide_styles/slide_styles_editing_methods.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class PresentationOpenView extends GetView<PresentationOpenCtl> {
   PresentationOpenView({super.key});
+  PresentationEditCtl presEditCtl = Get.find();
   // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -118,11 +121,12 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                               height: SizeConfig.screenWidth * 0.5,
                               child: Obx(() => ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: individualSlideMethod(
+                                    child: individualSlideEditorMethod(
                                       controller.currentSelectedIndex.value,
                                       controller.myPresentation,
                                       Size(SizeConfig.screenWidth * 0.9,
                                           SizeConfig.screenWidth * 0.5),
+                                          true
                                     ),
                                   )),
                             ),
@@ -184,10 +188,11 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                           height: size.height,
                                           child: Stack(
                                             children: [
-                                              individualSlideMethod(
+                                              individualSlideEditorMethod(
                                                 index,
                                                 controller.myPresentation,
                                                 size,
+                                                true
                                               ),
                                               Obx(() => controller
                                                           .currentSelectedIndex

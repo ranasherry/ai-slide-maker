@@ -8,6 +8,6 @@ class NavViewBinding extends Bindings {
   void dependencies() {
     Get.put(NavCTL());
     Get.put(HomeViewCtl());
-    Get.put(CreationViewCtl());
+    Get.put(CreationViewCtl());  
   }
 }

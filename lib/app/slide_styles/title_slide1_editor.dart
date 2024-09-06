@@ -20,12 +20,14 @@ class TitleSlide1Editor extends StatefulWidget {
       required this.mySlide,
       required this.slidePallet,
       required this.size,
-      required this.index});
+      required this.index,
+      required this.isReadOnly});
 
   MySlide mySlide;
   SlidePallet slidePallet;
   Size size;
   int index;
+  bool isReadOnly;
 
   @override
   State<TitleSlide1Editor> createState() => __TitleSlide1State();
@@ -52,7 +54,7 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
               widget.mySlide.slideSections[0].imageReference != null
           ? widget.size.width * 0.05
           : widget.size.width * 0.06;
-          
+
       _titleFontSize.value = titleFontSize;
       _sectionContentFontSize.value = widget.size.width * 0.02;
 
@@ -84,6 +86,7 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
 
   @override
   Widget build(BuildContext context) {
+    controller.initializeSlidesTextController();
     return Container(
       width: widget.size.width,
       height: widget.size.height,
@@ -113,7 +116,9 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                   child: Column(
                     children: [
                       verticalSpace(widget.size.height * 0.00),
-                      EditableText(
+                      IgnorePointer(
+                        ignoring: widget.isReadOnly,
+                        child: EditableText(
                     cursorColor:  Colors.black,
                     backgroundCursorColor: Colors.white,
                     focusNode: FocusNode(),
@@ -121,7 +126,8 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                         //       border: InputBorder.none
                         //     ),
                             maxLines: null,
-                        controller:  _slideTitle,
+                            readOnly: widget.isReadOnly,
+                        controller:  controller.slideTitles[widget.index],
                         onChanged: (value){
                         controller.myEditedPresentation.value.slides[widget.index].slideTitle = value;
                         },
@@ -130,17 +136,22 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                             color: Color(widget.slidePallet.bigTitleTColor)),
                         // style: widget.slidePallet.bigTitleTStyle
                         //     .copyWith(fontSize: titleFontSize),
+                            )
                       ),
                       verticalSpace(widget.size.width * 0.01),
-                      EditableText(
+                      IgnorePointer(
+                        ignoring: widget.isReadOnly,
+                        child: EditableText(
                     cursorColor:  Colors.black,
                     backgroundCursorColor: Colors.white,
                     focusNode: FocusNode(),
+
                         // decoration: InputDecoration(
                         //       border: InputBorder.none
                         //     ),
                             maxLines: null,
-                        controller : _sectionContent0,
+                            readOnly: widget.isReadOnly,
+                        controller : controller.slideSectionContents[widget.index][0],
                         onChanged: (value){
                           controller.myEditedPresentation.value.slides[widget.index].slideSections[0].sectionContent = value;
                         },
@@ -149,6 +160,7 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                             color: Color(widget.slidePallet.bigTitleTColor)),
                         // style: widget.slidePallet.bigTitleTStyle
                         //     .copyWith(fontSize: widget.size.width * 0.03),
+                              )
                       ),
                     ],
                   ),

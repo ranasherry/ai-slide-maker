@@ -12,7 +12,7 @@ import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 Widget individualSlideEditorMethod(
-    int index, Rx<MyPresentation> myPresentation, Size size) {
+    int index, Rx<MyPresentation> myPresentation, Size size, bool isReadOnly) {
   // Size size = Size(
   //     SizeConfig.blockSizeHorizontal * 90, SizeConfig.blockSizeHorizontal * 45);
 
@@ -40,7 +40,8 @@ Widget individualSlideEditorMethod(
               mySlide: myPresentation.value.slides[index],
               slidePallet: selectedPallet,
               size: size,
-              index: index
+              index: index,
+              isReadOnly: isReadOnly,
             ));
       } else {
         //? Sections
@@ -49,14 +50,18 @@ Widget individualSlideEditorMethod(
                 mySlide: myPresentation.value.slides[index],
                 slidePallet: selectedPallet,
                 size: size,
-                index: index
+                index: index,
+               isReadOnly: isReadOnly,
+
               ));
         } else {
           return Obx(() => SectionedSlide1Editor(
                 mySlide: myPresentation.value.slides[index],
                 slidePallet: selectedPallet,
                 size: size,
-                index: index
+                index: index,
+                isReadOnly: isReadOnly,
+
               ));
         }
       }

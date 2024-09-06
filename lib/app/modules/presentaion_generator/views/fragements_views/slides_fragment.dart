@@ -179,7 +179,8 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                       onPressed: () {
                         // controller.RequestPresentationPlan();
                         if (controller.isSlidesGenerated.value) {
-                          controller.createPresentation();
+                          // controller.createPresentation();
+                          Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value]);
                           AppLovinProvider.instance.showInterstitial(() {});
                         } else {
                           EasyLoading.showToast(
@@ -187,30 +188,30 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                               duration: Durations.extralong2);
                         }
                       },
-                      child: Text("Save & Share"))),
-                       Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 6,
-                      vertical: SizeConfig.blockSizeVertical),
-                  width: SizeConfig.screenWidth * 0.3,
-                  height: SizeConfig.blockSizeVertical * 6.5,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors
-                              .buttonBGColor, // Button background color
-                          foregroundColor: Colors.white),
-                      onPressed: () {
-                        // controller.RequestPresentationPlan();
-                        if (controller.isSlidesGenerated.value) {
-                          Get.toNamed(Routes.PresentationEditView, arguments: [controller.myPresentation.value]);
-                          AppLovinProvider.instance.showInterstitial(() {});
-                        } else {
-                          EasyLoading.showToast(
-                              "Please Wait for remaining slides to be Generated..",
-                              duration: Durations.extralong2);
-                        }
-                      },
-                      child: Text("Edit"))),
+                      child: Text("Save"))),
+                  //      Container(
+                  // margin: EdgeInsets.symmetric(
+                  //     horizontal: SizeConfig.blockSizeHorizontal * 6,
+                  //     vertical: SizeConfig.blockSizeVertical),
+                  // width: SizeConfig.screenWidth * 0.3,
+                  // height: SizeConfig.blockSizeVertical * 6.5,
+                  // child: ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //         backgroundColor: AppColors
+                  //             .buttonBGColor, // Button background color
+                  //         foregroundColor: Colors.white),
+                  //     onPressed: () {
+                  //       // controller.RequestPresentationPlan();
+                  //       if (controller.isSlidesGenerated.value) {
+                  //         Get.toNamed(Routes.PresentationEditView, arguments: [controller.myPresentation.value]);
+                  //         AppLovinProvider.instance.showInterstitial(() {});
+                  //       } else {
+                  //         EasyLoading.showToast(
+                  //             "Please Wait for remaining slides to be Generated..",
+                  //             duration: Durations.extralong2);
+                  //       }
+                  //     },
+                  //     child: Text("Edit"))),
                      
             ],
           ),
