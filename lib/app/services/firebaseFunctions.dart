@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:slide_maker/app/data/book_page_model.dart';
@@ -120,144 +122,182 @@ class FirestoreService {
   }
 
 // Method below added by rizwan
-  Future<void> insertPresentationHistory(MyPresentation presentationHistory, String presentationId) async{
-    final docRef = _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId);
-   await docRef.set(presentationHistory.toMapDatabase());
+  Future<void> insertPresentationHistory(
+      MyPresentation presentationHistory, String presentationId) async {
+    final docRef =
+        _firestore.collection(presentationCollectionPath).doc(presentationId);
+    await docRef.set(presentationHistory.toMapDatabase());
   }
 
   // Method added by rizwan
-  Future <List<MyPresentation>> fetchPresentationHistoryFirestore() async{
-    final querySnapshot = await _firestore
-    .collection(presentationCollectionPath)
-    .get();
-    print("these are presenatations ${querySnapshot.docs
-    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
-    .toList()}");
+  Future<List<MyPresentation>> fetchPresentationHistoryFirestore() async {
+    final querySnapshot =
+        await _firestore.collection(presentationCollectionPath).get();
+    print(
+        "these are presenatations ${querySnapshot.docs.map((docSnapshot) => MyPresentation.fromMapDatabase(docSnapshot.data()!)).toList()}");
+
     return querySnapshot.docs
-    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
-    .toList();
+        .map((docSnapshot) =>
+            MyPresentation.fromMapDatabase(docSnapshot.data()!))
+        .toList();
+  }
+
+  Future<Map<String, Object?>> fetchPresentationHistoryFirestorePagenation(
+      {DocumentSnapshot? lastDoc}) async {
+    log("Entered Firebase History fecth");
+    try {
+      Query query = _firestore
+          .collection(presentationCollectionPath)
+          .orderBy('timestamp') // Adjust the order based on your requirement
+          .limit(10);
+
+      if (lastDoc != null) {
+        query = query.startAfterDocument(lastDoc);
+        log("Fetch Query: ${query.parameters}");
+      }
+      log("Fetch Query2: ${query.parameters}");
+
+      final querySnapshot = await query.get();
+
+      final presentations = querySnapshot.docs
+          .map((docSnapshot) => MyPresentation.fromMapDatabase(
+              docSnapshot.data()! as Map<String, dynamic>))
+          .toList();
+
+      log("Fetched Presentations: ${presentations.toList()}");
+
+      return {
+        'presentations': presentations,
+        'lastDoc':
+            querySnapshot.docs.isNotEmpty ? querySnapshot.docs.last : null,
+      };
+    } on Exception catch (e) {
+      log("Fetched Presentations Error: ${e}");
+
+      // TODO
+      return {
+        'presentations': <MyPresentation>[],
+        'lastDoc': null,
+      };
+    }
   }
 
   // Method added by Rizwan
-  Future <List<MyPresentation>> fetchPresentationHistoryByCreaterIdFirestore(String createrId) async{
+  Future<List<MyPresentation>> fetchPresentationHistoryByCreaterIdFirestore(
+      String createrId) async {
     final querySnapshot = await _firestore
-    .collection(presentationCollectionPath)
-    .where("createrId", isEqualTo: createrId)
-    .get();
-    print("these are presenatations by creater id ${querySnapshot.docs
-    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
-    .toList()}");
+        .collection(presentationCollectionPath)
+        .where("createrId", isEqualTo: createrId)
+        .get();
+    print(
+        "these are presenatations by creater id ${querySnapshot.docs.map((docSnapshot) => MyPresentation.fromMapDatabase(docSnapshot.data()!)).toList()}");
     return querySnapshot.docs
-    .map((docSnapshot) =>MyPresentation.fromMapDatabase(docSnapshot.data()!))
-    .toList();
+        .map((docSnapshot) =>
+            MyPresentation.fromMapDatabase(docSnapshot.data()!))
+        .toList();
   }
+
   // Method below added by rizwan
-  Future<void> updatePresentationHistory(MyPresentation presentationHistory, String presentationId) async{
-    final docRef = _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId);
-   await docRef.set(presentationHistory.toMapDatabase(), SetOptions(merge: false));
+  Future<void> updatePresentationHistory(
+      MyPresentation presentationHistory, String presentationId) async {
+    final docRef =
+        _firestore.collection(presentationCollectionPath).doc(presentationId);
+    await docRef.set(
+        presentationHistory.toMapDatabase(), SetOptions(merge: false));
   }
+
   // Method added by rizwan
-  Future<void> updateCommentsCount(String presentationId, int change) async{
-    final docRef = _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId);
+  Future<void> updateCommentsCount(String presentationId, int change) async {
+    final docRef =
+        _firestore.collection(presentationCollectionPath).doc(presentationId);
     // Update the comments count
-    await docRef.update({
-      'commentsCount': FieldValue.increment(change)
-    });
+    await docRef.update({'commentsCount': FieldValue.increment(change)});
   }
+
   // Method added by rizwan
-  Future<void> addComment(String presentationId, Comment userData) async{
+  Future<void> addComment(String presentationId, Comment userData) async {
     final docRef = _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId)
-    .collection(subcollectionComments)
-    .doc(userData.userId.toString());
+        .collection(presentationCollectionPath)
+        .doc(presentationId)
+        .collection(subcollectionComments)
+        .doc(userData.userId.toString());
     // Add the comment
     await docRef.set(userData.toMapDatabase());
 
     //Update the comments count
-    await updateCommentsCount(presentationId,1);
+    await updateCommentsCount(presentationId, 1);
   }
+
   // Method added by rizwan
-  Future<void> updateLikesCount(String presentationId, int change) async{
-    final docRef = _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId);
+  Future<void> updateLikesCount(String presentationId, int change) async {
+    final docRef =
+        _firestore.collection(presentationCollectionPath).doc(presentationId);
     // Update the likes count
-    await docRef.update({
-      'likesCount': FieldValue.increment(change)
-    });
+    await docRef.update({'likesCount': FieldValue.increment(change)});
   }
+
   // Method added by rizwan
-  Future<void> addLike(String presentationId, Like userData) async{
+  Future<void> addLike(String presentationId, Like userData) async {
     final docRef = _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId)
-    .collection(subcollectionLikes)
-    .doc(userData.userId.toString());
+        .collection(presentationCollectionPath)
+        .doc(presentationId)
+        .collection(subcollectionLikes)
+        .doc(userData.userId.toString());
     // .doc("5");
     DocumentSnapshot doc = await docRef.get();
     print("${doc.exists} user id ${userData.userId}");
     // Add the comment
-    if(doc.exists){
-
+    if (doc.exists) {
+    } else {
+      await docRef.set(userData.toMapDatabase());
+      // Update the likes count
+      await updateLikesCount(presentationId, 1);
     }
-    else{
-    await docRef.set(userData.toMapDatabase());
-    // Update the likes count
-    await updateLikesCount(presentationId,1);
-    }
-   
   }
 
   // Method added by rizwan
-  Future <int> fetchLikesCount (String presentationId) async{
+  Future<int> fetchLikesCount(String presentationId) async {
     final querySnapshot = await _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId)
-    .get();
-    int likesCount = await querySnapshot.data()?['likesCount'] as int ?? 0 ;
+        .collection(presentationCollectionPath)
+        .doc(presentationId)
+        .get();
+    int likesCount = await querySnapshot.data()?['likesCount'] as int ?? 0;
     return likesCount;
   }
 
   // Method added by rizwan
-  Future <int> fetchCommentsCount (String presentationId) async{
+  Future<int> fetchCommentsCount(String presentationId) async {
     final querySnapshot = await _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId)
-    .get();
-    int commentsCount = await querySnapshot.data()?['commentsCount']  as int ?? 0;
-    return commentsCount ; 
+        .collection(presentationCollectionPath)
+        .doc(presentationId)
+        .get();
+    int commentsCount =
+        await querySnapshot.data()?['commentsCount'] as int ?? 0;
+    return commentsCount;
   }
 
   // Method added by rizwan
-  Future <List<Comment>> fetchComments(String presentationId) async{
+  Future<List<Comment>> fetchComments(String presentationId) async {
     final querySnapshot = await _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId)
-    .collection(subcollectionComments)
-    .get();
+        .collection(presentationCollectionPath)
+        .doc(presentationId)
+        .collection(subcollectionComments)
+        .get();
     List<Comment> allComments = querySnapshot.docs
-    .map((e)=> Comment.fromMapDatabase(e.data()!)).toList();
+        .map((e) => Comment.fromMapDatabase(e.data()!))
+        .toList();
     return allComments;
-    
   }
 
   // Method added by rizwan
-  Future <List<Like>> fetchLikes(String presentationId) async{
+  Future<List<Like>> fetchLikes(String presentationId) async {
     final querySnapshot = await _firestore
-    .collection(presentationCollectionPath)
-    .doc(presentationId)
-    .collection(subcollectionLikes)
-    .get();
-    List<Like> allLikes = querySnapshot.docs
-    .map((e)=> Like.fromMapDatabase(e.data()!)).toList();
+        .collection(presentationCollectionPath)
+        .doc(presentationId)
+        .collection(subcollectionLikes)
+        .get();
+    List<Like> allLikes =
+        querySnapshot.docs.map((e) => Like.fromMapDatabase(e.data()!)).toList();
     return allLikes;
-    
   }
 }

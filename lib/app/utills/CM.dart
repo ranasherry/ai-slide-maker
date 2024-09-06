@@ -14,6 +14,7 @@ import 'package:slide_maker/app/data/helping_enums.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide1.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
@@ -30,6 +31,10 @@ class ComFunction {
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
     return emailValid;
+  }
+
+  static void GotoHomeScreen() {
+    Get.offAllNamed(Routes.NAVVIEW);
   }
 
   static hideKeyboard(BuildContext context) {

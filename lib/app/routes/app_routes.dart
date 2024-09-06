@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 part of 'app_pages.dart';
 // DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
@@ -43,8 +45,9 @@ abstract class Routes {
   static const POLLSCREENVIEW = _Paths.POLLSCREENVIEW;
   static const PROFILEVIEW = _Paths.PROFILEVIEW;
   static const PresentationOpenView = _Paths.PresentationOpenView;
-  static const PRESENTATION_HOME =
-      _Paths.NEWSLIDE_GENERATOR + _Paths.PRESENTATION_HOME;
+  static const PRESENTATION_HOME = _Paths.PRESENTATION_HOME;
+  // static const PRESENTATION_HOME =
+  //     _Paths.NEWSLIDE_GENERATOR + _Paths.PRESENTATION_HOME;
   static const PresentationEditView = _Paths.PresentationEditView;
 
   static const NAVVIEW = _Paths.NAVVIEW;

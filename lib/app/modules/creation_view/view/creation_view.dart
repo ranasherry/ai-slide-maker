@@ -28,7 +28,9 @@ class CreationView extends GetView<CreationViewCtl> {
           ].obs,
           styleId: "1".obs,
           createrId: "12",
-          timestamp: 122344, likesCount: 0, commentsCount: 0)
+          timestamp: 122344,
+          likesCount: 0,
+          commentsCount: 0)
       .obs;
 
   @override

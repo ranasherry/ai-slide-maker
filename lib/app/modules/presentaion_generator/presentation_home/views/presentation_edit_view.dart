@@ -10,12 +10,12 @@ import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_editing_methods.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_edit_ctl.dart';
-
 
 class PresentationEditView extends GetView<PresentationEditCtl> {
   PresentationEditView({Key? key}) : super(key: key);
@@ -31,42 +31,47 @@ class PresentationEditView extends GetView<PresentationEditCtl> {
         //   ),
         height: SizeConfig.blockSizeVertical * 8,
         decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              width: SizeConfig.blockSizeHorizontal * 0.5,
-              color: Colors.red
+            border: Border(
+              top: BorderSide(
+                  width: SizeConfig.blockSizeHorizontal * 0.5,
+                  color: Colors.red),
+              right: BorderSide(
+                  width: SizeConfig.blockSizeHorizontal * 0.5,
+                  color: Colors.red),
+              left: BorderSide(
+                  width: SizeConfig.blockSizeHorizontal * 0.5,
+                  color: Colors.red),
             ),
-            right: BorderSide(
-              width: SizeConfig.blockSizeHorizontal * 0.5,
-              color: Colors.red
-            ),
-            left: BorderSide(
-              width: SizeConfig.blockSizeHorizontal * 0.5,
-              color: Colors.red
-            ),
-          ),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          )
-        ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            )),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            botton_navi_button("Save", () async{
-              print("${controller.myEditedPresentation.value.presentationId}"); 
-              await homeCtl.updatePresentation(controller.myEditedPresentation.value, controller.myEditedPresentation.value.presentationId);
-              Get.toNamed(Routes.PRESENTATION_HOME, arguments: ["Presentation Updated"]);
+            botton_navi_button("Save", () async {
+              print("${controller.myEditedPresentation.value.presentationId}");
+              await homeCtl.updatePresentation(
+                  controller.myEditedPresentation.value,
+                  controller.myEditedPresentation.value.presentationId);
+              // Get.toNamed(Routes.PRESENTATION_HOME, arguments: ["Presentation Updated"]);
+              // Get.offAndToNamed(Routes.PRESENTATION_HOME);
+              Get.offNamedUntil(
+                  Routes.PRESENTATION_HOME,
+                  (route) =>
+                      route.settings.name == Routes.NAVVIEW ||
+                      route.settings.name == Routes.HOMEVIEW1);
+              // Get.offNamedUntil(Routes.PRESENTATION_HOME, (route) => false);
+              // ComFunction.GotoHomeScreen();
               print("Presentation Updated");
             }),
-            
           ],
         ),
       ),
-      body: 
-      // Padding(
-      //   padding: EdgeInsets.only(
+      body:
+          // Padding(
+          //   padding: EdgeInsets.only(
           // top: SizeConfig.blockSizeVertical * 6,
           // right: SizeConfig.blockSizeHorizontal * 2,
           // left: SizeConfig.blockSizeHorizontal * 2,
@@ -282,19 +287,16 @@ class PresentationEditView extends GetView<PresentationEditCtl> {
     
   }
 
-  ElevatedButton botton_navi_button(String buttonText,Function onPressed) {
+  ElevatedButton botton_navi_button(String buttonText, Function onPressed) {
     return ElevatedButton.icon(
-            onPressed: (){
-              onPressed();
-            },
-             label: Text(buttonText),
-             
-             style: ElevatedButton.styleFrom(
-              fixedSize: Size(100,50),
-              backgroundColor: AppColors.buttonBGColor,
-              foregroundColor: AppColors.text_color
-              
-             ),
-          );
+      onPressed: () {
+        onPressed();
+      },
+      label: Text(buttonText),
+      style: ElevatedButton.styleFrom(
+          fixedSize: Size(100, 50),
+          backgroundColor: AppColors.buttonBGColor,
+          foregroundColor: AppColors.text_color),
+    );
   }
 }

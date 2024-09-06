@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
+
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class AppStrings {
@@ -20,10 +22,10 @@ class AppStrings {
   static var JsonTrendTopics = "";
 
   //original Andriod
-  static const MAX_BANNER_ID = "66f8c654162ca4f5";
-  static const MAX_Mrec_ID = "bcf322b2e7e3c898";
+  static const MAX_BANNER_ID = "1f590ca94a7b6d08";
+  static const MAX_Mrec_ID = "0daa47183c7e732b";
 
-  static const MAX_INTER_ID = "a5c4251ccb168802";
+  static const MAX_INTER_ID = "7fb2c4cf7717346a";
 
   // static const MAX_MREC_ID = "";
 
@@ -33,7 +35,7 @@ class AppStrings {
   static RxList<String> topicsList = <String>[].obs;
 
   static const MAX_SDK =
-      "eCVIa8prwGmBAEXgBN70zL66PSODmw1GcCGut4bzm5eU7ANKptVSTaGrduCvfRTGOIQWEpHoI2UwQ1corcGexv";
+      "aRDMGbWzwEWwvtKeNdJsHwxEn46w01GNDRaxtR7ShTArDJv5nR9rzFS-Emmb6e9epRPaiGUXRSM9NGeORoZM5L";
 
   //original IOS
   static const IOS_MAX_BANNER_ID = "e93a331eab24801d";
@@ -47,7 +49,7 @@ class AppStrings {
   static const IOS_MAX_Reward_ID = "66f8c654162ca4f5";
 
   static const IOS_MAX_SDK =
-      "eCVIa8prwGmBAEXgBN70zL66PSODmw1GcCGut4bzm5eU7ANKptVSTaGrduCvfRTGOIQWEpHoI2UwQ1corcGexv";
+      "aRDMGbWzwEWwvtKeNdJsHwxEn46w01GNDRaxtR7ShTArDJv5nR9rzFS-Emmb6e9epRPaiGUXRSM9NGeORoZM5L";
 
 //Real IDS! Andriod[
 
