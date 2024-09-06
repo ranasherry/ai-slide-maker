@@ -9,6 +9,7 @@ import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/SlidesWidgets/title_slide.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -52,6 +53,7 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                 GestureDetector(
                   onTap: () {
                     // _scaffoldKey.currentState!.openDrawer();
+                    // ComFunction.GotoHomeScreen();
                     Get.back();
                   },
                   child: Container(

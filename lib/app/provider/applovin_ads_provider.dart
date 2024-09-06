@@ -61,14 +61,14 @@ class AppLovinProvider {
 
     final isAdRemoved = await RevenueCatService().CheckRemoveAdsForUser();
 
-    if (kDebugMode) {
-      AppLovinMAX.setConsentFlowDebugUserGeography(
-          ConsentFlowUserGeography.gdpr);
-      AppLovinMAX.showMediationDebugger();
-      print("Show Mediation Debugger called...");
-      await initializePlugin();
-      showAppLovinConsentFlow();
-    }
+    // if (kDebugMode) {
+    //   AppLovinMAX.setConsentFlowDebugUserGeography(
+    //       ConsentFlowUserGeography.gdpr);
+    //   AppLovinMAX.showMediationDebugger();
+    //   print("Show Mediation Debugger called...");
+    //   await initializePlugin();
+    //   showAppLovinConsentFlow();
+    // }
 
     if (!isAdRemoved && kReleaseMode) {
       await initializePlugin();

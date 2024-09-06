@@ -215,14 +215,19 @@ class AppPages {
       page: () => const NewslideGeneratorView(),
       binding: NewslideGeneratorBinding(),
       children: [
-        GetPage(
-          name: _Paths.PRESENTATION_HOME,
-          page: () => PresentationHomeView(),
-          binding: PresentationHomeBinding(),
-        ),
+        // GetPage(
+        //   name: _Paths.PRESENTATION_HOME,
+        //   page: () => PresentationHomeView(),
+        //   binding: PresentationHomeBinding(),
+        // ),
       ],
     ),
 
+    GetPage(
+      name: _Paths.PRESENTATION_HOME,
+      page: () => PresentationHomeView(),
+      binding: PresentationHomeBinding(),
+    ),
     GetPage(
       name: _Paths.BOOK_WRITER,
       page: () => const BookWriterView(),
@@ -292,8 +297,6 @@ class AppPages {
       name: _Paths.PresentationEditView,
       page: () => PresentationEditView(),
       // binding: PresentationEditBinding(),
-
-
     ),
     GetPage(
       name: _Paths.NAVVIEW,
