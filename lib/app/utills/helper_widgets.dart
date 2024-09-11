@@ -176,7 +176,7 @@ Widget slide_header_name() {
               BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
       child: Center(
         child: Obx(() => Text(
-              "${RCVariables.AppName.value.toUpperCase()}",
+              "${RCVariables.AppName.value}",
               style: GoogleFonts.roboto(
                   textStyle: TextStyle(
                       fontSize: SizeConfig.blockSizeHorizontal * 8,

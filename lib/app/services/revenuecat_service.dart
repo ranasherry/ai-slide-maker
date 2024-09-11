@@ -166,6 +166,43 @@ class RevenueCatService {
     return allProducts;
   }
 
+  Future<StoreProductsWithOffering> getCurrentOfferingProducts() async {
+    // Get offerings
+    final offerings = await Purchases.getOfferings();
+
+    // Check if "premium_subscription" offering exists
+    final premiumOffering = offerings.current;
+    if (premiumOffering == null) {
+      StoreProductsWithOffering storeProductsWithOffering =
+          StoreProductsWithOffering([], "");
+
+      return storeProductsWithOffering; // Return empty list if offering is not found
+    }
+    final currentOfferingName = premiumOffering.identifier;
+
+    // Get available packages for the offering
+    final packages = premiumOffering.availablePackages;
+
+    // Extract products from each package and combine into a single list
+    final List<StoreProduct> allProducts = [];
+    for (var package in packages) {
+      // if (package.storeProduct.identifier !=
+      //     'aislide_premium_1y:aislide-baseplan-yearly') {
+      //   allProducts.add(package.storeProduct);
+      // } else {
+      //   dp.log("removed: ${package.storeProduct.identifier}");
+      // }
+
+      allProducts.add(package.storeProduct);
+    }
+
+    // return allProducts;
+    StoreProductsWithOffering storeProductsWithOffering =
+        StoreProductsWithOffering(allProducts, currentOfferingName);
+
+    return storeProductsWithOffering;
+  }
+
   Future<StoreProduct?> getLifeTimeSubscription() async {
     // Get offerings
     final offerings = await Purchases.getOfferings();
@@ -482,3 +519,10 @@ class RevenueCatService {
 }
 
 enum Entitlement { free, paid }
+
+class StoreProductsWithOffering {
+  final List<StoreProduct> allProducts;
+  final String offeringID;
+
+  StoreProductsWithOffering(this.allProducts, this.offeringID);
+}

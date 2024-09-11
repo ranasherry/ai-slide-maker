@@ -34,7 +34,7 @@ class ComFunction {
   }
 
   static void GotoHomeScreen() {
-    Get.offAllNamed(Routes.NAVVIEW);
+    Get.offAllNamed(Routes.HOMEVIEW1);
   }
 
   static hideKeyboard(BuildContext context) {

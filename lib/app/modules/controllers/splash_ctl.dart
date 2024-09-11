@@ -17,6 +17,7 @@ import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/services/shared_pref_services.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:uuid/uuid.dart';
 
@@ -93,7 +94,8 @@ class SplashController extends GetxController {
         //   Get.toNamed(Routes.SING_IN);
         //   return;
         // }
-        Get.offNamed(Routes.NAVVIEW);
+        // Get.offNamed(Routes.NAVVIEW);
+        ComFunction.GotoHomeScreen();
         // Get.offNamed(Routes.HOMEVIEW1);
         // Get.offNamed(Routes.NEW_INTRO_SCREENS);
       }

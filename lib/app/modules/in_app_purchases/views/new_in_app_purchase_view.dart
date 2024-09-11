@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:purchases_flutter/models/store_product_wrapper.dart';
 import 'package:slide_maker/app/modules/in_app_purchases/controllers/new_in_app_purchase_controller.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
@@ -26,58 +27,69 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             width: SizeConfig.screenWidth,
             height: SizeConfig.blockSizeVertical * 35,
           ),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  margin: EdgeInsets.only(
-                    left: SizeConfig.blockSizeHorizontal * 5,
-                    top: SizeConfig.blockSizeVertical * 4,
-                  ),
-                  height: SizeConfig.blockSizeVertical * 6,
-                  width: SizeConfig.blockSizeHorizontal * 12,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red,
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    color: AppColors.textfieldcolor,
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: SizeConfig.blockSizeHorizontal * 20,
-                  top: SizeConfig.blockSizeVertical * 4,
-                ),
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeHorizontal * 4),
-                height: SizeConfig.blockSizeVertical * 4,
-                // width: SizeConfig.blockSizeHorizontal * 25,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(
-                    SizeConfig.blockSizeHorizontal * 8,
-                  ),
-                ),
-                child: Center(
-                  child: Obx(() => Text(
-                        "${RCVariables.AppName.value} Pro",
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 4,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textfieldcolor,
-                          ),
+          Container(
+            margin: EdgeInsets.only(
+              left: SizeConfig.blockSizeHorizontal * 5,
+              right: SizeConfig.blockSizeHorizontal * 8,
+              top: SizeConfig.blockSizeVertical * 5,
+            ),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        // left: SizeConfig.blockSizeHorizontal * 5,
+                        // top: SizeConfig.blockSizeVertical * 4,
                         ),
-                      )),
+                    // padding: EdgeInsets.all(3),
+                    height: SizeConfig.blockSizeVertical * 3,
+                    width: SizeConfig.blockSizeHorizontal * 6,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 16,
+                      color: AppColors.textfieldcolor,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                Spacer(),
+                Container(
+                  margin: EdgeInsets.only(
+                      // left: SizeConfig.blockSizeHorizontal * 20,
+                      // top: SizeConfig.blockSizeVertical * 4,
+                      ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 4),
+                  height: SizeConfig.blockSizeVertical * 4,
+                  // width: SizeConfig.blockSizeHorizontal * 25,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(
+                      SizeConfig.blockSizeHorizontal * 8,
+                    ),
+                  ),
+                  child: Center(
+                    child: Obx(() => Text(
+                          "${RCVariables.AppName.value} Pro",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textfieldcolor,
+                            ),
+                          ),
+                        )),
+                  ),
+                ),
+                Spacer()
+              ],
+            ),
           ),
           Container(
             alignment: Alignment.center,
@@ -119,6 +131,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
             child: Stack(
               children: [
                 SingleChildScrollView(
+                  controller: controller.scrollController,
                   child: Container(
                     padding:
                         EdgeInsets.only(top: SizeConfig.blockSizeVertical * 0),
@@ -138,9 +151,9 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                               ),
                             ),
                           ),
-                          child: FutureBuilder<List<StoreProduct>>(
+                          child: FutureBuilder<StoreProductsWithOffering>(
                               future: RevenueCatService()
-                                  .getFilteredSubscriptionProducts(),
+                                  .getCurrentOfferingProducts(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   print(snapshot
@@ -156,7 +169,12 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                                   case ConnectionState.done:
                                     if (snapshot.hasData) {
                                       if (snapshot.data != null) {
-                                        final products = snapshot.data!;
+                                        final offeringIdentifier =
+                                            snapshot.data!.offeringID;
+                                        debugPrint(
+                                            "Current Offering Identifiers: ${offeringIdentifier}");
+                                        final products =
+                                            snapshot.data!.allProducts;
                                         // controller.selectedProduct.value =
                                         //     product;
                                         WidgetsBinding.instance
@@ -182,7 +200,8 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                                         //     discountPercentage: RCVariables.discountPercentage,
                                         //     discountedPrice: removeAdProduct.price);
 
-                                        return _mainContent(products);
+                                        return _mainContent(
+                                            products, offeringIdentifier);
                                       } else {
                                         // Handle the case where StoreProduct is null
                                         Get.back();
@@ -233,30 +252,31 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
     );
   }
 
-  Column _mainContent(List<StoreProduct> products) {
+  Column _mainContent(List<StoreProduct> products, String currentOfferingID) {
     return Column(
       children: [
         // ),
-
-        Container(
-          width: SizeConfig.screenWidth,
-          // color: Colors.red,
-          child: Center(
-            child: ListView.builder(
-                padding: EdgeInsets.all(0),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  // if (products[index].identifier == "aislide_adremove_1") {
-                  //   return _hotProductItem(products[index]);
-                  // } else {
-                  //   return _productItem(products[index]);
-                  // }
-                  return _productItem(products[index], products, index);
-                }),
-          ),
-        ),
+        currentOfferingID == "premimum_subscription_beta"
+            ? premimum_subscription_beta_widget(products)
+            : Container(
+                width: SizeConfig.screenWidth,
+                // color: Colors.red,
+                child: Center(
+                  child: ListView.builder(
+                      padding: EdgeInsets.all(0),
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        // if (products[index].identifier == "aislide_adremove_1") {
+                        //   return _hotProductItem(products[index]);
+                        // } else {
+                        //   return _productItem(products[index]);
+                        // }
+                        return _productItem(products[index], products, index);
+                      }),
+                ),
+              ),
         // _productItem(product),
 
         Obx(() => controller.showTimer.value
@@ -693,6 +713,48 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
     );
   }
 
+  Widget premimum_subscription_beta_widget(List<StoreProduct> products) {
+    StoreProduct removeAdProduct =
+        products.where((p) => p.identifier == "aislide_adremove_1").first;
+    int removeAdProductIndex = products.indexOf(removeAdProduct);
+    // products.remove(removeAdProduct);
+    return Column(
+      children: [
+        Container(
+          width: SizeConfig.screenWidth,
+          // padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
+          padding: EdgeInsets.only(
+              left: SizeConfig.blockSizeHorizontal * 4,
+              right: SizeConfig.blockSizeHorizontal * 4,
+              top: SizeConfig.blockSizeHorizontal * 4,
+              bottom: 0),
+          // color: Colors.red,
+          child: Center(
+            child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 5 / 4,
+                ),
+                padding: EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: products.length - 1,
+                itemBuilder: (context, index) {
+                  // if (products[index].identifier == "aislide_adremove_1") {
+                  //   return _hotProductItem(products[index]);
+                  // } else {
+                  //   return _productItem(products[index]);
+                  // }
+                  return _gridProductItem(products[index], products, index);
+                }),
+          ),
+        ),
+        _productItem(
+            products[removeAdProductIndex], products, removeAdProductIndex)
+      ],
+    );
+  }
+
   Widget _productItem(
       StoreProduct product, List<StoreProduct> products, int index) {
     bool isDiscounted = false;
@@ -785,6 +847,7 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
       },
       child: Container(
         // height: SizeConfig.blockSizeVertical * 10,
+        // color: Colors.red,
         width: SizeConfig.screenWidth,
         child: Center(
           child: Stack(
@@ -897,6 +960,259 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                 ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _gridProductItem(
+      StoreProduct product, List<StoreProduct> products, int index) {
+    bool isDiscounted = false;
+
+    var orignalPrice = controller
+        .getOriginalPrice(
+            discountPercentage: RCVariables.discountPercentage,
+            discountedPrice: product.price)
+        .toStringAsFixed(2);
+    String productTitle = controller.getProductTitleBeta(product);
+    String productPeriod = controller.getProductPeriodBeta(product);
+    developer.log("ID: ${product.identifier}  period: $productPeriod");
+    var OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+    int discountPercentage = RCVariables.discountPercentage.toInt();
+
+    String perMonthPriceStr = "";
+
+    final pID = product.identifier;
+
+    if (pID == "aislide_premium_1w:aislide-baseplan-weekly") {
+      isDiscounted = false;
+      orignalPrice = controller
+          .getOriginalPrice(
+              discountPercentage: RCVariables.discountPercentage,
+              discountedPrice: product.price)
+          .toStringAsFixed(2);
+
+      OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+    } else if (pID == "aislide_premium_1m:aislide-baseplan-monthly") {
+      isDiscounted = false;
+
+      OriginalPriceString = "${product.price}${product.currencyCode}";
+
+      discountPercentage =
+          (100 - ((product.price / product.price) * 100)).toInt();
+
+      // text4 = "${discountPercentage.toStringAsFixed(0)}%";
+    } else if (pID == "aislide_premium_1y:aislide-baseplan-yearly") {
+      isDiscounted = true;
+      final perMonth = product.price / 12;
+
+      final monthlyPrice = products
+          .firstWhere(
+              (element) =>
+                  element.identifier ==
+                  "aislide_premium_1m:aislide-baseplan-monthly",
+              orElse: () => StoreProduct(
+                  "aislide_premium_1m:aislide-baseplan-monthly",
+                  "Monthly",
+                  "Monthly",
+                  perMonth,
+                  product.priceString,
+                  product.currencyCode))
+          .price;
+
+      final orignalPrice = monthlyPrice * 12;
+
+      OriginalPriceString =
+          "${perMonth.toStringAsFixed(2)}${product.currencyCode}";
+      perMonthPriceStr =
+          "${monthlyPrice.toStringAsFixed(2)}${product.currencyCode}";
+
+      discountPercentage =
+          (100 - ((product.price / orignalPrice) * 100)).toInt();
+      String productPeriod = controller.getProductPeriod(product);
+    } else if (pID == "aislide_premium_6m:aislid-baseplan-bimonthly") {
+      isDiscounted = true;
+      final perMonth = product.price / 6;
+
+      final monthlyPrice = products
+          .firstWhere(
+              (element) =>
+                  element.identifier ==
+                  "aislide_premium_1m:aislide-baseplan-monthly",
+              orElse: () => StoreProduct(
+                  "aislide_premium_1m:aislide-baseplan-monthly",
+                  "Monthly",
+                  "Monthly",
+                  perMonth,
+                  product.priceString,
+                  product.currencyCode))
+          .price;
+
+      final orignalPrice = monthlyPrice * 6;
+
+      OriginalPriceString =
+          "${perMonth.toStringAsFixed(2)}${product.currencyCode}";
+      perMonthPriceStr =
+          "${monthlyPrice.toStringAsFixed(2)}${product.currencyCode}";
+
+      discountPercentage =
+          (100 - ((product.price / orignalPrice) * 100)).toInt();
+      String productPeriod = controller.getProductPeriod(product);
+    } else if (pID == "aislide_premium_3m:aislide-baseplan-trimonthly") {
+      isDiscounted = true;
+      final perMonth = product.price / 3;
+
+      final monthlyPrice = products
+          .firstWhere(
+              (element) =>
+                  element.identifier ==
+                  "aislide_premium_1m:aislide-baseplan-monthly",
+              orElse: () => StoreProduct(
+                  "aislide_premium_1m:aislide-baseplan-monthly",
+                  "Monthly",
+                  "Monthly",
+                  perMonth,
+                  product.priceString,
+                  product.currencyCode))
+          .price;
+
+      final orignalPrice = monthlyPrice * 3;
+
+      OriginalPriceString =
+          "${perMonth.toStringAsFixed(2)}${product.currencyCode}";
+      perMonthPriceStr =
+          "${monthlyPrice.toStringAsFixed(2)}${product.currencyCode}";
+
+      discountPercentage =
+          (100 - ((product.price / orignalPrice) * 100)).toInt();
+      String productPeriod = controller.getProductPeriod(product);
+    } else if (pID == "aislide_adremove_1") {
+      isDiscounted = true;
+      final orignalPrice = controller
+          .getOriginalPrice(
+              discountPercentage: RCVariables.discountPercentage,
+              discountedPrice: product.price)
+          .toStringAsFixed(2);
+      OriginalPriceString = "${orignalPrice}${product.currencyCode}";
+    }
+
+    String saveText = "Save ${discountPercentage}%";
+
+    return GestureDetector(
+      onTap: () {
+        controller.selectedIndex.value = index;
+        controller.selectedProduct.value =
+            products[controller.selectedIndex.value];
+      },
+      child: Container(
+        // height: SizeConfig.blockSizeVertical * 10,
+        // width: SizeConfig.screenWidth,
+        child: Center(
+          child: Stack(children: [
+            Obx(
+              () => Container(
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    border: Border.all(
+                      color: controller.selectedIndex.value == index
+                          ? AppColors.mainColor
+                          : Colors.grey,
+                      width: 2,
+                    )),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Obx(() => Radio(
+                                onChanged: (value) {},
+                                toggleable: true,
+                                value: controller.selectedIndex.value,
+                                groupValue: index,
+                                visualDensity: VisualDensity.compact,
+                                activeColor: Color(0xffD43D01),
+                              )),
+                          Text(
+                            '$productTitle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '${perMonthPriceStr}',
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.black38,
+                            fontSize: 12),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: SizeConfig.blockSizeHorizontal * 24,
+                            child: FittedBox(
+                              child: Text(
+                                '${OriginalPriceString}',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '/Month',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black45,
+                            ),
+                          )
+                        ],
+                      ),
+
+                      // Text(
+                      //   'USD 35.99',
+                      //   style: TextStyle(
+                      //     fontSize: 15,
+                      //     color: Colors.black54,
+                      //   ),
+                      // ),
+                      Text(
+                        '${productPeriod}',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            isDiscounted
+                ? Positioned(
+                    top: 0,
+                    right: 10,
+                    child: Container(
+                      // height: 20,
+                      // width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.red,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 7),
+                      child: Text(
+                        '$saveText',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ))
+                : Container()
+          ]),
         ),
       ),
     );
@@ -1020,94 +1336,116 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
   Align footerWidget() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Card(
-        // elevation: 5.0, // Set the elevation to the desired value
-        margin: EdgeInsets.zero, // Remove default margins if needed
-        child: Container(
-          width: SizeConfig.screenWidth,
-          height: SizeConfig.screenHeight * 0.18,
-          decoration: BoxDecoration(
-            color: AppColors.footerContainerColor,
-            // border: Border(
-            //   top: BorderSide(
-            //     color: const Color.fromARGB(
-            //         255, 207, 207, 207), // Set the color to grey
-            //     width: 1.0, // Set the width of the border
-            //   ),
-            // ),
-          ),
-          child: Column(
-            children: [
-              Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Obx(() => controller.showScroll.value
+              ? GestureDetector(
+                  onTap: () {
+                    controller.scrollController.animateTo(
+                      controller.scrollController.position.maxScrollExtent,
+                      duration: Duration(
+                          milliseconds: 500), // Adjust duration as needed
+                      curve: Curves.easeOut, // You can use different curves
+                    );
+                  },
+                  child: Container(
+                      // width: SizeConfig.blockSizeHorizontal * 5,
+                      height: SizeConfig.blockSizeVertical * 8,
+                      child: Lottie.asset('assets/lottie/scroll_anim.json')),
+                )
+              : Container()),
+          Card(
+            // elevation: 5.0, // Set the elevation to the desired value
+            margin: EdgeInsets.zero, // Remove default margins if needed
+            child: Container(
+              width: SizeConfig.screenWidth,
+              height: SizeConfig.screenHeight * 0.18,
+              decoration: BoxDecoration(
+                color: AppColors.footerContainerColor,
+                // border: Border(
+                //   top: BorderSide(
+                //     color: const Color.fromARGB(
+                //         255, 207, 207, 207), // Set the color to grey
+                //     width: 1.0, // Set the width of the border
+                //   ),
+                // ),
+              ),
+              child: Column(
                 children: [
-                  Container(
-                    height: SizeConfig.blockSizeVertical * 18,
-                    width: SizeConfig.screenWidth,
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      // border: Border.fromBorderSide(
-                      //     BorderSide(color: Colors.grey.shade300, width: 2))
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
-                    child: Center(
-                      child: Obx(() => GestureDetector(
-                            onTap: controller.selectedProduct.value != null
-                                ? () {
-                                    // controller.switchToSlidesOutlines();
-                                    RevenueCatService()
-                                        .purchaseSubscriptionWithProduct(
-                                            controller.selectedProduct.value!);
-                                  }
-                                : null,
+                  Stack(
+                    children: [
+                      Container(
+                        height: SizeConfig.blockSizeVertical * 18,
+                        width: SizeConfig.screenWidth,
+                        decoration: BoxDecoration(
+                          color: AppColors.background,
+                          // border: Border.fromBorderSide(
+                          //     BorderSide(color: Colors.grey.shade300, width: 2))
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: SizeConfig.blockSizeVertical * 2),
+                        child: Center(
+                          child: Obx(() => GestureDetector(
+                                onTap: controller.selectedProduct.value != null
+                                    ? () {
+                                        // controller.switchToSlidesOutlines();
+                                        RevenueCatService()
+                                            .purchaseSubscriptionWithProduct(
+                                                controller
+                                                    .selectedProduct.value!);
+                                      }
+                                    : null,
+                                child: Container(
+                                  height: SizeConfig.blockSizeVertical * 7,
+                                  width: SizeConfig.blockSizeHorizontal * 85,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.mainColor,
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.blockSizeHorizontal * 8)),
+                                  child: Center(
+                                    child: Text("Start Subscription",
+                                        style: AppStyle.button),
+                                  ),
+                                ),
+                              )),
+                        ),
+                      ),
+                      Positioned(
+                        top: SizeConfig.blockSizeVertical * 11,
+                        // left: SizeConfig.blockSizeHorizontal * 30,
+                        child: Container(
+                          width: SizeConfig.screenWidth,
+                          child: Center(
                             child: Container(
-                              height: SizeConfig.blockSizeVertical * 7,
-                              width: SizeConfig.blockSizeHorizontal * 85,
+                              height: SizeConfig.blockSizeVertical * 4,
+                              width: SizeConfig.blockSizeHorizontal * 50,
                               decoration: BoxDecoration(
-                                  color: AppColors.mainColor,
+                                  color: AppColors.textfieldcolor,
                                   borderRadius: BorderRadius.circular(
                                       SizeConfig.blockSizeHorizontal * 8)),
                               child: Center(
-                                child: Text("Start Subscription",
-                                    style: AppStyle.button),
+                                child: Obx(() =>
+                                    controller.selectedProduct.value != null
+                                        ? Text(
+                                            "${controller.selectedProduct.value!.priceString} / ${controller.getProductPeriod(controller.selectedProduct.value!)}",
+                                            style: AppStyle.subHeadingText,
+                                          )
+                                        : Container()),
                               ),
                             ),
-                          )),
-                    ),
-                  ),
-                  Positioned(
-                    top: SizeConfig.blockSizeVertical * 11,
-                    // left: SizeConfig.blockSizeHorizontal * 30,
-                    child: Container(
-                      width: SizeConfig.screenWidth,
-                      child: Center(
-                        child: Container(
-                          height: SizeConfig.blockSizeVertical * 4,
-                          width: SizeConfig.blockSizeHorizontal * 50,
-                          decoration: BoxDecoration(
-                              color: AppColors.textfieldcolor,
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 8)),
-                          child: Center(
-                            child: Obx(
-                                () => controller.selectedProduct.value != null
-                                    ? Text(
-                                        "${controller.selectedProduct.value!.priceString} / ${controller.getProductPeriod(controller.selectedProduct.value!)}",
-                                        style: AppStyle.subHeadingText,
-                                      )
-                                    : Container()),
                           ),
                         ),
-                      ),
-                    ),
-                  )
+                      )
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

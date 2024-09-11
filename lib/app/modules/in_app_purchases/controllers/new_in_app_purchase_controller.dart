@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/models/store_product_wrapper.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
@@ -16,12 +17,32 @@ class newInAppPurchaseCTL extends GetxController {
 
   Rx<StoreProduct?> selectedProduct = Rx<StoreProduct?>(null);
 
+  ScrollController scrollController = ScrollController();
+
+  RxBool showScroll = true.obs;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
 
     initDiscountTimer();
+
+    scrollController.addListener(() {
+      debugPrint("Scroll Position: ${scrollController.position}");
+      if (scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange) {
+        showScroll.value = false;
+        debugPrint("reach the bottom ${showScroll.value}");
+      } else {
+        showScroll.value = true;
+      }
+      if (scrollController.offset <=
+              scrollController.position.minScrollExtent &&
+          !scrollController.position.outOfRange) {
+        debugPrint("reach the top");
+      }
+    });
   }
 
   @override
@@ -64,6 +85,12 @@ class newInAppPurchaseCTL extends GetxController {
     } else if (product.identifier ==
         "aislide_premium_1y:aislide-baseplan-yearly") {
       return "Annually";
+    } else if (product.identifier ==
+        "aislide_premium_3m:aislide-baseplan-trimonthly") {
+      return "every 3 Months";
+    } else if (product.identifier ==
+        "aislide_premium_6m:aislid-baseplan-bimonthly") {
+      return "every 6 Months";
     } else {
       log("Product ID: ${product.identifier}");
       return product.title;
@@ -88,6 +115,14 @@ class newInAppPurchaseCTL extends GetxController {
         "aislide_premium_1y:aislide-baseplan-yearly") {
       log("Matched: Year");
       return "Year";
+    } else if (product.identifier ==
+        "aislide_premium_3m:aislide-baseplan-trimonthly") {
+      log("Matched: Year");
+      return "3 Months";
+    } else if (product.identifier ==
+        "aislide_premium_6m:aislid-baseplan-bimonthly") {
+      log("Matched: Year");
+      return "6 Months";
     } else {
       log("Unknown Product ID: ${product.identifier}");
       return product.description;
@@ -174,5 +209,53 @@ class newInAppPurchaseCTL extends GetxController {
         seconds > 0 ? " : ${seconds.toString().padLeft(2, '0')}s" : "";
 
     return "$hourString$minuteString$secondString".trim();
+  }
+
+  String getProductTitleBeta(StoreProduct product) {
+    if (product.identifier == "aislide_adremove_1") {
+      return "Pay Once";
+    } else if (product.identifier ==
+        "aislide_premium_1w:aislide-baseplan-weekly") {
+      return "Weekly";
+    } else if (product.identifier ==
+        "aislide_premium_1m:aislide-baseplan-monthly") {
+      return "Monthly";
+    } else if (product.identifier ==
+        "aislide_premium_1y:aislide-baseplan-yearly") {
+      return "Annually";
+    } else if (product.identifier ==
+        "aislide_premium_3m:aislide-baseplan-trimonthly") {
+      return "3 Months";
+    } else if (product.identifier ==
+        "aislide_premium_6m:aislid-baseplan-bimonthly") {
+      return "6 Months";
+    } else {
+      log("Product ID: ${product.identifier}");
+      return product.title;
+    }
+  }
+
+  String getProductPeriodBeta(StoreProduct product) {
+    if (product.identifier == "aislide_adremove_1") {
+      return "Pay Once";
+    } else if (product.identifier ==
+        "aislide_premium_1w:aislide-baseplan-weekly") {
+      return "Billed Weekly";
+    } else if (product.identifier ==
+        "aislide_premium_1m:aislide-baseplan-monthly") {
+      return "Billed Monthly";
+    } else if (product.identifier ==
+        "aislide_premium_1y:aislide-baseplan-yearly") {
+      return "Billed Annually";
+    } else if (product.identifier ==
+        "aislide_premium_3m:aislide-baseplan-trimonthly") {
+      return "Billed every 3 months";
+    } else if (product.identifier ==
+        "aislide_premium_6m:aislid-baseplan-bimonthly") {
+      return "Billed every 6 months";
+    } else {
+      log("Product ID: ${product.identifier}");
+      return product.title;
+    }
   }
 }
