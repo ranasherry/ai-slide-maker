@@ -52,6 +52,7 @@ abstract class Routes {
 
   static const NAVVIEW = _Paths.NAVVIEW;
   static const CREATIONVIEW = _Paths.CREATIONVIEW;
+  static const PresentationEditIndividualSlideView = _Paths.PresentationEditIndividualSlideView;
 }
 
 abstract class _Paths {
@@ -97,4 +98,5 @@ abstract class _Paths {
   static const PresentationEditView = '/PresentationEditView';
   static const NAVVIEW = '/NAVVIEW';
   static const CREATIONVIEW = '/CREATIONVIEW';
+  static const PresentationEditIndividualSlideView = '/PresentationEditIndividualSlideView';
 }

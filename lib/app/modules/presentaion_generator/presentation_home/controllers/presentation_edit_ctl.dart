@@ -10,6 +10,7 @@ import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1_editor.dart';
 import 'package:slide_maker/app/utills/CM.dart';
+import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 import 'package:slide_maker/app/data/slide.dart';
 
@@ -20,18 +21,40 @@ class PresentationEditCtl extends GetxController {
   late List<TextEditingController> slideTitles;
   late List<List<TextEditingController>> slideSectionHeaders;
   late List<List<TextEditingController>> slideSectionContents;
-  late List<double> slideTitlesFontValue;
-  late List<List<double>> slideSectionHeadersFontValue;
-  late List<List<double>> slideSectionContentsFontValue;
+  late RxList<RxDouble> slideTitlesFontValue = <RxDouble>[].obs;
+  late RxList<List<RxDouble>> slideSectionHeadersFontValue  = <List<RxDouble>>[].obs;
+  late RxList<List<RxDouble>> slideSectionContentsFontValue = <List<RxDouble>>[].obs;
+
   // late TextEditingController slideSection1SlideTitle;
   // late List<TextEditingController> slideSection1SectionHeaders;
   // late List<TextEditingController> slideSection1SectionContents;
+  late RxInt firstIndexOfFont;
+  late RxInt secondIndexOfFont;
+  late RxBool isSectionHeader;
+  late RxBool isSectionContent; 
+  late RxBool isTitle; 
+  RxBool test = false.obs;
 
   RxList<MyPresentation> presentations = <MyPresentation>[].obs;
   
   RxString presentationTitle = "".obs;
+
   RxInt currentSelectedIndex = 0.obs;
-  
+
+  RxDouble currentFontSize = 0.0.obs;
+
+  SlidePallet currentPallet=SlidePallet(
+    id: 6,
+    name: "milky",
+    slideCategory: "Light",
+    bigTitleTColor: Colors.black.value,
+    normalTitleTColor: Colors.black.value,
+    sectionHeaderTColor: Colors.black.value,
+    normalDescTColor: Colors.black.value,
+    sectionDescTextColor: Colors.black.value,
+    imageList: AppImages.slidy_style6,
+    fadeColor: const Color.fromARGB(64, 187, 222, 251),
+    isPaid: true);
 
   Rx<MyPresentation> myPresentation = MyPresentation(
     presentationId: 0,
@@ -43,6 +66,7 @@ class PresentationEditCtl extends GetxController {
     likesCount: 0,
     commentsCount: 0
   ).obs;
+
    Rx<MyPresentation> myEditedPresentation = MyPresentation(
     presentationId: 0,
     presentationTitle: "",
@@ -54,7 +78,6 @@ class PresentationEditCtl extends GetxController {
     commentsCount: 0
   ).obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -64,6 +87,11 @@ class PresentationEditCtl extends GetxController {
     myPresentation.value = pres;
     myEditedPresentation.value = pres;
     developer.log("Opened Slide: ${pres.toMap()}");
+    initializeSlidesFontList();
+    initializeSlidesTextController();
+    setValuesAsNull();
+
+
   }
 
   @override
@@ -154,33 +182,68 @@ class PresentationEditCtl extends GetxController {
     .toList();
   }
 
-  void createFontList(){
-
-
-    slideTitlesFontValue = myEditedPresentation.value.slides.map(
+  void initializeSlidesFontList(){
+    slideTitlesFontValue.value = myEditedPresentation.value.slides.map(
       (slides){
-         return 0.0;
+         return 0.0.obs;
     }).toList();
 
 
-    slideSectionHeadersFontValue = myEditedPresentation.value.slides.map(
+    slideSectionHeadersFontValue.value = myEditedPresentation.value.slides.map(
       (slides){
       return slides.slideSections.map(
         (slideSection){
-          return 0.0;
+          return 0.0.obs;
           }).toList();
     })
     .toList();
 
 
-    slideSectionContentsFontValue = myEditedPresentation.value.slides.map(
+    slideSectionContentsFontValue.value = myEditedPresentation.value.slides.map(
       (slides){
       return slides.slideSections.map(
         (slideSection){
-          return 0.0;
+          return 0.0.obs;
           }).toList();
     })
     .toList();
+  }
+  void setValuesAsNull(){
+    firstIndexOfFont= 0.obs;
+    secondIndexOfFont = 0.obs;
+    isSectionHeader = false.obs;
+    isSectionContent = false.obs;
+    isTitle = false.obs;
+  }
+  void setFontValue(int firstIndexOfFont, int secondIndexOfFont, bool isSectionHeader, bool isSectionContent, bool isTitle, double setValue){
+    if(isTitle){
+
+      slideTitlesFontValue[firstIndexOfFont].value = setValue;
+      currentPallet.titleFontSize=setValue;
+      developer.log("Pallet TitleFont  size: ${currentPallet.titleFontSize}");
+      // developer.log("Editing TitleFont ${firstIndexOfFont}");
+      // developer.log("set Value ${slideTitlesFontValue[firstIndexOfFont].value}");
+      // developer.log("set Value  Index: ${firstIndexOfFont}");
+
+      
+    }
+    else if(isSectionContent){
+      slideSectionContentsFontValue.value[firstIndexOfFont][secondIndexOfFont].value = setValue;
+      developer.log("Editing SectionContent ${firstIndexOfFont} ${secondIndexOfFont}");
+      developer.log("set Value ${slideSectionContentsFontValue.value[firstIndexOfFont][secondIndexOfFont].value}");
+
+    }
+    else if(isSectionHeader){
+      slideSectionHeadersFontValue.value[firstIndexOfFont][secondIndexOfFont].value = setValue;
+      developer.log("Editing SectionHeader ${firstIndexOfFont} ${secondIndexOfFont}");
+      developer.log("set Value ${slideSectionHeadersFontValue.value[firstIndexOfFont][secondIndexOfFont].value}");
+
+    
+    }
+    else{
+
+    }
+
   }
  
   // void initializeSectionSlide1Editor(MySlide mySlide){
