@@ -18,6 +18,8 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
   // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+// presEditCtl.initializeSlidesFontList();
+// presEditCtl.initializeSlidesTextController();
     return Scaffold(
       // drawer: MyDrawer(),
       // key: _scaffoldKey,

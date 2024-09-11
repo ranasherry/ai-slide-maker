@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SlidePallet {
   int id;
@@ -12,6 +13,7 @@ class SlidePallet {
   List<String> imageList;
   Color fadeColor;
   bool isPaid;
+  double titleFontSize;
 
   SlidePallet({
     required this.id,
@@ -25,5 +27,6 @@ class SlidePallet {
     required this.imageList,
     required this.fadeColor,
     required this.isPaid,
-  });
+    double? titleFontSize, // Optional field with null check
+  }) : titleFontSize = titleFontSize ?? 0.05; // Assign default value if not provided
 }
