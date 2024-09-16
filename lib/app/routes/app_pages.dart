@@ -9,8 +9,12 @@ import 'package:slide_maker/app/modules/nav_bar_view/binding/nav_view_binding.da
 import 'package:slide_maker/app/modules/nav_bar_view/view/nav_view.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/bindings/presentation_open_binding.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_open_view.dart';
+import 'package:slide_maker/app/modules/profile_view/binding/edit_profile_binding.dart';
 import 'package:slide_maker/app/modules/profile_view/binding/profile_view_binding.dart';
+import 'package:slide_maker/app/modules/profile_view/binding/user_profileview_binding.dart';
+import 'package:slide_maker/app/modules/profile_view/view/edit_profile_view.dart';
 import 'package:slide_maker/app/modules/profile_view/view/profile_view.dart';
+import 'package:slide_maker/app/modules/profile_view/view/user_profile_view.dart';
 
 import '../modules/authentications/sing_in/bindings/sing_in_binding.dart';
 import '../modules/authentications/sing_in/views/sing_in_view.dart';
@@ -290,6 +294,16 @@ class AppPages {
       name: _Paths.PROFILEVIEW,
       page: () => const ProfileView(),
       binding: ProfileViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDITPROFILEVIEW,
+      page: () => const EditProfileView(),
+      binding: EditProfileViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.USERPROFILEVIEW,
+      page: () => const UserProfileView(),
+      binding: UserProfileviewBinding(),
     ),
     GetPage(
       name: _Paths.PresentationOpenView,
