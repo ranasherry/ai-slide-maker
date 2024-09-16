@@ -12,6 +12,11 @@ import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide1.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide3.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide4.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide5.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide6.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide7.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -127,11 +132,16 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
         } else {
           //? Sections
           if (index == 1) {
-            return Obx(() => SectionedSlide2(
+            return Obx(() => SectionedSlide7(
                   mySlide: controller.myPresentation.value.slides[index],
                   slidePallet: controller.selectedPallet.value,
                   size: size,
                 ));
+            // return Obx(() => SectionedSlide2(
+            //       mySlide: controller.myPresentation.value.slides[index],
+            //       slidePallet: controller.selectedPallet.value,
+            //       size: size,
+            //     ));
           } else {
             return Obx(() => SectionedSlide1(
                   mySlide: controller.myPresentation.value.slides[index],
@@ -181,7 +191,8 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                         // controller.RequestPresentationPlan();
                         if (controller.isSlidesGenerated.value) {
                           // controller.createPresentation();
-                          Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value]);
+                          Get.toNamed(Routes.PresentationOpenView,
+                              arguments: [controller.myPresentation.value]);
                           AppLovinProvider.instance.showInterstitial(() {});
                         } else {
                           EasyLoading.showToast(
@@ -190,30 +201,29 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                         }
                       },
                       child: Text("Save"))),
-                  //      Container(
-                  // margin: EdgeInsets.symmetric(
-                  //     horizontal: SizeConfig.blockSizeHorizontal * 6,
-                  //     vertical: SizeConfig.blockSizeVertical),
-                  // width: SizeConfig.screenWidth * 0.3,
-                  // height: SizeConfig.blockSizeVertical * 6.5,
-                  // child: ElevatedButton(
-                  //     style: ElevatedButton.styleFrom(
-                  //         backgroundColor: AppColors
-                  //             .buttonBGColor, // Button background color
-                  //         foregroundColor: Colors.white),
-                  //     onPressed: () {
-                  //       // controller.RequestPresentationPlan();
-                  //       if (controller.isSlidesGenerated.value) {
-                  //         Get.toNamed(Routes.PresentationEditView, arguments: [controller.myPresentation.value]);
-                  //         AppLovinProvider.instance.showInterstitial(() {});
-                  //       } else {
-                  //         EasyLoading.showToast(
-                  //             "Please Wait for remaining slides to be Generated..",
-                  //             duration: Durations.extralong2);
-                  //       }
-                  //     },
-                  //     child: Text("Edit"))),
-                     
+              //      Container(
+              // margin: EdgeInsets.symmetric(
+              //     horizontal: SizeConfig.blockSizeHorizontal * 6,
+              //     vertical: SizeConfig.blockSizeVertical),
+              // width: SizeConfig.screenWidth * 0.3,
+              // height: SizeConfig.blockSizeVertical * 6.5,
+              // child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //         backgroundColor: AppColors
+              //             .buttonBGColor, // Button background color
+              //         foregroundColor: Colors.white),
+              //     onPressed: () {
+              //       // controller.RequestPresentationPlan();
+              //       if (controller.isSlidesGenerated.value) {
+              //         Get.toNamed(Routes.PresentationEditView, arguments: [controller.myPresentation.value]);
+              //         AppLovinProvider.instance.showInterstitial(() {});
+              //       } else {
+              //         EasyLoading.showToast(
+              //             "Please Wait for remaining slides to be Generated..",
+              //             duration: Durations.extralong2);
+              //       }
+              //     },
+              //     child: Text("Edit"))),
             ],
           ),
         ),

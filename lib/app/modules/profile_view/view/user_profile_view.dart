@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:slide_maker/app/modules/profile_view/controller/profile_view_controller.dart';
-import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/modules/profile_view/controller/user_profileview_controller.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
-class ProfileView extends GetView<ProfileViewCTL> {
-  const ProfileView({super.key});
+class UserProfileView extends GetView<UserProfileviewController> {
+  const UserProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +54,6 @@ class ProfileView extends GetView<ProfileViewCTL> {
                     ),
                   ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.EDITPROFILEVIEW);
-                  },
-                  child: Icon(Icons.edit_outlined),
-                )
               ],
             ),
             Padding(
