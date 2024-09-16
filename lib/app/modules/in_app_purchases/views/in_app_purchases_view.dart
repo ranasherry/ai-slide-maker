@@ -37,9 +37,10 @@ class InAppPurchasesView extends GetView<InAppPurchasesController> {
                   if (snapshot.hasData) {
                     if (snapshot.data != null) {
                       final products = snapshot.data!;
-                      products.removeWhere(
-                          (p) => p.identifier == "aislide_adremove_1");
+                      // products.removeWhere(
+                      //     (p) => p.identifier == "aislide_adremove_1");
                       controller.selectedIndex.value = products.length - 1;
+
                       if (products[controller.selectedIndex.value].identifier ==
                           "aislide_adremove_1") {
                         controller.showTimer.value = true;

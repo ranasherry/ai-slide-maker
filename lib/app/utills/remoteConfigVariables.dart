@@ -10,6 +10,7 @@ class RCVariables {
   static String GeminiAPIKey = "";
   static double discountPercentage = 90;
   static int discountTimeLeft = 123;
+  static String discountTimeStamp = "";
   static RxInt slotLeft = 20.obs;
   static List<String> geminiAPIKeys = [];
   // line added by rizwan

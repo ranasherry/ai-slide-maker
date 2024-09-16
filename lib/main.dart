@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
+import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
 import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/services/rizwan_apiservices.dart';
@@ -147,8 +148,11 @@ class MyApp extends StatelessWidget {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     // EasyLoading.init();
     observer.analytics.setAnalyticsCollectionEnabled(kReleaseMode);
-    return ChangeNotifierProvider(
-        create: (context) => GoogleSignInProvider(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
+          ChangeNotifierProvider(create: (context) => CreationViewProvider())
+        ],
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {

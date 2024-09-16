@@ -109,6 +109,7 @@ class AppPages {
       page: () => SlideMakerView(),
       binding: SlideMakerBinding(),
     ),
+
     // GetPage(
     //   name: _Paths.GemsView,
     //   page: () => GemsView(),
@@ -139,6 +140,7 @@ class AppPages {
       page: () => PdfViewView(),
       binding: PdfViewBinding(),
     ),
+
     GetPage(
       name: _Paths.SHOW_P_D_F,
       page: () => ShowPDFView(),
@@ -311,7 +313,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PresentationEditIndividualSlideView,
-      page: ()=> PresentationEditIndividualSlideView(),
+      page: () => PresentationEditIndividualSlideView(),
     )
   ];
 }

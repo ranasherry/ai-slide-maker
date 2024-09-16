@@ -60,8 +60,13 @@ class newInAppPurchaseCTL extends GetxController {
 
   void initDiscountTimer() {
     Timer.periodic(Duration(seconds: 1), (timer) {
-      timeLeft.value = timeUntil(RCVariables.discountTimeLeft);
-      // log("TimeLeft: ${timeLeft.value}");
+      DateTime date = DateTime.parse(RCVariables.discountTimeStamp);
+
+      timeLeft.value = timeUntil(date.millisecondsSinceEpoch);
+      // timeLeft.value = timeUntil(RCVariables.discountTimeStamp);
+      // DateTime.tryParse
+
+      // log("TimeStamp: ${date.millisecondsSinceEpoch}");
     });
   }
 
@@ -176,7 +181,7 @@ class newInAppPurchaseCTL extends GetxController {
 
   String timeUntil(int millisecondsSinceEpoch) {
     // Get current time in milliseconds
-    final now = DateTime.now().millisecondsSinceEpoch;
+    final now = DateTime.now().toUtc().millisecondsSinceEpoch;
 
     // Calculate difference in milliseconds
     final difference = millisecondsSinceEpoch - now;

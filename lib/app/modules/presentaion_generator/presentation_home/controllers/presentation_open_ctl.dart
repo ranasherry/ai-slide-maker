@@ -12,22 +12,25 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentationOpenCtl extends GetxController {
   //TODO: Implement PresentationHomeController
- 
+
   RxList<MyPresentation> presentations = <MyPresentation>[].obs;
 
   RxString presentationTitle = "".obs;
   RxInt currentSelectedIndex = 0.obs;
 
   Rx<MyPresentation> myPresentation = MyPresentation(
-    presentationId: 0,
-    presentationTitle: "",
-    slides: <MySlide>[].obs,
-    createrId: null,
-    timestamp: DateTime.now().millisecondsSinceEpoch,
-    styleId: '1'.obs,
-    likesCount: 0,
-    commentsCount: 0
-  ).obs;
+          presentationId: 0,
+          presentationTitle: "",
+          slides: <MySlide>[].obs,
+          createrId: null,
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          styleId: '1'.obs,
+          likesCount: 0,
+          commentsCount: 0,
+          isLiked: false)
+      .obs;
+
+  RxBool isOtherUser = false.obs;
 
   @override
   void onInit() {
@@ -36,7 +39,13 @@ class PresentationOpenCtl extends GetxController {
 
     presentationTitle.value = pres.presentationTitle;
     myPresentation.value = pres;
+
+    if (Get.arguments.length > 1) {
+      isOtherUser.value = Get.arguments[1] as bool;
+    }
+
     developer.log("Opened Slide: ${pres.toMap()}");
+    developer.log("IsOtherUser: ${isOtherUser.value}");
   }
 
   @override

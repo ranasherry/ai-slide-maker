@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/data/comment.dart';
 import 'package:slide_maker/app/data/like.dart';
+import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/user.dart';
 
@@ -27,7 +28,8 @@ class FirestoreService {
 
   String UserID = "temp";
   //added by rizwan
-  String presentationCollectionPath = "presentationTest";
+  // String presentationCollectionPath = "presentationTest";
+  String presentationCollectionPath = "presentation";
   String subcollectionLikes = 'likesTest';
   String subcollectionComments = 'commentsTest';
 
@@ -143,14 +145,76 @@ class FirestoreService {
   }
 
   Future<Map<String, Object?>> fetchPresentationHistoryFirestorePagenation(
-      {DocumentSnapshot? lastDoc}) async {
+      {DocumentSnapshot? lastDoc, String searchTerm = ''}) async {
     log("Entered Firebase History fecth");
+    // Query query =
+    //     FirebaseFirestore.instance.collection('presentations').limit(10);
+
     try {
       Query query = _firestore
           .collection(presentationCollectionPath)
-          .orderBy('timestamp') // Adjust the order based on your requirement
+          .orderBy('likesCount',
+              descending: true) // Adjust the order based on your requirement
           .limit(10);
 
+      // if (searchTerm.isNotEmpty) {
+      //   query = query
+      //       .where('fieldName', isGreaterThanOrEqualTo: searchTerm)
+      //       .where('fieldName',
+      //           isLessThanOrEqualTo:
+      //               searchTerm + '\uf8ff'); // For text matching
+      // }
+
+      if (lastDoc != null) {
+        query = query.startAfterDocument(lastDoc);
+        log("Fetch Query: ${query.parameters}");
+      }
+      log("Fetch Query2: ${query.parameters}");
+
+      final querySnapshot = await query.get();
+
+      final presentations = querySnapshot.docs
+          .map((docSnapshot) => MyPresentation.fromMapDatabase(
+              docSnapshot.data()! as Map<String, dynamic>))
+          .toList();
+
+      log("Fetched Presentations: ${presentations.toList()}");
+
+      return {
+        'presentations': presentations,
+        'lastDoc':
+            querySnapshot.docs.isNotEmpty ? querySnapshot.docs.last : null,
+      };
+    } on Exception catch (e) {
+      log("Fetched Presentations Error: ${e}");
+
+      // TODO
+      return {
+        'presentations': <MyPresentation>[],
+        'lastDoc': null,
+      };
+    }
+  }
+
+  Future<Map<String, Object?>> fetchPresentationHistoryFirestoreSearch(
+      {DocumentSnapshot? lastDoc, String searchTerm = ''}) async {
+    log("Entered Firebase History fecth");
+    Query query = FirebaseFirestore.instance
+        .collection(presentationCollectionPath)
+        .limit(10);
+
+    try {
+      if (searchTerm.isNotEmpty) {
+        // Improved search using lowercased searchTerm and field values
+        query = query
+            .where('presentationTitle', isGreaterThanOrEqualTo: searchTerm)
+            .where('presentationTitle',
+                isLessThanOrEqualTo: searchTerm + '\uf8ff')
+            .orderBy(
+                'presentationTitle'); // Order by the same field used in the where clause
+      } else {
+        query = query.orderBy('timestamp'); // Default ordering
+      }
       if (lastDoc != null) {
         query = query.startAfterDocument(lastDoc);
         log("Fetch Query: ${query.parameters}");
@@ -255,6 +319,30 @@ class FirestoreService {
     }
   }
 
+  Future<bool> isLikedByUser(String userID, String presID) async {
+    final docRef = _firestore
+        .collection(presentationCollectionPath)
+        .doc(presID)
+        .collection(subcollectionLikes)
+        .doc(userID);
+    // .doc("5");
+    DocumentSnapshot doc = await docRef.get();
+    // print("${doc.exists} user id ${userData.userId}");
+    // Add the comment
+    if (doc.exists) {
+      // debugPrintStack(
+      //     label: "UserID: $userID \nPresID: $presID \nisLiked: true",
+      //     stackTrace: StackTrace.fromString(""));
+      return true;
+    } else {
+      debugPrintStack(
+          label: "isLikedBy",
+          stackTrace: StackTrace.fromString(
+              "UserID: $userID \nPresID: $presID \nisLiked: true"));
+      return false;
+    }
+  }
+
   // Method added by rizwan
   Future<int> fetchLikesCount(String presentationId) async {
     final querySnapshot = await _firestore
@@ -299,5 +387,25 @@ class FirestoreService {
     List<Like> allLikes =
         querySnapshot.docs.map((e) => Like.fromMapDatabase(e.data()!)).toList();
     return allLikes;
+  }
+
+  Future<UserData?> getUserByID(String userID) async {
+    final docRef = FirebaseFirestore.instance
+        .collection(FirestoreService().userCollectionPath)
+        .doc(userID);
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+      // User exists, handle existing user data
+      final userMap = docSnapshot.data() as Map<String, dynamic>;
+      UserData userData = UserData.fromMap(userMap);
+      // Perform actions with existing user data (e.g., print name)
+      // print('User found: ${userData.email}');
+      return userData;
+    } else {
+      // User doesn't exist, create a new user
+      return null;
+    }
   }
 }

@@ -69,6 +69,7 @@ class RemoteConfigService {
         remoteConfig.getInt('discountPercentage').toDouble();
 
     RCVariables.discountTimeLeft = remoteConfig.getInt('discountTimeLeft');
+    RCVariables.discountTimeStamp = remoteConfig.getString('discountTimeStamp');
     RCVariables.slotLeft.value = remoteConfig.getInt('slotLeft');
     RCVariables.delayMinutes = remoteConfig.getInt('delayMinutes');
 
@@ -77,6 +78,7 @@ class RemoteConfigService {
     String assitantKeys = remoteConfig.getString('geminiAPIKeysSlideAssistant');
 
     dp.log("discountTimeLeft: ${RCVariables.discountTimeLeft}");
+    dp.log("discountTimeStamp: ${RCVariables.discountTimeStamp}");
     initGemini(RCVariables.GeminiAPIKey);
     topicListParser();
     keysListParser(jsonKeys);

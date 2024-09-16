@@ -103,7 +103,8 @@ class PresentaionGeneratorController extends GetxController {
           timestamp: DateTime.now().millisecondsSinceEpoch,
           styleId: '1'.obs,
           likesCount: 0,
-          commentsCount: 0)
+          commentsCount: 0,
+          isLiked: false)
       .obs;
 
   Rx<SlidePallet> selectedPallet = palletList.first.obs;
@@ -392,7 +393,8 @@ class PresentaionGeneratorController extends GetxController {
         timestamp: DateTime.now().millisecondsSinceEpoch,
         styleId: selectedPallet.value.id.toString().obs,
         likesCount: 0,
-        commentsCount: 0);
+        commentsCount: 0,
+        isLiked: false);
     List<String> coveredTitles = [];
     // for (var outline in plannedOutlines) {
 
@@ -598,7 +600,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         timestamp: DateTime.now().millisecondsSinceEpoch,
         styleId: selectedPallet.value.id.toString().obs,
         likesCount: 0,
-        commentsCount: 0);
+        commentsCount: 0,
+        isLiked: false);
   }
 
   //?  Input Fragment

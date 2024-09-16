@@ -1132,7 +1132,8 @@ class newInAppPurchaseView extends GetView<newInAppPurchaseCTL> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Obx(() => Radio(
-                                onChanged: (value) {},
+                                // onChanged: (value) {},
+                                onChanged: null,
                                 toggleable: true,
                                 value: controller.selectedIndex.value,
                                 groupValue: index,
