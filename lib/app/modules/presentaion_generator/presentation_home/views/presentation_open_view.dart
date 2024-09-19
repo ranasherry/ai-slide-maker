@@ -149,14 +149,16 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                             child: Container(
                               // width: SizeConfig.screenWidth * 0.92,
                               height: SizeConfig.screenWidth * 0.5,
-                              child: Obx(() => ClipRRect(
+                              child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: individualSlideEditorMethod(
-                                        controller.currentSelectedIndex.value,
-                                        controller.myPresentation,
-                                        Size(SizeConfig.screenWidth * 0.9,
-                                            SizeConfig.screenWidth * 0.5),
-                                        true),
+                                    child: Obx(() => individualSlideEditorMethod(
+                                      controller.currentSelectedIndex.value,
+                                      controller.myPresentation,
+                                      Size(SizeConfig.screenWidth * 0.9,
+                                          SizeConfig.screenWidth * 0.5),
+                                          true,
+                                          controller.slidePallet
+                                    ),
                                   )),
                             ),
                           ),
@@ -218,10 +220,12 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                           child: Stack(
                                             children: [
                                               individualSlideEditorMethod(
-                                                  index,
-                                                  controller.myPresentation,
-                                                  size,
-                                                  true),
+                                                index,
+                                                controller.myPresentation,
+                                                size,
+                                                true,
+                                                controller.slidePallet
+                                              ),
                                               Obx(() => controller
                                                           .currentSelectedIndex
                                                           .value ==

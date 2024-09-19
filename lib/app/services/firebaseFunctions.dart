@@ -7,6 +7,7 @@ import 'package:slide_maker/app/data/comment.dart';
 import 'package:slide_maker/app/data/like.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
+import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/data/user.dart';
 
 class FirestoreService {
@@ -30,6 +31,7 @@ class FirestoreService {
   //added by rizwan
   String presentationCollectionPath = "presentationTest";
   // String presentationCollectionPath = "presentation";
+  String slidePalletCollectionPath = "slidePalletTest";
   String subcollectionLikes = 'likes';
   String subcollectionComments = 'comments';
 
@@ -129,6 +131,14 @@ class FirestoreService {
     final docRef =
         _firestore.collection(presentationCollectionPath).doc(presentationId);
     await docRef.set(presentationHistory.toMapDatabase());
+  }
+
+  // Method below added by rizwan
+  Future<void> insertSlidePallet(
+      SlidePallet slidePallet, String slidePalletId) async {
+    final docRef =
+        _firestore.collection(slidePalletCollectionPath).doc(slidePalletId);
+    await docRef.set(slidePallet.toMap());
   }
 
   // Method added by rizwan
@@ -268,6 +278,14 @@ class FirestoreService {
         _firestore.collection(presentationCollectionPath).doc(presentationId);
     await docRef.set(
         presentationHistory.toMapDatabase(), SetOptions(merge: false));
+  }
+  // Method below added by rizwan
+
+  Future<void> updateSlidePallet(
+      SlidePallet slidePallet, String slidePalletId) async {
+    final docRef =
+        _firestore.collection(slidePalletCollectionPath).doc(slidePalletId);
+    await docRef.set(slidePallet.toMap(), SetOptions(merge: false));
   }
 
   // Method added by rizwan

@@ -43,6 +43,9 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+bool goToHomeView = (Get.arguments != null && Get.arguments[0] != null )
+    ? Get.arguments[0]
+    : false;
 
     WidgetsBinding.instance.addObserver(this);
 
@@ -65,6 +68,13 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     startInAppPurchaseTimer();
     // if(kIsDe)
     // ShowFeedbackBottomSheet();
+
+    if(goToHomeView){
+      print("navigating to home view.");
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+    Get.toNamed(Routes.PRESENTATION_HOME);
+  });
+    }
   }
 
   checkPermission(String page) async {

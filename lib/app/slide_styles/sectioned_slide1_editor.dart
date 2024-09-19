@@ -35,6 +35,10 @@ class __SectionedSlide1State extends State<SectionedSlide1Editor> {
   final PresentationEditCtl controller = Get.find();
 
   int bgIndex = 0;
+  double titleFontValue = 0.0;
+  late Worker fontSizeWorker;
+  late Worker slideTitleWorker;
+  int i = 0;
   // late TextEditingController _slideTitle;
   // late List<TextEditingController> _sectionHeaders;
   // late List<TextEditingController> _sectionContents;
@@ -48,7 +52,44 @@ class __SectionedSlide1State extends State<SectionedSlide1Editor> {
   void initState() {
     super.initState();
     super.setState(() {
+    controller.slideTitlesFontValue[widget.index].value = 0.050;
+ if(widget.slidePallet.slideTitlesFontValue == null || widget.slidePallet.slideTitlesFontValue!.isEmpty){
+      widget.slidePallet.slideTitlesFontValue = controller.slideTitlesFontValue.map((rxDouble){return rxDouble.value;}).toList();
+    }
+    else{
+      if(widget.slidePallet.slideTitlesFontValue![widget.index] != 0.0){
+        controller.slideTitlesFontValue[widget.index].value = widget.slidePallet.slideTitlesFontValue![widget.index];
+      }
+    }
+      
+    if(widget.slidePallet.slideSectionContentsFontValue == null || widget.slidePallet.slideSectionContentsFontValue!.isEmpty){
+     widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList();
+      }
+      else{
+        i=0;
+        while(i < controller.slideSectionContentsFontValue[widget.index].length){
+          if(widget.slidePallet.slideSectionContentsFontValue![widget.index][i] != 0.0){
+          controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
+          }
+          // widget.slidePallet.slideSectionContentsFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList(): controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
+          i++;
+        }
+      }
 
+      if(widget.slidePallet.slideSectionHeadersFontValue == null || widget.slidePallet.slideSectionHeadersFontValue!.isEmpty){
+     widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList();
+      }
+      else{
+        i=0;
+        while(i < controller.slideSectionHeadersFontValue[widget.index].length){
+          if(widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] != 0.0){
+          controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
+          }
+          // widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList(): controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
+          i++;
+        }
+      }
+      controller.currentPallet=widget.slidePallet;
     // _slideTitle = TextEditingController(text : widget.mySlide.slideTitle);
     
     //   // Initialize  with the default values from slideSections
@@ -81,19 +122,36 @@ class __SectionedSlide1State extends State<SectionedSlide1Editor> {
       print("BG Index: $bgIndex");
       print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
     });
+
+   
     // ever(controller.currentFontSize, (_) {
     //     developer.log("check 1 Title Font value:${controller.slideTitlesFontValue.value[widget.index].value}");
     //     developer.log("check 1.1 Current Font value:${controller.currentFontSize.value}");
     //   setState(() {}); // Update the UI when the value changes
     // });
     print("initState Called");
-  }
+  fontSizeWorker = ever(controller.currentFontSize, (_){
+      setState((){});
+    });
+    slideTitleWorker = ever(controller.currentText, (_){
+      setState((){});
+    });
 
+
+  }
   @override
+      @override
+  void dispose() {
+    // Dispose of the ever listeners when the widget is disposed
+    fontSizeWorker.dispose();
+    slideTitleWorker.dispose();
+
+    super.dispose();
+  }
   Widget build(BuildContext context) {
     // controller.initializeSlidesTextController();
     // controller.initializeSlidesFontList();
-  controller.slideTitlesFontValue.value[widget.index].value = widget.size.width *  0.050;
+   titleFontValue = widget.size.width *  controller.slideTitlesFontValue[widget.index].value;
 
     
     return Container(
@@ -122,38 +180,55 @@ class __SectionedSlide1State extends State<SectionedSlide1Editor> {
                   // height: widget.size.height * 0.2,
                   child: IgnorePointer(
                     ignoring: widget.isReadOnly,
-                    child: TextField(
-                       onTap: (){
+                     child: GestureDetector(
+                        onTap: (){
                         controller.setValuesAsNull();
+                        controller.toggleVisibilityTextEditor(true);
                         controller.isTitle.value = true;
                         controller.firstIndexOfFont.value = widget.index;
-                      controller.currentFontSize.value = controller.slideTitlesFontValue.value[widget.index].value;
+                        controller.currentText.value = controller.slideTitles[widget.index].text;
+                      controller.currentFontSize.value = controller.slideTitlesFontValue[widget.index].value;
                     },
-                    cursorColor:  Colors.black,
-                    // backgroundCursorColor: Colors.white,
-                    focusNode: FocusNode(),
+                       child: Text(
+                          controller.slideTitles[widget.index].text, 
+                        style: TextStyle(
+                          fontSize:  titleFontValue,
+                            // fontSize: contentFontSize,
+                            color: Color(widget.slidePallet.bigTitleTColor)),
+                            ),
+                     ),
+                    // child: TextField(
+                    //    onTap: (){
+                    //     // controller.setValuesAsNull();
+                    //     // controller.isTitle.value = true;
+                    //     // controller.firstIndexOfFont.value = widget.index;
+                    //   controller.currentFontSize.value = controller.slideTitlesFontValue.value[widget.index].value;
+                    // },
+                    // cursorColor:  Colors.black,
+                    // // backgroundCursorColor: Colors.white,
+                    // focusNode: FocusNode(),
+                    // // decoration: InputDecoration(
+                    // //           border: InputBorder.none,
+                    // //           contentPadding: EdgeInsets.zero,
+                    // //         ),
+                    //         maxLines: null,
+                    //         readOnly: widget.isReadOnly,
+                    // controller : controller.slideTitles[widget.index],
                     // decoration: InputDecoration(
                     //           border: InputBorder.none,
                     //           contentPadding: EdgeInsets.zero,
+                    //           isDense: true
                     //         ),
-                            maxLines: null,
-                            readOnly: widget.isReadOnly,
-                    controller : controller.slideTitles[widget.index],
-                    decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
-                              isDense: true
-                            ),
-                    onChanged: (value){
-                              controller.myEditedPresentation.value.slides[widget.index].slideTitle = value;
-                    },
-                    // overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize:  controller.slideTitlesFontValue.value[widget.index].value,
-                        color: Color(widget.slidePallet.bigTitleTColor)),
-                    // style: widget.slidePallet.bigTitleTStyle
-                    //     .copyWith(fontSize: widget.size.width * 0.050),
-                        ),
+                    // onChanged: (value){
+                    //           controller.myEditedPresentation.value.slides[widget.index].slideTitle = value;
+                    // },
+                    // // overflow: TextOverflow.ellipsis,
+                    // style: TextStyle(
+                    //     fontSize:  controller.slideTitlesFontValue.value[widget.index].value,
+                    //     color: Color(widget.slidePallet.bigTitleTColor)),
+                    // // style: widget.slidePallet.bigTitleTStyle
+                    // //     .copyWith(fontSize: widget.size.width * 0.050),
+                    //     ),
                     
                   ),
                 ),
@@ -190,30 +265,64 @@ class __SectionedSlide1State extends State<SectionedSlide1Editor> {
   }
 
   Container _slideSection(int i) {
-    double sectionFontSize = widget.size.width * 0.014;
+    late double sectionContentFontSize;
+    late double sectionHeaderFontSize;
+    if(controller.slideSectionContentsFontValue[widget.index][i].value == 0){
+ controller.slideSectionContentsFontValue[widget.index][i].value = 0.014;
+    sectionContentFontSize = widget.size.width * controller.slideSectionContentsFontValue[widget.index][i].value;
     // _sectionFontSize.value = sectionFontSize;
-    controller.slideSectionContentsFontValue.value[widget.index][i].value = sectionFontSize;
-    controller.slideSectionHeadersFontValue.value[widget.index][i].value = sectionFontSize;
-    if (widget.mySlide.slideSections[i].sectionContent != null) {
+    // controller.slideSectionContentsFontValue[widget.index][i].value = sectionContentFontSize;
+    //    if (widget.mySlide.slideSections[i].sectionContent != null) {
       String text = widget.mySlide.slideSections[i].sectionContent ?? "";
       if (text.length <= 140) {
-        sectionFontSize = widget.size.width * 0.018;
-    controller.slideSectionContentsFontValue.value[widget.index][i].value = sectionFontSize;
-    controller.slideSectionHeadersFontValue.value[widget.index][i].value = sectionFontSize;
+    controller.slideSectionContentsFontValue[widget.index][i].value = 0.018;
+        sectionContentFontSize = widget.size.width * controller.slideSectionContentsFontValue[widget.index][i].value;
+    // controller.slideSectionContentsFontValue[widget.index][i].value = sectionFontSize;
+    //    // _sectionFontSize.value = sectionFontSize;
+      } else if (text.length <= 180) {
+    controller.slideSectionContentsFontValue[widget.index][i].value = 0.016;
+        sectionContentFontSize = widget.size.width * controller.slideSectionContentsFontValue[widget.index][i].value;
+    // controller.slideSectionContentsFontValue[widget.index][i].value = sectionFontSize;
+    //    // _sectionFontSize.value = sectionFontSize;
+      } else if (text.length <= 220) {
+    controller.slideSectionContentsFontValue[widget.index][i].value = 0.0145;
+        sectionContentFontSize = widget.size.width * controller.slideSectionContentsFontValue[widget.index][i].value;
+    // controller.slideSectionContentsFontValue[widget.index][i].value = sectionFontSize;
+    //    // _sectionFontSize.value = sectionFontSize;
+      }
+    }
+    else{
+      sectionContentFontSize = widget.size.width * controller.slideSectionContentsFontValue[widget.index][i].value;
+    }
+
+    if(controller.slideSectionHeadersFontValue[widget.index][i].value == 0){
+    controller.slideSectionHeadersFontValue[widget.index][i].value = 0.014;
+    sectionHeaderFontSize = widget.size.width * controller.slideSectionHeadersFontValue[widget.index][i].value;
+    // _sectionFontSize.value = sectionFontSize;
+    // controller.slideSectionHeadersFontValue[widget.index][i].value = sectionHeaderFontSize;
+    if (widget.mySlide.slideSections[i].sectionHeader != null) {
+      String text = widget.mySlide.slideSections[i].sectionHeader ?? "";
+      if (text.length <= 140) {
+    controller.slideSectionHeadersFontValue[widget.index][i].value = 0.018;
+    // controller.slideSectionHeadersFontValue[widget.index][i].value = sectionFontSize;
     // _sectionFontSize.value = sectionFontSize;
       } else if (text.length <= 180) {
-        sectionFontSize = widget.size.width * 0.016;
-    controller.slideSectionContentsFontValue.value[widget.index][i].value = sectionFontSize;
-    controller.slideSectionHeadersFontValue.value[widget.index][i].value = sectionFontSize;
+    controller.slideSectionHeadersFontValue[widget.index][i].value = 0.016;
+    // controller.slideSectionHeadersFontValue[widget.index][i].value = sectionFontSize;
     // _sectionFontSize.value = sectionFontSize;
       } else if (text.length <= 220) {
-        sectionFontSize = widget.size.width * 0.0145;
-    controller.slideSectionContentsFontValue.value[widget.index][i].value = sectionFontSize;
-    controller.slideSectionHeadersFontValue.value[widget.index][i].value = sectionFontSize;
+    controller.slideSectionHeadersFontValue[widget.index][i].value = 0.0145;
+    // controller.slideSectionHeadersFontValue[widget.index][i].value = sectionFontSize;
     // _sectionFontSize.value = sectionFontSize;
       }
       developer.log("Content Length ${text.length}");
     }
+    }
+    else{
+    sectionHeaderFontSize = widget.size.width * controller.slideSectionHeadersFontValue[widget.index][i].value;
+    }
+    
+    
     return Container(
       padding: EdgeInsets.symmetric(horizontal: widget.size.width * 0.000),
       child: Column(
@@ -222,87 +331,123 @@ class __SectionedSlide1State extends State<SectionedSlide1Editor> {
         children: [
           IgnorePointer(
               ignoring: widget.isReadOnly,
-            child: TextField(
-              onTap: (){
+              child: GestureDetector(
+                 onTap: (){
               controller.setValuesAsNull();
+              controller.toggleVisibilityTextEditor(true);
               controller.isSectionHeader.value = true;
               controller.firstIndexOfFont.value = widget.index;
               controller.secondIndexOfFont.value = i;
-              controller.currentFontSize.value = controller.slideSectionHeadersFontValue.value[widget.index][i].value;
+              controller.currentText.value = controller.slideSectionHeaders[widget.index][i].text;
+              controller.currentFontSize.value = controller.slideSectionHeadersFontValue[widget.index][i].value;
             },
-                    cursorColor:  Colors.black,
-                    // backgroundCursorColor: Colors.white,
-                    focusNode: FocusNode(),
-                    // decoration: InputDecoration(
-                    //                   border: InputBorder.none,
-                    //                contentPadding: EdgeInsets.zero, 
-                    //                 ),
-                    maxLines: null,
-                    readOnly: widget.isReadOnly,
-            controller: controller.slideSectionHeaders[widget.index][i],
-            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
-                              isDense: true
+                child: Text(
+                  controller.slideSectionHeaders[widget.index][i].text, 
+                style: TextStyle(
+                  fontSize: sectionHeaderFontSize ,
+                    // fontSize: contentFontSize,
+                    color: Color(widget.slidePallet.bigTitleTColor)),
                             ),
-             onChanged: (value) {
-              // _sectionHeaderValues[i] = value;  // Update the corresponding variable
-              controller.myEditedPresentation.value.slides[widget.index].slideSections[i].sectionHeader = value;
-              print("$value");
-                  //         _sectionHeaderValues.forEach((value){
-                  //         print("SectionHeaders :$value ");
-                  // });
-            },
-            style: widget.mySlide.slideSections[i].sectionHeader != null
-                ? TextStyle(
-                    fontSize: controller.slideSectionHeadersFontValue.value[widget.index][i].value ,
-                    color: Color(widget.slidePallet.bigTitleTColor))
-                : TextStyle(),
-               ),
+              ),
+            // child: TextField(
+            //   onTap: (){
+            //   // controller.setValuesAsNull();
+            //   // controller.isSectionHeader.value = true;
+            //   // controller.firstIndexOfFont.value = widget.index;
+            //   // controller.secondIndexOfFont.value = i;
+            //   controller.currentFontSize.value = controller.slideSectionHeadersFontValue.value[widget.index][i].value;
+            // },
+            //         cursorColor:  Colors.black,
+            //         // backgroundCursorColor: Colors.white,
+            //         focusNode: FocusNode(),
+            //         // decoration: InputDecoration(
+            //         //                   border: InputBorder.none,
+            //         //                contentPadding: EdgeInsets.zero, 
+            //         //                 ),
+            //         maxLines: null,
+            //         readOnly: widget.isReadOnly,
+            // controller: controller.slideSectionHeaders[widget.index][i],
+            // decoration: InputDecoration(
+            //                   border: InputBorder.none,
+            //                   contentPadding: EdgeInsets.zero,
+            //                   isDense: true
+            //                 ),
+            //  onChanged: (value) {
+            //   // _sectionHeaderValues[i] = value;  // Update the corresponding variable
+            //   controller.myEditedPresentation.value.slides[widget.index].slideSections[i].sectionHeader = value;
+            //   print("$value");
+            //       //         _sectionHeaderValues.forEach((value){
+            //       //         print("SectionHeaders :$value ");
+            //       // });
+            // },
+            // style: widget.mySlide.slideSections[i].sectionHeader != null
+            //     ? TextStyle(
+            //         fontSize: controller.slideSectionHeadersFontValue.value[widget.index][i].value ,
+            //         color: Color(widget.slidePallet.bigTitleTColor))
+            //     : TextStyle(),
+            //    ),
             
           ),
           verticalSpace(widget.size.height * 0.01),
           IgnorePointer(
             ignoring: widget.isReadOnly,
-            child:  TextField(
+            child: GestureDetector(
               onTap: (){
-                controller.setValuesAsNull();
-                controller.isSectionContent.value = true;
-                controller.firstIndexOfFont.value = widget.index;
-                controller.secondIndexOfFont.value = i;
-              controller.currentFontSize.value = controller.slideSectionContentsFontValue.value[widget.index][i].value;
+              controller.setValuesAsNull();
+              controller.toggleVisibilityTextEditor(true);
+              controller.isSectionContent.value = true;
+              controller.firstIndexOfFont.value = widget.index;
+              controller.secondIndexOfFont.value = i;
+              controller.currentText.value = controller.slideSectionContents[widget.index][i].text;
+              controller.currentFontSize.value = controller.slideSectionContentsFontValue[widget.index][i].value;
             },
-            cursorColor:  Colors.black,
-            // backgroundCursorColor: Colors.white,
-            focusNode: FocusNode(),
+              child: Text(
+                  controller.slideSectionContents[widget.index][i].text, 
+                style: TextStyle(
+                  fontSize: sectionContentFontSize,
+                    // fontSize: contentFontSize,
+                    color: Color(widget.slidePallet.bigTitleTColor)),
+                ),
+            ),
+            // child:  TextField(
+            //   onTap: (){
+            //   //   controller.setValuesAsNull();
+            //   //   controller.isSectionContent.value = true;
+            //   //   controller.firstIndexOfFont.value = widget.index;
+            //   //   controller.secondIndexOfFont.value = i;
+            //   controller.currentFontSize.value = controller.slideSectionContentsFontValue.value[widget.index][i].value;
+            // },
+            // cursorColor:  Colors.black,
+            // // backgroundCursorColor: Colors.white,
+            // focusNode: FocusNode(),
+            // // decoration: InputDecoration(
+            // //                   border: InputBorder.none,
+            // //                   contentPadding: EdgeInsets.zero,
+            // //                 ),
+            // maxLines: null,
+            // readOnly: widget.isReadOnly,
+            // controller: controller.slideSectionContents[widget.index][i],
             // decoration: InputDecoration(
             //                   border: InputBorder.none,
             //                   contentPadding: EdgeInsets.zero,
+            //                   isDense: true
             //                 ),
-            maxLines: null,
-            readOnly: widget.isReadOnly,
-            controller: controller.slideSectionContents[widget.index][i],
-            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
-                              isDense: true
-                            ),
-            onChanged: (value) {
-              // _sectionContentValues[i] = value;  // Update the corresponding variable
-              controller.myEditedPresentation.value.slides[widget.index].slideSections[i].sectionContent = value;
-              print("$value");
+            // onChanged: (value) {
+            //   // _sectionContentValues[i] = value;  // Update the corresponding variable
+            //   controller.myEditedPresentation.value.slides[widget.index].slideSections[i].sectionContent = value;
+            //   print("$value");
               
-            },
-            style: widget.mySlide.slideSections[i].sectionHeader != null
-                ? TextStyle(
-                    fontSize: controller.slideSectionContentsFontValue.value[widget.index][i].value,
-                    color: Color(widget.slidePallet.bigTitleTColor))
-                : TextStyle(),
-            // style: widget.mySlide.slideSections[i].sectionContent != null
-            //     ? widget.slidePallet.bigTitleTStyle
-            //         .copyWith(fontSize: sectionFontSize)
-            //     : widget.slidePallet.bigTitleTStyle,
-                ),
+            // },
+            // style: widget.mySlide.slideSections[i].sectionHeader != null
+            //     ? TextStyle(
+            //         fontSize: controller.slideSectionContentsFontValue.value[widget.index][i].value,
+            //         color: Color(widget.slidePallet.bigTitleTColor))
+            //     : TextStyle(),
+            // // style: widget.mySlide.slideSections[i].sectionContent != null
+            // //     ? widget.slidePallet.bigTitleTStyle
+            // //         .copyWith(fontSize: sectionFontSize)
+            // //     : widget.slidePallet.bigTitleTStyle,
+            //     ),
             
           ),
         ],

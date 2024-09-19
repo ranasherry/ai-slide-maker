@@ -1,7 +1,7 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import "dart:developer" as developer;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/modules/home/my_drawar.dart';
@@ -158,14 +158,14 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                     ),
                   ),
                 ),
-                Obx(() => controller.presentations.isEmpty
+                Obx(() => (controller.presentations.isEmpty && controller.allSlidePallets.isEmpty)
                     ? _noPreviousSlideAvailable()
                     : Container(
                         child: Expanded(
                           child: ListView.builder(
                               itemCount: controller.presentations.length,
                               itemBuilder: (context, index) {
-                                return _histroySlideItem(index);
+                                return _histroySlideItem(index, int.parse(controller.presentations[index].styleId.value));
                               }),
                         ),
                       )),
@@ -177,11 +177,11 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
     );
   }
 
-  Widget _histroySlideItem(int index) {
+  Widget _histroySlideItem(int index, int styleId) {
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.PresentationOpenView,
-            arguments: [controller.presentations[index]]);
+            arguments: [controller.presentations[index], controller.allSlidePallets[styleId - 1] ]);
       },
       child: Container(
         margin: EdgeInsets.symmetric(
@@ -206,21 +206,24 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(SizeConfig.blockSizeHorizontal * 3),
-                  child: TitleSlide1(
+                  child: Obx(()=>TitleSlide1(
                     mySlide: controller.presentations[index].slides[0],
-                    slidePallet: palletList[palletList.indexWhere((element) =>
-                                    int.parse(controller
-                                        .presentations[index].styleId.value) ==
-                                    element.id) !=
-                                -1
-                            ? palletList.indexWhere((element) =>
-                                int.parse(controller
-                                    .presentations[index].styleId.value) ==
-                                element.id)
-                            : 0 // Return 0 if not found
-                        ],
+                    // slidePallet: palletList[palletList.indexWhere((element) =>
+                    //                 int.parse(controller
+                    //                     .presentations[index].styleId.value) ==
+                    //                 element.palletId) !=
+                    //             -1
+                    //         ? palletList.indexWhere((element) =>
+                    //             int.parse(controller
+                    //                 .presentations[index].styleId.value) ==
+                    //             element.palletId)
+                    //         : 0 // Return 0 if not found
+                    //     ],
+                    slidePallet: controller.allSlidePallets[styleId - 1] ,
                     size: Size(SizeConfig.blockSizeHorizontal * 25,
                         SizeConfig.blockSizeVertical * 7),
+                  )
+                    // developer.log("${controller.allSlidePallets[styleId - 1]}");
                   ),
                 )),
             horizontalSpace(SizeConfig.blockSizeHorizontal * 4),

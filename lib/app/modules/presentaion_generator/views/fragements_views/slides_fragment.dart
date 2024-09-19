@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import "dart:developer" as developer;
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_view.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
@@ -18,6 +18,7 @@ import 'package:slide_maker/app/slide_styles/sectioned_slide5.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide6.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide7.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
@@ -187,12 +188,13 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                           backgroundColor: AppColors
                               .buttonBGColor, // Button background color
                           foregroundColor: Colors.white),
-                      onPressed: () {
+                      onPressed: () async {
                         // controller.RequestPresentationPlan();
                         if (controller.isSlidesGenerated.value) {
                           // controller.createPresentation();
-                          Get.toNamed(Routes.PresentationOpenView,
-                              arguments: [controller.myPresentation.value]);
+                          developer.log("Moving to home screen.");
+                          await ComFunction.GotoHomeThenPresHome();
+                          // Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value, controller.selectedPallet.value]);
                           AppLovinProvider.instance.showInterstitial(() {});
                         } else {
                           EasyLoading.showToast(

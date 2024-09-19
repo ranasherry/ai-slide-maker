@@ -26,10 +26,10 @@ Widget individualSlideMethod(
     child: Obx(() {
       SlidePallet selectedPallet = palletList[palletList.indexWhere((element) =>
                   int.parse(myPresentation.value.styleId.value) ==
-                  element.id) !=
+                  element.palletId) !=
               -1
           ? palletList.indexWhere((element) =>
-              int.parse(myPresentation.value.styleId.value) == element.id)
+              int.parse(myPresentation.value.styleId.value) == element.palletId)
           : 0];
 
       if (index == 0) {
