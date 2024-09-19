@@ -34,12 +34,14 @@ class ComFunction {
   }
 
   static Future<void> GotoHomeScreen() async {
-    await Get.offAllNamed(Routes.HOMEVIEW1);
+    // await Get.offAllNamed(Routes.HOMEVIEW1);
+    await Get.offAllNamed(Routes.NAVVIEW);
   }
- static Future<void> GotoHomeThenPresHome() async {
-  await Get.offAllNamed(Routes.HOMEVIEW1, arguments: [ true]);
 
-}
+  static Future<void> GotoHomeThenPresHome() async {
+    // await Get.offAllNamed(Routes.HOMEVIEW1, arguments: [ true]);
+    await Get.offAllNamed(Routes.NAVVIEW, arguments: [true]);
+  }
 
   static hideKeyboard(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
