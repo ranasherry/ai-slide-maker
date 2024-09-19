@@ -145,8 +145,7 @@ class PresentaionGeneratorController extends GetxController {
     HomeViewCtl homeViewCtl = Get.find();
     homeViewCtl.showReviewDialogue(Get.context!);
 
-    super.onClose();
-
+    
     super.onClose();
   }
 
@@ -390,7 +389,7 @@ class PresentaionGeneratorController extends GetxController {
         slides: <MySlide>[].obs,
         createrId: null,
         timestamp: DateTime.now().millisecondsSinceEpoch,
-        styleId: selectedPallet.value.id.toString().obs,
+        styleId: selectedPallet.value.palletId.toString().obs,
         likesCount: 0,
         commentsCount: 0);
     List<String> coveredTitles = [];
@@ -499,7 +498,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         //lines below added by rizwan
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
-        presentationHomeController.insertPresentation(myPresentation.value);
+        presentationHomeController.insertPresentationWithSlidePallet(selectedPallet.value,myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -596,7 +595,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // keys,values added by rizwan
         createrId: null,
         timestamp: DateTime.now().millisecondsSinceEpoch,
-        styleId: selectedPallet.value.id.toString().obs,
+        styleId: selectedPallet.value.palletId.toString().obs,
         likesCount: 0,
         commentsCount: 0);
   }

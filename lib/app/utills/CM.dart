@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import "dart:developer" as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter_pptx/flutter_pptx.dart';
 import 'package:get/get.dart';
@@ -33,9 +33,13 @@ class ComFunction {
     return emailValid;
   }
 
-  static void GotoHomeScreen() {
-    Get.offAllNamed(Routes.HOMEVIEW1);
+  static Future<void> GotoHomeScreen() async {
+    await Get.offAllNamed(Routes.HOMEVIEW1);
   }
+ static Future<void> GotoHomeThenPresHome() async {
+  await Get.offAllNamed(Routes.HOMEVIEW1, arguments: [ true]);
+
+}
 
   static hideKeyboard(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);

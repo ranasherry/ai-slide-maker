@@ -121,14 +121,15 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                             child: Container(
                               // width: SizeConfig.screenWidth * 0.92,
                               height: SizeConfig.screenWidth * 0.5,
-                              child: Obx(() => ClipRRect(
+                              child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: individualSlideEditorMethod(
+                                    child: Obx(() => individualSlideEditorMethod(
                                       controller.currentSelectedIndex.value,
                                       controller.myPresentation,
                                       Size(SizeConfig.screenWidth * 0.9,
                                           SizeConfig.screenWidth * 0.5),
-                                          true
+                                          true,
+                                          controller.slidePallet
                                     ),
                                   )),
                             ),
@@ -194,7 +195,8 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                                 index,
                                                 controller.myPresentation,
                                                 size,
-                                                true
+                                                true,
+                                                controller.slidePallet
                                               ),
                                               Obx(() => controller
                                                           .currentSelectedIndex

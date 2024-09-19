@@ -3,7 +3,7 @@ import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/utills/images.dart';
 
 SlidePallet pallet1 = SlidePallet(
-    id: 1,
+    palletId: 1,
     name: "purple",
     slideCategory: "Light",
     bigTitleTColor: Colors.blue.shade900.value,
@@ -16,7 +16,7 @@ SlidePallet pallet1 = SlidePallet(
     isPaid: false);
 
 SlidePallet pallet2 = SlidePallet(
-    id: 2,
+    palletId: 2,
     name: "Cyan",
     slideCategory: "Dark",
     bigTitleTColor: Colors.white.value,
@@ -29,7 +29,7 @@ SlidePallet pallet2 = SlidePallet(
     isPaid: true);
 
 SlidePallet pallet3 = SlidePallet(
-    id: 3,
+    palletId: 3,
     name: "Orange",
     slideCategory: "Light",
     bigTitleTColor: Colors.blue.shade800.value,
@@ -42,7 +42,7 @@ SlidePallet pallet3 = SlidePallet(
     isPaid: false);
 
 SlidePallet pallet4 = SlidePallet(
-    id: 4, // Corrected ID to be unique
+    palletId: 4, // Corrected ID to be unique
     name: "Green",
     slideCategory: "Light",
     bigTitleTColor: Colors.blue.shade900.value,
@@ -55,7 +55,7 @@ SlidePallet pallet4 = SlidePallet(
     isPaid: false);
 
 SlidePallet pallet5 = SlidePallet(
-    id: 5,
+    palletId: 5,
     name: "brown",
     slideCategory: "Light",
     bigTitleTColor: Colors.grey.shade900.value,
@@ -68,7 +68,7 @@ SlidePallet pallet5 = SlidePallet(
     isPaid: false);
 
 SlidePallet pallet6 = SlidePallet(
-    id: 6,
+    palletId: 6,
     name: "milky",
     slideCategory: "Light",
     bigTitleTColor: Colors.black.value,
@@ -81,7 +81,7 @@ SlidePallet pallet6 = SlidePallet(
     isPaid: true);
 
 SlidePallet pallet7 = SlidePallet(
-    id: 7,
+    palletId: 7,
     name: "chocolate",
     slideCategory: "Light",
     bigTitleTColor: Color(0xFFFBDA7C).value,
@@ -94,7 +94,7 @@ SlidePallet pallet7 = SlidePallet(
     isPaid: true);
 
 SlidePallet pallet8 = SlidePallet(
-    id: 8,
+    palletId: 8,
     name: "Dark chocolate",
     slideCategory: "Light",
     bigTitleTColor: Color(0xFFFFBA63).value,
@@ -107,7 +107,7 @@ SlidePallet pallet8 = SlidePallet(
     isPaid: true);
 
 SlidePallet pallet9 = SlidePallet(
-    id: 9, // Updated to ensure uniqueness
+    palletId: 9, // Updated to ensure uniqueness
     name: "marshmallow",
     slideCategory: "Light",
     bigTitleTColor: Colors.black.value,

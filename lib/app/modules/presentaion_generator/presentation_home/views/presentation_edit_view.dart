@@ -185,7 +185,8 @@ class PresentationEditView extends GetView<PresentationEditCtl> {
                                                controller.myPresentation,
                                                Size(SizeConfig.screenWidth * 0.9,
                                                    SizeConfig.screenWidth * 0.5),
-                                                   true
+                                                   true,
+                                                   controller.slidePallet
                                              ),
                                            )
                                        )),
@@ -252,7 +253,8 @@ class PresentationEditView extends GetView<PresentationEditCtl> {
                                                           index,
                                                           controller.myPresentation,
                                                           size,
-                                                          true
+                                                          true,
+                                                          controller.slidePallet
                                                         ),
                                                         Obx(() => controller
                                                                     .currentSelectedIndex
