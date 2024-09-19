@@ -59,6 +59,7 @@ class AppImages {
 
   static const HeaderMainBgSVG = "assets/svg/header_bg.svg";
   static const intro_themes = "assets/images/intro_themes.png";
+  static const clicky_community = "assets/images/clicky_community.png";
 
   // SVG
 

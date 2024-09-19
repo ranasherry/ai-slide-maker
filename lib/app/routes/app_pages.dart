@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/intro_screens/views/clicky_intro_screen.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/bindings/presentation_edit_binding.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_individual_slide_view.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_view.dart';
@@ -328,6 +329,10 @@ class AppPages {
     GetPage(
       name: _Paths.PresentationEditIndividualSlideView,
       page: () => PresentationEditIndividualSlideView(),
-    )
+    ),
+    GetPage(
+        name: _Paths.CLICKYINTROSCREEN,
+        page: () => ClickyIntroScreen(),
+        binding: newIntroScreenBinding())
   ];
 }
