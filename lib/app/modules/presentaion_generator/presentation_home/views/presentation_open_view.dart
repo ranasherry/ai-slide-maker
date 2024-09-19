@@ -1,11 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_edit_ctl.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_view.dart';
 import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_open_ctl.dart';
+import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_editing_methods.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
@@ -42,9 +46,12 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               bottom_navi_bar_items(Icons.share, "Share", () {
                 controller.createPresentation();
               }),
-              bottom_navi_bar_items(Icons.edit, "Edit", () {
-                Get.toNamed(Routes.PresentationEditView, arguments: [controller.myPresentation.value]);
-              }),
+              Obx(() => controller.isOtherUser.value
+                  ? Container()
+                  : bottom_navi_bar_items(Icons.edit, "Edit", () {
+                      Get.toNamed(Routes.PresentationEditView,
+                          arguments: [controller.myPresentation.value]);
+                    })),
               // bottom_navi_bar_items(Icons.delete, "Delete", () {
               //   controller.deleteSlide(controller.currentSelectedIndex.value);
               // }),
@@ -89,10 +96,12 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                 ),
                 Spacer(),
                 Obx(() => Container(
+                      width: SizeConfig.blockSizeHorizontal * 60,
                       padding: EdgeInsets.only(
                           right: SizeConfig.blockSizeHorizontal * 5),
                       child: Text(
                         controller.presentationTitle.value,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: SizeConfig.blockSizeHorizontal * 5),
                       ),
@@ -114,6 +123,8 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               child: Obx(() => !controller.myPresentation.value.slides.isEmpty
                   ? Column(
                       children: [
+                        _userProfileBuilder(
+                            controller.myPresentation.value.createrId ?? ""),
                         Container(
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight * 0.45,
@@ -263,5 +274,62 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
         ],
       ),
     );
+  }
+
+  FutureBuilder<UserData?> _userProfileBuilder(String userID) {
+    final provider =
+        Provider.of<CreationViewProvider>(Get.context!, listen: false);
+    return FutureBuilder<UserData?>(
+        future: provider.getUserFromID(userID),
+        builder: (context, snapshot) {
+          UserData user = UserData(
+              id: "", name: "user1234567", email: "", revenueCatUserId: "");
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text(""); // Show loading indicator
+          } else if (snapshot.hasError) {
+            return Text(''); // Show error message
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            // Handle case when user is not found
+          } else {
+            user = snapshot.data!;
+          }
+
+          return Positioned(
+            bottom: SizeConfig.blockSizeVertical * 0.1,
+            left: SizeConfig.blockSizeHorizontal * 2,
+            right: SizeConfig.blockSizeHorizontal * 3.5,
+            child: Row(
+              children: [
+                Container(
+                  height: SizeConfig.blockSizeVertical * 5,
+                  width: SizeConfig.blockSizeHorizontal * 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.textfieldcolor,
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(user.profilePicUrl ??
+                            "https://www.strasys.uk/wp-content/uploads/2022/02/Depositphotos_484354208_S.jpg")
+
+                        //  AssetImage(
+                        //     AppImages.professional),
+                        ),
+                  ),
+                ),
+                horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
+                Text(
+                  // "",
+                  user.name ?? "user1234567",
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 3,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.background_color,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

@@ -3,13 +3,14 @@ class UserData {
   String? name;
   String email;
   String revenueCatUserId;
+  String? profilePicUrl;
 
-  UserData({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.revenueCatUserId,
-  });
+  UserData(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required this.revenueCatUserId,
+      this.profilePicUrl});
 
   // Convert a UserData object to a Map
   Map<String, dynamic> toMap() {
@@ -18,6 +19,7 @@ class UserData {
       'name': name,
       'email': email,
       'revenueCatUserId': revenueCatUserId,
+      'profilePicUrl': profilePicUrl,
     };
   }
 
@@ -28,6 +30,7 @@ class UserData {
       name: map['name'] as String?,
       email: map['email'] as String,
       revenueCatUserId: map['revenueCatUserId'] as String,
+      profilePicUrl: map['profilePicUrl'] ?? "" as String,
     );
   }
 }

@@ -35,15 +35,18 @@ class PresentationOpenCtl extends GetxController {
     isPaid: true).obs;
 
   Rx<MyPresentation> myPresentation = MyPresentation(
-    presentationId: 0,
-    presentationTitle: "",
-    slides: <MySlide>[].obs,
-    createrId: null,
-    timestamp: DateTime.now().millisecondsSinceEpoch,
-    styleId: '1'.obs,
-    likesCount: 0,
-    commentsCount: 0
-  ).obs;
+          presentationId: 0,
+          presentationTitle: "",
+          slides: <MySlide>[].obs,
+          createrId: null,
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          styleId: '1'.obs,
+          likesCount: 0,
+          commentsCount: 0,
+          isLiked: false)
+      .obs;
+
+  RxBool isOtherUser = false.obs;
 
   @override
   void onInit() async{
@@ -54,9 +57,12 @@ class PresentationOpenCtl extends GetxController {
     presentationTitle.value = pres.presentationTitle;
     myPresentation.value = pres;
 
-    developer.log("this is style id in presentation (id of slidePallet in db): ${int.parse(myPresentation.value.styleId.value)}");
-    developer.log("This is slide Pallet numbeid from database in open ctl: ${slidePallet.value.palletId}");
+    if (Get.arguments.length > 1) {
+      isOtherUser.value = Get.arguments[1] as bool;
+    }
+
     developer.log("Opened Slide: ${pres.toMap()}");
+    developer.log("IsOtherUser: ${isOtherUser.value}");
   }
 
   @override

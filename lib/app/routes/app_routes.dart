@@ -44,6 +44,8 @@ abstract class Routes {
   static const NEWINAPPPURCHASEVIEW = _Paths.NEWINAPPPURCHASEVIEW;
   static const POLLSCREENVIEW = _Paths.POLLSCREENVIEW;
   static const PROFILEVIEW = _Paths.PROFILEVIEW;
+  static const EDITPROFILEVIEW = _Paths.EDITPROFILEVIEW;
+  static const USERPROFILEVIEW = _Paths.USERPROFILEVIEW;
   static const PresentationOpenView = _Paths.PresentationOpenView;
   static const PRESENTATION_HOME = _Paths.PRESENTATION_HOME;
   // static const PRESENTATION_HOME =
@@ -52,7 +54,10 @@ abstract class Routes {
 
   static const NAVVIEW = _Paths.NAVVIEW;
   static const CREATIONVIEW = _Paths.CREATIONVIEW;
-  static const PresentationEditIndividualSlideView = _Paths.PresentationEditIndividualSlideView;
+
+  static const PresentationEditIndividualSlideView =
+      _Paths.PresentationEditIndividualSlideView;
+  static const CLICKYINTROSCREEN = _Paths.CLICKYINTROSCREEN;
 }
 
 abstract class _Paths {
@@ -93,10 +98,14 @@ abstract class _Paths {
   static const NEWINAPPPURCHASEVIEW = '/NEWINAPPPURCHASEVIEW';
   static const POLLSCREENVIEW = '/POLLSCREENVIEW';
   static const PROFILEVIEW = '/PROFILEVIEW';
+  static const EDITPROFILEVIEW = '/EDITPROFILEVIEW';
+  static const USERPROFILEVIEW = '/USERPROFILEVIEW';
   static const PRESENTATION_HOME = '/presentation-home';
   static const PresentationOpenView = '/PresentationOpenView';
   static const PresentationEditView = '/PresentationEditView';
   static const NAVVIEW = '/NAVVIEW';
   static const CREATIONVIEW = '/CREATIONVIEW';
-  static const PresentationEditIndividualSlideView = '/PresentationEditIndividualSlideView';
+  static const PresentationEditIndividualSlideView =
+      '/PresentationEditIndividualSlideView';
+  static const CLICKYINTROSCREEN = '/CLICKYINTROSCREEN';
 }

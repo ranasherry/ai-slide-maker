@@ -11,6 +11,8 @@ class MyPresentation {
   RxString styleId;
   String? createrId;
   int timestamp, likesCount, commentsCount;
+
+  bool isLiked = false;
   // String slideStyleID;
 
   MyPresentation({
@@ -22,6 +24,7 @@ class MyPresentation {
     required this.timestamp,
     required this.likesCount,
     required this.commentsCount,
+    required this.isLiked,
   });
 
   Map<String, dynamic> toMap() {
@@ -55,36 +58,36 @@ class MyPresentation {
 
   factory MyPresentation.fromMap(Map<String, dynamic> map) {
     return MyPresentation(
-      presentationId: map['presentationId'] ?? 0 as int,
-      presentationTitle: map['presentationTitle'] ?? "" as String,
-      slides: (map['slides'] ?? [] as List)
-          ?.map((x) => MySlide.fromMap(x as Map<String, dynamic>))
-          .toList()
-          .obs,
-      //key,values added by rizwan
-      styleId: (map['styleId'] ?? "").toString().obs, // Corrected
-      createrId: map['createrId'] ?? null as String?,
-      timestamp: map['timestamp'] ?? 0 as int,
-      likesCount: map['likesCount'] ?? 0 as int,
-      commentsCount: map['commentsCount'] ?? 0 as int,
-    );
+        presentationId: map['presentationId'] ?? 0 as int,
+        presentationTitle: map['presentationTitle'] ?? "" as String,
+        slides: (map['slides'] ?? [] as List)
+            ?.map((x) => MySlide.fromMap(x as Map<String, dynamic>))
+            .toList()
+            .obs,
+        //key,values added by rizwan
+        styleId: (map['styleId'] ?? "").toString().obs, // Corrected
+        createrId: map['createrId'] ?? null as String?,
+        timestamp: map['timestamp'] ?? 0 as int,
+        likesCount: map['likesCount'] ?? 0 as int,
+        commentsCount: map['commentsCount'] ?? 0 as int,
+        isLiked: false);
   }
   // method below added by rizwan
   factory MyPresentation.fromMapDatabase(Map<String, dynamic> map) {
     return MyPresentation(
-      presentationId: map['presentationId'] ?? 0 as int,
-      presentationTitle: map['presentationTitle'] ?? "" as String,
-      slides: RxList<MySlide>(
-        (jsonDecode(map['slides']) as List<dynamic>)
-            .map((x) => MySlide.fromMap(x as Map<String, dynamic>))
-            .toList(),
-      ),
-      styleId: (map['styleId'] ?? "").toString().obs, // Corrected,
-      createrId: map['createrId'] ?? null as String?,
-      timestamp: map['timestamp'] ?? 0 as int,
-      likesCount: map['likesCount'] ?? 0 as int,
-      commentsCount: map['commentsCount'] ?? 0 as int,
-    );
+        presentationId: map['presentationId'] ?? 0 as int,
+        presentationTitle: map['presentationTitle'] ?? "" as String,
+        slides: RxList<MySlide>(
+          (jsonDecode(map['slides']) as List<dynamic>)
+              .map((x) => MySlide.fromMap(x as Map<String, dynamic>))
+              .toList(),
+        ),
+        styleId: (map['styleId'] ?? "").toString().obs, // Corrected,
+        createrId: map['createrId'] ?? null as String?,
+        timestamp: map['timestamp'] ?? 0 as int,
+        likesCount: map['likesCount'] ?? 0 as int,
+        commentsCount: map['commentsCount'] ?? 0 as int,
+        isLiked: false);
   }
 
   String toJson() => json.encode(toMap());

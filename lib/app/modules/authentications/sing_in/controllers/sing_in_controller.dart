@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import 'package:slide_maker/app/services/auth_services.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/services/shared_pref_services.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:uuid/uuid.dart';
 
 class SignInController extends GetxController {
@@ -126,13 +128,14 @@ class SignInController extends GetxController {
       } else {
         // User doesn't exist, create a new user
         final revenueCatUserId = await RevenueCatService().initialize(null);
-
+        String userName = generateUniqueUserName("user");
         UserData userData = UserData(
             id: user.uid,
-            name: user.displayName ?? "",
+            name: user.displayName ?? userName,
             email: user.email ?? "",
-            revenueCatUserId: revenueCatUserId);
-
+            revenueCatUserId: revenueCatUserId,
+            profilePicUrl: user.photoURL ?? "");
+// user.photoURL;
         // final newUser = {
         //   'id': user.uid,
         //   'name': user.displayName,
@@ -145,11 +148,23 @@ class SignInController extends GetxController {
       }
 
       // Navigate to HomeScreen
-      Get.offAndToNamed(Routes.HOMEVIEW1);
+      ComFunction.GotoHomeScreen();
+      // Get.offAndToNamed(Routes.HOMEVIEW1);
     } catch (e) {
       // Handle any errors here
       print('Error during login process: $e');
     }
+  }
+
+  String generateUniqueUserName(String baseName) {
+    // Generate a random number between 0 and 9999999 (7 digits max)
+    int randomNumber = math.Random().nextInt(9999999);
+
+    // Format the number with leading zeros to ensure it's 7 digits long
+    String formattedNumber = randomNumber.toString().padLeft(7, '0');
+
+    // Concatenate the base name with the formatted number
+    return '$baseName$formattedNumber';
   }
 
   Future<void> createNewUser(User user, String revenueCatUserId) async {

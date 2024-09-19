@@ -8,6 +8,7 @@ import "dart:developer" as developer;
 import 'package:slide_maker/app/slide_styles/sectioned_slide1_editor.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide2_editor.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide7.dart';
 
 import 'package:slide_maker/app/slide_styles/title_slide1_editor.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -51,14 +52,16 @@ Widget individualSlideEditorMethod(
       } else {
         //? Sections
         if (index == 1) {
-          return Obx(() => SectionedSlide2Editor(
+          return Obx(() =>
+              // ? uncomment before release [jamal]
+              // SectionedSlide2Editor(
+              SectionedSlide7(
                 mySlide: myPresentation.value.slides[index],
                 slidePallet: slidePallet.value,
                 // slidePallet: selectedPallet,
                 size: size,
-                index: index,
-               isReadOnly: isReadOnly,
-
+                // index: index,
+                // isReadOnly: isReadOnly,
               ));
         } else {
           return Obx(() => SectionedSlide1Editor(
@@ -68,7 +71,6 @@ Widget individualSlideEditorMethod(
                 size: size,
                 index: index,
                 isReadOnly: isReadOnly,
-
               ));
         }
       }

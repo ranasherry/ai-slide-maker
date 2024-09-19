@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:slide_maker/app/modules/intro_screens/views/clicky_intro_screen.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/bindings/presentation_edit_binding.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_individual_slide_view.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_edit_view.dart';
@@ -9,8 +10,12 @@ import 'package:slide_maker/app/modules/nav_bar_view/binding/nav_view_binding.da
 import 'package:slide_maker/app/modules/nav_bar_view/view/nav_view.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/bindings/presentation_open_binding.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/views/presentation_open_view.dart';
+import 'package:slide_maker/app/modules/profile_view/binding/edit_profile_binding.dart';
 import 'package:slide_maker/app/modules/profile_view/binding/profile_view_binding.dart';
+import 'package:slide_maker/app/modules/profile_view/binding/user_profileview_binding.dart';
+import 'package:slide_maker/app/modules/profile_view/view/edit_profile_view.dart';
 import 'package:slide_maker/app/modules/profile_view/view/profile_view.dart';
+import 'package:slide_maker/app/modules/profile_view/view/user_profile_view.dart';
 
 import '../modules/authentications/sing_in/bindings/sing_in_binding.dart';
 import '../modules/authentications/sing_in/views/sing_in_view.dart';
@@ -109,6 +114,7 @@ class AppPages {
       page: () => SlideMakerView(),
       binding: SlideMakerBinding(),
     ),
+
     // GetPage(
     //   name: _Paths.GemsView,
     //   page: () => GemsView(),
@@ -139,6 +145,7 @@ class AppPages {
       page: () => PdfViewView(),
       binding: PdfViewBinding(),
     ),
+
     GetPage(
       name: _Paths.SHOW_P_D_F,
       page: () => ShowPDFView(),
@@ -290,6 +297,16 @@ class AppPages {
       binding: ProfileViewBinding(),
     ),
     GetPage(
+      name: _Paths.EDITPROFILEVIEW,
+      page: () => const EditProfileView(),
+      binding: EditProfileViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.USERPROFILEVIEW,
+      page: () => const UserProfileView(),
+      binding: UserProfileviewBinding(),
+    ),
+    GetPage(
       name: _Paths.PresentationOpenView,
       page: () => PresentationOpenView(),
       binding: PresentationOpenBinding(),
@@ -311,7 +328,11 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PresentationEditIndividualSlideView,
-      page: ()=> PresentationEditIndividualSlideView(),
-    )
+      page: () => PresentationEditIndividualSlideView(),
+    ),
+    GetPage(
+        name: _Paths.CLICKYINTROSCREEN,
+        page: () => ClickyIntroScreen(),
+        binding: newIntroScreenBinding())
   ];
 }
