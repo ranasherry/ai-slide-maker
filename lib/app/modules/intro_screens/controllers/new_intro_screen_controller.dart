@@ -71,7 +71,8 @@ class newInroScreenCTL extends GetxController {
       pref.setBool('first_time', bool);
 
       // Get.offNamed(Routes.HomeView);
-      Get.offNamed(Routes.HOMEVIEW1);
+      // Get.offNamed(Routes.HOMEVIEW1); //? Commented by Jamal!
+      Get.offNamed(Routes.CLICKYINTROSCREEN); //? Add by Jamal!
     });
   }
 
