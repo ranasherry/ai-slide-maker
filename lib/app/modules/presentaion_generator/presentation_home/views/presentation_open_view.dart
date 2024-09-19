@@ -48,12 +48,12 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               bottom_navi_bar_items(Icons.share, "Share", () {
                 controller.createPresentation();
               }),
-              Obx(() => controller.isOtherUser.value
-                  ? Container()
-                  : bottom_navi_bar_items(Icons.edit, "Edit", () {
-                      Get.toNamed(Routes.PresentationEditView,
-                          arguments: [controller.myPresentation.value]);
-                    })),
+              // Obx(() => controller.isOtherUser.value
+              //     ? Container()
+              //     : bottom_navi_bar_items(Icons.edit, "Edit", () {
+              //         Get.toNamed(Routes.PresentationEditView,
+              //             arguments: [controller.myPresentation.value]);
+              //       })),
               // bottom_navi_bar_items(Icons.delete, "Delete", () {
               //   controller.deleteSlide(controller.currentSelectedIndex.value);
               // }),
