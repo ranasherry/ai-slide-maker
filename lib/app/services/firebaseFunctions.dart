@@ -28,10 +28,10 @@ class FirestoreService {
 
   String UserID = "temp";
   //added by rizwan
-  // String presentationCollectionPath = "presentationTest";
-  String presentationCollectionPath = "presentation";
-  String subcollectionLikes = 'likesTest';
-  String subcollectionComments = 'commentsTest';
+  String presentationCollectionPath = "presentationTest";
+  // String presentationCollectionPath = "presentation";
+  String subcollectionLikes = 'likes';
+  String subcollectionComments = 'comments';
 
   /// Creates a new user document with an empty history list, generationCount of 0, and tokensConsumed of 0.
   Future<void> createUser({required String uid}) async {
@@ -406,6 +406,21 @@ class FirestoreService {
     } else {
       // User doesn't exist, create a new user
       return null;
+    }
+  }
+
+  // Function to update user profile in Firestore
+  Future<bool> updateUserProfile(String uid, UserData userData) async {
+    try {
+      final docRef =
+          FirebaseFirestore.instance.collection(userCollectionPath).doc(uid);
+      await docRef.update(
+          userData.toMap()); // Assuming you have a toJson() in UserData model
+      return true;
+    } catch (e) {
+      // Handle Firestore update error
+      print("Error updating user profile: $e");
+      return false;
     }
   }
 }

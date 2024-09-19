@@ -15,148 +15,159 @@ class UserProfileView extends GetView<UserProfileviewController> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: SizeConfig.blockSizeVertical * 10,
-                  width: SizeConfig.blockSizeHorizontal * 20,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.background_color),
-                      shape: BoxShape.circle,
-                      color: AppColors.textfieldcolor),
-                  child: Icon(
-                    CupertinoIcons.person_circle,
+        child: Obx(() => controller.isLoading.value
+            ? CircularProgressIndicator()
+            : Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        height: SizeConfig.blockSizeVertical * 10,
+                        width: SizeConfig.blockSizeHorizontal * 20,
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: AppColors.background_color),
+                            shape: BoxShape.circle,
+                            color: AppColors.textfieldcolor),
+                        child: Icon(
+                          CupertinoIcons.person_circle,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(controller.userData.value.name ?? "Name",
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 5,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black))),
+                          verticalSpace(SizeConfig.blockSizeVertical * 0.7),
+                          // Text("UID:183209897091"),
+                          verticalSpace(SizeConfig.blockSizeVertical * 0.7),
+                          Text(controller.userData.value.email.isEmpty
+                              ? "No Email"
+                              : controller.userData.value.email),
+                          verticalSpace(SizeConfig.blockSizeVertical * 0.7),
+                          Row(
+                            children: [
+                              Text("Male"),
+                              horizontalSpace(
+                                  SizeConfig.blockSizeHorizontal * 5),
+                              Text("🎂 Feb 29, 2025"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Rana mehar Gujjar",
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 4,
+                      vertical: SizeConfig.blockSizeVertical * 2,
+                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          followers_method("Followers : 0"),
+                          followers_method("Following : 100")
+                        ]),
+                  ),
+                  Container(
+                    height: SizeConfig.blockSizeVertical * 7,
+                    width: SizeConfig.screenWidth,
+                    decoration: BoxDecoration(
+                        // color: AppColors.textfieldcolor,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(
+                                SizeConfig.blockSizeHorizontal * 4),
+                            topRight: Radius.circular(
+                                SizeConfig.blockSizeHorizontal * 4)),
+                        border: Border(
+                            bottom: BorderSide(
+                                color: AppColors.mainColor, width: 1))),
+                    child: Center(
+                      child: Text(
+                        "Your Creations",
                         style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 fontSize: SizeConfig.blockSizeHorizontal * 5,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black))),
-                    verticalSpace(SizeConfig.blockSizeVertical * 0.7),
-                    Text("UID:183209897091"),
-                    verticalSpace(SizeConfig.blockSizeVertical * 0.7),
-                    Text("rana_Mehar_Gujjar@megail.com"),
-                    verticalSpace(SizeConfig.blockSizeVertical * 0.7),
-                    Row(
-                      children: [
-                        Text("Male"),
-                        horizontalSpace(SizeConfig.blockSizeHorizontal * 5),
-                        Text("🎂 Feb 29, 2025"),
-                      ],
+                                color: AppColors.mainColor)),
+                      ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 4,
-                vertical: SizeConfig.blockSizeVertical * 2,
-              ),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    followers_method("Followers : 0"),
-                    followers_method("Following : 100")
-                  ]),
-            ),
-            Container(
-              height: SizeConfig.blockSizeVertical * 7,
-              width: SizeConfig.screenWidth,
-              decoration: BoxDecoration(
-                  // color: AppColors.textfieldcolor,
-                  borderRadius: BorderRadius.only(
-                      topLeft:
-                          Radius.circular(SizeConfig.blockSizeHorizontal * 4),
-                      topRight:
-                          Radius.circular(SizeConfig.blockSizeHorizontal * 4)),
-                  border: Border(
-                      bottom:
-                          BorderSide(color: AppColors.mainColor, width: 1))),
-              child: Center(
-                child: Text(
-                  "Your Creations",
-                  style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 5,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.mainColor)),
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeHorizontal * 2,
-                    vertical: SizeConfig.blockSizeVertical * 1),
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.blockSizeHorizontal * 4),
-                    height: SizeConfig.blockSizeVertical * 10,
-                    width: SizeConfig.blockSizeHorizontal * 60,
-                    decoration: BoxDecoration(
-                        color: AppColors.textfieldcolor,
-                        borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 7)),
-                    child: Row(
+                  ),
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeHorizontal * 2,
+                          vertical: SizeConfig.blockSizeVertical * 1),
                       children: [
                         Container(
-                            height: SizeConfig.blockSizeVertical * 7,
-                            width: SizeConfig.blockSizeHorizontal * 25,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    SizeConfig.blockSizeHorizontal * 3)),
-                            child: ClipRRect(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: SizeConfig.blockSizeHorizontal * 4),
+                          height: SizeConfig.blockSizeVertical * 10,
+                          width: SizeConfig.blockSizeHorizontal * 60,
+                          decoration: BoxDecoration(
+                              color: AppColors.textfieldcolor,
                               borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 3),
-                              child: Image.asset(
-                                AppImages.slidy_style8[0],
-                                fit: BoxFit.cover,
+                                  SizeConfig.blockSizeHorizontal * 7)),
+                          child: Row(
+                            children: [
+                              Container(
+                                  height: SizeConfig.blockSizeVertical * 7,
+                                  width: SizeConfig.blockSizeHorizontal * 25,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.blockSizeHorizontal * 3)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        SizeConfig.blockSizeHorizontal * 3),
+                                    child: Image.asset(
+                                      AppImages.slidy_style8[0],
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )),
+                              horizontalSpace(
+                                  SizeConfig.blockSizeHorizontal * 4),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "Solar Flair",
+                                    style: GoogleFonts.inter(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    4,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.titles)),
+                                  ),
+                                  Text(
+                                    "Date/Time",
+                                    style: GoogleFonts.inter(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    3,
+                                            color: AppColors.titles)),
+                                  ),
+                                ],
                               ),
-                            )),
-                        horizontalSpace(SizeConfig.blockSizeHorizontal * 4),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              "Solar Flair",
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.titles)),
-                            ),
-                            Text(
-                              "Date/Time",
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 3,
-                                      color: AppColors.titles)),
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                            onTap: () {}, child: Icon(Icons.more_vert))
+                              Spacer(),
+                              GestureDetector(
+                                  onTap: () {}, child: Icon(Icons.more_vert))
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   )
                 ],
-              ),
-            )
-          ],
-        ),
+              )),
       ),
     );
   }

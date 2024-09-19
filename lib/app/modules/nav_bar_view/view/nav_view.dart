@@ -35,12 +35,12 @@ class NavView extends GetView<NavCTL> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.search),
-                label: 'Search',
+                label: 'Explore',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person_circle),
-                label: 'Profile',
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(CupertinoIcons.person_circle),
+              //   label: 'Profile',
+              // ),
             ],
           );
         }));

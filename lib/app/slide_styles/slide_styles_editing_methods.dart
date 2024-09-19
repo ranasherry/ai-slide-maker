@@ -49,13 +49,13 @@ Widget individualSlideEditorMethod(
         if (index == 1) {
           return Obx(() =>
               // ? uncomment before release [jamal]
-              // SectionedSlide2Editor(
-              SectionedSlide7(
+              SectionedSlide2Editor(
+                // SectionedSlide7(
                 mySlide: myPresentation.value.slides[index],
                 slidePallet: selectedPallet,
                 size: size,
-                // index: index,
-                // isReadOnly: isReadOnly,
+                index: index,
+                isReadOnly: isReadOnly,
               ));
         } else {
           return Obx(() => SectionedSlide1Editor(

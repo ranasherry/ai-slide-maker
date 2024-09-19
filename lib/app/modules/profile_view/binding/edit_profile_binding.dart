@@ -4,6 +4,6 @@ import 'package:slide_maker/app/modules/profile_view/controller/edit_profile_con
 class EditProfileViewBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put((EditProfileController));
+    Get.lazyPut<EditProfileController>((() => EditProfileController()));
   }
 }

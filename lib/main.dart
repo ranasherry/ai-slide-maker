@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
 import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
+import 'package:slide_maker/app/provider/userdata_provider.dart';
 import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/services/rizwan_apiservices.dart';
 import 'package:slide_maker/app/services/shared_pref_services.dart';
@@ -145,13 +146,17 @@ class MyApp extends StatelessWidget {
     facebookAppEvents.setAdvertiserTracking(enabled: true);
     analytics.setAnalyticsCollectionEnabled(true);
     // facebookAppEvents.logStartTrial(orderId: "1234");
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    // final themeNotifier = Provider.of<ThemeNotifier>(context);
     // EasyLoading.init();
     observer.analytics.setAnalyticsCollectionEnabled(kReleaseMode);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
-          ChangeNotifierProvider(create: (context) => CreationViewProvider())
+          ChangeNotifierProvider(create: (context) => CreationViewProvider()),
+          ChangeNotifierProvider(
+            create: (context) => UserdataProvider(),
+            lazy: false,
+          )
         ],
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,

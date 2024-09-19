@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,6 +43,7 @@ class EditProfileView extends GetView<EditProfileController> {
                     GestureDetector(
                       onTap: () {
                         // ? Save Changes
+                        controller.SaveData();
                       },
                       child: Container(
                           height: SizeConfig.blockSizeVertical * 5,
@@ -80,7 +82,14 @@ class EditProfileView extends GetView<EditProfileController> {
                               image: FileImage(controller.pickedImage.value!),
                               fit: BoxFit.cover,
                             )
-                          : null,
+                          : controller.networkImageLink.value.isNotEmpty
+                              ? DecorationImage(
+                                  // Use CachedNetworkImage for network images
+                                  image: CachedNetworkImageProvider(
+                                      controller.networkImageLink.value),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                     ),
                     child: controller.pickedImage.value == null
                         ? Icon(Icons.add_a_photo)
@@ -107,7 +116,7 @@ class EditProfileView extends GetView<EditProfileController> {
                   ),
                 ),
               ),
-              edit_profile_inputfield("Name"),
+              edit_profile_inputfield("Name", controller.profileName),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
@@ -223,9 +232,7 @@ class EditProfileView extends GetView<EditProfileController> {
   }
 
   Widget edit_profile_inputfield(
-    String hintText,
-    //  TextEditingController controller
-  ) {
+      String hintText, TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(
           top: SizeConfig.blockSizeVertical * 1,
@@ -237,7 +244,7 @@ class EditProfileView extends GetView<EditProfileController> {
           borderRadius:
               BorderRadius.circular(SizeConfig.blockSizeHorizontal * 3)),
       child: TextFormField(
-        // controller: controller,
+        controller: controller,
         textAlign: TextAlign.start,
         cursorColor: AppColors.titles,
         decoration: InputDecoration(

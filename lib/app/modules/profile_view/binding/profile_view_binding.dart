@@ -6,6 +6,6 @@ class ProfileViewBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(ProfileViewCTL());
-    Get.put(EditProfileController());
+    // Get.put(EditProfileController());
   }
 }

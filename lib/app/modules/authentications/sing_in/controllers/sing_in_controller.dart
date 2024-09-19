@@ -6,7 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
+import 'package:slide_maker/app/provider/userdata_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/auth_services.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
@@ -129,11 +131,13 @@ class SignInController extends GetxController {
         // User doesn't exist, create a new user
         final revenueCatUserId = await RevenueCatService().initialize(null);
         String userName = generateUniqueUserName("user");
+        String? gender = await SharedPrefService().getGender();
         UserData userData = UserData(
             id: user.uid,
             name: user.displayName ?? userName,
             email: user.email ?? "",
             revenueCatUserId: revenueCatUserId,
+            gender: gender ?? "",
             profilePicUrl: user.photoURL ?? "");
 // user.photoURL;
         // final newUser = {
@@ -144,6 +148,10 @@ class SignInController extends GetxController {
         // };
 
         await docRef.set(userData.toMap());
+        final userdataProvider =
+            Provider.of<UserdataProvider>(Get.context!, listen: false);
+        userdataProvider.setUserData = userData;
+
         print('New user created!');
       }
 

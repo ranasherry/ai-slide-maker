@@ -430,11 +430,15 @@ class CreationView extends GetView<CreationViewCtl> {
             .getUserFromID(controller.presentations[index].createrId ?? "temp"),
         builder: (context, snapshot) {
           UserData user = UserData(
-              id: "", name: "user1234567", email: "", revenueCatUserId: "");
+              id: "",
+              name: "user1234567",
+              email: "",
+              revenueCatUserId: "",
+              gender: "male");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text(""); // Show loading indicator
           } else if (snapshot.hasError) {
-            return Text(''); // Show error message
+            // return Text(''); // Show error message
           } else if (!snapshot.hasData || snapshot.data == null) {
             // Handle case when user is not found
           } else {

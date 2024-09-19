@@ -11,7 +11,7 @@ class NavCTL extends GetxController {
   final screens = [
     HomeView1(),
     CreationView(),
-    ProfileView(),
+    // ProfileView(),
   ];
   @override
   void onReady() {

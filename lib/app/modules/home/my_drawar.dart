@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_maker/app/modules/controllers/settings_view_ctl.dart';
+import 'package:slide_maker/app/provider/userdata_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/colors.dart';
@@ -109,7 +111,7 @@ class MyDrawer extends GetView<SettingsViewCTL> {
     );
   }
 
-  Container _myHeader() {
+  Widget _myHeader() {
     String name = "Name";
     String userEmail = "user email";
     if (FirebaseAuth.instance.currentUser != null) {
@@ -119,94 +121,118 @@ class MyDrawer extends GetView<SettingsViewCTL> {
       }
       userEmail = FirebaseAuth.instance.currentUser!.email ?? "user email";
     }
-
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: SizeConfig.blockSizeHorizontal * 5,
-      ),
-      margin: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2),
-      height: SizeConfig.screenHeight * 0.15,
-      decoration: BoxDecoration(
-        // color: AppColors.mainColor,
-        gradient: AppColors.mainHeaderGradient,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.4), // Shadow color
-            spreadRadius: 2, // How much the shadow spreads
-            blurRadius: 5, // How soft the shadow is
-            offset: Offset(5, 5), // Position of the shadow (x, y)
-          ),
-        ],
-      ),
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: SizeConfig.screenWidth * 0.3,
-                child: FittedBox(
-                  child: Text(
-                    name,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 7,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textfieldcolor),
+    return Consumer<UserdataProvider>(builder: (context, provider, child) {
+      return Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+        ),
+        margin: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 2),
+        height: SizeConfig.screenHeight * 0.15,
+        decoration: BoxDecoration(
+          // color: AppColors.mainColor,
+          gradient: AppColors.mainHeaderGradient,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.4), // Shadow color
+              spreadRadius: 2, // How much the shadow spreads
+              blurRadius: 5, // How soft the shadow is
+              offset: Offset(5, 5), // Position of the shadow (x, y)
+            ),
+          ],
+        ),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(
+                      Routes.PROFILEVIEW,
+                    );
+                  },
+                  child: Container(
+                    width: SizeConfig.blockSizeHorizontal * 40,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: SizeConfig.screenWidth * 0.3,
+                          child: FittedBox(
+                            child: Text(
+                              provider.userData != null
+                                  ? provider.userData!.name ?? "Anonymous User"
+                                  : "Anonymous User",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 7,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.textfieldcolor),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            provider.userData != null
+                                ? provider.userData!.email
+                                : "your Email",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                color: AppColors.textfieldcolor),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 1.5),
-                  height: SizeConfig.blockSizeVertical * 3,
-                  // width: SizeConfig.blockSizeHorizontal * 20,
-                  decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(
-                          SizeConfig.blockSizeHorizontal * 7)),
-                  child: Center(
-                    child: Obx(() => Text(
-                          RevenueCatService().currentEntitlement.value ==
-                                  Entitlement.free
-                              ? "Free Plan"
-                              : "Paid Plan",
-                          style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 4,
-                              color: Colors.grey.shade700),
-                        )),
+                GestureDetector(
+                  onTap: () {
+                    RevenueCatService().GoToPurchaseScreen();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeHorizontal * 1.5),
+                    height: SizeConfig.blockSizeVertical * 3,
+                    // width: SizeConfig.blockSizeHorizontal * 20,
+                    decoration: BoxDecoration(
+                        color: AppColors.background,
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeHorizontal * 7)),
+                    child: Center(
+                      child: Obx(() => Text(
+                            RevenueCatService().currentEntitlement.value ==
+                                    Entitlement.free
+                                ? "Free Plan"
+                                : "Paid Plan",
+                            style: TextStyle(
+                                fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                color: Colors.grey.shade700),
+                          )),
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-          verticalSpace(SizeConfig.blockSizeVertical * 1),
-          Text(
-            userEmail,
-            style: TextStyle(
-                fontSize: SizeConfig.blockSizeHorizontal * 4,
-                color: AppColors.textfieldcolor),
-          ),
-        ],
-      ),
-      // padding: EdgeInsets.zero,
-      // child: UserAccountsDrawerHeader(
-      //   accountName: Text(
-      //     "Anonymous",
-      //     style: TextStyle(fontWeight: FontWeight.bold),
-      //   ),
-      //   accountEmail: Text("muazzamking30@gmail.com"),
-      //   // currentAccountPicture: CircleAvatar(
-      //   //   backgroundImage: AssetImage('assets/images/user2.png'),
-      //   // ),
-      //   decoration: BoxDecoration(color: AppColors.textfieldcolor),
-      // ),
-    );
+                )
+              ],
+            ),
+            // verticalSpace(SizeConfig.blockSizeVertical * 1),
+          ],
+        ),
+        // padding: EdgeInsets.zero,
+        // child: UserAccountsDrawerHeader(
+        //   accountName: Text(
+        //     "Anonymous",
+        //     style: TextStyle(fontWeight: FontWeight.bold),
+        //   ),
+        //   accountEmail: Text("muazzamking30@gmail.com"),
+        //   // currentAccountPicture: CircleAvatar(
+        //   //   backgroundImage: AssetImage('assets/images/user2.png'),
+        //   // ),
+        //   decoration: BoxDecoration(color: AppColors.textfieldcolor),
+        // ),
+      );
+    });
   }
 
   Padding drawer_widgets(IconData icon, String text) {
