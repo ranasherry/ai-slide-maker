@@ -127,6 +127,9 @@ class SignInController extends GetxController {
         print('User found: ${userData.email}');
 
         RevenueCatService().initialize(userData.revenueCatUserId);
+        final userdataProvider =
+            Provider.of<UserdataProvider>(Get.context!, listen: false);
+        userdataProvider.setUserData = userData;
       } else {
         // User doesn't exist, create a new user
         final revenueCatUserId = await RevenueCatService().initialize(null);

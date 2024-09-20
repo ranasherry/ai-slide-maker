@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,14 +34,30 @@ class ProfileView extends GetView<ProfileViewCTL> {
                           border: Border.all(color: AppColors.background_color),
                           shape: BoxShape.circle,
                           color: AppColors.textfieldcolor),
-                      child: Icon(
-                        CupertinoIcons.person_circle,
-                      ),
+                      child: provider.userData != null
+                          ? provider.userData!.profilePicUrl != null
+                              ? CachedNetworkImage(
+                                  imageUrl: provider.userData!.profilePicUrl!,
+                                  errorWidget: (context, err, obj) {
+                                    return Icon(
+                                      CupertinoIcons.person_circle,
+                                    );
+                                  },
+                                )
+                              : Icon(
+                                  CupertinoIcons.person_circle,
+                                )
+                          : Icon(
+                              CupertinoIcons.person_circle,
+                            ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(provider.userData!.name ?? "Name",
+                        Text(
+                            provider.userData != null
+                                ? provider.userData!.name ?? "Name"
+                                : "Name",
                             style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                     fontSize:
