@@ -115,7 +115,6 @@ class __SectionedSlide1State extends State<SectionedSlide7> {
                             ? Container(
                                 height: widget.size.height * 0.30,
                                 width: widget.size.width * 0.9,
-                                color: Colors.amber,
                                 child: Column(
                                   children: [
                                     Text(
@@ -135,8 +134,8 @@ class __SectionedSlide1State extends State<SectionedSlide7> {
                                           "",
                                       style: TextStyle(
                                         fontSize: widget.size.height * 0.04,
-                                        color: Color(widget
-                                            .slidePallet.sectionDescTextColor),
+                                        color: Color(
+                                            widget.slidePallet.bigTitleTColor),
                                       ),
                                     ),
                                   ],
@@ -249,7 +248,7 @@ class __SectionedSlide1State extends State<SectionedSlide7> {
           Text(description,
               style: TextStyle(
                   fontSize: widget.size.height * 0.04,
-                  color: Color(widget.slidePallet.sectionDescTextColor)))
+                  color: Color(widget.slidePallet.bigTitleTColor)))
         ],
       ),
     );
