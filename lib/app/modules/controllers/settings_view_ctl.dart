@@ -41,6 +41,7 @@ class SettingsViewCTL extends GetxController {
     await FirebaseAuth.instance.signOut();
 
     bool isSignout = await AuthService().signOutofApp();
+    //TODO Get UserDataProvider and set userData null
     EasyLoading.dismiss();
     if (isSignout) {
       Get.offAllNamed(Routes.HOMEVIEW1);

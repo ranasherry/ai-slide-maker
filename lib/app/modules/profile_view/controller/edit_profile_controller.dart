@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
+import 'package:slide_maker/app/provider/userdata_provider.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
@@ -142,6 +144,9 @@ class EditProfileController extends GetxController {
     if (isUpdated) {
       EasyLoading.dismiss();
       EasyLoading.showSuccess("Profile Updated Successfully");
+      final userdataProvider =
+          Provider.of<UserdataProvider>(Get.context!, listen: false);
+      userdataProvider.setUserData = userData;
       Get.back();
     } else {
       EasyLoading.dismiss();

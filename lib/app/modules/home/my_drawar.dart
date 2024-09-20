@@ -150,9 +150,14 @@ class MyDrawer extends GetView<SettingsViewCTL> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(
-                      Routes.PROFILEVIEW,
-                    );
+                    if (provider.userData != null) {
+                      Get.toNamed(
+                        Routes.PROFILEVIEW,
+                      );
+                    } else {
+                      Get.toNamed(Routes.SING_IN);
+                      //?TODO: Show Error Dialogue to tell Please Signin 1st
+                    }
                   },
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 40,

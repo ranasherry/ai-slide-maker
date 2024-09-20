@@ -28,6 +28,7 @@ class EditProfileView extends GetView<EditProfileController> {
                     GestureDetector(
                       onTap: () {
                         // ? Cancel Changes
+                        Get.back();
                       },
                       child: Container(
                           height: SizeConfig.blockSizeVertical * 5,
