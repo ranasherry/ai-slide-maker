@@ -158,14 +158,18 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                     ),
                   ),
                 ),
-                Obx(() => (controller.presentations.isEmpty && controller.allSlidePallets.isEmpty)
+                Obx(() => (controller.presentations.isEmpty &&
+                        controller.allSlidePallets.isEmpty)
                     ? _noPreviousSlideAvailable()
                     : Container(
                         child: Expanded(
                           child: ListView.builder(
                               itemCount: controller.presentations.length,
                               itemBuilder: (context, index) {
-                                return _histroySlideItem(index, int.parse(controller.presentations[index].styleId.value));
+                                return _histroySlideItem(
+                                    index,
+                                    int.parse(controller
+                                        .presentations[index].styleId.value));
                               }),
                         ),
                       )),
@@ -180,8 +184,10 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
   Widget _histroySlideItem(int index, int styleId) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.PresentationOpenView,
-            arguments: [controller.presentations[index], controller.allSlidePallets[styleId - 1] ]);
+        Get.toNamed(Routes.PresentationOpenView, arguments: [
+          controller.presentations[index],
+          controller.allSlidePallets[styleId - 1]
+        ]);
       },
       child: Container(
         margin: EdgeInsets.symmetric(
@@ -206,38 +212,45 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(SizeConfig.blockSizeHorizontal * 3),
-                  child: Obx(()=>TitleSlide1(
-                    mySlide: controller.presentations[index].slides[0],
-                    // slidePallet: palletList[palletList.indexWhere((element) =>
-                    //                 int.parse(controller
-                    //                     .presentations[index].styleId.value) ==
-                    //                 element.palletId) !=
-                    //             -1
-                    //         ? palletList.indexWhere((element) =>
-                    //             int.parse(controller
-                    //                 .presentations[index].styleId.value) ==
-                    //             element.palletId)
-                    //         : 0 // Return 0 if not found
-                    //     ],
-                    slidePallet: controller.allSlidePallets[styleId - 1] ,
-                    size: Size(SizeConfig.blockSizeHorizontal * 25,
-                        SizeConfig.blockSizeVertical * 7),
-                  )
-                    // developer.log("${controller.allSlidePallets[styleId - 1]}");
-                  ),
+                  child: Obx(() => TitleSlide1(
+                            mySlide: controller.presentations[index].slides[0],
+                            // slidePallet: palletList[palletList.indexWhere((element) =>
+                            //                 int.parse(controller
+                            //                     .presentations[index].styleId.value) ==
+                            //                 element.palletId) !=
+                            //             -1
+                            //         ? palletList.indexWhere((element) =>
+                            //             int.parse(controller
+                            //                 .presentations[index].styleId.value) ==
+                            //             element.palletId)
+                            //         : 0 // Return 0 if not found
+                            //     ],
+                            slidePallet:
+                                controller.allSlidePallets[styleId - 1],
+                            size: Size(SizeConfig.blockSizeHorizontal * 25,
+                                SizeConfig.blockSizeVertical * 7),
+                          )
+                      // developer.log("${controller.allSlidePallets[styleId - 1]}");
+                      ),
                 )),
             horizontalSpace(SizeConfig.blockSizeHorizontal * 4),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "${controller.presentations[index].presentationTitle}",
-                  style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 4,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.titles)),
+                Container(
+                  width: SizeConfig.blockSizeHorizontal * 50,
+                  child: Text(
+                    "${controller.presentations[index].presentationTitle}",
+                    style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 4,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.titles)),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: false,
+                  ),
                 ),
                 verticalSpace(SizeConfig.blockSizeVertical * 0.5),
                 Text(
