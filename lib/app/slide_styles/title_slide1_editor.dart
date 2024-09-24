@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/data/text_properties.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_edit_ctl.dart';
 import 'package:slide_maker/app/services/remoteconfig_services.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
@@ -38,13 +39,15 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
   int bgIndex = 0;
   String slideTitleValue = "";
   String sectionContent0Value = "";
-  double titleFontSize = 0.0;
-  double contentFontSize = 0.0;
+  Rx<double> titleFontSize = 0.0.obs;
+  Rx<double> contentFontSize = 0.0.obs;
   int i = 0;
   // final FocusNode _focusNode = FocusNode();
   var rebuild = false;
   late Worker fontSizeWorker;
-  late Worker slideTitleWorker;
+  late Worker currentTextWorker;
+  late Worker resetFontWorker;
+
     
   @override
   // ignore: must_call_super
@@ -63,21 +66,23 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
       controller.slideSectionContentsFontValue[widget.index][0].value = 0.02;
 
  if(widget.slidePallet.slideTitlesFontValue == null || widget.slidePallet.slideTitlesFontValue!.isEmpty){
-      widget.slidePallet.slideTitlesFontValue = controller.slideTitlesFontValue.map((rxDouble){return rxDouble.value;}).toList();
+        developer.log("inisde if title");
+      widget.slidePallet.slideTitlesFontValue = controller.slideTitlesFontValue.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();
     }
     else{
-      if(widget.slidePallet.slideTitlesFontValue![widget.index] != 0.0){
-        controller.slideTitlesFontValue[widget.index].value = widget.slidePallet.slideTitlesFontValue![widget.index];
+        developer.log("inisde else if title");
+      if(widget.slidePallet.slideTitlesFontValue![widget.index].fontSize!  != 0.0){
+        controller.slideTitlesFontValue[widget.index].value = widget.slidePallet.slideTitlesFontValue![widget.index].fontSize!;
       }
     }
     if(widget.slidePallet.slideSectionContentsFontValue == null || widget.slidePallet.slideSectionContentsFontValue!.isEmpty){
-     widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList();
+     widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
       }
       else{
         i=0;
         while(i < controller.slideSectionContentsFontValue[widget.index].length){
-          if(widget.slidePallet.slideSectionContentsFontValue![widget.index][i] != 0.0){
-          controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
+          if(widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize!  != 0.0){
+          controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize!;
           }
           // widget.slidePallet.slideSectionContentsFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList(): controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
           i++;
@@ -85,13 +90,13 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
       }
 
       if(widget.slidePallet.slideSectionHeadersFontValue == null || widget.slidePallet.slideSectionHeadersFontValue!.isEmpty){
-     widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList();
+     widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
       }
       else{
         i=0;
         while(i < controller.slideSectionHeadersFontValue[widget.index].length){
-          if(widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] != 0.0){
-          controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
+          if(widget.slidePallet.slideSectionHeadersFontValue![widget.index][i].fontSize!  != 0.0){
+          controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i].fontSize!;
           }
           // widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList(): controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
           i++;
@@ -100,11 +105,11 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
       controller.currentPallet=widget.slidePallet;
 
       final random = Random();
-      // controller.titleFontSize.value = widget.slidePallet.slideTitlesFontValue![widget.index];
-      // controller.contentFontSize.value = widget.slidePallet.slideSectionContentsFontValue![widget.index][0];
+      // controller.titleFontSize.value.value = widget.slidePallet.slideTitlesFontValue![widget.index];
+      // controller.contentFontSize.value.value = widget.slidePallet.slideSectionContentsFontValue![widget.index][0];
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
       // print('This is current font size value ${controller.currentFontSize}');
-      // print("Title Font Size: $controller.titleFontSize.value");
+      // print("Title Font Size: $controller.titleFontSize.value.value");
       // print("Title Font Size: ${widget.slidePallet.slideTitlesFontValue![widget.index]}");
       // print("BG Index: $bgIndex");
       // print("BG Image: ${widget.slidePallet.imageList[bgIndex]}");
@@ -116,13 +121,13 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
 //         developer.log("check 1.1 Current Font value:${controller.currentFontSize.value}");
 //         // developer.log("test : ${controller.test.value}");
 //   widget.slidePallet=controller.currentPallet;
-//   // controller.titleFontSize.value=controller.currentFontSize.value;
+//   // controller.titleFontSize.value.value=controller.currentFontSize.value;
 
-//         // developer.log("Slide Pallet Font Size : ${controller.currentPallet.titleFontSize}");
+//         // developer.log("Slide Pallet Font Size : ${controller.currentPallet.titleFontSize.value}");
 
-// // controller.titleFontSize.value = widget.slidePallet.slideTitlesFontValue![widget.index];
+// // controller.titleFontSize.value.value = widget.slidePallet.slideTitlesFontValue![widget.index];
 
-//         // developer.log("controller.titleFontSize.value: ${titleFontSize}");
+//         // developer.log("controller.titleFontSize.value.value: ${titleFontSize.value}");
 
 //       setState(() {}); // Update the UI when the value changes
 //     });
@@ -130,9 +135,58 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
       rebuild = true;
       setState((){});
     });
-    slideTitleWorker = ever(controller.currentText, (_){
+    currentTextWorker = ever(controller.currentText, (_){
       setState((){});
     });
+    resetFontWorker = ever(controller.resetFont, (_){
+      setState((){
+        developer.log("resetFont");
+          controller.slideTitlesFontValue[widget.index].value = widget.mySlide.slideSections[0].memoryImage != null ||
+        widget.mySlide.slideSections[0].imageReference != null ? 0.05 : 0.06;
+      controller.slideSectionContentsFontValue[widget.index][0].value = 0.02;
+
+ if(widget.slidePallet.slideTitlesFontValue == null || widget.slidePallet.slideTitlesFontValue!.isEmpty){
+        developer.log("inisde if title reset font");
+
+      widget.slidePallet.slideTitlesFontValue = controller.slideTitlesFontValue.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();
+    }
+    else{
+      if(widget.slidePallet.slideTitlesFontValue![widget.index].fontSize! != 0.0){
+        developer.log("inisde else if title reset font");
+        controller.slideTitlesFontValue[widget.index].value = widget.slidePallet.slideTitlesFontValue![widget.index].fontSize! ;
+      }
+    }
+    if(widget.slidePallet.slideSectionContentsFontValue == null || widget.slidePallet.slideSectionContentsFontValue!.isEmpty){
+     widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
+      }
+      else{
+        i=0;
+        while(i < controller.slideSectionContentsFontValue[widget.index].length){
+          if(widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize!  != 0.0){
+          controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize! ;
+          }
+          // widget.slidePallet.slideSectionContentsFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList(): controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
+          i++;
+        }
+      }
+
+      if(widget.slidePallet.slideSectionHeadersFontValue == null || widget.slidePallet.slideSectionHeadersFontValue!.isEmpty){
+     widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
+      }
+      else{
+        i=0;
+        while(i < controller.slideSectionHeadersFontValue[widget.index].length){
+          if(widget.slidePallet.slideSectionHeadersFontValue![widget.index][i].fontSize!  != 0.0){
+          controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i].fontSize! ;
+          }
+          // widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList(): controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
+          i++;
+        }
+      }
+      });
+    });
+
+
 
 
     // print(
@@ -140,54 +194,26 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
   
         // "initState Called: Image reference: ${widget.mySlide.slideSections[0].imageReference}");
   }
+
+
       @override
   void dispose() {
     // Dispose of the ever listeners when the widget is disposed
     fontSizeWorker.dispose();
-    slideTitleWorker.dispose();
+    currentTextWorker.dispose();
+    resetFontWorker.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if(rebuild = true){
-    titleFontSize = widget.mySlide.slideSections[0].memoryImage != null ||
+    titleFontSize.value = widget.mySlide.slideSections[0].memoryImage != null ||
         widget.mySlide.slideSections[0].imageReference != null
     ? widget.size.width * controller.slideTitlesFontValue[widget.index].value
     : widget.size.width * controller.slideTitlesFontValue[widget.index].value;
-    contentFontSize = widget.size.width * controller.slideSectionContentsFontValue[widget.index][0].value;
-    
-    // developer.log("This is widget SlidePallet inside the build :${widget.slidePallet.slideTitlesFontValue![widget.index]}");
-    // developer.log("This is controller SlideTitlefontvalue inside the build :${controller.slideTitlesFontValue[widget.index]}");
-    }
-    else{
-          titleFontSize = widget.mySlide.slideSections[0].memoryImage != null ||
-        widget.mySlide.slideSections[0].imageReference != null
-    ? widget.size.width * controller.slideTitlesFontValue[widget.index].value
-    : widget.size.width * controller.slideTitlesFontValue[widget.index].value;
-    contentFontSize = widget.size.width * controller.slideSectionContentsFontValue[widget.index][0].value;
-    
-    // developer.log("This is widget SlidePallet inside the build :${widget.slidePallet.slideTitlesFontValue![widget.index]}");
-    // developer.log("This is controller SlideTitlefontvalue inside the build :${controller.slideTitlesFontValue[widget.index]}");
+    contentFontSize.value = widget.size.width * controller.slideSectionContentsFontValue[widget.index][0].value;
 
-    }
-    // controller.initializeSlidesFontList();
-    // controller.initializeSlidesTextController();
-   
-  // controller.titleFontSize.value = widget.mySlide.slideSections[0].memoryImage != null ||
-  //             widget.mySlide.slideSections[0].imageReference != null
-  //         ? widget.size.width * widget.slidePallet.titleFontSize
-  //         : widget.size.width * (widget.slidePallet.titleFontSize + 0.01);
 
-          // print("${controller.slideTitlesFontValue[widget.index].value } size of title");
-    //    _focusNode.addListener(() {
-    //   if (_focusNode.hasFocus) {
-    //     Future.delayed(Duration(seconds: 2));
-    //     // Detect tap on EditableText
-    //     controller.currentFontSize.value = controller.slideTitlesFontValue[widget.index].value ;
-    //     developer.log('pressed title slide 1 title ${controller.slideTitlesFontValue[widget.index].value } size');
-    //   }
-    // });
     return Container(
       width: widget.size.width,
       height: widget.size.height,
@@ -227,17 +253,18 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                             controller.firstIndexOfFont.value = widget.index;
                           controller.currentFontSize.value =  controller.slideTitlesFontValue[widget.index].value;
                           controller.currentText.value = controller.slideTitles[widget.index].text;
+                          controller.currentEditedText.value = controller.slideTitles[widget.index].text;
                           developer.log('pressed title slide 1 title ${controller.slideTitlesFontValue[widget.index].value } size');
                            developer.log("${controller.slideTitlesFontValue[widget.index].value } size of title");
                           },
-                          child: Text(
+                          child: Obx(()=>Text(
                             controller.slideTitles[widget.index].text,
                             style: TextStyle(
                               // fontSize: controller.slideTitlesFontValue[widget.index].value,
-                              fontSize: titleFontSize,  // use multiplier like widget.size.width * 0.5,  save o.5 inside variable then multiply withe size.width
+                              fontSize: titleFontSize.value,  // use multiplier like widget.size.width * 0.5,  save o.5 inside variable then multiply withe size.width
                               color: Color(widget.slidePallet.bigTitleTColor)),
                               // textAlign: TextAlign.left,
-                              ),
+                              )),
                         ),
                         
                         // child: TextField(
@@ -245,7 +272,7 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                         //     controller.setValuesAsNull();
                         //     controller.isTitle.value = true;
                         //     controller.firstIndexOfFont.value = widget.index;
-                        //   controller.currentFontSize.value =  widget.slidePallet.titleFontSize;
+                        //   controller.currentFontSize.value =  widget.slidePallet.titleFontSize.value;
                         //   developer.log('pressed title slide 1 title ${controller.slideTitlesFontValue[widget.index].value } size');
                         //    developer.log("${controller.slideTitlesFontValue[widget.index].value } size of title");
 
@@ -269,10 +296,10 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                         // },
                         // style: TextStyle(
                         //     // fontSize: controller.slideTitlesFontValue[widget.index].value ,
-                        //     fontSize: titleFontSize,
+                        //     fontSize: titleFontSize.value,
                         //     color: Color(widget.slidePallet.bigTitleTColor)),
                         // // style: widget.slidePallet.bigTitleTStyle
-                        // //     .copyWith(fontSize: titleFontSize),
+                        // //     .copyWith(fontSize: titleFontSize.value),
                         //     ),
                         
                       ),
@@ -288,15 +315,16 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                             controller.secondIndexOfFont.value = 0;
                             controller.currentText.value = controller.slideSectionContents[widget.index][0].text;
                             controller.currentFontSize.value = controller.slideSectionContentsFontValue[widget.index][0].value ;
+                            controller.currentEditedText.value = controller.slideSectionContents[widget.index][0].text;
                             developer.log('pressed title slide 1 Contents, ${controller.slideSectionContentsFontValue[widget.index][0].value } size');
                             developer.log("${controller.slideTitlesFontValue[widget.index].value } size of title");
                           },
-                          child: Text(
+                          child: Obx(()=>Text(
                             controller.slideSectionContents[widget.index][0].text, 
                           style: TextStyle(
-                              fontSize: contentFontSize,
+                              fontSize: contentFontSize.value,
                               color: Color(widget.slidePallet.bigTitleTColor)),
-                          ),
+                          )),
                         ),
                         // TextField(
                         //   onTap: (){

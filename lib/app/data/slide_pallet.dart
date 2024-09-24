@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:slide_maker/app/data/text_properties.dart';
 
 class SlidePallet {
   int palletId;
@@ -11,13 +12,14 @@ class SlidePallet {
   int normalTitleTColor;
   int sectionHeaderTColor;
   int normalDescTColor;
+
   int sectionDescTextColor;
   List<String> imageList;
   Color fadeColor;
   bool isPaid;
-  List<double>? slideTitlesFontValue;
-  List<List<double>>? slideSectionHeadersFontValue;
-  List<List<double>>? slideSectionContentsFontValue;
+  List<TextProperties>? slideTitlesFontValue;
+  List<List<TextProperties>>? slideSectionHeadersFontValue;
+  List<List<TextProperties>>? slideSectionContentsFontValue;
 
   SlidePallet({
     required this.palletId,
@@ -49,9 +51,9 @@ class SlidePallet {
     "imageList" : json.encode(imageList),
     "fadeColor" : fadeColor.value,
     "isPaid" : isPaid == true ? 1 : 0,
-   'slideTitlesFontValue': jsonEncode(slideTitlesFontValue ?? []),
-    'slideSectionHeadersFontValue': jsonEncode(slideSectionHeadersFontValue ?? []),
-    'slideSectionContentsFontValue': jsonEncode(slideSectionContentsFontValue ?? []),
+   'slideTitlesFontValue': jsonEncode(slideTitlesFontValue?.map((e)=>e.toMap()).toList() ?? []),
+    'slideSectionHeadersFontValue': jsonEncode(slideSectionHeadersFontValue?.map((e)=>e.map((element)=>element.toMap()).toList()).toList() ?? []),
+    'slideSectionContentsFontValue': jsonEncode(slideSectionContentsFontValue?.map((e)=>e.map((element)=>element.toMap()).toList()).toList() ?? []),
   };
  }
 
@@ -72,16 +74,16 @@ class SlidePallet {
     fadeColor : Color(map["fadeColor"]),
     isPaid : (map["isPaid"] == 1) ? true : false,
 slideTitlesFontValue: (map['slideTitlesFontValue'] != null && (jsonDecode(map['slideTitlesFontValue']) as List).isNotEmpty)
-        ? List<double>.from(jsonDecode(map['slideTitlesFontValue'])) 
+        ? List<TextProperties>.from(jsonDecode((map['slideTitlesFontValue']))) 
         : [],
       slideSectionHeadersFontValue: (map['slideSectionHeadersFontValue'] != null && (jsonDecode(map['slideSectionHeadersFontValue']) as List).isNotEmpty)
         ? (jsonDecode(map['slideSectionHeadersFontValue']) as List)
-            .map((header) => List<double>.from(header))
+            .map((header) => List<TextProperties>.from(header))
             .toList() 
         : [],
       slideSectionContentsFontValue: (map['slideSectionContentsFontValue'] != null && (jsonDecode(map['slideSectionContentsFontValue']) as List).isNotEmpty)
         ? (jsonDecode(map['slideSectionContentsFontValue']) as List)
-            .map((content) => List<double>.from(content))
+            .map((content) => List<TextProperties>.from(content))
             .toList() 
         : [],
                   );
