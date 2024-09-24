@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/data/text_properties.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_edit_ctl.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/slide_styles/water_mark.dart';
@@ -36,6 +37,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
   List<double> contentFontSize = [0.0,0.0];
   List<double> headerFontSize = [0.0,0.0];
   late Worker slideTitleWorker;
+  late Worker resetFontWorker;
   int i = 0;
   // late TextEditingController _slideTitle,_sectionHeader0,_sectionContent0,_sectionHeader1,_sectionContent1;
   // String slideTitleValue = "",
@@ -69,37 +71,37 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
       final random = Random();
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
  if(widget.slidePallet.slideTitlesFontValue == null || widget.slidePallet.slideTitlesFontValue!.isEmpty){
-      widget.slidePallet.slideTitlesFontValue = controller.slideTitlesFontValue.map((rxDouble){return rxDouble.value;}).toList();
+      widget.slidePallet.slideTitlesFontValue = controller.slideTitlesFontValue.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();
     }
     else{
-      if(widget.slidePallet.slideTitlesFontValue![widget.index] != 0.0){
-        controller.slideTitlesFontValue[widget.index].value = widget.slidePallet.slideTitlesFontValue![widget.index];
+      if(widget.slidePallet.slideTitlesFontValue![widget.index].fontSize!  != 0.0){
+        controller.slideTitlesFontValue[widget.index].value = widget.slidePallet.slideTitlesFontValue![widget.index].fontSize! ;
       }
     }
     if(widget.slidePallet.slideSectionContentsFontValue == null || widget.slidePallet.slideSectionContentsFontValue!.isEmpty){
-     widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList();
+     widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
       }
       else{
         i=0;
         while(i < controller.slideSectionContentsFontValue[widget.index].length){
-          if(widget.slidePallet.slideSectionContentsFontValue![widget.index][i] != 0.0){
-          controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
+          if(widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize!  != 0.0){
+          controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize! ;
           }
-          // widget.slidePallet.slideSectionContentsFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList(): controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
+          // widget.slidePallet.slideSectionContentsFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList(): controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
           i++;
         }
       }
 
       if(widget.slidePallet.slideSectionHeadersFontValue == null || widget.slidePallet.slideSectionHeadersFontValue!.isEmpty){
-     widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList();
+     widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
       }
       else{
         i=0;
         while(i < controller.slideSectionHeadersFontValue[widget.index].length){
           if(widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] != 0.0){
-          controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
+          controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i].fontSize! ;
           }
-          // widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return rxDouble.value;}).toList();}).toList(): controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
+          // widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList(): controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
           i++;
         }
       }
@@ -122,6 +124,53 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
     slideTitleWorker = ever(controller.currentText, (_){
       setState((){});
     });
+    resetFontWorker = ever(controller.resetFont, (_){
+      setState((){
+        developer.log("resetFont");
+          controller.slideTitlesFontValue[widget.index].value = widget.mySlide.slideSections[0].memoryImage != null ||
+        widget.mySlide.slideSections[0].imageReference != null ? 0.05 : 0.06;
+      controller.slideSectionContentsFontValue[widget.index][0].value = 0.02;
+
+ if(widget.slidePallet.slideTitlesFontValue == null || widget.slidePallet.slideTitlesFontValue!.isEmpty){
+        developer.log("inisde if title reset font");
+
+      widget.slidePallet.slideTitlesFontValue = controller.slideTitlesFontValue.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();
+    }
+    else{
+      if(widget.slidePallet.slideTitlesFontValue![widget.index].fontSize!  != 0.0){
+        developer.log("inisde else if title reset font");
+        controller.slideTitlesFontValue[widget.index].value = widget.slidePallet.slideTitlesFontValue![widget.index].fontSize! ;
+      }
+    }
+    if(widget.slidePallet.slideSectionContentsFontValue == null || widget.slidePallet.slideSectionContentsFontValue!.isEmpty){
+     widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
+      }
+      else{
+        i=0;
+        while(i < controller.slideSectionContentsFontValue[widget.index].length){
+          if(widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize!  != 0.0){
+          controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i].fontSize! ;
+          }
+          // widget.slidePallet.slideSectionContentsFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionContentsFontValue =  controller.slideSectionContentsFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList(): controller.slideSectionContentsFontValue[widget.index][i].value = widget.slidePallet.slideSectionContentsFontValue![widget.index][i];
+          i++;
+        }
+      }
+
+      if(widget.slidePallet.slideSectionHeadersFontValue == null || widget.slidePallet.slideSectionHeadersFontValue!.isEmpty){
+     widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList();
+      }
+      else{
+        i=0;
+        while(i < controller.slideSectionHeadersFontValue[widget.index].length){
+          if(widget.slidePallet.slideSectionHeadersFontValue![widget.index][i].fontSize!  != 0.0){
+          controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i].fontSize! ;
+          }
+          // widget.slidePallet.slideSectionHeadersFontValue![widget.index][i] == 0.0 ? widget.slidePallet.slideSectionHeadersFontValue =  controller.slideSectionHeadersFontValue.map((rxList){return rxList.map((rxDouble){return TextProperties(fontSize : rxDouble.value);}).toList();}).toList(): controller.slideSectionHeadersFontValue[widget.index][i].value = widget.slidePallet.slideSectionHeadersFontValue![widget.index][i];
+          i++;
+        }
+      }
+      });
+    });
 
   }
 
@@ -130,6 +179,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
     // Dispose of the ever listeners when the widget is disposed
     fontSizeWorker.dispose();
     slideTitleWorker.dispose();
+    resetFontWorker.dispose();
     super.dispose();
   }
 
@@ -183,14 +233,15 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                           controller.currentText.value = controller.slideTitles[widget.index].text;
                           controller.currentFontSize.value = controller
                               .slideTitlesFontValue[widget.index].value;
+                          controller.currentEditedText.value = controller.slideTitles[widget.index].text;
                         },
-                        child: Text(
+                        child:Obx(()=> Text(
                               controller.slideTitles[widget.index].text, 
                             style: TextStyle(
                                 // fontSize: contentFontSize,
                                 fontSize: titleFontSize,
                                 color: Color(widget.slidePallet.bigTitleTColor)),
-                            ),
+                            )),
                       ),
                       // child: TextField(
                       //   onTap: () {
@@ -255,8 +306,11 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                     controller.currentFontSize.value =
                                         controller.slideSectionHeadersFontValue
                                             [widget.index][0].value;
+                                    controller.currentEditedText.value = controller.slideSectionHeaders[widget.index][0].text;
+
+
                                   },
-                                  child: Text(
+                                  child: Obx(()=>Text(
                                     controller
                                       .slideSectionHeaders[widget.index][0]
                                         .text,
@@ -265,7 +319,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                         fontSize: headerFontSize[0],
                                         color: Color(
                                             widget.slidePallet.bigTitleTColor)),
-                                  ),
+                                  )),
                                 ),
                                 // child: TextField(
                                 //   onTap: () {
@@ -335,15 +389,18 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                     controller.secondIndexOfFont.value = 0;
                                     controller.currentText.value = controller.slideSectionContents[widget.index][0].text;
                                   controller.currentFontSize.value = controller.slideSectionContentsFontValue[widget.index][0].value;
+                                    controller.currentEditedText.value = controller.slideSectionContents[widget.index][0].text;
+
+
                                 },
-                                  child: Text(
+                                  child: Obx(()=>Text(
                                     controller.slideSectionContents[widget.index][0].text,
                                     style: TextStyle(
                                       fontSize: contentFontSize[0],
                                         // fontSize: contentFontSize,
                                         color: Color(
                                             widget.slidePallet.bigTitleTColor)),
-                                  ),
+                                  )),
                                 ),
                                 // child: TextField(
                                 //    onTap: (){
@@ -417,8 +474,12 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                             .slideSectionHeadersFontValue[
                                                 widget.index][1]
                                             .value;
+                                    controller.currentEditedText.value = controller
+                                      .slideSectionHeaders[widget.index][1]
+                                      .text;
+
                                   },
-                                  child: Text(
+                                  child: Obx(()=>Text(
                                     controller
                                         .slideSectionHeaders[widget.index][1]
                                         .text,
@@ -427,7 +488,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                         // fontSize: contentFontSize,
                                         color: Color(
                                             widget.slidePallet.bigTitleTColor)),
-                                  ),
+                                  )),
                                 ),
                                 // child: TextField(
                                 //   onTap: (){
@@ -492,8 +553,11 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                     controller.currentFontSize.value =
                                         controller.slideSectionContentsFontValue
                                             [widget.index][1].value;
+                                    controller.currentEditedText.value = controller
+                                        .slideSectionContents[widget.index][1]
+                                        .text;
                                   },
-                                  child: Text(
+                                  child: Obx(()=>Text(
                                     controller
                                         .slideSectionContents[widget.index][1]
                                         .text,
@@ -502,7 +566,7 @@ class __SectionedSlide1State extends State<SectionedSlide2Editor> {
                                         // fontSize: contentFontSize,
                                         color: Color(
                                             widget.slidePallet.bigTitleTColor)),
-                                  ),
+                                  )),
                                 ),
                                 // child: TextField(
                                 //   onTap: (){

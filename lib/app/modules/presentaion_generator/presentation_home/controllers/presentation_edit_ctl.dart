@@ -8,6 +8,7 @@ import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/presentation_history_dbhandler.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
+import 'package:slide_maker/app/data/text_properties.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_open_ctl.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1_editor.dart';
 import 'package:slide_maker/app/utills/CM.dart';
@@ -47,7 +48,7 @@ class PresentationEditCtl extends GetxController {
   RxBool test = false.obs;
   RxDouble titleFontSize = 0.0.obs;
   RxDouble contentFontSize = 0.0.obs;
-
+  RxBool resetFont = false.obs;
   RxList<MyPresentation> presentations = <MyPresentation>[].obs;
 
   RxString presentationTitle = "".obs;
@@ -188,12 +189,12 @@ class PresentationEditCtl extends GetxController {
     // myPresentation.value.pallet = nextPallet;
   }
 
-  void initializeSlidesTextController() {
+  Future<void> initializeSlidesTextController() async{
     // get a list of slideTitles
     slideTitles.value = myEditedPresentation.value.slides.map((slides) {
       return TextEditingController(text: slides.slideTitle);
     }).toList();
-    // developer.log("${slideTitles.length}");
+    developer.log("This is slideTitle after initialize${slideTitles[0].text}");
 
     // slideTitles.forEach((title){print("this is the title $title");});
 
@@ -213,13 +214,15 @@ class PresentationEditCtl extends GetxController {
         return TextEditingController(text: slideSection.sectionContent ?? "");
       }).toList();
     }).toList();
+    developer.log("initializing text done.");
   }
 
-  void initializeSlidesFontList() {
+  Future<void> initializeSlidesFontList() async{
     slideTitlesFontValue.value =
         myEditedPresentation.value.slides.map((slides) {
       return 0.0.obs;
     }).toList();
+    developer.log("Slide title font value after initialization ${slideTitlesFontValue[0].value}");
 
     slideSectionHeadersFontValue.value =
         myEditedPresentation.value.slides.map((slides) {
@@ -234,6 +237,8 @@ class PresentationEditCtl extends GetxController {
         return 0.0.obs;
       }).toList();
     }).toList();
+    developer.log("initializing font done.");
+  
   }
 
   void setValuesAsNull() {
@@ -249,7 +254,7 @@ class PresentationEditCtl extends GetxController {
         increaseOrDecreaseFontSize(isIncrease, currentFontSize.value);
     if (isTitle.value) {
       slideTitlesFontValue[firstIndexOfFont.value].value = newFontSize;
-      currentPallet.slideTitlesFontValue![firstIndexOfFont.value] = newFontSize;
+      // currentPallet.slideTitlesFontValue![firstIndexOfFont.value] = newFontSize;
       // currentPallet.titleFontSize = newFontSize;
       // developer.log("Pallet TitleFont  size: ${currentPallet.titleFontSize}");
       // developer.log("Editing TitleFont ${firstIndex}");
@@ -258,16 +263,14 @@ class PresentationEditCtl extends GetxController {
       slideSectionContentsFontValue[firstIndexOfFont.value]
               [secondIndexOfFont.value]
           .value = newFontSize;
-      currentPallet.slideSectionContentsFontValue![firstIndexOfFont.value]
-          [secondIndexOfFont.value] = newFontSize;
+      // currentPallet.slideSectionContentsFontValue![firstIndexOfFont.value][secondIndexOfFont.value] = newFontSize;
       // developer.log("Editing SectionContent ${firstIndex} ${secondIndex}");
       // double developer.log("set Value ${slideSectionContentsFontValue[firstIndex][secondIndex]}");
     } else if (isSectionHeader.value) {
       slideSectionHeadersFontValue[firstIndexOfFont.value]
               [secondIndexOfFont.value]
           .value = newFontSize;
-      currentPallet.slideSectionHeadersFontValue![firstIndexOfFont.value]
-          [secondIndexOfFont.value] = newFontSize;
+      // currentPallet.slideSectionHeadersFontValue![firstIndexOfFont.value][secondIndexOfFont.value] = newFontSize;
 
       // developer.log("Editing SectionHeader ${firstIndex} ${secondIndex}");
       // developer.log("set Value ${slideSectionHeadersFontValue[firstIndex][secondIndex]}");
@@ -295,6 +298,7 @@ class PresentationEditCtl extends GetxController {
   }
 
   void setSlidesText(String value) {
+    developer.log(" this is the text passed to setSlideText ${value}");
     if (isTitle.value) {
       slideTitles[firstIndexOfFont.value].text = value;
       currentText.value = value;
@@ -334,59 +338,82 @@ class PresentationEditCtl extends GetxController {
   //   developer.log("Toggle bottom navbar visibility ${isBottomNavbarEditorVisible.value}");
   // }
 
-  void toggleVisibilityTextEditor(bool toggle) {
+  Future<void> toggleVisibilityTextEditor(bool toggle) async{
     // toggleVisibilityBottomNavbarEditor(!toggle);
     if (toggle) {
-      toggleVisibilityBottomNavbarTextField(false);
-      toggleVisibilityFontSizeProvider(false);
+      await toggleVisibilityBottomNavbarTextField(false);
+      await toggleVisibilityFontSizeProvider(false);
     }
     isBottomNavbarTextEditorVisible.value = toggle;
     developer.log(
         "Toggle bottom text eDITOR visibility ${isBottomNavbarTextEditorVisible.value}");
   }
 
-  void toggleVisibilityBottomNavbarTextField(bool toggle) {
+  Future<void> toggleVisibilityBottomNavbarTextField(bool toggle) async {
     isBottomNavbarTextFieldVisible.value = toggle;
     developer.log(
         "Toggle bottom text field visibility ${isBottomNavbarTextFieldVisible.value}");
   }
 
-  void toggleVisibilityFontSizeProvider(bool toggle) {
+  Future<void> toggleVisibilityFontSizeProvider(bool toggle) async{
     isFontSizeProviderVisible.value = toggle;
     developer.log(
         "Toggle bottom Font size visibility ${isFontSizeProviderVisible.value}");
   }
 
   Future<void> saveSlides(int slideIndex) async {
-    List<SlideSection> slides =
+    List<SlideSection> slidesText =
         myEditedPresentation.value.slides[slideIndex].slideSections;
+    SlidePallet slidePalletFont = currentPallet;
     String slideTitle =
         myEditedPresentation.value.slides[slideIndex].slideTitle;
     // print("Before editing ${slides.forEach((e){e.sectionContent;})}");
-    slides.forEach((e) {
+    slidesText.forEach((e) {
       print("Before ${e.sectionContent}");
     });
+    currentPallet.slideTitlesFontValue![slideIndex].fontSize = slideTitlesFontValue[slideIndex].value;
 
     developer.log("This is the index $slideIndex");
     var slideContents = slideSectionContents[slideIndex];
     var slideHeaders = slideSectionHeaders[slideIndex];
+    List<TextProperties> slideContentsFont = [];
+    List<TextProperties> slideHeadersFont = [];
     int i = 0;
 
-    slides.forEach((e) {
+    slidesText.forEach((e) {
       if (i < slideContents.length) {
         e.sectionContent = slideContents[i].text;
         e.sectionHeader = slideHeaders[i].text;
-        i++;
+      i++;
       }
     });
+    i = 0 ;
+    for (var e in slideSectionContentsFontValue[slideIndex]) {
+      slideContentsFont.add(TextProperties(fontSize : e.value));
+    }
+    for (var e in slideSectionHeadersFontValue[slideIndex]) {
+      slideHeadersFont.add(TextProperties(fontSize : e.value));
+    }
+    currentPallet.slideSectionContentsFontValue![slideIndex] =  slideContentsFont;
+    currentPallet.slideSectionHeadersFontValue![slideIndex] =  slideHeadersFont; 
+    
+
     slideTitle = slideTitles[slideIndex].text;
     // print("After editing ${slides.forEach((e){e.sectionContent;})}");
-    slides.forEach((e) {
+    slidesText.forEach((e) {
       print(" After ${e.sectionContent}");
     });
 
-    myEditedPresentation.value.slides[slideIndex].slideSections = slides;
+    myEditedPresentation.value.slides[slideIndex].slideSections = slidesText;
     myEditedPresentation.value.slides[slideIndex].slideTitle = slideTitle;
+  }
+  Future<void> toggleResetFont() async{
+    if(resetFont.value){
+      resetFont.value = false;
+    }
+    else{
+      resetFont.value = true;
+    }
   }
 
   // void initializeSectionSlide1Editor(MySlide mySlide){
