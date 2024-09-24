@@ -60,6 +60,7 @@ void main() async {
   }
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   LocalNotificationService.initialize();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     // DeviceOrientation.landscapeRight,
@@ -144,11 +145,11 @@ class MyApp extends StatelessWidget {
     // facebookAppEvents.lo
     facebookAppEvents.setAutoLogAppEventsEnabled(true);
     facebookAppEvents.setAdvertiserTracking(enabled: true);
-    analytics.setAnalyticsCollectionEnabled(true);
+    analytics.setAnalyticsCollectionEnabled(kReleaseMode);
     // facebookAppEvents.logStartTrial(orderId: "1234");
     // final themeNotifier = Provider.of<ThemeNotifier>(context);
     // EasyLoading.init();
-    observer.analytics.setAnalyticsCollectionEnabled(kReleaseMode);
+    // observer.analytics.setAnalyticsCollectionEnabled(kReleaseMode);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),

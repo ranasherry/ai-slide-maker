@@ -353,10 +353,10 @@ class FirestoreService {
       //     stackTrace: StackTrace.fromString(""));
       return true;
     } else {
-      debugPrintStack(
-          label: "isLikedBy",
-          stackTrace: StackTrace.fromString(
-              "UserID: $userID \nPresID: $presID \nisLiked: true"));
+      // debugPrintStack(
+      //     label: "isLikedBy",
+      //     stackTrace: StackTrace.fromString(
+      //         "UserID: $userID \nPresID: $presID \nisLiked: true"));
       return false;
     }
   }
