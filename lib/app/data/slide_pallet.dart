@@ -74,16 +74,16 @@ class SlidePallet {
     fadeColor : Color(map["fadeColor"]),
     isPaid : (map["isPaid"] == 1) ? true : false,
 slideTitlesFontValue: (map['slideTitlesFontValue'] != null && (jsonDecode(map['slideTitlesFontValue']) as List).isNotEmpty)
-        ? List<TextProperties>.from(jsonDecode((map['slideTitlesFontValue']))) 
+        ? List<TextProperties>.from((jsonDecode(map['slideTitlesFontValue']) as List).map((e)=>TextProperties.fromMap(e))) 
         : [],
       slideSectionHeadersFontValue: (map['slideSectionHeadersFontValue'] != null && (jsonDecode(map['slideSectionHeadersFontValue']) as List).isNotEmpty)
         ? (jsonDecode(map['slideSectionHeadersFontValue']) as List)
-            .map((header) => List<TextProperties>.from(header))
+            .map((header) => List<TextProperties>.from((header as List).map((e)=> TextProperties.fromMap(e))))
             .toList() 
         : [],
       slideSectionContentsFontValue: (map['slideSectionContentsFontValue'] != null && (jsonDecode(map['slideSectionContentsFontValue']) as List).isNotEmpty)
         ? (jsonDecode(map['slideSectionContentsFontValue']) as List)
-            .map((content) => List<TextProperties>.from(content))
+            .map((content) => List<TextProperties>.from((content as List).map((e)=> TextProperties.fromMap(e))))
             .toList() 
         : [],
                   );
