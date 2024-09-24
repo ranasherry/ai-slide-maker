@@ -31,18 +31,21 @@ class ProfileView extends GetView<ProfileViewCTL> {
                       height: SizeConfig.blockSizeVertical * 10,
                       width: SizeConfig.blockSizeHorizontal * 20,
                       decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.background_color),
+                          // border: Border.all(color: AppColors.background_color),
                           shape: BoxShape.circle,
                           color: AppColors.textfieldcolor),
                       child: provider.userData != null
                           ? provider.userData!.profilePicUrl != null
-                              ? CachedNetworkImage(
-                                  imageUrl: provider.userData!.profilePicUrl!,
-                                  errorWidget: (context, err, obj) {
-                                    return Icon(
-                                      CupertinoIcons.person_circle,
-                                    );
-                                  },
+                              ? ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: provider.userData!.profilePicUrl!,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, err, obj) {
+                                      return Icon(
+                                        CupertinoIcons.person_circle,
+                                      );
+                                    },
+                                  ),
                                 )
                               : Icon(
                                   CupertinoIcons.person_circle,
