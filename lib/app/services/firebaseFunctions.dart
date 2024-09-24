@@ -165,8 +165,8 @@ class FirestoreService {
     try {
       Query query = _firestore
           .collection(presentationCollectionPath)
-          .orderBy('likesCount',
-              descending: true) // Adjust the order based on your requirement
+          // .orderBy('likesCount',
+          //     descending: true) // Adjust the order based on your requirement
           .limit(10);
 
       // if (searchTerm.isNotEmpty) {
