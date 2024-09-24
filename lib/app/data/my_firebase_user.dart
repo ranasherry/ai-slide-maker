@@ -7,6 +7,8 @@ class UserData {
   String? profilePicUrl;
   String? dob;
 
+  //TODO: Add join Date TimeStamp
+
   UserData(
       {required this.id,
       required this.name,

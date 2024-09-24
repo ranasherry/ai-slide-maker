@@ -20,8 +20,10 @@ class FirestoreService {
   }
   FirestoreService._internal();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String userCollectionPath =
-      kDebugMode ? 'testUser' : 'users'; // Customizable collection path
+  // final String userCollectionPath =
+  //     kDebugMode ? 'testUser' : 'users'; // Customizable collection path
+
+  final String userCollectionPath = 'users';
 
   final String _collectionPath = 'premiumUsers'; // Customizable collection path
   final String _historySubcollectionPath =
@@ -29,8 +31,8 @@ class FirestoreService {
 
   String UserID = "temp";
   //added by rizwan
-  String presentationCollectionPath = "presentationTest";
-  // String presentationCollectionPath = "presentation";
+  // String presentationCollectionPath = "presentationTest"; // ? commented by jamal!
+  String presentationCollectionPath = "presentation";
   String slidePalletCollectionPath = "slidePalletTest";
   String subcollectionLikes = 'likes';
   String subcollectionComments = 'comments';
@@ -353,10 +355,10 @@ class FirestoreService {
       //     stackTrace: StackTrace.fromString(""));
       return true;
     } else {
-      debugPrintStack(
-          label: "isLikedBy",
-          stackTrace: StackTrace.fromString(
-              "UserID: $userID \nPresID: $presID \nisLiked: true"));
+      // debugPrintStack(
+      //     label: "isLikedBy",
+      //     stackTrace: StackTrace.fromString(
+      //         "UserID: $userID \nPresID: $presID \nisLiked: true"));
       return false;
     }
   }

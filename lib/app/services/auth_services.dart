@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:slide_maker/app/provider/userdata_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/services/shared_pref_services.dart';
@@ -80,6 +82,9 @@ class AuthService {
       // Optionally, clear any locally stored data like UUID in shared preferences
       await SharedPrefService().clearUUID();
       await RevenueCatService().signOut();
+      final userdataProvider =
+          Provider.of<UserdataProvider>(Get.context!, listen: false);
+      userdataProvider.setUserData = null;
       // Navigate the user to the login screen or perform other actions after sign-out
       // Get.offAllNamed(Routes.LOGINVIEW);
       print('User successfully signed out.');

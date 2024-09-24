@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/modules/intro_screens/controllers/new_intro_screen_controller.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -120,7 +121,8 @@ class ClickyIntroScreen extends GetView<newInroScreenCTL> {
           ),
           GestureDetector(
             onTap: () {
-              Get.toNamed(Routes.HOMEVIEW1);
+              // Get.toNamed(Routes.HOMEVIEW1);
+              ComFunction.GotoHomeScreen();
             },
             child: Text(
               "Skip",
