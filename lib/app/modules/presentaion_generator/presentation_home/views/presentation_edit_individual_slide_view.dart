@@ -29,7 +29,67 @@ class PresentationEditIndividualSlideView extends GetView<PresentationEditCtl> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    
+                      Obx(()=>Visibility(
+                      visible: controller.isBottomNavbarTextEditorVisible.value,
+                      child: Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.blockSizeVertical * 13.5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(13),
+                              // border: Border(
+                              //   top: BorderSide(width: 0.2, color: Colors.black),
+                              // ),
+                              border: Border.all(width: 0.05, color: Colors.black),
+                              color: AppColors.mainColor),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                top: SizeConfig.blockSizeVertical * 3,
+                                // left: SizeConfig.blockSizeHorizontal * 1
+                                ),
+                                child: Visibility(
+                            // visible: controller.isBottomNavbarTextEditorVisible.value,
+                            child: ListView(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: SizeConfig.blockSizeHorizontal * 1,
+                                  vertical: SizeConfig.blockSizeHorizontal * 1,
+                                ),
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        bottom_navi_buttons(
+                                            Icons.text_format, "Text", () {
+                                              controller.isBottomNavbarTextFieldVisible.value = true;
+                                              controller.isFontSizeProviderVisible.value = false;
+                                              // controller.isBottomNavbarEditorVisible.value = true;
+                                                                  
+                                              controller.toggleVisibilityTextEditor(false);
+                                              FocusScope.of(context).requestFocus(_focusNode);
+                                            }),
+                                             bottom_navi_buttons(
+                                            Icons.text_fields_rounded, "Font", () {
+                                              developer.log("pressed");
+                                              controller.isFontSizeProviderVisible.value = true;
+                                              controller.isBottomNavbarTextFieldVisible.value = false;
+                                              // controller.isBottomNavbarEditorVisible.value = true;
+                                                                  
+                                              // controller.toggleVisibilityTextEditor(false);
+                                            }),
+                                      ],
+                                    ),
+                                  ]),
+                          ),
+                            
+                          ),
+                        ),
+                      ),
+                    )),
+                     
                     Visibility(
                       visible: controller.isBottomNavbarEditorVisible.value,
                       child: Container(
@@ -132,10 +192,8 @@ class PresentationEditIndividualSlideView extends GetView<PresentationEditCtl> {
                             ],
                           ),
                         )),
-                        Visibility(
-                          visible: controller.isFontSizeProviderVisible.value,
-                          child: fontSizeProvider()
-                          )
+                        
+                         
                   ],
                 ),
               ),
@@ -164,9 +222,9 @@ class PresentationEditIndividualSlideView extends GetView<PresentationEditCtl> {
               GestureDetector(
                   onTap: () {
                     // controller.toggleVisibilityBottomNavbarEditor(false);
-              //       controller.toggleVisibilityTextEditor(false);
-              //     controller.toggleVisibilityBottomNavbarTextField(false);
-              // controller.toggleVisibilityFontSizeProvider(false);                    
+                    controller.toggleVisibilityTextEditor(false);
+                  controller.toggleVisibilityBottomNavbarTextField(false);
+              controller.toggleVisibilityFontSizeProvider(false);                    
                   },
                   child: SingleChildScrollView(
                     child: Container(
@@ -235,243 +293,49 @@ class PresentationEditIndividualSlideView extends GetView<PresentationEditCtl> {
                           ),
                           //header end
                           // body content
-                          Column(
-                            children: [
-                              Container(
-                                  width: SizeConfig.screenWidth,
-                                  margin: EdgeInsets.only(
-                                      top: SizeConfig.blockSizeVertical * 13),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: SizeConfig.blockSizeVertical * 4,
-                                    horizontal: SizeConfig.blockSizeHorizontal * 4
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color: AppColors.background,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                      )),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: SizeConfig.blockSizeVertical * 2.5 
+                          Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight * 0.9,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              
+                              children: [
+                                Container(
+                                    width: SizeConfig.screenWidth,
+                                    margin: EdgeInsets.only(
+                                        top: SizeConfig.blockSizeVertical * 13),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: SizeConfig.blockSizeVertical * 4,
+                                      horizontal: SizeConfig.blockSizeHorizontal * 4
                                     ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: individualSlideEditorMethod(
-                                          controller.currentSelectedIndex.value,
-                                          controller.myPresentation,
-                                          Size(SizeConfig.screenWidth * 0.95,
-                                              SizeConfig.screenWidth * 0.55),
-                                          false,
-                                          controller.slidePallet),
-                                    ),
-                                  )),
-                                  Visibility(
-                      // visible: controller.isBottomNavbarTextEditorVisible.value,
-                      child: Padding(
-                        padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal * 7),
-                        child: Container(
-                          width: SizeConfig.screenWidth,
-                          height: SizeConfig.blockSizeVertical * 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                              // border: Border(
-                              //   top: BorderSide(width: 0.2, color: Colors.black),
-                              // ),
-                              border: Border.all(width: 0.05, color: Colors.black),
-                              color: AppColors.white_color),
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                top: SizeConfig.blockSizeVertical * 1,
-                                // left: SizeConfig.blockSizeHorizontal * 1
-                                ),
-                            child: ListView(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: SizeConfig.blockSizeHorizontal * 1,
-                                vertical: SizeConfig.blockSizeHorizontal * 1,
-                              ),
-                                scrollDirection: Axis.vertical,
-                                children: [
-                                  Column(
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment : MainAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          bottom_navi_buttons(
-                                              Icons.text_format, "Text", () {
-                                                controller.isBottomNavbarTextFieldVisible.value = true;
-                                                controller.isFontSizeProviderVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                                FocusScope.of(context).requestFocus(_focusNode);
-                                              }),
-                                               bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                              bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                              bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                        ],
+                                    decoration: BoxDecoration(
+                                        color: AppColors.background,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                        )),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: SizeConfig.blockSizeVertical * 2.5 
                                       ),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            bottom_navi_buttons(
-                                                Icons.text_format, "Text", () {
-                                                  controller.isBottomNavbarTextFieldVisible.value = true;
-                                                  controller.isFontSizeProviderVisible.value = false;
-                                                  // controller.isBottomNavbarEditorVisible.value = true;
-                                                                      
-                                                  // controller.toggleVisibilityTextEditor(false);
-                                                  FocusScope.of(context).requestFocus(_focusNode);
-                                                }),
-                                                 bottom_navi_buttons(
-                                                Icons.text_fields_rounded, "Font", () {
-                                                  developer.log("pressed");
-                                                  controller.isFontSizeProviderVisible.value = true;
-                                                  controller.isBottomNavbarTextFieldVisible.value = false;
-                                                  // controller.isBottomNavbarEditorVisible.value = true;
-                                                                      
-                                                  // controller.toggleVisibilityTextEditor(false);
-                                                }),
-                                                bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                              bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            bottom_navi_buttons(
-                                                Icons.text_format, "Text", () {
-                                                  controller.isBottomNavbarTextFieldVisible.value = true;
-                                                  controller.isFontSizeProviderVisible.value = false;
-                                                  // controller.isBottomNavbarEditorVisible.value = true;
-                                                                      
-                                                  // controller.toggleVisibilityTextEditor(false);
-                                                  FocusScope.of(context).requestFocus(_focusNode);
-                                                }),
-                                                 bottom_navi_buttons(
-                                                Icons.text_fields_rounded, "Font", () {
-                                                  developer.log("pressed");
-                                                  controller.isFontSizeProviderVisible.value = true;
-                                                  controller.isBottomNavbarTextFieldVisible.value = false;
-                                                  // controller.isBottomNavbarEditorVisible.value = true;
-                                                                      
-                                                  // controller.toggleVisibilityTextEditor(false);
-                                                }),
-                                                bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                              bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            bottom_navi_buttons(
-                                                Icons.text_format, "Text", () {
-                                                  controller.isBottomNavbarTextFieldVisible.value = true;
-                                                  controller.isFontSizeProviderVisible.value = false;
-                                                  // controller.isBottomNavbarEditorVisible.value = true;
-                                                                      
-                                                  // controller.toggleVisibilityTextEditor(false);
-                                                  FocusScope.of(context).requestFocus(_focusNode);
-                                                }),
-                                                 bottom_navi_buttons(
-                                                Icons.text_fields_rounded, "Font", () {
-                                                  developer.log("pressed");
-                                                  controller.isFontSizeProviderVisible.value = true;
-                                                  controller.isBottomNavbarTextFieldVisible.value = false;
-                                                  // controller.isBottomNavbarEditorVisible.value = true;
-                                                                      
-                                                  // controller.toggleVisibilityTextEditor(false);
-                                                }),
-                                                bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                              bottom_navi_buttons(
-                                              Icons.text_fields_rounded, "Font", () {
-                                                developer.log("pressed");
-                                                controller.isFontSizeProviderVisible.value = true;
-                                                controller.isBottomNavbarTextFieldVisible.value = false;
-                                                // controller.isBottomNavbarEditorVisible.value = true;
-                                                                    
-                                                // controller.toggleVisibilityTextEditor(false);
-                                              }),
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                ]),
-                          ),
-                        ),
-                      ),
-                    ),
-                            ],
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: individualSlideEditorMethod(
+                                            controller.currentSelectedIndex.value,
+                                            controller.myPresentation,
+                                            Size(SizeConfig.screenWidth * 0.95,
+                                                SizeConfig.screenWidth * 0.55),
+                                            false,
+                                            controller.slidePallet),
+                                      ),
+                                    )),
+                                    Obx(()=>Visibility(
+                            visible: controller.isFontSizeProviderVisible.value,
+                            child: fontSizeProvider()
+                            )),
+                                  
+                              ],
+                            ),
                           )
                         ])),
                   )),
@@ -483,8 +347,11 @@ class PresentationEditIndividualSlideView extends GetView<PresentationEditCtl> {
   Padding bottom_navi_buttons(
       IconData icon, text, Function definedFunction) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Obx(()=>IgnorePointer(
+      padding:EdgeInsets.symmetric(
+        horizontal: SizeConfig.blockSizeHorizontal * 3,
+        // vertical: SizeConfig.blockSizeVertical * 3
+        ),
+      child: IgnorePointer(
         ignoring: false,
         child: GestureDetector(
           onTap: () {
@@ -496,104 +363,151 @@ class PresentationEditIndividualSlideView extends GetView<PresentationEditCtl> {
               Container(
                 child: Icon(
                   icon,
-                  color: controller.isBottomNavbarTextEditorVisible.value? Colors.black87 : Colors.black45,
-                  size: SizeConfig.blockSizeHorizontal * 10,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  size: SizeConfig.blockSizeHorizontal * 8,
+                  
                 ),
               ),
               Container(
                   child: Text(
                 text,
-                style: controller.isBottomNavbarTextEditorVisible.value? TextStyle(fontWeight: FontWeight.w700):TextStyle(fontWeight: FontWeight.w700, color: Colors.black45) ,
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                 color: Color.fromARGB(255, 255, 255, 255)) ,
               )),
             ],
           )),
         ),
       ),
-    ));
+    );
   }
-   Expanded fontSizeProvider() {
-    return Expanded(
+    fontSizeProvider() {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: SizeConfig.blockSizeHorizontal * 20,
+        bottom: SizeConfig.blockSizeHorizontal * 10,
+        right: SizeConfig.blockSizeHorizontal * 8,
+        left: SizeConfig.blockSizeHorizontal * 8
+      ),
       child: Container(          
+            width: SizeConfig.screenWidth,
+            height: SizeConfig.blockSizeHorizontal * 40,
             decoration: BoxDecoration(
-              color: AppColors.bottomNavBar,
-              // borderRadius: BorderRadius.circular(30)
-              border: Border.all(width: 0.5)
+              color: Color.fromARGB(0, 255, 252, 252),
+              
+              borderRadius: BorderRadius.circular(25)
+              // border: Border.all(width: 0.5)
             ),
             // padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 6.5),
       
-               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+               child: Column(
                  children: [
-                  GestureDetector(
-                     onTap: (){
-                      //  controller.currentFontSize.value += 0.005;
-                      //  controller.test.value = true;
-                      //  controller.setFontValue(true);
-                      //  print("${controller.currentFontSize.value} This is current font value");
-                       
-                     },
-                     child: ElevatedButton(
-                      onPressed: (){
-                        controller.currentFontSize.value += 0.005;
-                       controller.test.value = true;
-                       controller.setFontValue(true);
-                       print("${controller.currentFontSize.value} This is current font value");
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFFF34709))
-                      ),
-                       child: Container(
-                        height: SizeConfig.blockSizeVertical * 6,
-                        //  padding: EdgeInsets.all(5),
-                        //  decoration: BoxDecoration(
-                        //    border:Border.all(
-                        //      color: Colors.black
-                        //    ),
-                        //    borderRadius: BorderRadius.circular(20)
-                        //     ),
-                            child: Icon(Icons.add),
-                       ),
-                     ),
-                      ),
-                      Container(
-                       // child: Text(controller.slideTitlesFontValue.value[0].toString()),
-                       child:Obx(()=> Text(controller.currentFontSize.value.toStringAsFixed(2),
-                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: SizeConfig.blockSizeHorizontal * 6,
-                       ),),
-                      )
-                      ),
-                       GestureDetector(
-                     onTap: (){
-                      //  controller.currentFontSize.value -=  0.005;
-                      //  controller.test.value= false;
-                      //  controller.setFontValue(false);
-      
-                     },
-                     child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFFF34709))
-                      ),
-                      onPressed: (){
-                         controller.currentFontSize.value -=  0.005;
-                       controller.test.value= false;
-                       controller.setFontValue(false);
-                      },
-                       child: Container(
-                        height: SizeConfig.blockSizeVertical * 6,
-                        //  padding: EdgeInsets.all(5),
-                        //  decoration: BoxDecoration(
-                        //    border:Border.all(
-                        //      color: Colors.black
-                        //    ),
-                        //    borderRadius: BorderRadius.circular(20)
-                        //     ),
-                            child: Icon(Icons.remove),
-                       ),
-                     ),
-                      ),
-                 ],)
+                  Container(
+                    width: SizeConfig.screenWidth * 0.5,
+            height: SizeConfig.blockSizeHorizontal * 10,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 255, 252, 252),
+              
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              border: Border(top: BorderSide(width: 2.5, color: AppColors.buttonBGColor), right : BorderSide(width: 2.5, color: AppColors.buttonBGColor), left : BorderSide(width: 2.5, color: AppColors.buttonBGColor)),
+            ),
+            child: Center(child: Text(
+              "Font Size" ,
+               style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: SizeConfig.blockSizeHorizontal * 5
+               ),))
+                  ),
+                   Container(
+                     width: SizeConfig.screenWidth,
+                    height: SizeConfig.blockSizeHorizontal * 30,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 252, 252),
+                      
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border(bottom: BorderSide(width: 5 , color: AppColors.buttonBGColor), right : BorderSide(width: 5, color: AppColors.buttonBGColor), left : BorderSide(width: 5, color: AppColors.buttonBGColor)),
+
+                    ),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                       children: [
+                        GestureDetector(
+                           onTap: (){
+                            //  controller.currentFontSize.value += 0.005;
+                            //  controller.test.value = true;
+                            //  controller.setFontValue(true);
+                            //  print("${controller.currentFontSize.value} This is current font value");
+                             
+                           },
+                           child: ElevatedButton(
+                            onPressed: (){
+                              controller.currentFontSize.value += 0.005;
+                             controller.test.value = true;
+                             controller.setFontValue(true);
+                             print("${controller.currentFontSize.value} This is current font value");
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color(0xFFF34709))
+                            ),
+                             child: Container(
+                              height: SizeConfig.blockSizeVertical * 5,
+                              //  padding: EdgeInsets.all(5),
+                              //  decoration: BoxDecoration(
+                              //    border:Border.all(
+                              //      color: Colors.black
+                              //    ),
+                              //    borderRadius: BorderRadius.circular(20)
+                              //     ),
+                                  child: Icon(Icons.add, color: Colors.white,),
+                             ),
+                           ),
+                            ),
+                            Container(
+                             // child: Text(controller.slideTitlesFontValue.value[0].toString()),
+                             child:Obx(()=> Text(controller.currentFontSize.value.toStringAsFixed(2),
+                             style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: SizeConfig.blockSizeHorizontal * 5,
+                             ),),
+                            )
+                            ),
+                             GestureDetector(
+                           onTap: (){
+                            //  controller.currentFontSize.value -=  0.005;
+                            //  controller.test.value= false;
+                            //  controller.setFontValue(false);
+                           
+                           },
+                           child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color(0xFFF34709))
+                            ),
+                            onPressed: (){
+                               controller.currentFontSize.value -=  0.005;
+                             controller.test.value= false;
+                             controller.setFontValue(false);
+                            },
+                             child: Container(
+                              height: SizeConfig.blockSizeVertical * 5,
+                              //  padding: EdgeInsets.all(5),
+                              //  decoration: BoxDecoration(
+                              //    border:Border.all(
+                              //      color: Colors.black
+                              //    ),
+                              //    borderRadius: BorderRadius.circular(20)
+                              //     ),
+                                  child: Icon(Icons.remove, color: Colors.white,),
+                             ),
+                           ),
+                            ),
+                       ],),
+                   ),
+                 ],
+               )
              ),
     );
   }

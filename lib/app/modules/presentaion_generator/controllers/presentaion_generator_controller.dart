@@ -497,7 +497,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // coveredTitles.add(mySlide.slideTitle);
         developer
             .log("SavedSlides Length: ${myPresentation.value.slides.length}");
-        //lines below added by rizwan
+        // lines below added by rizwan
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
         presentationHomeController.insertPresentationWithSlidePallet(selectedPallet.value,myPresentation.value);
