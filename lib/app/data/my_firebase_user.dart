@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserData {
   String id;
   String? name;
@@ -6,17 +8,20 @@ class UserData {
   String revenueCatUserId;
   String? profilePicUrl;
   String? dob;
+  Timestamp joinDate;
 
   //TODO: Add join Date TimeStamp
 
-  UserData(
-      {required this.id,
-      required this.name,
-      required this.email,
-      required this.revenueCatUserId,
-      required this.gender,
-      this.dob,
-      this.profilePicUrl});
+  UserData({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.revenueCatUserId,
+    required this.gender,
+    this.dob,
+    this.profilePicUrl,
+    required this.joinDate,
+  });
 
   // Convert a UserData object to a Map
   Map<String, dynamic> toMap() {
@@ -28,6 +33,7 @@ class UserData {
       'dob': dob,
       'revenueCatUserId': revenueCatUserId,
       'profilePicUrl': profilePicUrl,
+      'joinDate': joinDate,
     };
   }
 
@@ -41,6 +47,9 @@ class UserData {
       revenueCatUserId: map['revenueCatUserId'] as String,
       dob: map['dob'] ?? null as String?,
       profilePicUrl: map['profilePicUrl'] ?? "" as String,
+      joinDate: map['joinDate'] != null
+          ? (map['joinDate'] as Timestamp)
+          : Timestamp.fromDate(DateTime(2024, 9, 23)),
     );
   }
 }

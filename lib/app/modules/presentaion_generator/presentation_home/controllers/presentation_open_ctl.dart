@@ -58,8 +58,8 @@ class PresentationOpenCtl extends GetxController {
     presentationTitle.value = pres.presentationTitle;
     myPresentation.value = pres;
 
-    if (Get.arguments.length > 1) {
-      isOtherUser.value = Get.arguments[1] as bool;
+    if (Get.arguments.length > 2) {
+      isOtherUser.value = Get.arguments[2] as bool;
     }
 
     developer.log("Opened Slide: ${pres.toMap()}");

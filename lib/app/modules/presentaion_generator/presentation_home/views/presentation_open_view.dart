@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -51,8 +52,8 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               Obx(() => controller.isOtherUser.value
                   ? Container()
                   : bottom_navi_bar_items(Icons.edit, "Edit", () {
-                    Get.toNamed(Routes.PresentationEditIndividualSlideView,
-                                arguments: [controller.myPresentation.value]);
+                      Get.toNamed(Routes.PresentationEditIndividualSlideView,
+                          arguments: [controller.myPresentation.value]);
                       // Get.toNamed(Routes.PresentationEditView,
                       //     arguments: [controller.myPresentation.value]);
                     })),
@@ -127,23 +128,28 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               child: Obx(() => !controller.myPresentation.value.slides.isEmpty
                   ? Column(
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.blockSizeHorizontal * 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: SizeConfig.blockSizeHorizontal * 70,
-                                child: _userProfileBuilder(
-                                    controller.myPresentation.value.createrId ??
-                                        ""),
-                              ),
-                              _LikedWidgetMethod(
-                                  controller.myPresentation.value)
-                            ],
-                          ),
-                        ),
+                        Obx(() => controller.isOtherUser.value
+                            ? Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        SizeConfig.blockSizeHorizontal * 4),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width:
+                                          SizeConfig.blockSizeHorizontal * 70,
+                                      child: _userProfileBuilder(controller
+                                              .myPresentation.value.createrId ??
+                                          ""),
+                                    ),
+                                    _LikedWidgetMethod(
+                                        controller.myPresentation.value)
+                                  ],
+                                ),
+                              )
+                            : Container()),
                         Container(
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight * 0.45,
@@ -152,15 +158,15 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                               // width: SizeConfig.screenWidth * 0.92,
                               height: SizeConfig.screenWidth * 0.5,
                               child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Obx(() => individualSlideEditorMethod(
-                                      controller.currentSelectedIndex.value,
-                                      controller.myPresentation,
-                                      Size(SizeConfig.screenWidth * 0.9,
-                                          SizeConfig.screenWidth * 0.5),
-                                          true,
-                                          controller.slidePallet
-                                    ),
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Obx(
+                                    () => individualSlideEditorMethod(
+                                        controller.currentSelectedIndex.value,
+                                        controller.myPresentation,
+                                        Size(SizeConfig.screenWidth * 0.9,
+                                            SizeConfig.screenWidth * 0.5),
+                                        true,
+                                        controller.slidePallet),
                                   )),
                             ),
                           ),
@@ -209,7 +215,8 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                     print("hello2");
                                     return GestureDetector(
                                       onTap: () {
-                                        presEditCtl.currentSelectedIndex.value = index;
+                                        presEditCtl.currentSelectedIndex.value =
+                                            index;
                                         controller.currentSelectedIndex.value =
                                             index;
                                       },
@@ -223,12 +230,11 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                           child: Stack(
                                             children: [
                                               individualSlideEditorMethod(
-                                                index,
-                                                controller.myPresentation,
-                                                size,
-                                                true,
-                                                controller.slidePallet
-                                              ),
+                                                  index,
+                                                  controller.myPresentation,
+                                                  size,
+                                                  true,
+                                                  controller.slidePallet),
                                               Obx(() => controller
                                                           .currentSelectedIndex
                                                           .value ==
@@ -304,7 +310,12 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
         future: provider.getUserFromID(userID),
         builder: (context, snapshot) {
           UserData user = UserData(
-              id: "", name: "user1234567", email: "", revenueCatUserId: "", gender: "male");
+              id: "",
+              name: "user1234567",
+              email: "",
+              revenueCatUserId: "",
+              gender: "male",
+              joinDate: Timestamp.fromDate(DateTime(2024, 9, 23)));
           if (snapshot.connectionState == ConnectionState.waiting) {
             // return Text(""); // Show loading indicator
           } else if (snapshot.hasError) {
