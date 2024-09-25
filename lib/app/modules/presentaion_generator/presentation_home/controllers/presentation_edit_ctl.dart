@@ -189,7 +189,7 @@ class PresentationEditCtl extends GetxController {
     // myPresentation.value.pallet = nextPallet;
   }
 
-  Future<void> initializeSlidesTextController() async{
+  Future<void> initializeSlidesTextController() async {
     // get a list of slideTitles
     slideTitles.value = myEditedPresentation.value.slides.map((slides) {
       return TextEditingController(text: slides.slideTitle);
@@ -217,12 +217,13 @@ class PresentationEditCtl extends GetxController {
     developer.log("initializing text done.");
   }
 
-  Future<void> initializeSlidesFontList() async{
+  Future<void> initializeSlidesFontList() async {
     slideTitlesFontValue.value =
         myEditedPresentation.value.slides.map((slides) {
       return 0.0.obs;
     }).toList();
-    developer.log("Slide title font value after initialization ${slideTitlesFontValue[0].value}");
+    developer.log(
+        "Slide title font value after initialization ${slideTitlesFontValue[0].value}");
 
     slideSectionHeadersFontValue.value =
         myEditedPresentation.value.slides.map((slides) {
@@ -238,7 +239,6 @@ class PresentationEditCtl extends GetxController {
       }).toList();
     }).toList();
     developer.log("initializing font done.");
-  
   }
 
   void setValuesAsNull() {
@@ -338,7 +338,7 @@ class PresentationEditCtl extends GetxController {
   //   developer.log("Toggle bottom navbar visibility ${isBottomNavbarEditorVisible.value}");
   // }
 
-  Future<void> toggleVisibilityTextEditor(bool toggle) async{
+  Future<void> toggleVisibilityTextEditor(bool toggle) async {
     // toggleVisibilityBottomNavbarEditor(!toggle);
     if (toggle) {
       await toggleVisibilityBottomNavbarTextField(false);
@@ -355,7 +355,7 @@ class PresentationEditCtl extends GetxController {
         "Toggle bottom text field visibility ${isBottomNavbarTextFieldVisible.value}");
   }
 
-  Future<void> toggleVisibilityFontSizeProvider(bool toggle) async{
+  Future<void> toggleVisibilityFontSizeProvider(bool toggle) async {
     isFontSizeProviderVisible.value = toggle;
     developer.log(
         "Toggle bottom Font size visibility ${isFontSizeProviderVisible.value}");
@@ -371,7 +371,8 @@ class PresentationEditCtl extends GetxController {
     slidesText.forEach((e) {
       print("Before ${e.sectionContent}");
     });
-    currentPallet.slideTitlesFontValue![slideIndex].fontSize = slideTitlesFontValue[slideIndex].value;
+    currentPallet.slideTitlesFontValue![slideIndex].fontSize =
+        slideTitlesFontValue[slideIndex].value;
 
     developer.log("This is the index $slideIndex");
     var slideContents = slideSectionContents[slideIndex];
@@ -384,19 +385,19 @@ class PresentationEditCtl extends GetxController {
       if (i < slideContents.length) {
         e.sectionContent = slideContents[i].text;
         e.sectionHeader = slideHeaders[i].text;
-      i++;
+        i++;
       }
     });
-    i = 0 ;
+    i = 0;
     for (var e in slideSectionContentsFontValue[slideIndex]) {
-      slideContentsFont.add(TextProperties(fontSize : e.value));
+      slideContentsFont.add(TextProperties(fontSize: e.value));
     }
     for (var e in slideSectionHeadersFontValue[slideIndex]) {
-      slideHeadersFont.add(TextProperties(fontSize : e.value));
+      slideHeadersFont.add(TextProperties(fontSize: e.value));
     }
-    currentPallet.slideSectionContentsFontValue![slideIndex] =  slideContentsFont;
-    currentPallet.slideSectionHeadersFontValue![slideIndex] =  slideHeadersFont; 
-    
+    currentPallet.slideSectionContentsFontValue![slideIndex] =
+        slideContentsFont;
+    currentPallet.slideSectionHeadersFontValue![slideIndex] = slideHeadersFont;
 
     slideTitle = slideTitles[slideIndex].text;
     // print("After editing ${slides.forEach((e){e.sectionContent;})}");
@@ -407,11 +408,11 @@ class PresentationEditCtl extends GetxController {
     myEditedPresentation.value.slides[slideIndex].slideSections = slidesText;
     myEditedPresentation.value.slides[slideIndex].slideTitle = slideTitle;
   }
-  Future<void> toggleResetFont() async{
-    if(resetFont.value){
+
+  Future<void> toggleResetFont() async {
+    if (resetFont.value) {
       resetFont.value = false;
-    }
-    else{
+    } else {
       resetFont.value = true;
     }
   }

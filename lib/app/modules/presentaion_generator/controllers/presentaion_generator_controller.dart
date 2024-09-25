@@ -146,7 +146,6 @@ class PresentaionGeneratorController extends GetxController {
     HomeViewCtl homeViewCtl = Get.find();
     homeViewCtl.showReviewDialogue(Get.context!);
 
-    
     super.onClose();
   }
 
@@ -500,7 +499,8 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // lines below added by rizwan
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
-        presentationHomeController.insertPresentationWithSlidePallet(selectedPallet.value,myPresentation.value);
+        presentationHomeController.insertPresentationWithSlidePallet(
+            selectedPallet.value, myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");

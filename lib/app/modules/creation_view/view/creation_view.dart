@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,10 +8,12 @@ import 'package:shimmer/shimmer.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
+import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/modules/creation_view/controller/creation_view_ctl.dart';
 import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -369,9 +372,14 @@ class CreationView extends GetView<CreationViewCtl> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    SlidePallet pallet =
+                                        ComFunction.getSlidePalletFromID(
+                                            controller.presentations[index]
+                                                .styleId.value);
                                     Get.toNamed(Routes.PresentationOpenView,
                                         arguments: [
                                           controller.presentations[index],
+                                          pallet,
                                           true
                                         ]);
                                   },
@@ -434,7 +442,8 @@ class CreationView extends GetView<CreationViewCtl> {
               name: "user1234567",
               email: "",
               revenueCatUserId: "",
-              gender: "male");
+              gender: "male",
+              joinDate: Timestamp.fromDate(DateTime(2024, 9, 23)));
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text(""); // Show loading indicator
           } else if (snapshot.hasError) {

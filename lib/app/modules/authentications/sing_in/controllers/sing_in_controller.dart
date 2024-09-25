@@ -141,7 +141,8 @@ class SignInController extends GetxController {
             email: user.email ?? "",
             revenueCatUserId: revenueCatUserId,
             gender: gender ?? "",
-            profilePicUrl: user.photoURL ?? "");
+            profilePicUrl: user.photoURL ?? "",
+            joinDate: Timestamp.now());
 // user.photoURL;
         // final newUser = {
         //   'id': user.uid,

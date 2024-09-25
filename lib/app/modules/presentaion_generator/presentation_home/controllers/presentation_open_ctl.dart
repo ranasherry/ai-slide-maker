@@ -16,23 +16,24 @@ import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentationOpenCtl extends GetxController {
   // PresentationHomeController presHomeCtl = Get.find();
- 
+
   RxList<MyPresentation> presentations = <MyPresentation>[].obs;
 
   RxString presentationTitle = "".obs;
   RxInt currentSelectedIndex = 0.obs;
-   Rx<SlidePallet> slidePallet = SlidePallet(
-    palletId: 9, // Updated to ensure uniqueness
-    name: "marshmallow",
-    slideCategory: "Light",
-    bigTitleTColor: Colors.black.value,
-    normalTitleTColor: Colors.black.value,
-    sectionHeaderTColor: Colors.black.value,
-    normalDescTColor: Colors.black.value,
-    sectionDescTextColor: Colors.black.value,
-    imageList: AppImages.slidy_style9,
-    fadeColor: const Color.fromARGB(64, 187, 222, 251),
-    isPaid: true).obs;
+  Rx<SlidePallet> slidePallet = SlidePallet(
+          palletId: 9, // Updated to ensure uniqueness
+          name: "marshmallow",
+          slideCategory: "Light",
+          bigTitleTColor: Colors.black.value,
+          normalTitleTColor: Colors.black.value,
+          sectionHeaderTColor: Colors.black.value,
+          normalDescTColor: Colors.black.value,
+          sectionDescTextColor: Colors.black.value,
+          imageList: AppImages.slidy_style9,
+          fadeColor: const Color.fromARGB(64, 187, 222, 251),
+          isPaid: true)
+      .obs;
 
   Rx<MyPresentation> myPresentation = MyPresentation(
           presentationId: 0,
@@ -49,7 +50,7 @@ class PresentationOpenCtl extends GetxController {
   RxBool isOtherUser = false.obs;
 
   @override
-  void onInit() async{
+  void onInit() async {
     super.onInit();
     MyPresentation pres = Get.arguments[0] as MyPresentation;
     SlidePallet slidePalletGet = Get.arguments[1] as SlidePallet;
@@ -57,8 +58,8 @@ class PresentationOpenCtl extends GetxController {
     presentationTitle.value = pres.presentationTitle;
     myPresentation.value = pres;
 
-    if (Get.arguments.length > 1) {
-      isOtherUser.value = Get.arguments[1] as bool;
+    if (Get.arguments.length > 2) {
+      isOtherUser.value = Get.arguments[2] as bool;
     }
 
     developer.log("Opened Slide: ${pres.toMap()}");
@@ -110,8 +111,8 @@ class PresentationOpenCtl extends GetxController {
   }
 
   void changePallet() {
-    int currentIndex = palletList.indexWhere(
-        (pallet) => pallet.palletId == int.parse(myPresentation.value.styleId.value));
+    int currentIndex = palletList.indexWhere((pallet) =>
+        pallet.palletId == int.parse(myPresentation.value.styleId.value));
 
     int nextIndex = (currentIndex + 1) % palletList.length;
     SlidePallet nextPallet = palletList[nextIndex];

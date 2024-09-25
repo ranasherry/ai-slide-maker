@@ -186,7 +186,8 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
       onTap: () {
         Get.toNamed(Routes.PresentationOpenView, arguments: [
           controller.presentations[index],
-          controller.allSlidePallets[styleId - 1]
+          controller.allSlidePallets[styleId - 1],
+          false
         ]);
       },
       child: Container(

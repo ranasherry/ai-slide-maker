@@ -21,6 +21,7 @@ import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/images.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
+import 'package:slide_maker/app/utills/slide_pallets.dart';
 import 'dart:core';
 
 import '../modules/newslide_generator/views/helping_widget.dart/mymarkdown_widget.dart';
@@ -47,6 +48,15 @@ class ComFunction {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
+    }
+  }
+
+  static SlidePallet getSlidePalletFromID(String id) {
+    int index = palletList.indexWhere((s) => s.palletId == int.parse(id));
+    if (index >= 0) {
+      return palletList[index];
+    } else {
+      return palletList[0];
     }
   }
 
