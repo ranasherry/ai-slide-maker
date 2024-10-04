@@ -76,8 +76,11 @@ class PresentationHomeController extends GetxController {
       SlidePallet slidePallet, MyPresentation myPresentation) async {
     int rowId = await PresentationHistoryDatabaseHandler.db
         .insertSlidePallet(slidePallet);
-    await fs.insertSlidePallet(
-        slidePallet, myPresentation.presentationId.toString());
+
+//TODO: Uncomment when full rollout
+    // await fs.insertSlidePallet(
+    //     slidePallet, myPresentation.presentationId.toString());
+
     myPresentation.styleId.value = rowId.toString();
     developer.log("this is style id :${myPresentation.styleId.value} ${rowId}");
     await PresentationHistoryDatabaseHandler.db

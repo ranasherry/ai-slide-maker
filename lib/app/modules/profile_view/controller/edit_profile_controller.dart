@@ -71,8 +71,8 @@ class EditProfileController extends GetxController {
       // pickedImage.value =
       //     File(userData.profilePicUrl!); // Adjust based on your use case
     } else {
-      networkImageLink.value =
-          "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSAHmDSOdLA5YgFlEkMmgdweIf3jyGI0EGKqU5U7TpO70GFAY48v1N51eMRpY6mbG-VzfPvgObhOwB8lX4";
+      // networkImageLink.value =
+      //     "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSAHmDSOdLA5YgFlEkMmgdweIf3jyGI0EGKqU5U7TpO70GFAY48v1N51eMRpY6mbG-VzfPvgObhOwB8lX4";
     }
     if (userData.dob != null && userData.dob!.isNotEmpty) {
       // Convert the dob string to DateTime and set it

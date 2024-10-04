@@ -13,7 +13,8 @@ class EditProfileView extends GetView<EditProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3.5),
+        // padding: EdgeInsets.only(top: SizeConfig.s),
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 4.5),
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
         child: SingleChildScrollView(

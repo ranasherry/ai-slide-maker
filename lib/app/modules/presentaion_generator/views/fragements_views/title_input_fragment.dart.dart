@@ -774,8 +774,10 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                   child: GestureDetector(
                     onTap: () {
                       // if (!controller.isWaitingForTime.value) {
-                        if (!controller.isWaitingForTime.value || kDebugMode) {
-                        // if (!controller.isWaitingForTime.value) {
+                      // if (!controller.isWaitingForTime.value || kDebugMode) {
+                      if (!controller.isWaitingForTime.value ||
+                          RevenueCatService().currentEntitlement.value ==
+                              Entitlement.paid) {
                         controller.switchToSlidesOutlines();
                       } else {
                         RevenueCatService().GoToPurchaseScreen();

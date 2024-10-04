@@ -144,7 +144,11 @@ class SlideMakerView extends GetView<SlideMakerController> {
                                                   suggestion;
                                               if (!controller
                                                       .isWaitingForTime.value ||
-                                                  kDebugMode) {
+                                                  kDebugMode ||
+                                                  RevenueCatService()
+                                                          .currentEntitlement
+                                                          .value ==
+                                                      Entitlement.paid) {
                                                 // if (!controller.isWaitingForTime.value) {
                                                 controller
                                                     .validate_user_input("Six");

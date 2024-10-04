@@ -16,6 +16,7 @@ import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_editing_methods.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
@@ -49,14 +50,16 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               bottom_navi_bar_items(Icons.share, "Share", () {
                 controller.createPresentation();
               }),
-              Obx(() => controller.isOtherUser.value
-                  ? Container()
-                  : bottom_navi_bar_items(Icons.edit, "Edit", () {
-                      Get.toNamed(Routes.PresentationEditIndividualSlideView,
-                          arguments: [controller.myPresentation.value]);
-                      // Get.toNamed(Routes.PresentationEditView,
-                      //     arguments: [controller.myPresentation.value]);
-                    })),
+
+              // Obx(() => controller.isOtherUser.value
+              //     ? Container()
+              //     : bottom_navi_bar_items(Icons.edit, "Edit", () {
+              //         Get.toNamed(Routes.PresentationEditIndividualSlideView,
+              //             arguments: [controller.myPresentation.value]);
+              //         // Get.toNamed(Routes.PresentationEditView,
+              //         //     arguments: [controller.myPresentation.value]);
+              //       })),
+
               // bottom_navi_bar_items(Icons.delete, "Delete", () {
               //   controller.deleteSlide(controller.currentSelectedIndex.value);
               // }),
@@ -372,37 +375,44 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
       Get.context!,
     );
 
-    return Column(
-      children: [
-        FutureBuilder<bool?>(
-            future: provider.isPresentationLikedByUser(
-                myPresentation.presentationId.toString()),
-            builder: (context, snapshot) {
-              bool isLiked = false;
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                isLiked = false; // Show loading indicator
-              } else if (snapshot.hasError) {
-                isLiked = false; // Show error message
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                isLiked = false; // Handle case when user is not found
-              } else {
-                isLiked = snapshot.data!;
-              }
-              return Icon(
-                Icons.favorite_sharp,
-                color: myPresentation.isLiked || isLiked
-                    ? AppColors.mainColor
-                    : AppColors.textfieldcolor,
-              );
-            }),
-        Text(myPresentation.likesCount.toString(),
-            style: GoogleFonts.roboto(
-              textStyle: TextStyle(
-                fontSize: SizeConfig.blockSizeHorizontal * 2.2,
-                color: AppColors.background_color,
-              ),
-            )),
-      ],
+    return GestureDetector(
+      onTap: () {
+        ComFunction.showComingSoonDialog(Get.context!);
+      },
+      child: Container(
+        child: Column(
+          children: [
+            FutureBuilder<bool?>(
+                future: provider.isPresentationLikedByUser(
+                    myPresentation.presentationId.toString()),
+                builder: (context, snapshot) {
+                  bool isLiked = false;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    isLiked = false; // Show loading indicator
+                  } else if (snapshot.hasError) {
+                    isLiked = false; // Show error message
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    isLiked = false; // Handle case when user is not found
+                  } else {
+                    isLiked = snapshot.data!;
+                  }
+                  return Icon(
+                    Icons.favorite_sharp,
+                    color: myPresentation.isLiked || isLiked
+                        ? AppColors.mainColor
+                        : AppColors.textfieldcolor,
+                  );
+                }),
+            Text(myPresentation.likesCount.toString(),
+                style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                    fontSize: SizeConfig.blockSizeHorizontal * 2.2,
+                    color: AppColors.background_color,
+                  ),
+                )),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -88,6 +89,10 @@ class ClickyIntroScreen extends GetView<newInroScreenCTL> {
           GestureDetector(
             onTap: () {
               RevenueCatService().GoToPurchaseScreen();
+              // FirebaseAnalytics.instance.logSelectItem(
+              //     itemListId: "Interested Yes", itemListName: "Interested Yes");
+              FirebaseAnalytics.instance.logSelectContent(
+                  contentType: "Interesdted?", itemId: "Interested Yes");
             },
             child: Container(
               margin: EdgeInsets.only(
@@ -122,6 +127,12 @@ class ClickyIntroScreen extends GetView<newInroScreenCTL> {
           GestureDetector(
             onTap: () {
               // Get.toNamed(Routes.HOMEVIEW1);
+              // FirebaseAnalytics.instance.logSelectItem(
+              //     itemListId: "Interested Skip",
+              //     itemListName: "Interested Skip");
+              FirebaseAnalytics.instance.logSelectContent(
+                  contentType: "Interesdted?", itemId: "Interested Skip");
+
               ComFunction.GotoHomeScreen();
             },
             child: Text(

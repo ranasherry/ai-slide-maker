@@ -148,7 +148,11 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
                                             //         .isWaitingForTime.value ||
                                             //     kDebugMode) {
                                             if (!controller
-                                                .isWaitingForTime.value) {
+                                                    .isWaitingForTime.value ||
+                                                RevenueCatService()
+                                                        .currentEntitlement
+                                                        .value ==
+                                                    Entitlement.paid) {
                                               controller.validate_user_input();
                                             } else {
                                               RevenueCatService()
@@ -323,7 +327,9 @@ class NewslideGeneratorView extends GetView<NewslideGeneratorController> {
   Widget createButton(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          if (!controller.isWaitingForTime.value) {
+          if (!controller.isWaitingForTime.value ||
+              RevenueCatService().currentEntitlement.value ==
+                  Entitlement.paid) {
             // if (!controller.isWaitingForTime.value || kDebugMode) {
             // if (!controller.isWaitingForTime.value) {
             controller.validate_user_input();
