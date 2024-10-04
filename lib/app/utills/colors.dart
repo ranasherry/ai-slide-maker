@@ -43,4 +43,6 @@ class AppColors {
   // static const mainColor = Color(0xFFFF6421);
   static const titles = Color(0xFF262729);
   static const bottomNavBar = Color.fromARGB(255, 255, 252, 252);
+
+  static const edit_view_bg = Color.fromARGB(255, 255, 246, 244);
 }

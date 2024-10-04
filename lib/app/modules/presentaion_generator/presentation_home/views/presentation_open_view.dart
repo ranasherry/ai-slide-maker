@@ -52,6 +52,7 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
               Obx(() => controller.isOtherUser.value
                   ? Container()
                   : bottom_navi_bar_items(Icons.edit, "Edit", () {
+                        presEditCtl.selectTitleOnInit();
                       Get.toNamed(Routes.PresentationEditIndividualSlideView,
                           arguments: [controller.myPresentation.value]);
                       // Get.toNamed(Routes.PresentationEditView,
@@ -157,17 +158,24 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                             child: Container(
                               // width: SizeConfig.screenWidth * 0.92,
                               height: SizeConfig.screenWidth * 0.5,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Obx(
-                                    () => individualSlideEditorMethod(
-                                        controller.currentSelectedIndex.value,
-                                        controller.myPresentation,
-                                        Size(SizeConfig.screenWidth * 0.9,
-                                            SizeConfig.screenWidth * 0.5),
-                                        true,
-                                        controller.slidePallet),
-                                  )),
+                              child: GestureDetector(
+                                onTap: (){
+                                 presEditCtl.selectTitleOnInit();
+                                  Get.toNamed(Routes.PresentationEditIndividualSlideView,
+                                  arguments: [controller.myPresentation.value]);
+                                },
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Obx(
+                                      () => individualSlideEditorMethod(
+                                          controller.currentSelectedIndex.value,
+                                          controller.myPresentation,
+                                          Size(SizeConfig.screenWidth * 0.9,
+                                              SizeConfig.screenWidth * 0.5),
+                                          false,
+                                          controller.slidePallet),
+                                    )),
+                              ),
                             ),
                           ),
                         ),
@@ -227,15 +235,15 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                         child: SizedBox(
                                           width: size.width,
                                           height: size.height,
-                                          child: Stack(
+                                          child: Obx(() =>Stack(
                                             children: [
-                                              individualSlideEditorMethod(
+                                              (individualSlideEditorMethod(
                                                   index,
                                                   controller.myPresentation,
                                                   size,
-                                                  true,
-                                                  controller.slidePallet),
-                                              Obx(() => controller
+                                                  false,
+                                                  controller.slidePallet)),
+                                               controller
                                                           .currentSelectedIndex
                                                           .value ==
                                                       index
@@ -251,9 +259,9 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
                                                             Icon(Icons.check),
                                                       ),
                                                     )
-                                                  : Container())
+                                                  : Container()
                                             ],
-                                          ),
+                                          )),
                                         ),
                                       ),
                                     );

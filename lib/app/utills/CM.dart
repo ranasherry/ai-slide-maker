@@ -16,8 +16,11 @@ import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide1.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide1_editor.dart';
 import 'package:slide_maker/app/slide_styles/sectioned_slide2.dart';
+import 'package:slide_maker/app/slide_styles/sectioned_slide2_editor.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
+import 'package:slide_maker/app/slide_styles/title_slide1_editor.dart';
 import 'package:slide_maker/app/utills/images.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -217,29 +220,37 @@ class ComFunction {
 
     int i = 1;
     for (final MySlide slide in mySlides) {
+
+      developer.log("This is slide pallet inside the createSlidyPresenatation ${slidePallet.slideTitlesTextProperties![0].fontWeight}");
       // developer.log("Page Data: ${page.ChapData}");
       if (i == 1) {
         await pres.addWidgetSlide(
-          (size) => TitleSlide1(
+          (size) => TitleSlide1Editor(
             mySlide: slide,
             slidePallet: slidePallet,
             size: size,
+            index : i-1,
+            isEditViewOpen: false,
           ),
         );
-      } else if (i == 1) {
+      } else if (i == 2) {
         await pres.addWidgetSlide(
-          (size) => SectionedSlide2(
+          (size) => SectionedSlide2Editor(
             mySlide: slide,
             slidePallet: slidePallet,
             size: size,
+            index : i-1,
+            isEditViewOpen: false,
           ),
         );
       } else {
         await pres.addWidgetSlide(
-          (size) => SectionedSlide1(
+          (size) => SectionedSlide1Editor(
             mySlide: slide,
             slidePallet: slidePallet,
             size: size,
+            index : i-1,
+            isEditViewOpen: false,
           ),
         );
       }

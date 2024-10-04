@@ -65,9 +65,9 @@ Future _createDB(Database db, int version) async {
       imageList TEXT,
       fadeColor INTEGER,
       isPaid INTEGER, 
-      slideTitlesFontValue TEXT,
-      slideSectionHeadersFontValue TEXT,
-      slideSectionContentsFontValue TEXT
+      slideTitlesTextProperties TEXT,
+      slideSectionHeadersTextProperties TEXT,
+      slideSectionContentsTextProperties TEXT
     )
   ''');
 }

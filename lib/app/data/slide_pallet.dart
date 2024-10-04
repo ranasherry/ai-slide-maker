@@ -17,9 +17,9 @@ class SlidePallet {
   List<String> imageList;
   Color fadeColor;
   bool isPaid;
-  List<TextProperties>? slideTitlesFontValue;
-  List<List<TextProperties>>? slideSectionHeadersFontValue;
-  List<List<TextProperties>>? slideSectionContentsFontValue;
+  List<TextProperties>? slideTitlesTextProperties;
+  List<List<TextProperties>>? slideSectionHeadersTextProperties;
+  List<List<TextProperties>>? slideSectionContentsTextProperties;
 
   SlidePallet({
     required this.palletId,
@@ -33,9 +33,9 @@ class SlidePallet {
     required this.imageList,
     required this.fadeColor,
     required this.isPaid,
-    this.slideTitlesFontValue,
-    this.slideSectionHeadersFontValue,
-    this.slideSectionContentsFontValue,
+    this.slideTitlesTextProperties,
+    this.slideSectionHeadersTextProperties,
+    this.slideSectionContentsTextProperties,
   });
  
  Map<String,dynamic> toMap(){
@@ -51,16 +51,16 @@ class SlidePallet {
     "imageList" : json.encode(imageList),
     "fadeColor" : fadeColor.value,
     "isPaid" : isPaid == true ? 1 : 0,
-   'slideTitlesFontValue': jsonEncode(slideTitlesFontValue?.map((e)=>e.toMap()).toList() ?? []),
-    'slideSectionHeadersFontValue': jsonEncode(slideSectionHeadersFontValue?.map((e)=>e.map((element)=>element.toMap()).toList()).toList() ?? []),
-    'slideSectionContentsFontValue': jsonEncode(slideSectionContentsFontValue?.map((e)=>e.map((element)=>element.toMap()).toList()).toList() ?? []),
+   'slideTitlesTextProperties': jsonEncode(slideTitlesTextProperties?.map((e)=>e.toMap()).toList() ?? []),
+    'slideSectionHeadersTextProperties': jsonEncode(slideSectionHeadersTextProperties?.map((e)=>e.map((element)=>element.toMap()).toList()).toList() ?? []),
+    'slideSectionContentsTextProperties': jsonEncode(slideSectionContentsTextProperties?.map((e)=>e.map((element)=>element.toMap()).toList()).toList() ?? []),
   };
  }
 
  static SlidePallet fromMap(Map<String,dynamic> map){
-   print("slideTitlesFontValue (raw from DB): ${map['slideTitlesFontValue']}");
-  print("slideSectionHeadersFontValue (raw from DB): ${map['slideSectionHeadersFontValue']}");
-  print("slideSectionContentsFontValue (raw from DB): ${map['slideSectionContentsFontValue']}");
+   print("slideTitlesTextProperties (raw from DB): ${map['slideTitlesTextProperties']}");
+  print("slideSectionHeadersTextProperties (raw from DB): ${map['slideSectionHeadersTextProperties']}");
+  print("slideSectionContentsTextProperties (raw from DB): ${map['slideSectionContentsTextProperties']}");
   return SlidePallet(
     palletId : map["palletId"],
     name : map["name"],
@@ -73,19 +73,22 @@ class SlidePallet {
     imageList : List<String>.from(jsonDecode(map["imageList"])),
     fadeColor : Color(map["fadeColor"]),
     isPaid : (map["isPaid"] == 1) ? true : false,
-slideTitlesFontValue: (map['slideTitlesFontValue'] != null && (jsonDecode(map['slideTitlesFontValue']) as List).isNotEmpty)
-        ? List<TextProperties>.from((jsonDecode(map['slideTitlesFontValue']) as List).map((e)=>TextProperties.fromMap(e))) 
+slideTitlesTextProperties: (map['slideTitlesTextProperties'] != null && (jsonDecode(map['slideTitlesTextProperties']) as List).isNotEmpty)
+        ? List<TextProperties>.from((jsonDecode(map['slideTitlesTextProperties']) as List).map((e)=>TextProperties.fromMap(e))) 
         : [],
-      slideSectionHeadersFontValue: (map['slideSectionHeadersFontValue'] != null && (jsonDecode(map['slideSectionHeadersFontValue']) as List).isNotEmpty)
-        ? (jsonDecode(map['slideSectionHeadersFontValue']) as List)
+      slideSectionHeadersTextProperties: (map['slideSectionHeadersTextProperties'] != null && (jsonDecode(map['slideSectionHeadersTextProperties']) as List).isNotEmpty)
+        ? (jsonDecode(map['slideSectionHeadersTextProperties']) as List)
             .map((header) => List<TextProperties>.from((header as List).map((e)=> TextProperties.fromMap(e))))
             .toList() 
         : [],
-      slideSectionContentsFontValue: (map['slideSectionContentsFontValue'] != null && (jsonDecode(map['slideSectionContentsFontValue']) as List).isNotEmpty)
-        ? (jsonDecode(map['slideSectionContentsFontValue']) as List)
+      slideSectionContentsTextProperties: (map['slideSectionContentsTextProperties'] != null && (jsonDecode(map['slideSectionContentsTextProperties']) as List).isNotEmpty)
+        ? (jsonDecode(map['slideSectionContentsTextProperties']) as List)
             .map((content) => List<TextProperties>.from((content as List).map((e)=> TextProperties.fromMap(e))))
             .toList() 
         : [],
                   );
+ }
+ void setColor(){
+  slideTitlesTextProperties?.map((e)=>e.fontColor=Color(bigTitleTColor));
  }
 }
