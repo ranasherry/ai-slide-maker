@@ -82,8 +82,10 @@ class PresentationOpenCtl extends GetxController {
       final pres = await ComFunction().createSlidyPresentation(
           mySlides: myPresentation.value.slides,
           Title: myPresentation.value.presentationTitle,
-          slidePallet:
-              getSlidePalletFromID(myPresentation.value.styleId.value));
+          // slidePallet:
+          //     getSlidePalletFromID(myPresentation.value.styleId.value)
+          slidePallet : slidePallet.value
+          );
 
       await ComFunction().downloadPresentation(pres);
     } on Exception catch (e) {

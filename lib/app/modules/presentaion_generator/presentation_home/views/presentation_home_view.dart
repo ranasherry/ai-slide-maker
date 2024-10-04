@@ -184,6 +184,7 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
   Widget _histroySlideItem(int index, int styleId) {
     return GestureDetector(
       onTap: () {
+        developer.log("this is selected index on home view${index}");
         Get.toNamed(Routes.PresentationOpenView, arguments: [
           controller.presentations[index],
           controller.allSlidePallets[styleId - 1],

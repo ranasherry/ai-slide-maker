@@ -65,9 +65,9 @@ class PresentationHistoryDatabaseHandler {
       imageList TEXT,
       fadeColor INTEGER,
       isPaid INTEGER, 
-      slideTitlesFontValue TEXT,
-      slideSectionHeadersFontValue TEXT,
-      slideSectionContentsFontValue TEXT
+      slideTitlesTextProperties TEXT,
+      slideSectionHeadersTextProperties TEXT,
+      slideSectionContentsTextProperties TEXT
     )
   ''');
   }
