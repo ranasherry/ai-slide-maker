@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/auth_services.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsViewCTL extends GetxController {
@@ -44,7 +45,8 @@ class SettingsViewCTL extends GetxController {
     //TODO Get UserDataProvider and set userData null
     EasyLoading.dismiss();
     if (isSignout) {
-      Get.offAllNamed(Routes.HOMEVIEW1);
+      // Get.offAllNamed(Routes.HOMEVIEW1);
+      ComFunction.GotoHomeScreen();
     } else {
       //TODO: could Not Signed Out. dialogue bos
     }

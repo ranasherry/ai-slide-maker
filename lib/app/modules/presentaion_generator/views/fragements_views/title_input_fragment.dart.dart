@@ -23,7 +23,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: footerWidget(),
+      bottomNavigationBar: footerWidget(context),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -48,10 +48,10 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                   noOfSlides(),
                   verticalSpace(SizeConfig.blockSizeVertical * 2.5),
                   selectLanguage(),
+                  AmountOfText(),
+                  verticalSpace(SizeConfig.blockSizeVertical * 3),
                   verticalSpace(SizeConfig.blockSizeVertical * 4),
                   ToneOfVoice(),
-                  AmountOfText(),
-                  verticalSpace(SizeConfig.blockSizeVertical * 3)
                 ],
               ),
             ),
@@ -61,6 +61,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
       ),
     );
   }
+  
 
   Column inputTitle() {
     return Column(
@@ -345,7 +346,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                                 SizeConfig.blockSizeHorizontal * 4)),
                         child: SvgPicture.asset(AppImages.pro)),
                     Text(
-                      "",
+                      "$text",
                       style: TextStyle(
                           fontSize: SizeConfig.blockSizeHorizontal * 4,
                           color: Colors.grey),
@@ -406,9 +407,9 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
             ),
             select_method(
               AppImages.professional,
-              "Professional",
+              "Formal",
             ),
-            select_method(AppImages.academic, "Academic"),
+            select_method(AppImages.academic, "Educational"),
           ],
         ),
         verticalSpace(SizeConfig.blockSizeVertical * 2),
@@ -419,12 +420,12 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
             children: [
               select_method(
                 AppImages.inspirational,
-                "Inspirational",
+                "Motivational",
               ),
               horizontalSpace(SizeConfig.blockSizeHorizontal * 4.9),
               select_method(
                 AppImages.humorous,
-                "humorous",
+                "Witty",
               ),
             ],
           ),
@@ -738,7 +739,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
     );
   }
 
-  Widget footerWidget() {
+  Widget footerWidget(BuildContext context) {
     return Card(
       // elevation: 5.0, // Set the elevation to the desired value
       margin: EdgeInsets.zero, // Remove default margins if needed
@@ -773,11 +774,12 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
-                      // if (!controller.isWaitingForTime.value) {
-                      // if (!controller.isWaitingForTime.value || kDebugMode) {
+                      FocusScope.of(context).unfocus();
+
                       if (!controller.isWaitingForTime.value ||
                           RevenueCatService().currentEntitlement.value ==
-                              Entitlement.paid) {
+                              Entitlement.paid ||
+                          kDebugMode) {
                         controller.switchToSlidesOutlines();
                       } else {
                         RevenueCatService().GoToPurchaseScreen();

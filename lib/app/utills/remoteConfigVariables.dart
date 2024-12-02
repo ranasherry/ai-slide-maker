@@ -6,6 +6,7 @@ class RCVariables {
   static RxBool isNewSLideUI = false.obs;
   static RxBool showBothInApp = true.obs;
   static RxBool showNewInapp = true.obs;
+  static RxBool showCreations = false.obs;
 
   static String GeminiAPIKey = "";
   static double discountPercentage = 90;
@@ -17,4 +18,9 @@ class RCVariables {
   static List<String> geminiAPIKeysSlideAssistant = [];
 
   static int delayMinutes = 60;
+
+  static int maxPublicPresentations = 2;
+
+  static int interCounter = 1;
+  static int interCounter1 = 2; //TODO:  Experimental
 }

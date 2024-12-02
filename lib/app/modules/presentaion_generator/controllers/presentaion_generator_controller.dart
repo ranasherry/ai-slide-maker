@@ -13,7 +13,9 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:language_picker/language_picker_cupertino.dart';
 import 'package:language_picker/language_picker_dropdown.dart';
 import 'package:language_picker/languages.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
@@ -25,10 +27,12 @@ import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_v
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/slides_fragment.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/views/fragements_views/title_input_fragment.dart.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/provider/userdata_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/myapi_services.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/services/shared_pref_services.dart';
+import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helper_widgets.dart';
@@ -40,6 +44,7 @@ import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
+import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentaionGeneratorController extends GetxController {
@@ -291,6 +296,99 @@ class PresentaionGeneratorController extends GetxController {
     }
   }
 
+  Future<String?> gemeniAPICallJson(String request) async {
+    developer.log("RequestCounter: $geminiRequestCounter");
+    final apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
+    final model = GenerativeModel(
+      model: 'gemini-1.5-flash',
+      apiKey: apiKey,
+      generationConfig: GenerationConfig(
+        temperature: 1,
+        topK: 64,
+        topP: 0.95,
+        maxOutputTokens: 8192,
+        responseMimeType: 'application/json',
+        responseSchema: Schema(
+          SchemaType.object,
+          properties: {
+            "response": Schema(
+              SchemaType.string,
+            ),
+            "slides": Schema(
+              SchemaType.array,
+              items: Schema(
+                SchemaType.object,
+                properties: {
+                  "slideTitle": Schema(
+                    SchemaType.string,
+                  ),
+                  "slideSections": Schema(
+                    SchemaType.array,
+                    items: Schema(
+                      SchemaType.object,
+                      properties: {
+                        "sectionHeader": Schema(
+                          SchemaType.string,
+                        ),
+                        "sectionContent": Schema(
+                          SchemaType.string,
+                        ),
+                      },
+                    ),
+                  ),
+                },
+              ),
+            ),
+          },
+        ),
+      ),
+      systemInstruction:
+          Content.system('You are a professional Presentation Write'),
+    );
+
+    final content = [Content.text(request)];
+    try {
+      final response = await model.generateContent(content);
+
+      if (response.text != null) {
+        if (response.usageMetadata != null) {
+          developer
+              .log("Tokens Count: ${response.usageMetadata!.totalTokenCount}");
+          tokensConsumed += response.usageMetadata!.totalTokenCount ?? 0;
+        }
+        String? generatedMessage = response.text;
+        geminiRequestCounter = 0;
+
+        developer.log("Gemini Response: $generatedMessage");
+        return generatedMessage;
+      } else {
+        if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+          geminiRequestCounter = 0;
+
+          return null;
+        } else {
+          geminiRequestCounter++;
+          String? generatedMessage = await gemeniAPICallJson(request);
+          return generatedMessage;
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) developer.log('Gemini Error $e key: $apiKey  ', error: e);
+      // return "Could not generate due to some techniqal issue. please try again after a few minutes ";
+      if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
+        geminiRequestCounter = 0;
+
+        return null;
+      } else {
+        geminiRequestCounter++;
+        String? generatedMessage = await gemeniAPICallJson(request);
+        return generatedMessage;
+      }
+
+      // generatedMessage = "Error Message $e";
+    }
+  }
+
   //? Slide Screen Section
 //   Future<void> startGeneratingSlide() async {
 //     currentIndex.value = 3;
@@ -413,43 +511,63 @@ class PresentaionGeneratorController extends GetxController {
 return. if format contains section then generate only maximum 3 sections.
 Note: Sections for each slide must be 2 or 3.
 
-Always use correct json format. never use quotes inside text so I Can parse it into object.
- Required Json Format:
 
- {
- "Slides": [
-{
-  "slideTitle": "Your Title Here",
-  "slideSections": [
-    {
-      "sectionHeader": "Section Title",
-      "sectionContent": "This is the content for the first section."
-    }
-      ]
-},
-{
-  "slideTitle": "Your Title Here",
-  "slideSections": [
-    {
-      "sectionHeader": "Section Title",
-      "sectionContent": "This is the content for the first section."
-    }
-      ]
-}
-
-]
- }
 
       ''';
+//     final request = '''
+//       You will create a presentation slide on given Topic: ${myPresentation.value.presentationTitle}.
+
+//       You will be creating slideList on Following Slide Titles: ${plannedOutlines}.
+//       you must ignore the following topics as they already have covered.
+//       CoveredTopic List ${coveredTitles.toString()}
+
+//       Your writing style will be: ${writingStyle}
+//       write maximum word in sectionContent: ${contentLength}
+//       Your writing language: ${selectedDropdownLanguage.value.name}
+
+//       you are only require to give your response on require json formate enclosed in curly braces{} and no other text will
+// return. if format contains section then generate only maximum 3 sections.
+// Note: Sections for each slide must be 2 or 3.
+
+// Always use correct json format. never use quotes inside text so I Can parse it into object.
+//  Required Json Format:
+
+//  {
+//  "Slides": [
+// {
+//   "slideTitle": "Your Title Here",
+//   "slideSections": [
+//     {
+//       "sectionHeader": "Section Title",
+//       "sectionContent": "This is the content for the first section."
+//     }
+//       ]
+// },
+// {
+//   "slideTitle": "Your Title Here",
+//   "slideSections": [
+//     {
+//       "sectionHeader": "Section Title",
+//       "sectionContent": "This is the content for the first section."
+//     }
+//       ]
+// }
+
+// ]
+//  }
+
+//       ''';
 
     developer.log("GeminiRequest: $request");
 
-    String? apiRespnse = await gemeniAPICall(request);
+    String? apiRespnse = await gemeniAPICallJson(request);
+    // String? apiRespnse = await gemeniAPICall(request);
     if (apiRespnse != null) {
       developer.log("GeminiRawResponse: $apiRespnse");
       try {
         final jsonList = json.decode(apiRespnse) as Map<String, dynamic>;
-        final originalList = jsonList["Slides"] as List;
+        developer.log("JsonResponse: $jsonList");
+        final originalList = jsonList["slides"] as List;
         developer.log("SlidesList: ${originalList}");
 
         List<MySlide> slides = [];
@@ -458,6 +576,7 @@ Always use correct json format. never use quotes inside text so I Can parse it i
           slides.add(slide);
           developer.log("Added Slide: ${slide.toMap()}");
         }
+
         // List<MySlide> slides =
         //     originalList.map((slide) => MySlide.fromMap(slide)).toList();
 
@@ -499,8 +618,10 @@ Always use correct json format. never use quotes inside text so I Can parse it i
         // lines below added by rizwan
         // myPresentation.value.slides[i].slideSections[0].memoryImage = null;
         print(myPresentation.value);
-        presentationHomeController.insertPresentationWithSlidePallet(
-            selectedPallet.value, myPresentation.value);
+
+        //! Now saving while save button press
+        // presentationHomeController.insertPresentationWithSlidePallet(
+        //     selectedPallet.value, myPresentation.value);
 
         // for (var section in mySlide.slideSections) {
         //   coveredTitles.add(section.sectionHeader ?? "");
@@ -886,6 +1007,210 @@ Always use correct json format. never use quotes inside text so I Can parse it i
 
   void getUserRelatedData() {
     profession = SharedPrefService().getProfession() ?? "";
+  }
+
+  Future<void> savePresentationonLocalDB() async {
+    EasyLoading.show(status: "Saving your presentation...");
+    await presentationHomeController.insertPresentationWithSlidePallet(
+        selectedPallet.value, myPresentation.value);
+    EasyLoading.dismiss();
+    EasyLoading.showSuccess("Presentation Saved");
+  }
+
+  Future<void> PostPublicPresentation(MyPresentation myPresentation) async {
+    final userdataProvider =
+        Provider.of<UserdataProvider>(Get.context!, listen: false);
+
+    UserData? userData = userdataProvider.getUserData;
+
+    if (userData != null) {
+      String? createrId = userData.id;
+      myPresentation.createrId = createrId;
+      await FirestoreService().insertPresentationHistory(
+          myPresentation, myPresentation.presentationId.toString());
+    }
+  }
+
+  Future<bool?> showPostPresentationDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          elevation: 10,
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                // Dialog title
+                Row(
+                  children: [
+                    Icon(
+                      Icons.image_outlined,
+                      color: Colors.blueAccent,
+                      size: 30,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Post your Presentation',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+
+                // Image placeholder (you can replace this with an image picker or preview)
+                Container(
+                  height: SizeConfig.blockSizeVertical * 26,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: individualSlideMethod(
+                        0,
+                        myPresentation,
+                        Size(SizeConfig.blockSizeHorizontal * 70,
+                            SizeConfig.blockSizeVertical * 26)),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Obx(
+                  () => RevenueCatService().currentEntitlement.value ==
+                          Entitlement.paid
+                      ? Container()
+                      : FutureBuilder<int>(
+                          future: getRemainingPublicPosts(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator(); // Loading indicator while waiting for the result
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                  "Error loading remaining posts"); // Handle any error
+                            } else if (snapshot.hasData) {
+                              return Text(
+                                "Remaining free public presentations to post: ${snapshot.data}",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                              );
+                            } else {
+                              return Text("No data available");
+                            }
+                          },
+                        ),
+                ),
+                SizedBox(height: 10),
+
+                // Button Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Cancel Button
+                    ElevatedButton(
+                      onPressed: () {
+                        // Return false on cancel
+                        Navigator.of(context).pop(false);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[400],
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+
+                    // Post Button
+                    ElevatedButton(
+                      onPressed: () async {
+                        bool canPost = await canPostPresentation();
+                        if (canPost) {
+                          EasyLoading.show(status: "Posting....");
+                          await PostPublicPresentation(myPresentation.value);
+                          await decrementPublicPostCount();
+                          EasyLoading.dismiss();
+                          EasyLoading.showSuccess("Posted Successfully");
+                          Navigator.of(context).pop(true);
+                        } else {
+                          RevenueCatService().GoToPurchaseScreen();
+                        }
+                        // Post logic here
+
+                        // Return true on post success
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Post',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<bool> canPostPresentation() async {
+    int remaining = await getRemainingPublicPosts();
+    return remaining > 0;
+  }
+
+  // Getter function to get remaining public presentations
+  Future<int> getRemainingPublicPosts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? remainingPosts = prefs.getInt('remainingPublicPosts');
+
+    // If not set yet, assume maximum posts are allowed initially
+    if (remainingPosts == null) {
+      await prefs.setInt(
+          'remainingPublicPosts', RCVariables.maxPublicPresentations);
+      remainingPosts = RCVariables.maxPublicPresentations;
+    }
+
+    return remainingPosts;
+  }
+
+  // Function to decrement the remaining public presentations after a post
+  Future<void> decrementPublicPostCount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int remainingPosts = await getRemainingPublicPosts();
+
+    // Decrease the count by 1 if greater than 0
+    if (remainingPosts > 0) {
+      await prefs.setInt('remainingPublicPosts', remainingPosts - 1);
+    }
   }
 }
 

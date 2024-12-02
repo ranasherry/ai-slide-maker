@@ -21,6 +21,9 @@ class HomeView1 extends GetView<HomeViewCtl> {
 
   @override
   Widget build(BuildContext context) {
+    // if (kDebugMode) {
+    //   controller.showReviewDialogue(Get.context!, isSettings: true);
+    // }
     return Scaffold(
       bottomNavigationBar: AppLovinProvider.instance.MyBannerAdWidget(),
       drawer: MyDrawer(),
@@ -168,75 +171,14 @@ class HomeView1 extends GetView<HomeViewCtl> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Stack(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // Slide beta Screen
-                                  // if (kDebugMode) {
-                                  //   Get.toNamed(Routes.PRESENTATION_HOME);
-                                  // } else {
-                                  //   Get.toNamed(Routes.PRESENTAION_GENERATOR);
-                                  // }
-                                  Get.toNamed(Routes.PRESENTATION_HOME);
-
-                                  // Get.toNamed(Routes.PRESENTAION_GENERATOR);
-                                },
-                                child: Container(
-                                  height: SizeConfig.blockSizeVertical * 22.5,
-                                  width: SizeConfig.blockSizeHorizontal * 45,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.textfieldcolor,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey
-                                              .withOpacity(0.2), // Shadow color
-                                          spreadRadius:
-                                              2, // How much the shadow spreads
-                                          blurRadius:
-                                              10, // How soft the shadow is
-                                          offset: Offset(4,
-                                              4), // Position of the shadow (x, y)
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(
-                                          SizeConfig.blockSizeHorizontal * 3)),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Image.asset(
-                                        AppImages.slide_beta,
-                                        scale: 1.3,
-                                      ),
-                                      Container(
-                                        alignment: Alignment.center,
-                                        width:
-                                            SizeConfig.blockSizeHorizontal * 40,
-                                        child: Text(
-                                          "Presentation AI 2.0",
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.inter(
-                                              textStyle: TextStyle(
-                                                  fontSize: SizeConfig
-                                                          .blockSizeHorizontal *
-                                                      3.5,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF585858))),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: SizeConfig.blockSizeHorizontal * 25.3,
-                                bottom: SizeConfig.blockSizeVertical * 13.3,
-                                child: Container(
-                                    child: Image.asset(AppImages.new_version)),
-                              )
-                            ],
-                          ),
+                          // GestureDetector(
+                          //     onTap: () {
+                          //       // AI Slide Maker Screen
+                          //       Get.toNamed(Routes.NEWSLIDE_GENERATOR);
+                          //     },
+                          //     child:
+                          //         modules(AppImages.slide, "Presentation AI")),
+                          _PresentationAI_2(),
                           // modules(
                           //     AppImages.slide_beta, "AI Slider Maker GEN 2.0"),
                           GestureDetector(
@@ -245,7 +187,7 @@ class HomeView1 extends GetView<HomeViewCtl> {
                                 Get.toNamed(Routes.AiSlideAssistant);
                               },
                               child: modules(
-                                  AppImages.magic_stick, "AI Assistant")),
+                                  AppImages.ai_assistan, "AI Assistant")),
                         ],
                       ),
                       verticalSpace(SizeConfig.blockSizeVertical * 2),
@@ -273,6 +215,7 @@ class HomeView1 extends GetView<HomeViewCtl> {
                               },
                               child:
                                   modules(AppImages.slide, "Presentation AI")),
+                          // _PresentationAI_2(),
                         ],
                       )
                     ],
@@ -283,6 +226,74 @@ class HomeView1 extends GetView<HomeViewCtl> {
           ],
         ),
       ),
+    );
+  }
+
+  Stack _PresentationAI_2() {
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () {
+            // Slide beta Screen
+            // if (kDebugMode) {
+            //   Get.toNamed(Routes.PRESENTATION_HOME);
+            // } else {
+            //   Get.toNamed(Routes.PRESENTAION_GENERATOR);
+            // }
+            Get.toNamed(Routes.PRESENTATION_HOME);
+
+            // Get.toNamed(Routes.PRESENTAION_GENERATOR);
+          },
+          child: Container(
+            height: SizeConfig.blockSizeVertical * 22.5,
+            width: SizeConfig.blockSizeHorizontal * 45,
+            decoration: BoxDecoration(
+                color: AppColors.textfieldcolor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2), // Shadow color
+                    spreadRadius: 2, // How much the shadow spreads
+                    blurRadius: 10, // How soft the shadow is
+                    offset: Offset(4, 4), // Position of the shadow (x, y)
+                  ),
+                ],
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.blockSizeHorizontal * 3)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  // color: Colors.yellow,
+                  height: SizeConfig.blockSizeVertical * 17,
+                  width: SizeConfig.blockSizeHorizontal * 24,
+                  child: Image.asset(
+                    AppImages.slide_beta,
+                    scale: 1.3,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  width: SizeConfig.blockSizeHorizontal * 40,
+                  child: Text(
+                    "Presentation AI 2.0",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 3.5,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF585858))),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          left: SizeConfig.blockSizeHorizontal * 25.3,
+          bottom: SizeConfig.blockSizeVertical * 13.3,
+          child: Container(child: Image.asset(AppImages.new_version)),
+        )
+      ],
     );
   }
 
@@ -307,12 +318,15 @@ class HomeView1 extends GetView<HomeViewCtl> {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
+                width: SizeConfig.blockSizeHorizontal * 24,
+                height: SizeConfig.blockSizeVertical * 14,
                 alignment: Alignment.center,
                 child: Image.asset(
                   image,
-                  scale: 1.3,
+                  // scale: 1.3,
                 ),
               ),
               Container(

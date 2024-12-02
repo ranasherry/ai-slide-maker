@@ -25,7 +25,7 @@ package="com.mycompany.myapp">
   </queries>
 
     <application
-        android:label="Presentation AI"
+        android:label="Presentation ai Maker"
         android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
         android:largeHeap="true"

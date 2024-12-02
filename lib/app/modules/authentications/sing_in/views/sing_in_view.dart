@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/helprer_widgets/main_header_bg.dart';
@@ -31,7 +32,8 @@ class SignInView extends GetView<SignInController> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.offAllNamed(Routes.HOMEVIEW1);
+                  // Get.offAllNamed(Routes.HOMEVIEW1);
+                  ComFunction.GotoHomeScreen();
                 },
                 child: Align(
                   alignment: Alignment.topLeft,

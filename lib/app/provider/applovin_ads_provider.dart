@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 // import '../modules/utills/AppStrings.dart';
 import '../services/revenuecat_service.dart';
@@ -287,7 +288,7 @@ class AppLovinProvider {
       return;
     }
     interCounter++;
-    if (interCounter < 4 && Platform.isIOS) {
+    if (interCounter < RCVariables.interCounter && Platform.isIOS) {
       return;
     }
     interCounter = 1;

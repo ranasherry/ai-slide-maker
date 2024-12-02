@@ -320,6 +320,13 @@ class FirestoreService {
     await docRef.update({'likesCount': FieldValue.increment(change)});
   }
 
+  Future<void> decreaseLikesCount(String presentationId, int change) async {
+    final docRef =
+        _firestore.collection(presentationCollectionPath).doc(presentationId);
+    // Update the likes count
+    await docRef.update({'likesCount': FieldValue.increment(change)});
+  }
+
   // Method added by rizwan
   Future<void> addLike(String presentationId, Like userData) async {
     final docRef = _firestore
@@ -336,6 +343,27 @@ class FirestoreService {
       await docRef.set(userData.toMapDatabase());
       // Update the likes count
       await updateLikesCount(presentationId, 1);
+    }
+  }
+
+  Future<void> removeLike(String presentationId, Like userData) async {
+    final docRef = _firestore
+        .collection(presentationCollectionPath)
+        .doc(presentationId)
+        .collection(subcollectionLikes)
+        .doc(userData.userId.toString());
+
+    // Check if the user has liked the presentation
+    DocumentSnapshot doc = await docRef.get();
+    print("${doc.exists} user id ${userData.userId}");
+
+    // If the like exists, remove it
+    if (doc.exists) {
+      await docRef.delete(); // Remove the like from Firestore
+      // Update the likes count by decrementing it
+      await updateLikesCount(presentationId, -1);
+    } else {
+      print("Like not found for user: ${userData.userId}");
     }
   }
 

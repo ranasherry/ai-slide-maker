@@ -193,9 +193,17 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                         if (controller.isSlidesGenerated.value) {
                           // controller.createPresentation();
                           developer.log("Moving to home screen.");
-                          await ComFunction.GotoHomeThenPresHome();
-                          // Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value, controller.selectedPallet.value]);
                           AppLovinProvider.instance.showInterstitial(() {});
+
+                          await controller.savePresentationonLocalDB();
+
+                          // await controller
+                          //     .showPostPresentationDialog(Get.context!);
+                          await ComFunction.GotoHomeThenPresHome();
+
+                          //! Uncomment below
+                          // await ComFunction.GotoHomeThenPresHome();
+                          // Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value, controller.selectedPallet.value]);
                         } else {
                           EasyLoading.showToast(
                               "Please Wait for remaining slides to be Generated..",

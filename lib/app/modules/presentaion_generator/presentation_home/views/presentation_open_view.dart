@@ -14,9 +14,11 @@ import 'package:slide_maker/app/modules/home/my_drawar.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/presentation_home/controllers/presentation_open_ctl.dart';
 import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_editing_methods.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
 import 'package:slide_maker/app/utills/colors.dart';
+import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class PresentationOpenView extends GetView<PresentationOpenCtl> {
@@ -46,9 +48,54 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // bottom_navi_bar_items(Icons.copy, "Dupicate", () {}),
-              bottom_navi_bar_items(Icons.share, "Share", () {
-                controller.createPresentation();
-              }),
+              Stack(
+                children: [
+                  // Main Button (your bottom_navi_bar_items)
+                  bottom_navi_bar_items(Icons.share, "Share", () {
+                    if (controller.isOtherUser.value) {
+                      if (RevenueCatService().currentEntitlement.value ==
+                          Entitlement.free) {
+                        RevenueCatService().GoToPurchaseScreen();
+                      } else {
+                        controller.createPresentation();
+                      }
+                    } else {
+                      controller.createPresentation();
+                    }
+                  }),
+
+                  // Badge Icon (shown only if the user has paid)
+                  if (RevenueCatService().currentEntitlement.value ==
+                          Entitlement.free &&
+                      controller.isOtherUser.value)
+                    Positioned(
+                      top: 0,
+                      right: 10,
+                      child: Container(
+                          width: 10,
+                          height: 10,
+                          // padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            // color: Colors.red, // Badge color
+                            shape: BoxShape.circle,
+                          ),
+                          child: Image.asset(AppImages.vip)),
+                    ),
+                ],
+              ),
+
+              // bottom_navi_bar_items(Icons.share, "Share", () {
+              //   if (controller.isOtherUser.value) {
+              //     if (RevenueCatService().currentEntitlement.value ==
+              //         Entitlement.free) {
+              //       RevenueCatService().GoToPurchaseScreen();
+              //     } else {
+              //       controller.createPresentation();
+              //     }
+              //   } else {
+              //     controller.createPresentation();
+              //   }
+              // }),
               Obx(() => controller.isOtherUser.value
                   ? Container()
                   : bottom_navi_bar_items(Icons.edit, "Edit", () {
@@ -381,41 +428,102 @@ class PresentationOpenView extends GetView<PresentationOpenCtl> {
   }
 
   Widget _LikedWidgetMethod(MyPresentation myPresentation) {
-    final provider = Provider.of<CreationViewProvider>(
-      Get.context!,
-    );
+    return Consumer<CreationViewProvider>(
+      builder: (context, provider, child) {
+        return Column(
+          children: [
+            FutureBuilder<bool?>(
+              future: provider.isPresentationLikedByUser(
+                  myPresentation.presentationId.toString()),
+              builder: (context, snapshot) {
+                bool isLiked = false;
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  isLiked = false; // Show loading indicator
+                } else if (snapshot.hasError) {
+                  isLiked = false; // Show error message
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  isLiked = false; // Handle case when user is not found
+                } else {
+                  isLiked = snapshot.data!;
+                }
 
-    return Column(
-      children: [
-        FutureBuilder<bool?>(
-            future: provider.isPresentationLikedByUser(
-                myPresentation.presentationId.toString()),
-            builder: (context, snapshot) {
-              bool isLiked = false;
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                isLiked = false; // Show loading indicator
-              } else if (snapshot.hasError) {
-                isLiked = false; // Show error message
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                isLiked = false; // Handle case when user is not found
-              } else {
-                isLiked = snapshot.data!;
-              }
-              return Icon(
-                Icons.favorite_sharp,
-                color: myPresentation.isLiked || isLiked
-                    ? AppColors.mainColor
-                    : AppColors.textfieldcolor,
-              );
-            }),
-        Text(myPresentation.likesCount.toString(),
-            style: GoogleFonts.roboto(
-              textStyle: TextStyle(
-                fontSize: SizeConfig.blockSizeHorizontal * 2.2,
-                color: AppColors.background_color,
-              ),
-            )),
-      ],
+                return GestureDetector(
+                  onTap: () {
+                    if (myPresentation.isLiked) {
+                      provider.unlikePresentation(
+                          myPresentation.presentationId.toString());
+                    } else {
+                      provider.likePresentation(
+                          myPresentation.presentationId.toString());
+                    }
+                  },
+                  child: Icon(
+                    Icons.favorite_sharp,
+                    color: myPresentation.isLiked || isLiked
+                        ? AppColors.mainColor
+                        : AppColors.textfieldcolor,
+                  ),
+                );
+              },
+            ),
+            Text(
+                provider
+                    .getUpdatedLikesCount(myPresentation.presentationId)
+                    .toString(),
+                style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                    fontSize: SizeConfig.blockSizeHorizontal * 2.2,
+                    color: AppColors.background_color,
+                  ),
+                )),
+          ],
+        );
+      },
     );
   }
+
+  // Widget _LikedWidgetMethod(MyPresentation myPresentation) {
+  //   final provider = Provider.of<CreationViewProvider>(
+  //     Get.context!,
+  //   );
+
+  //   return Column(
+  //     children: [
+  //       FutureBuilder<bool?>(
+  //           future: provider.isPresentationLikedByUser(
+  //               myPresentation.presentationId.toString()),
+  //           builder: (context, snapshot) {
+  //             bool isLiked = false;
+  //             if (snapshot.connectionState == ConnectionState.waiting) {
+  //               isLiked = false; // Show loading indicator
+  //             } else if (snapshot.hasError) {
+  //               isLiked = false; // Show error message
+  //             } else if (!snapshot.hasData || snapshot.data == null) {
+  //               isLiked = false; // Handle case when user is not found
+  //             } else {
+  //               isLiked = snapshot.data!;
+  //             }
+  //             return GestureDetector(
+  //               onTap: () {
+  //                 provider.likePresentation(
+  //                     myPresentation.presentationId.toString());
+  //               },
+  //               child: Icon(
+  //                 Icons.favorite_sharp,
+  //                 color: myPresentation.isLiked || isLiked
+  //                     ? AppColors.mainColor
+  //                     : AppColors.textfieldcolor,
+  //               ),
+  //             );
+  //           }),
+  //       Text(myPresentation.likesCount.toString(),
+  //           style: GoogleFonts.roboto(
+  //             textStyle: TextStyle(
+  //               fontSize: SizeConfig.blockSizeHorizontal * 2.2,
+  //               color: AppColors.background_color,
+  //             ),
+  //           )),
+  //     ],
+  //   );
+  // }
 }

@@ -22,6 +22,7 @@ import 'package:slide_maker/app/slide_styles/sectioned_slide2_editor.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1_editor.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
@@ -38,13 +39,20 @@ class ComFunction {
   }
 
   static Future<void> GotoHomeScreen() async {
+    // if (RCVariables.showCreations.value) {
+    //   await Get.offAllNamed(Routes.NAVVIEW);
+    // } else {
+    //   await Get.offAllNamed(Routes.HOMEVIEW1);
+    // }
+
+    await Get.offAllNamed(Routes.HOMEVIEW1);
+
     // await Get.offAllNamed(Routes.HOMEVIEW1);
-    await Get.offAllNamed(Routes.NAVVIEW);
   }
 
   static Future<void> GotoHomeThenPresHome() async {
-    // await Get.offAllNamed(Routes.HOMEVIEW1, arguments: [ true]);
-    await Get.offAllNamed(Routes.NAVVIEW, arguments: [true]);
+    await Get.offAllNamed(Routes.HOMEVIEW1, arguments: [true]);
+    // await Get.offAllNamed(Routes.NAVVIEW, arguments: [true]);
   }
 
   static hideKeyboard(BuildContext context) {
@@ -220,8 +228,8 @@ class ComFunction {
 
     int i = 1;
     for (final MySlide slide in mySlides) {
-
-      developer.log("This is slide pallet inside the createSlidyPresenatation ${slidePallet.slideTitlesTextProperties![0].fontWeight}");
+      developer.log(
+          "This is slide pallet inside the createSlidyPresenatation ${slidePallet.slideTitlesTextProperties![0].fontWeight}");
       // developer.log("Page Data: ${page.ChapData}");
       if (i == 1) {
         await pres.addWidgetSlide(
@@ -229,7 +237,7 @@ class ComFunction {
             mySlide: slide,
             slidePallet: slidePallet,
             size: size,
-            index : i-1,
+            index: i - 1,
             isEditViewOpen: false,
           ),
         );
@@ -239,7 +247,7 @@ class ComFunction {
             mySlide: slide,
             slidePallet: slidePallet,
             size: size,
-            index : i-1,
+            index: i - 1,
             isEditViewOpen: false,
           ),
         );
@@ -249,7 +257,7 @@ class ComFunction {
             mySlide: slide,
             slidePallet: slidePallet,
             size: size,
-            index : i-1,
+            index: i - 1,
             isEditViewOpen: false,
           ),
         );
@@ -354,6 +362,76 @@ class ComFunction {
               },
               child: Text(
                 "OK",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static void showSignInRequire(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          title: const Center(
+            child: Text(
+              "Signin Require!",
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
+              ),
+            ),
+          ),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.lock_outline,
+                size: 50,
+                color: Colors.blueAccent,
+              ),
+              SizedBox(height: 20),
+              Text(
+                "Please Sign in to use this feature.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.black54,
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigator.of(context).pop();
+                Get.toNamed(Routes.SING_IN);
+              },
+              child: Text(
+                "Sign in",
                 style: TextStyle(
                   color: Colors.blueAccent,
                   fontSize: 16,

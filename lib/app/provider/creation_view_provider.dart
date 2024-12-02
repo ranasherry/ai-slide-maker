@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:slide_maker/app/data/like.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'dart:developer' as developer;
+
+import 'package:slide_maker/app/utills/CM.dart';
 
 class CreationViewProvider extends ChangeNotifier {
   List<MyPresentation> presentations = [];
@@ -92,9 +95,11 @@ class CreationViewProvider extends ChangeNotifier {
     }
   }
 
-  likePresentation(String PresID, index) async {
+  likePresentation(String PresID) async {
     //? Check if User is Logged in
     //? get UserUnique ID
+    int index = presentations
+        .indexWhere((pres) => pres.presentationId == int.parse(PresID));
     if (FirebaseAuth.instance.currentUser != null) {
       Like like = Like(
           userId: FirebaseAuth.instance.currentUser!.uid,
@@ -111,6 +116,8 @@ class CreationViewProvider extends ChangeNotifier {
       }
     } else {
       developer.log("Singin to Like the content");
+      ComFunction.showSignInRequire(Get.context!);
+
       //? Aske User to Login
     }
   }
@@ -128,5 +135,37 @@ class CreationViewProvider extends ChangeNotifier {
           .isLikedByUser(FirebaseAuth.instance.currentUser!.uid, presID);
     }
     return isLiked;
+  }
+
+  getUpdatedLikesCount(int presentationId) {
+    int index = presentations
+        .indexWhere((pres) => pres.presentationId == presentationId);
+
+    return presentations[index].likesCount;
+  }
+
+  Future<void> unlikePresentation(String PresID) async {
+    int index = presentations
+        .indexWhere((pres) => pres.presentationId == int.parse(PresID));
+    if (FirebaseAuth.instance.currentUser != null) {
+      Like like = Like(
+          userId: FirebaseAuth.instance.currentUser!.uid,
+          likeId: DateTime.now().millisecondsSinceEpoch,
+          createdAt: DateTime.now().millisecondsSinceEpoch);
+
+      try {
+        await FirestoreService().removeLike(PresID, like);
+        presentations[index].likesCount--;
+        presentations[index].isLiked = false;
+        notifyListeners();
+      } on Exception catch (e) {
+        // TODO
+      }
+    } else {
+      developer.log("Singin to Like the content");
+      ComFunction.showSignInRequire(Get.context!);
+
+      //? Aske User to Login
+    }
   }
 }

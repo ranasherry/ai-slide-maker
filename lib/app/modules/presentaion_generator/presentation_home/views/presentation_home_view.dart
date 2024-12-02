@@ -227,8 +227,11 @@ class PresentationHomeView extends GetView<PresentationHomeController> {
                             //             element.palletId)
                             //         : 0 // Return 0 if not found
                             //     ],
-                            slidePallet:
-                                controller.allSlidePallets[styleId - 1],
+                            slidePallet: controller.allSlidePallets.isEmpty ||
+                                    controller.allSlidePallets.length <= 0
+                                ? controller.getSlidePalletFromID(controller
+                                    .presentations[index].styleId.value)
+                                : controller.allSlidePallets[styleId - 1],
                             size: Size(SizeConfig.blockSizeHorizontal * 25,
                                 SizeConfig.blockSizeVertical * 7),
                           )

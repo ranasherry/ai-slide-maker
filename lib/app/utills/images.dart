@@ -43,7 +43,7 @@ class AppImages {
   static const history1 = "assets/images/history1.png";
   static const history2 = "assets/images/history2.png";
   static const book = "assets/images/book.png";
-  static const inappPurchase = "assets/images/inapp_purchase.png";
+  // static const inappPurchase = "assets/images/inapp_purchase.png";
   static const vip = "assets/icons/crown.png";
   static const feedback = "assets/images/feedback.png";
   static const no_ads = "assets/images/no_ads.png";
@@ -60,6 +60,7 @@ class AppImages {
   static const HeaderMainBgSVG = "assets/svg/header_bg.svg";
   static const intro_themes = "assets/images/intro_themes.png";
   static const clicky_community = "assets/images/clicky_community.png";
+  static const ai_assistan = "assets/images/ai_assistan.png";
 
   // SVG
 

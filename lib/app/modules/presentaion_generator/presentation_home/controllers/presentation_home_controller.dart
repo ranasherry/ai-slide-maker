@@ -10,6 +10,7 @@ import 'package:slide_maker/app/data/presentation_history_dbhandler.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/provider/userdata_provider.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
+import 'package:slide_maker/app/utills/slide_pallets.dart';
 
 class PresentationHomeController extends GetxController {
   //TODO: Implement PresentationHomeController
@@ -31,6 +32,15 @@ class PresentationHomeController extends GetxController {
 
     fetchAllPresentationHistory();
     fetchAllSlidePallet();
+  }
+
+  SlidePallet getSlidePalletFromID(String id) {
+    int index = palletList.indexWhere((s) => s.palletId == int.parse(id));
+    if (index >= 0) {
+      return palletList[index];
+    } else {
+      return palletList[0];
+    }
   }
 
   Future<void> fetchAllPresentationHistory() async {
@@ -96,6 +106,7 @@ class PresentationHomeController extends GetxController {
       await fs.insertPresentationHistory(
           myPresentation, myPresentation.presentationId.toString());
     }
+
     fetchAllPresentationHistory();
   }
 

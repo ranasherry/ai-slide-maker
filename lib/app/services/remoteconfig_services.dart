@@ -46,6 +46,8 @@ class RemoteConfigService {
         "GeminiProKey": "GeminiProKey",
         "discountPercentage": 50,
         "slotLeft": 8,
+        "interCounter": 1,
+        "showCreations": false
       });
 
       await remoteConfig.fetchAndActivate();
@@ -62,6 +64,7 @@ class RemoteConfigService {
     RCVariables.isNewSLideUI.value = remoteConfig.getBool('isNewSLideUI');
     RCVariables.showBothInApp.value = remoteConfig.getBool('showBothInApp');
     RCVariables.showNewInapp.value = remoteConfig.getBool('showNewInapp');
+    RCVariables.showCreations.value = remoteConfig.getBool('showCreations');
 
     RCVariables.GeminiAPIKey = remoteConfig.getString('GeminiProKey');
     RCVariables.AppName.value = remoteConfig.getString('AppName');
@@ -72,6 +75,7 @@ class RemoteConfigService {
     RCVariables.discountTimeStamp = remoteConfig.getString('discountTimeStamp');
     RCVariables.slotLeft.value = remoteConfig.getInt('slotLeft');
     RCVariables.delayMinutes = remoteConfig.getInt('delayMinutes');
+    RCVariables.interCounter = remoteConfig.getInt('interCounter');
 
     String jsonKeys = remoteConfig.getString('GeminiKeysList');
 
@@ -79,6 +83,7 @@ class RemoteConfigService {
 
     dp.log("discountTimeLeft: ${RCVariables.discountTimeLeft}");
     dp.log("discountTimeStamp: ${RCVariables.discountTimeStamp}");
+    dp.log("interCounter: ${RCVariables.interCounter}");
     initGemini(RCVariables.GeminiAPIKey);
     topicListParser();
     keysListParser(jsonKeys);

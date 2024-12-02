@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
@@ -30,7 +31,8 @@ class SubSlideView extends StatelessWidget {
         actions: [
           GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.HOMEVIEW1);
+                // Get.toNamed(Routes.HOMEVIEW1);
+                ComFunction.GotoHomeScreen();
               },
               child: Icon(Icons.home))
         ],

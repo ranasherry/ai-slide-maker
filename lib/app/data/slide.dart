@@ -88,13 +88,17 @@ class SlideSection {
   //line below added by rizwan
   String? imageReference;
 
-  SlideSection({this.sectionHeader, this.sectionContent, this.memoryImage, this.imageReference});
+  SlideSection(
+      {this.sectionHeader,
+      this.sectionContent,
+      this.memoryImage,
+      this.imageReference});
 
   Map<String, dynamic> toMap() {
     return {
       'sectionHeader': sectionHeader,
       'sectionContent': sectionContent,
-          //line below added by rizwan
+      //line below added by rizwan
       'imageReference': imageReference,
       'memoryImage':
           memoryImage?.toList(), // Convert Uint8List to List for JSON
@@ -103,17 +107,17 @@ class SlideSection {
 
   factory SlideSection.fromMap(Map<String, dynamic> map) {
     return SlideSection(
-        sectionHeader: map['sectionHeader'] as String?,
-        sectionContent: map['sectionContent'] as String?,
-            //line below added by rizwan
-        imageReference: map['imageReference'] as String?,
-        memoryImage: map['memoryImage'] != null
-            ? Uint8List.fromList(map['memoryImage'].cast<int>())
-            : null,
-        // map['memoryImage'] != null
-        //     ? Uint8List.fromList(map['memoryImage'])
-        //     : null,
-        );
+      sectionHeader: map['sectionHeader'] as String?,
+      sectionContent: map['sectionContent'] as String?,
+      //line below added by rizwan
+      imageReference: map['imageReference'] as String?,
+      memoryImage: map['memoryImage'] != null
+          ? Uint8List.fromList(map['memoryImage'].cast<int>())
+          : null,
+      // map['memoryImage'] != null
+      //     ? Uint8List.fromList(map['memoryImage'])
+      //     : null,
+    );
   }
 
   String toJson() => json.encode(toMap());

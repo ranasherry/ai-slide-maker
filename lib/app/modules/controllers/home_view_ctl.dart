@@ -23,6 +23,7 @@ import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
+import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
@@ -43,6 +44,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
     bool goToHomeView = (Get.arguments != null && Get.arguments[0] != null)
         ? Get.arguments[0]
         : false;
@@ -531,6 +533,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext cont) => SlideRatingDialog(
+              buttonColor: AppColors.mainColor,
               onRatingChanged: (rating) {
                 print(rating.toString());
                 finalRating = rating;

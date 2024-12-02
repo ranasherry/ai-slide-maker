@@ -14,7 +14,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: footerWidget(),
+        bottomNavigationBar: footerWidget(context),
         body: SingleChildScrollView(
           child: Container(
             width: SizeConfig.screenWidth,
@@ -51,10 +51,11 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
                     controller.addSlide();
                   },
                   child: Container(
-                    margin:
-                        EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
+                    margin: EdgeInsets.only(
+                        top: SizeConfig.blockSizeVertical * 2,
+                        bottom: SizeConfig.blockSizeVertical * 2),
                     height: SizeConfig.blockSizeVertical * 7.5,
-                    width: SizeConfig.blockSizeHorizontal * 90,
+                    // width: SizeConfig.blockSizeHorizontal * 90,
                     decoration: BoxDecoration(
                         color: AppColors.textfieldcolor,
                         borderRadius: BorderRadius.circular(
@@ -98,7 +99,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
         horizontal: SizeConfig.blockSizeHorizontal * 6,
       ),
       height: SizeConfig.blockSizeVertical * 8,
-      width: SizeConfig.blockSizeHorizontal * 90,
+      // width: SizeConfig.blockSizeHorizontal * 90,
       decoration: BoxDecoration(
           color: AppColors.textfieldcolor,
           borderRadius:
@@ -173,7 +174,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
     );
   }
 
-  Widget footerWidget() {
+  Widget footerWidget(BuildContext context) {
     return Card(
       // elevation: 5.0, // Set the elevation to the desired value
       margin: EdgeInsets.zero, // Remove default margins if needed
@@ -209,6 +210,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
                   child: Obx(() => GestureDetector(
                         onTap: controller.isPlannedOutlinesGenerated.value
                             ? () {
+                                FocusScope.of(context).unfocus();
                                 controller.switchToSelectStyle();
                               }
                             : null,

@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 
 // import '../modules/home/controllers/nav_view_ctl.dart';
@@ -323,6 +324,7 @@ class RevenueCatService {
   Future<void> checkSubscriptionStatus() async {
     try {
       final purchaserInfo = await Purchases.getCustomerInfo();
+
       final entitelments = purchaserInfo.entitlements.active.values.toList();
 
       // entitlementInfos.active;
@@ -505,7 +507,8 @@ class RevenueCatService {
       cancel: ElevatedButton(
         onPressed: () {
           // Get.back();
-          Get.offAllNamed(Routes.HOMEVIEW1);
+          // Get.offAllNamed(Routes.HOMEVIEW1);
+          ComFunction.GotoHomeScreen();
         },
         child: Text("Later"),
       ),

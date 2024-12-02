@@ -320,7 +320,7 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: AssetImage(AppImages.mainIcon))),
+                          image: AssetImage(AppImages.ai_assistan))),
                 ),
               )
             ],

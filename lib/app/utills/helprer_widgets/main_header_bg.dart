@@ -16,7 +16,8 @@ class MainHeaderBG extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: AppColors.headerContainerGradient),
+        color: AppColors.headerContainerColor,
+        // gradient: LinearGradient(colors: AppColors.headerContainerGradient),
         // image: DecorationImage(
         //     image: AssetImage(
         //       AppImages.slide_background,

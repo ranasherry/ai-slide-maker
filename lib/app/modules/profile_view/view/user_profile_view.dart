@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/modules/profile_view/controller/user_profileview_controller.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/services/firebaseFunctions.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
@@ -160,6 +161,9 @@ class UserProfileView extends GetView<UserProfileviewController> {
                                       ),
                                       child: GestureDetector(
                                         onTap: () {
+                                          AppLovinProvider.instance
+                                              .showInterstitial(() {});
+
                                           SlidePallet pallet =
                                               ComFunction.getSlidePalletFromID(
                                                   presentations[index]

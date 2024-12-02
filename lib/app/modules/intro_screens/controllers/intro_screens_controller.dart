@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
+import 'package:slide_maker/app/utills/CM.dart';
 
 class IntroScreensController extends GetxController {
   //TODO: Implement IntroScreensController
@@ -34,7 +35,8 @@ class IntroScreensController extends GetxController {
   void setFirstTime(bool bool) {
     prefs.then((SharedPreferences pref) {
       pref.setBool('first_time', bool);
-      Get.offNamed(Routes.HOMEVIEW1);
+      // Get.offNamed(Routes.HOMEVIEW1);
+      ComFunction.GotoHomeScreen();
     });
   }
 }

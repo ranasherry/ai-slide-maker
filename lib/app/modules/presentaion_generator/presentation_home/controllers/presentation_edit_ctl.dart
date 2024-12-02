@@ -1,5 +1,5 @@
 import 'dart:developer' as developer;
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -33,17 +33,16 @@ class PresentationEditCtl extends GetxController {
       <List<TextEditingController>>[].obs;
   late RxList<List<TextEditingController>> slideSectionContents =
       <List<TextEditingController>>[].obs;
-  late RxList<TextProperties> slideTitlesTextProperties = <TextProperties>[].obs;
+  late RxList<TextProperties> slideTitlesTextProperties =
+      <TextProperties>[].obs;
   late RxList<List<TextProperties>> slideSectionHeadersTextProperties =
       <List<TextProperties>>[].obs;
   late RxList<List<TextProperties>> slideSectionContentsTextProperties =
       <List<TextProperties>>[].obs;
 
   late RxList<bool> isSelectedSlideTitle = <bool>[].obs;
-  late RxList<List<bool>> isSelectedSlideSectionHeader =
-      <List<bool>>[].obs;
-  late RxList<List<bool>> isSelectedSlideSectionContent =
-      <List<bool>>[].obs;
+  late RxList<List<bool>> isSelectedSlideSectionHeader = <List<bool>>[].obs;
+  late RxList<List<bool>> isSelectedSlideSectionContent = <List<bool>>[].obs;
   final FocusNode focusNode = FocusNode();
   RxBool switchViewState = false.obs;
   RxBool ignorePointer = false.obs;
@@ -56,7 +55,7 @@ class PresentationEditCtl extends GetxController {
   late RxBool isSectionHeader;
   late RxBool isSectionContent;
   late RxBool isTitle;
-  late RxString beforeToggleStateCurrentEditedText; 
+  late RxString beforeToggleStateCurrentEditedText;
   late RxDouble beforeToggleStateCurrentFontSize;
   late Rx<FontWeight> beforeToggleStateCurrentFontWeight;
   late Rx<double> beforeToggleStateCurrentFontWeightDouble;
@@ -166,7 +165,6 @@ class PresentationEditCtl extends GetxController {
   void onClose() {
     super.onClose();
   }
-  
 
   String formatDate(DateTime date) {
     final DateFormat formatter = DateFormat('MMMM d, yyyy');
@@ -251,7 +249,10 @@ class PresentationEditCtl extends GetxController {
   Future<void> initializeSlidesTextProperties() async {
     slideTitlesTextProperties.value =
         myEditedPresentation.value.slides.map((slides) {
-      return TextProperties(fontSize: 0.0, fontColor: Color(slidePallet.value.bigTitleTColor), fontWeight: FontWeight.normal);
+      return TextProperties(
+          fontSize: 0.0,
+          fontColor: Color(slidePallet.value.bigTitleTColor),
+          fontWeight: FontWeight.normal);
     }).toList();
     developer.log(
         "Slide title font value after initialization ${slideTitlesTextProperties[0]}");
@@ -259,23 +260,29 @@ class PresentationEditCtl extends GetxController {
     slideSectionHeadersTextProperties.value =
         myEditedPresentation.value.slides.map((slides) {
       return slides.slideSections.map((slideSection) {
-        return TextProperties(fontSize: 0.0, fontColor: Color(slidePallet.value.bigTitleTColor), fontWeight: FontWeight.normal);
+        return TextProperties(
+            fontSize: 0.0,
+            fontColor: Color(slidePallet.value.bigTitleTColor),
+            fontWeight: FontWeight.normal);
       }).toList();
     }).toList();
 
     slideSectionContentsTextProperties.value =
         myEditedPresentation.value.slides.map((slides) {
       return slides.slideSections.map((slideSection) {
-              return TextProperties(fontSize: 0.0, fontColor: Color(slidePallet.value.bigTitleTColor), fontWeight: FontWeight.normal);
+        return TextProperties(
+            fontSize: 0.0,
+            fontColor: Color(slidePallet.value.bigTitleTColor),
+            fontWeight: FontWeight.normal);
       }).toList();
     }).toList();
     developer.log("initializing font done.");
   }
+
   Future<void> initializeIsSelectedSlides() async {
-    if(isSelectedCheck.value){
+    if (isSelectedCheck.value) {
       isSelectedCheck.value = false;
-    }
-    else{
+    } else {
       isSelectedCheck.value = true;
     }
     isSelectedSlideTitle.value =
@@ -295,14 +302,14 @@ class PresentationEditCtl extends GetxController {
     isSelectedSlideSectionContent.value =
         myEditedPresentation.value.slides.map((slides) {
       return slides.slideSections.map((slideSection) {
-              return false;
+        return false;
       }).toList();
     }).toList();
     developer.log("initializing font done.");
   }
 
-  Future<void> initializeBeforeToggleStateVariables() async{
-    beforeToggleStateCurrentEditedText = "".obs ; 
+  Future<void> initializeBeforeToggleStateVariables() async {
+    beforeToggleStateCurrentEditedText = "".obs;
     beforeToggleStateCurrentFontSize = 0.0.obs;
     beforeToggleStateCurrentFontWeight = FontWeight.normal.obs;
     beforeToggleStateCurrentFontWeightDouble = 0.0.obs;
@@ -314,7 +321,6 @@ class PresentationEditCtl extends GetxController {
     beforeToggleStateIsSectionHeader = false.obs;
     beforeToggleStateIsSectionContent = false.obs;
   }
-
 
   void setValuesAsNull() {
     firstIndexOfSlide = 0.obs;
@@ -340,73 +346,68 @@ class PresentationEditCtl extends GetxController {
     } else {}
   }
 
-  Future<void> setFontWeight(double value) async{
+  Future<void> setFontWeight(double value) async {
     FontWeight fontWeight = await provideFontWeight(value);
     if (isTitle.value) {
-      slideTitlesTextProperties[firstIndexOfSlide.value].fontWeight = fontWeight;
+      slideTitlesTextProperties[firstIndexOfSlide.value].fontWeight =
+          fontWeight;
     } else if (isSectionContent.value) {
-      slideSectionContentsTextProperties[firstIndexOfSlide.value][secondIndexOfFont.value].fontWeight = fontWeight;
+      slideSectionContentsTextProperties[firstIndexOfSlide.value]
+              [secondIndexOfFont.value]
+          .fontWeight = fontWeight;
     } else if (isSectionHeader.value) {
-      slideSectionHeadersTextProperties[firstIndexOfSlide.value][secondIndexOfFont.value].fontWeight = fontWeight;
+      slideSectionHeadersTextProperties[firstIndexOfSlide.value]
+              [secondIndexOfFont.value]
+          .fontWeight = fontWeight;
     }
   }
-  Future<FontWeight> provideFontWeight(double value) async{
+
+  Future<FontWeight> provideFontWeight(double value) async {
     currentFontWeightDouble.value = value;
-    if(value == 1){
-       currentFontWeight.value = FontWeight.w400;
-       return currentFontWeight.value;
-      }
-    else if(value == 2 ){
+    if (value == 1) {
+      currentFontWeight.value = FontWeight.w400;
+      return currentFontWeight.value;
+    } else if (value == 2) {
       currentFontWeight.value = FontWeight.w500;
-       return currentFontWeight.value;
-       }
-    else if(value == 3 ){
+      return currentFontWeight.value;
+    } else if (value == 3) {
       currentFontWeight.value = FontWeight.w600;
-       return currentFontWeight.value;
-       }
-    else if(value == 4 ){ 
+      return currentFontWeight.value;
+    } else if (value == 4) {
       currentFontWeight.value = FontWeight.w700;
       return currentFontWeight.value;
-      }
-    else if(value == 5 ){ 
+    } else if (value == 5) {
       currentFontWeight.value = FontWeight.w800;
       return currentFontWeight.value;
-      }
-    else{ 
+    } else {
       currentFontWeight.value = FontWeight.w900;
       return currentFontWeight.value;
-      }
+    }
   }
 
-  Future<double> getFontWeightDouble(FontWeight fontWeight)async{
-    if(fontWeight == FontWeight.w400 ||  fontWeight == FontWeight.normal){
-       return 1;
-
-      }
-    else if(fontWeight == FontWeight.w500 ){
+  Future<double> getFontWeightDouble(FontWeight fontWeight) async {
+    if (fontWeight == FontWeight.w400 || fontWeight == FontWeight.normal) {
+      return 1;
+    } else if (fontWeight == FontWeight.w500) {
       return 2;
-       }
-    else if(fontWeight == FontWeight.w600 ){
+    } else if (fontWeight == FontWeight.w600) {
       return 3;
-       }
-    else if(fontWeight == FontWeight.w700 ){ 
+    } else if (fontWeight == FontWeight.w700) {
       return 4;
-      }
-    else if(fontWeight == FontWeight.w800 ){ 
+    } else if (fontWeight == FontWeight.w800) {
       return 5;
-      }
-    else if (fontWeight == FontWeight.w900){ 
+    } else if (fontWeight == FontWeight.w900) {
       return 6;
-      }
-      else return 0;
-      
+    } else
+      return 0;
   }
 
   void setFontColor(Color value) {
     currentFontColor.value = value;
     Color newFontColor = value;
     if (isTitle.value) {
-      slideTitlesTextProperties[firstIndexOfSlide.value].fontColor = newFontColor;
+      slideTitlesTextProperties[firstIndexOfSlide.value].fontColor =
+          newFontColor;
     } else if (isSectionContent.value) {
       slideSectionContentsTextProperties[firstIndexOfSlide.value]
               [secondIndexOfFont.value]
@@ -417,25 +418,23 @@ class PresentationEditCtl extends GetxController {
           .fontColor = newFontColor;
     } else {}
   }
-  
 
-  void setIsSelected(value) async{
+  void setIsSelected(value) async {
     await initializeIsSelectedSlides();
-    if(isSelectedCheck.value){
+    if (isSelectedCheck.value) {
       isSelectedCheck.value = false;
-    }
-    else{
+    } else {
       isSelectedCheck.value = true;
     }
     if (isTitle.value) {
       developer.log("set to ${value} is selected slide title");
       isSelectedSlideTitle[firstIndexOfSlide.value] = value;
     } else if (isSectionContent.value) {
-      isSelectedSlideSectionContent[firstIndexOfSlide.value][secondIndexOfFont.value]
-           = value;
+      isSelectedSlideSectionContent[firstIndexOfSlide.value]
+          [secondIndexOfFont.value] = value;
     } else if (isSectionHeader.value) {
-      isSelectedSlideSectionHeader[firstIndexOfSlide.value][secondIndexOfFont.value]
-           = value;
+      isSelectedSlideSectionHeader[firstIndexOfSlide.value]
+          [secondIndexOfFont.value] = value;
     } else {}
   }
 
@@ -501,44 +500,43 @@ class PresentationEditCtl extends GetxController {
     developer.log(
         "Toggle bottom Font size visibility ${isFontSizeProviderVisible.value}");
   }
+
   Future<void> toggleVisibilityFontWeightProvider(bool toggle) async {
     isFontWeightProviderVisible.value = toggle;
     developer.log(
         "Toggle bottom Font size visibility ${isFontWeightProviderVisible.value}");
   }
+
   Future<void> toggleVisibilityFontColorProvider(bool toggle) async {
     isFontColorProviderVisible.value = toggle;
     developer.log(
         "Toggle bottom Font size visibility ${isFontColorProviderVisible.value}");
   }
-  Future<void> toggleVisibilityTextProperties(bool fontSize, bool fontWeight, bool fontColor, bool textField) async{
 
-    if(fontSize){
+  Future<void> toggleVisibilityTextProperties(
+      bool fontSize, bool fontWeight, bool fontColor, bool textField) async {
+    if (fontSize) {
       toggleVisibilityFontSizeProvider(fontSize);
       toggleVisibilityBottomNavbarTextField(textField);
       toggleVisibilityFontColorProvider(fontColor);
       toggleVisibilityFontWeightProvider(fontWeight);
-    }
-    else if(fontWeight){
+    } else if (fontWeight) {
       toggleVisibilityFontSizeProvider(fontSize);
       toggleVisibilityBottomNavbarTextField(textField);
       toggleVisibilityFontColorProvider(fontColor);
       toggleVisibilityFontWeightProvider(fontWeight);
-    }
-    else if(fontColor){
+    } else if (fontColor) {
       toggleVisibilityFontSizeProvider(fontSize);
       toggleVisibilityBottomNavbarTextField(textField);
       toggleVisibilityFontColorProvider(fontColor);
       toggleVisibilityFontWeightProvider(fontWeight);
-    }
-    else if(textField){
+    } else if (textField) {
       toggleVisibilityFontSizeProvider(fontSize);
       toggleVisibilityBottomNavbarTextField(textField);
       toggleVisibilityFontColorProvider(fontColor);
       toggleVisibilityFontWeightProvider(fontWeight);
     }
   }
-
 
   Future<void> saveSlides(int slideIndex) async {
     List<SlideSection> slidesText =
@@ -549,11 +547,13 @@ class PresentationEditCtl extends GetxController {
     slidesText.forEach((e) {
       print("Before ${e.sectionContent}");
     });
-    
-    currentPallet.slideTitlesTextProperties![slideIndex].fontSize = slideTitlesTextProperties[slideIndex].fontSize;
-    currentPallet.slideTitlesTextProperties![slideIndex].fontWeight = slideTitlesTextProperties[slideIndex].fontWeight;
-    currentPallet.slideTitlesTextProperties![slideIndex].fontColor = slideTitlesTextProperties[slideIndex].fontColor;
-        
+
+    currentPallet.slideTitlesTextProperties![slideIndex].fontSize =
+        slideTitlesTextProperties[slideIndex].fontSize;
+    currentPallet.slideTitlesTextProperties![slideIndex].fontWeight =
+        slideTitlesTextProperties[slideIndex].fontWeight;
+    currentPallet.slideTitlesTextProperties![slideIndex].fontColor =
+        slideTitlesTextProperties[slideIndex].fontColor;
 
     developer.log("This is the index $slideIndex");
     var slideContents = slideSectionContents[slideIndex];
@@ -571,13 +571,21 @@ class PresentationEditCtl extends GetxController {
     });
     i = 0;
     for (var e in slideSectionContentsTextProperties[slideIndex]) {
-      slideContentsTextProperties.add(TextProperties(fontSize: e.fontSize, fontWeight: e.fontWeight, fontColor: e.fontColor));
+      slideContentsTextProperties.add(TextProperties(
+          fontSize: e.fontSize,
+          fontWeight: e.fontWeight,
+          fontColor: e.fontColor));
     }
     for (var e in slideSectionHeadersTextProperties[slideIndex]) {
-      slideHeadersTextProperties.add(TextProperties(fontSize: e.fontSize, fontWeight: e.fontWeight, fontColor: e.fontColor));
+      slideHeadersTextProperties.add(TextProperties(
+          fontSize: e.fontSize,
+          fontWeight: e.fontWeight,
+          fontColor: e.fontColor));
     }
-    currentPallet.slideSectionContentsTextProperties![slideIndex] = slideContentsTextProperties;
-    currentPallet.slideSectionHeadersTextProperties![slideIndex] = slideHeadersTextProperties;
+    currentPallet.slideSectionContentsTextProperties![slideIndex] =
+        slideContentsTextProperties;
+    currentPallet.slideSectionHeadersTextProperties![slideIndex] =
+        slideHeadersTextProperties;
 
     slideTitle = slideTitles[slideIndex].text;
     // print("After editing ${slides.forEach((e){e.sectionContent;})}");
@@ -596,9 +604,8 @@ class PresentationEditCtl extends GetxController {
       resetProperties.value = true;
     }
   }
-  
 
-  Future<void> backButtonAction() async{
+  Future<void> backButtonAction() async {
     await toggleVisibilityTextEditor(false);
     await toggleVisibilityBottomNavbarTextField(false);
     await toggleVisibilityFontSizeProvider(false);
@@ -608,14 +615,13 @@ class PresentationEditCtl extends GetxController {
     await toggleResetProperties();
     await initializeBeforeToggleStateVariables();
     await initializeIsSelectedSlides();
-    
+
     ignorePointer.value = false;
     switchViewState.value = false;
     isEditViewOpen.value = false;
-
   }
 
-  double setMaxFontSize(){
+  double setMaxFontSize() {
     if (isTitle.value) {
       // slideTitles[firstIndexOfSlide.value].text = value;
       // currentText.value = value;
@@ -630,10 +636,12 @@ class PresentationEditCtl extends GetxController {
       //     .text = value;
       // currentText.value = value;
       return 0.075;
-    } else {return 0;}
-
+    } else {
+      return 0;
+    }
   }
-  double setMinFontSize(){
+
+  double setMinFontSize() {
     if (isTitle.value) {
       // slideTitles[firstIndexOfSlide.value].text = value;
       // currentText.value = value;
@@ -648,68 +656,73 @@ class PresentationEditCtl extends GetxController {
       //     .text = value;
       // currentText.value = value;
       return 0.018;
-    } else {return 0;}
-
+    } else {
+      return 0;
+    }
   }
-  void selectTitleOnInit() async{
+
+  void selectTitleOnInit() async {
     toggleVisibilityTextEditor(true);
     setValuesAsNull();
     isTitle.value = true;
     firstIndexOfSlide.value = currentSelectedIndex.value;
-    currentFontSize.value =  slideTitlesTextProperties[currentSelectedIndex.value].fontSize!;
-    currentFontWeight.value =  slideTitlesTextProperties[currentSelectedIndex.value].fontWeight!;
-    currentFontWeightDouble.value = await getFontWeightDouble(currentFontWeight.value);
-    currentFontColor.value =  slideTitlesTextProperties[currentSelectedIndex.value].fontColor!;
+    currentFontSize.value =
+        slideTitlesTextProperties[currentSelectedIndex.value].fontSize!;
+    currentFontWeight.value =
+        slideTitlesTextProperties[currentSelectedIndex.value].fontWeight!;
+    currentFontWeightDouble.value =
+        await getFontWeightDouble(currentFontWeight.value);
+    currentFontColor.value =
+        slideTitlesTextProperties[currentSelectedIndex.value].fontColor!;
     currentText.value = slideTitles[currentSelectedIndex.value].text;
     currentEditedText.value = slideTitles[currentSelectedIndex.value].text;
     isSelectedSlideTitle[firstIndexOfSlide.value] = true;
     developer.log('Select Title on init method called.');
-    developer.log("${slideTitlesTextProperties[currentSelectedIndex.value].fontSize } size of title");
-  } 
-
-  void selectedBeforeToggleState() async{
-    if(isSectionContent.value){
-    beforeToggleStateIsSectionContent.value = isSectionContent.value ;
-    }
-    else if(isSectionHeader.value){
-    beforeToggleStateIsSectionHeader.value = isSectionHeader.value ;
-    }
-    else if(isTitle.value){
-    beforeToggleStateIsTitle.value = isTitle.value ;
-    }
-    beforeToggleStateFirstIndexOfSlide.value = firstIndexOfSlide.value; 
-    beforeToggleStateSecondIndexOfFont.value = secondIndexOfFont.value; 
-    beforeToggleStateCurrentText.value = currentText.value; 
-    beforeToggleStateCurrentFontSize.value = currentFontSize.value; 
-    beforeToggleStateCurrentFontWeight.value = currentFontWeight.value; 
-    beforeToggleStateCurrentFontWeightDouble.value = await getFontWeightDouble(currentFontWeight.value);
-    beforeToggleStateCurrentFontColor.value = currentFontColor.value; 
-    beforeToggleStateCurrentEditedText.value = currentEditedText.value; 
+    developer.log(
+        "${slideTitlesTextProperties[currentSelectedIndex.value].fontSize} size of title");
   }
 
-  void setPreviouslySelectedBeforeToggleState() async{
+  void selectedBeforeToggleState() async {
+    if (isSectionContent.value) {
+      beforeToggleStateIsSectionContent.value = isSectionContent.value;
+    } else if (isSectionHeader.value) {
+      beforeToggleStateIsSectionHeader.value = isSectionHeader.value;
+    } else if (isTitle.value) {
+      beforeToggleStateIsTitle.value = isTitle.value;
+    }
+    beforeToggleStateFirstIndexOfSlide.value = firstIndexOfSlide.value;
+    beforeToggleStateSecondIndexOfFont.value = secondIndexOfFont.value;
+    beforeToggleStateCurrentText.value = currentText.value;
+    beforeToggleStateCurrentFontSize.value = currentFontSize.value;
+    beforeToggleStateCurrentFontWeight.value = currentFontWeight.value;
+    beforeToggleStateCurrentFontWeightDouble.value =
+        await getFontWeightDouble(currentFontWeight.value);
+    beforeToggleStateCurrentFontColor.value = currentFontColor.value;
+    beforeToggleStateCurrentEditedText.value = currentEditedText.value;
+  }
+
+  void setPreviouslySelectedBeforeToggleState() async {
     toggleVisibilityTextEditor(true);
-    if(isSectionContent.value){
-    isSectionContent.value = beforeToggleStateIsSectionContent.value;
-    }
-    else if(isSectionHeader.value){
-     isSectionHeader.value = beforeToggleStateIsSectionHeader.value;
-    }
-    else if(isTitle.value){
-     isTitle.value = beforeToggleStateIsTitle.value;
+    if (isSectionContent.value) {
+      isSectionContent.value = beforeToggleStateIsSectionContent.value;
+    } else if (isSectionHeader.value) {
+      isSectionHeader.value = beforeToggleStateIsSectionHeader.value;
+    } else if (isTitle.value) {
+      isTitle.value = beforeToggleStateIsTitle.value;
     }
     setIsSelected(true);
-    firstIndexOfSlide.value = beforeToggleStateFirstIndexOfSlide.value; 
-    secondIndexOfFont.value = beforeToggleStateSecondIndexOfFont.value; 
-    currentText.value = beforeToggleStateCurrentText.value; 
-    currentFontSize.value = beforeToggleStateCurrentFontSize.value; 
-    currentFontWeight.value = beforeToggleStateCurrentFontWeight.value; 
-    currentFontWeightDouble.value = await getFontWeightDouble(currentFontWeight.value);
-    currentFontColor.value = beforeToggleStateCurrentFontColor.value; 
-    currentEditedText.value = beforeToggleStateCurrentEditedText.value; 
+    firstIndexOfSlide.value = beforeToggleStateFirstIndexOfSlide.value;
+    secondIndexOfFont.value = beforeToggleStateSecondIndexOfFont.value;
+    currentText.value = beforeToggleStateCurrentText.value;
+    currentFontSize.value = beforeToggleStateCurrentFontSize.value;
+    currentFontWeight.value = beforeToggleStateCurrentFontWeight.value;
+    currentFontWeightDouble.value =
+        await getFontWeightDouble(currentFontWeight.value);
+    currentFontColor.value = beforeToggleStateCurrentFontColor.value;
+    currentEditedText.value = beforeToggleStateCurrentEditedText.value;
   }
 
-  Future<void> hideEditingOptions() async{
+  Future<void> hideEditingOptions() async {
     toggleVisibilityTextEditor(false);
     toggleVisibilityBottomNavbarTextField(false);
     toggleVisibilityFontSizeProvider(false);
@@ -731,214 +744,377 @@ class PresentationEditCtl extends GetxController {
   //   }).toList();
   // }
   Future<void> initializeSlidePalletAndController() async {
-    if(currentPallet.slideTitlesTextProperties == null || currentPallet.slideTitlesTextProperties!.isEmpty){
-
-      currentPallet.slideTitlesTextProperties = slideTitlesTextProperties.map((textProperties){return TextProperties(fontSize : textProperties.fontSize, fontWeight : textProperties.fontWeight, fontColor : textProperties.fontColor);}).toList();
-    }
-    else{
-      if(currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontSize! != 0.0 || currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontWeight! != FontWeight.normal){
+    if (currentPallet.slideTitlesTextProperties == null ||
+        currentPallet.slideTitlesTextProperties!.isEmpty) {
+      currentPallet.slideTitlesTextProperties =
+          slideTitlesTextProperties.map((textProperties) {
+        return TextProperties(
+            fontSize: textProperties.fontSize,
+            fontWeight: textProperties.fontWeight,
+            fontColor: textProperties.fontColor);
+      }).toList();
+    } else {
+      if (currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                  .fontSize! !=
+              0.0 ||
+          currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                  .fontWeight! !=
+              FontWeight.normal) {
         developer.log("inside slide title text propertires != true");
-        slideTitlesTextProperties[currentSelectedIndex.value].fontSize = currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontSize!;
-        slideTitlesTextProperties[currentSelectedIndex.value].fontWeight = currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontWeight!;
-        slideTitlesTextProperties[currentSelectedIndex.value].fontColor = currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontColor!;
-      }
-      else{
-        currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontSize = slideTitlesTextProperties[currentSelectedIndex.value].fontSize;
-        currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontWeight = slideTitlesTextProperties[currentSelectedIndex.value].fontWeight;
-        currentPallet.slideTitlesTextProperties![currentSelectedIndex.value].fontColor = slideTitlesTextProperties[currentSelectedIndex.value].fontColor;
+        slideTitlesTextProperties[currentSelectedIndex.value].fontSize =
+            currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                .fontSize!;
+        slideTitlesTextProperties[currentSelectedIndex.value].fontWeight =
+            currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                .fontWeight!;
+        slideTitlesTextProperties[currentSelectedIndex.value].fontColor =
+            currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                .fontColor!;
+      } else {
+        currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                .fontSize =
+            slideTitlesTextProperties[currentSelectedIndex.value].fontSize;
+        currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                .fontWeight =
+            slideTitlesTextProperties[currentSelectedIndex.value].fontWeight;
+        currentPallet.slideTitlesTextProperties![currentSelectedIndex.value]
+                .fontColor =
+            slideTitlesTextProperties[currentSelectedIndex.value].fontColor;
       }
     }
-    if(currentPallet.slideSectionContentsTextProperties == null || currentPallet.slideSectionContentsTextProperties!.isEmpty){
-     currentPallet.slideSectionContentsTextProperties =  slideSectionContentsTextProperties.map((rxList){return rxList.map((textProperties){return TextProperties(fontSize : textProperties.fontSize, fontWeight : textProperties.fontWeight, fontColor : textProperties.fontColor);}).toList();}).toList();
-      }
-      else{
-       int i=0;
-        while(i < slideSectionContentsTextProperties[currentSelectedIndex.value].length){
-          if(currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontSize! != 0.0 || currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontWeight!  != FontWeight.normal ){
-        developer.log("inside slide section content text propertires != true");
+    if (currentPallet.slideSectionContentsTextProperties == null ||
+        currentPallet.slideSectionContentsTextProperties!.isEmpty) {
+      currentPallet.slideSectionContentsTextProperties =
+          slideSectionContentsTextProperties.map((rxList) {
+        return rxList.map((textProperties) {
+          return TextProperties(
+              fontSize: textProperties.fontSize,
+              fontWeight: textProperties.fontWeight,
+              fontColor: textProperties.fontColor);
+        }).toList();
+      }).toList();
+    } else {
+      int i = 0;
+      while (i <
+          slideSectionContentsTextProperties[currentSelectedIndex.value]
+              .length) {
+        if (currentPallet
+                    .slideSectionContentsTextProperties![
+                        currentSelectedIndex.value][i]
+                    .fontSize! !=
+                0.0 ||
+            currentPallet
+                    .slideSectionContentsTextProperties![
+                        currentSelectedIndex.value][i]
+                    .fontWeight! !=
+                FontWeight.normal) {
+          developer
+              .log("inside slide section content text propertires != true");
 
-          slideSectionContentsTextProperties[currentSelectedIndex.value][i].fontSize = currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontSize! ;
-          slideSectionContentsTextProperties[currentSelectedIndex.value][i].fontWeight = currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontWeight!;
-          slideSectionContentsTextProperties[currentSelectedIndex.value][i].fontColor = currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontColor!;
-          }
-          else{
-            currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontSize = slideSectionContentsTextProperties[currentSelectedIndex.value][i].fontSize;
-            currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontWeight = slideSectionContentsTextProperties[currentSelectedIndex.value][i].fontWeight;
-            currentPallet.slideSectionContentsTextProperties![currentSelectedIndex.value][i].fontColor = slideSectionContentsTextProperties[currentSelectedIndex.value][i].fontColor;
-          }
-          i++;
+          slideSectionContentsTextProperties[currentSelectedIndex.value][i]
+                  .fontSize =
+              currentPallet
+                  .slideSectionContentsTextProperties![
+                      currentSelectedIndex.value][i]
+                  .fontSize!;
+          slideSectionContentsTextProperties[currentSelectedIndex.value][i]
+                  .fontWeight =
+              currentPallet
+                  .slideSectionContentsTextProperties![
+                      currentSelectedIndex.value][i]
+                  .fontWeight!;
+          slideSectionContentsTextProperties[currentSelectedIndex.value][i]
+                  .fontColor =
+              currentPallet
+                  .slideSectionContentsTextProperties![
+                      currentSelectedIndex.value][i]
+                  .fontColor!;
+        } else {
+          currentPallet
+              .slideSectionContentsTextProperties![currentSelectedIndex.value]
+                  [i]
+              .fontSize = slideSectionContentsTextProperties[
+                  currentSelectedIndex.value][i]
+              .fontSize;
+          currentPallet
+              .slideSectionContentsTextProperties![currentSelectedIndex.value]
+                  [i]
+              .fontWeight = slideSectionContentsTextProperties[
+                  currentSelectedIndex.value][i]
+              .fontWeight;
+          currentPallet
+              .slideSectionContentsTextProperties![currentSelectedIndex.value]
+                  [i]
+              .fontColor = slideSectionContentsTextProperties[
+                  currentSelectedIndex.value][i]
+              .fontColor;
         }
+        i++;
       }
-      if(currentPallet.slideSectionHeadersTextProperties == null || currentPallet.slideSectionHeadersTextProperties!.isEmpty){
-     currentPallet.slideSectionHeadersTextProperties =  slideSectionHeadersTextProperties.map((rxList){return rxList.map((textProperties){return TextProperties(fontSize : textProperties.fontSize, fontWeight : textProperties.fontWeight, fontColor : textProperties.fontColor);}).toList();}).toList();
-      }
-      else{
-         int i=0;
-        while(i < slideSectionHeadersTextProperties[currentSelectedIndex.value].length){
-          if(currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontSize! != 0.0 || currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontWeight! != FontWeight.normal ){
-        developer.log("inside slide section header text propertires != true");
+    }
+    if (currentPallet.slideSectionHeadersTextProperties == null ||
+        currentPallet.slideSectionHeadersTextProperties!.isEmpty) {
+      currentPallet.slideSectionHeadersTextProperties =
+          slideSectionHeadersTextProperties.map((rxList) {
+        return rxList.map((textProperties) {
+          return TextProperties(
+              fontSize: textProperties.fontSize,
+              fontWeight: textProperties.fontWeight,
+              fontColor: textProperties.fontColor);
+        }).toList();
+      }).toList();
+    } else {
+      int i = 0;
+      while (i <
+          slideSectionHeadersTextProperties[currentSelectedIndex.value]
+              .length) {
+        if (currentPallet
+                    .slideSectionHeadersTextProperties![
+                        currentSelectedIndex.value][i]
+                    .fontSize! !=
+                0.0 ||
+            currentPallet
+                    .slideSectionHeadersTextProperties![
+                        currentSelectedIndex.value][i]
+                    .fontWeight! !=
+                FontWeight.normal) {
+          developer.log("inside slide section header text propertires != true");
 
-          slideSectionHeadersTextProperties[currentSelectedIndex.value][i].fontSize = currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontSize! ;
-          slideSectionHeadersTextProperties[currentSelectedIndex.value][i].fontWeight = currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontWeight! ;
-          slideSectionHeadersTextProperties[currentSelectedIndex.value][i].fontColor = currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontColor! ;
-          }
-          else {
-            currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontSize = slideSectionHeadersTextProperties[currentSelectedIndex.value][i].fontSize;
-            currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontWeight = slideSectionHeadersTextProperties[currentSelectedIndex.value][i].fontWeight;
-            currentPallet.slideSectionHeadersTextProperties![currentSelectedIndex.value][i].fontColor = slideSectionHeadersTextProperties[currentSelectedIndex.value][i].fontColor;
-          }
-          i++;
+          slideSectionHeadersTextProperties[currentSelectedIndex.value][i]
+                  .fontSize =
+              currentPallet
+                  .slideSectionHeadersTextProperties![
+                      currentSelectedIndex.value][i]
+                  .fontSize!;
+          slideSectionHeadersTextProperties[currentSelectedIndex.value][i]
+                  .fontWeight =
+              currentPallet
+                  .slideSectionHeadersTextProperties![
+                      currentSelectedIndex.value][i]
+                  .fontWeight!;
+          slideSectionHeadersTextProperties[currentSelectedIndex.value][i]
+                  .fontColor =
+              currentPallet
+                  .slideSectionHeadersTextProperties![
+                      currentSelectedIndex.value][i]
+                  .fontColor!;
+        } else {
+          currentPallet
+              .slideSectionHeadersTextProperties![currentSelectedIndex.value][i]
+              .fontSize = slideSectionHeadersTextProperties[
+                  currentSelectedIndex.value][i]
+              .fontSize;
+          currentPallet
+              .slideSectionHeadersTextProperties![currentSelectedIndex.value][i]
+              .fontWeight = slideSectionHeadersTextProperties[
+                  currentSelectedIndex.value][i]
+              .fontWeight;
+          currentPallet
+              .slideSectionHeadersTextProperties![currentSelectedIndex.value][i]
+              .fontColor = slideSectionHeadersTextProperties[
+                  currentSelectedIndex.value][i]
+              .fontColor;
         }
+        i++;
       }
-      developer.log("completed the method.. called at 106 : 2");
-
+    }
+    developer.log("completed the method.. called at 106 : 2");
   }
 
-
-  
-textForTitleWithGestureDetector(RxList<TextEditingController> slideText,int firstIndex,RxList<TextProperties> textProperties, Rx<MyPresentation> myEditedPresentation, RxDouble fontSize, SlidePallet widgetSlidePallet ) {
-    
-     return IgnorePointer(
-                        ignoring: !isEditViewOpen.value || ignorePointer.value, 
-     child : GestureDetector(  
-                        onTap: () async{
-                          toggleVisibilityTextEditor(true);
-                          setValuesAsNull();
-                          setIsSelected(true);
-                          isTitle.value = true;
-                          firstIndexOfSlide.value = firstIndex;
-                          currentText.value = slideText[firstIndex].text;
-                          currentFontWeight.value =  textProperties[firstIndex].fontWeight!;
-                          currentFontWeightDouble.value = await getFontWeightDouble(currentFontWeight.value);
-                          currentFontSize.value = textProperties[firstIndex].fontSize! ;
-                          currentFontColor.value = textProperties[firstIndex].fontColor! ;
-                          currentEditedText.value = slideText[firstIndex].text;
-                          selectedBeforeToggleState();
-                        },
-                        child:IntrinsicWidth(
-                          child: Stack(
-                            children: [
-                            Obx(()=>Text(
-                            (switchViewState.value ? myEditedPresentation.value.slides[firstIndex].slideTitle :  slideText[firstIndex].text), 
-                          style: TextStyle(
-                              fontSize : fontSize.value,
-                              fontWeight : (switchViewState.value ? widgetSlidePallet.slideTitlesTextProperties![firstIndex].fontWeight! : textProperties[firstIndex].fontWeight),
-                              color:(switchViewState.value ? widgetSlidePallet.slideTitlesTextProperties![firstIndex].fontColor! : textProperties[firstIndex].fontColor)
-                              ),
-                          )),
-                          if(isSelectedSlideTitle[firstIndex] && isEditViewOpen.value)
-                           onTapBorderForText(),
-                            ],
-                          ),
-                        ),
-                         
-                      )
-     );
-    
-}
-
- textForSlideSectionContentWithGestureDetector(RxList<List<TextEditingController>> slideText,int firstIndex, int secondIndex,RxList<List<TextProperties>> textProperties, Rx<MyPresentation> myEditedPresentation, RxDouble fontSize, SlidePallet widgetSlidePallet ) {
-
-        return IgnorePointer(
-                        ignoring: !isEditViewOpen.value || ignorePointer.value,
-          child :  GestureDetector(  
-                        onTap: () async{
-                          toggleVisibilityTextEditor(true);
-                          setValuesAsNull();
-                          setIsSelected(true);
-                          isSectionContent.value = true;
-                          firstIndexOfSlide.value = firstIndex;
-                          secondIndexOfFont.value = secondIndex;
-                          currentText.value = slideText[firstIndex][secondIndex].text;
-                          currentFontWeight.value =  textProperties[firstIndex][secondIndex].fontWeight!;
-                          currentFontWeightDouble.value = await getFontWeightDouble(currentFontWeight.value);
-                          currentFontSize.value = textProperties[firstIndex][secondIndex].fontSize! ;
-                          currentFontColor.value = textProperties[firstIndex][secondIndex].fontColor! ;
-                          currentEditedText.value = slideText[firstIndex][secondIndex].text;
-                          selectedBeforeToggleState();
-                        },
-                        child:Stack(
-                          children: [
-                          Obx(()=>Text(
-                          (switchViewState.value ? myEditedPresentation.value.slides[firstIndex].slideSections[secondIndex].sectionContent! :  slideText[firstIndex][secondIndex].text), 
-                        style: TextStyle(
-                            fontSize : fontSize.value,
-                            fontWeight : (switchViewState.value ? widgetSlidePallet.slideSectionContentsTextProperties![firstIndex][secondIndex].fontWeight! : textProperties[firstIndex][secondIndex].fontWeight),
-                            color:(switchViewState.value ? widgetSlidePallet.slideSectionContentsTextProperties![firstIndex][secondIndex].fontColor! : textProperties[firstIndex][secondIndex].fontColor)
-                            ),
-                        )),
-                        if(isSelectedSlideSectionContent[firstIndex][secondIndex] && isEditViewOpen.value)
-                         onTapBorderForText(),
-                          ],
-                        ),
-                         
-                      
-        )
-        );    
-    
-    
-  }
-  textForSlideSectionHeaderWithGestureDetector(RxList<List<TextEditingController>> slideText,int firstIndex, int secondIndex,RxList<List<TextProperties>> textProperties, Rx<MyPresentation> myEditedPresentation, RxDouble fontSize, SlidePallet widgetSlidePallet) {
-
-       
-      return IgnorePointer(
-                        ignoring: !isEditViewOpen.value || ignorePointer.value, 
-      child : GestureDetector(  
-                        onTap: () async{
-                          toggleVisibilityTextEditor(true);
-                          setValuesAsNull();
-                          setIsSelected(true);
-                          isSectionHeader.value = true;
-                          firstIndexOfSlide.value = firstIndex;
-                          secondIndexOfFont.value = secondIndex;
-                          currentText.value = slideText[firstIndex][secondIndex].text;
-                          currentFontWeight.value =  textProperties[firstIndex][secondIndex].fontWeight!;
-                          currentFontWeightDouble.value = await getFontWeightDouble(currentFontWeight.value);
-                          currentFontSize.value = textProperties[firstIndex][secondIndex].fontSize! ;
-                          currentFontColor.value = textProperties[firstIndex][secondIndex].fontColor! ;
-                          currentEditedText.value = slideText[firstIndex][secondIndex].text;
-                          selectedBeforeToggleState();
-                        },
-                        child:Stack(
-                          children: [
-                          Obx(()=>Text(
-                          (switchViewState.value ? myEditedPresentation.value.slides[firstIndex].slideSections[secondIndex].sectionHeader! :  slideText[firstIndex][secondIndex].text), 
-                        style: TextStyle(
-                            fontSize : fontSize.value,
-                            fontWeight : (switchViewState.value ? widgetSlidePallet.slideSectionHeadersTextProperties![firstIndex][secondIndex].fontWeight! : textProperties[firstIndex][secondIndex].fontWeight),
-                            color:(switchViewState.value ? widgetSlidePallet.slideSectionHeadersTextProperties![firstIndex][secondIndex].fontColor! : textProperties[firstIndex][secondIndex].fontColor)
-                            ),
-                        )),
-                        if(isSelectedSlideSectionHeader[firstIndex][secondIndex] && isEditViewOpen.value)
-                         onTapBorderForText(),
-                          ],
-                        ),
-                         
-                      )
-      );
-    
-  }
-
-}
-
-
-
-Positioned onTapBorderForText() {
-    return Positioned.fill(
-          child: IgnorePointer(
-            child: Align(
-              alignment: Alignment.center,
-              child: Transform.scale(
-                scale : 1.03,
-                child: Container(
-                  // margin: EdgeInsets.all(1),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(3)
-                  ),
-                ),
-              ),
+  textForTitleWithGestureDetector(
+      RxList<TextEditingController> slideText,
+      int firstIndex,
+      RxList<TextProperties> textProperties,
+      Rx<MyPresentation> myEditedPresentation,
+      RxDouble fontSize,
+      SlidePallet widgetSlidePallet) {
+    return IgnorePointer(
+        ignoring: !isEditViewOpen.value || ignorePointer.value,
+        child: GestureDetector(
+          onTap: () async {
+            toggleVisibilityTextEditor(true);
+            setValuesAsNull();
+            setIsSelected(true);
+            isTitle.value = true;
+            firstIndexOfSlide.value = firstIndex;
+            currentText.value = slideText[firstIndex].text;
+            currentFontWeight.value = textProperties[firstIndex].fontWeight!;
+            currentFontWeightDouble.value =
+                await getFontWeightDouble(currentFontWeight.value);
+            currentFontSize.value = textProperties[firstIndex].fontSize!;
+            currentFontColor.value = textProperties[firstIndex].fontColor!;
+            currentEditedText.value = slideText[firstIndex].text;
+            selectedBeforeToggleState();
+          },
+          child: IntrinsicWidth(
+            child: Stack(
+              children: [
+                Obx(() => Text(
+                      (switchViewState.value
+                          ? myEditedPresentation
+                              .value.slides[firstIndex].slideTitle
+                          : slideText[firstIndex].text),
+                      style: TextStyle(
+                          fontSize: fontSize.value,
+                          fontWeight: (switchViewState.value
+                              ? widgetSlidePallet
+                                  .slideTitlesTextProperties![firstIndex]
+                                  .fontWeight!
+                              : textProperties[firstIndex].fontWeight),
+                          color: (switchViewState.value
+                              ? widgetSlidePallet
+                                  .slideTitlesTextProperties![firstIndex]
+                                  .fontColor!
+                              : textProperties[firstIndex].fontColor)),
+                    )),
+                if (isSelectedSlideTitle[firstIndex] && isEditViewOpen.value)
+                  onTapBorderForText(),
+              ],
             ),
           ),
-        );
+        ));
   }
+
+  textForSlideSectionContentWithGestureDetector(
+      RxList<List<TextEditingController>> slideText,
+      int firstIndex,
+      int secondIndex,
+      RxList<List<TextProperties>> textProperties,
+      Rx<MyPresentation> myEditedPresentation,
+      RxDouble fontSize,
+      SlidePallet widgetSlidePallet) {
+    return IgnorePointer(
+        ignoring: !isEditViewOpen.value || ignorePointer.value,
+        child: GestureDetector(
+          onTap: () async {
+            toggleVisibilityTextEditor(true);
+            setValuesAsNull();
+            setIsSelected(true);
+            isSectionContent.value = true;
+            firstIndexOfSlide.value = firstIndex;
+            secondIndexOfFont.value = secondIndex;
+            currentText.value = slideText[firstIndex][secondIndex].text;
+            currentFontWeight.value =
+                textProperties[firstIndex][secondIndex].fontWeight!;
+            currentFontWeightDouble.value =
+                await getFontWeightDouble(currentFontWeight.value);
+            currentFontSize.value =
+                textProperties[firstIndex][secondIndex].fontSize!;
+            currentFontColor.value =
+                textProperties[firstIndex][secondIndex].fontColor!;
+            currentEditedText.value = slideText[firstIndex][secondIndex].text;
+            selectedBeforeToggleState();
+          },
+          child: Stack(
+            children: [
+              Obx(() => Text(
+                    (switchViewState.value
+                        ? myEditedPresentation.value.slides[firstIndex]
+                            .slideSections[secondIndex].sectionContent!
+                        : slideText[firstIndex][secondIndex].text),
+                    style: TextStyle(
+                        fontSize: fontSize.value,
+                        fontWeight: (switchViewState.value
+                            ? widgetSlidePallet
+                                .slideSectionContentsTextProperties![firstIndex]
+                                    [secondIndex]
+                                .fontWeight!
+                            : textProperties[firstIndex][secondIndex]
+                                .fontWeight),
+                        color: (switchViewState.value
+                            ? widgetSlidePallet
+                                .slideSectionContentsTextProperties![firstIndex]
+                                    [secondIndex]
+                                .fontColor!
+                            : textProperties[firstIndex][secondIndex]
+                                .fontColor)),
+                  )),
+              if (isSelectedSlideSectionContent[firstIndex][secondIndex] &&
+                  isEditViewOpen.value)
+                onTapBorderForText(),
+            ],
+          ),
+        ));
+  }
+
+  textForSlideSectionHeaderWithGestureDetector(
+      RxList<List<TextEditingController>> slideText,
+      int firstIndex,
+      int secondIndex,
+      RxList<List<TextProperties>> textProperties,
+      Rx<MyPresentation> myEditedPresentation,
+      RxDouble fontSize,
+      SlidePallet widgetSlidePallet) {
+    return IgnorePointer(
+        ignoring: !isEditViewOpen.value || ignorePointer.value,
+        child: GestureDetector(
+          onTap: () async {
+            toggleVisibilityTextEditor(true);
+            setValuesAsNull();
+            setIsSelected(true);
+            isSectionHeader.value = true;
+            firstIndexOfSlide.value = firstIndex;
+            secondIndexOfFont.value = secondIndex;
+            currentText.value = slideText[firstIndex][secondIndex].text;
+            currentFontWeight.value =
+                textProperties[firstIndex][secondIndex].fontWeight!;
+            currentFontWeightDouble.value =
+                await getFontWeightDouble(currentFontWeight.value);
+            currentFontSize.value =
+                textProperties[firstIndex][secondIndex].fontSize!;
+            currentFontColor.value =
+                textProperties[firstIndex][secondIndex].fontColor!;
+            currentEditedText.value = slideText[firstIndex][secondIndex].text;
+            selectedBeforeToggleState();
+          },
+          child: Stack(
+            children: [
+              Obx(() => Text(
+                    (switchViewState.value
+                        ? myEditedPresentation.value.slides[firstIndex]
+                            .slideSections[secondIndex].sectionHeader!
+                        : slideText[firstIndex][secondIndex].text),
+                    style: TextStyle(
+                        fontSize: fontSize.value,
+                        fontWeight: (switchViewState.value
+                            ? widgetSlidePallet
+                                .slideSectionHeadersTextProperties![firstIndex]
+                                    [secondIndex]
+                                .fontWeight!
+                            : textProperties[firstIndex][secondIndex]
+                                .fontWeight),
+                        color: (switchViewState.value
+                            ? widgetSlidePallet
+                                .slideSectionHeadersTextProperties![firstIndex]
+                                    [secondIndex]
+                                .fontColor!
+                            : textProperties[firstIndex][secondIndex]
+                                .fontColor)),
+                  )),
+              if (isSelectedSlideSectionHeader[firstIndex][secondIndex] &&
+                  isEditViewOpen.value)
+                onTapBorderForText(),
+            ],
+          ),
+        ));
+  }
+}
+
+Positioned onTapBorderForText() {
+  return Positioned.fill(
+    child: IgnorePointer(
+      child: Align(
+        alignment: Alignment.center,
+        child: Transform.scale(
+          scale: 1.03,
+          child: Container(
+            // margin: EdgeInsets.all(1),
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Colors.black),
+                borderRadius: BorderRadius.circular(3)),
+          ),
+        ),
+      ),
+    ),
+  );
+}

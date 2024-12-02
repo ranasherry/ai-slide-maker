@@ -10,6 +10,7 @@ import 'package:slide_maker/app/data/my_presentation.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/modules/creation_view/controller/creation_view_ctl.dart';
+import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/slide_styles/slide_styles_helping_methods.dart';
@@ -372,6 +373,9 @@ class CreationView extends GetView<CreationViewCtl> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    AppLovinProvider.instance
+                                        .showInterstitial(() {});
+
                                     SlidePallet pallet =
                                         ComFunction.getSlidePalletFromID(
                                             controller.presentations[index]
