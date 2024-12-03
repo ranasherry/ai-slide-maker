@@ -97,9 +97,11 @@ class SlideStylesFrag extends GetView<PresentaionGeneratorController> {
                     // height: SizeConfig.blockSizeHorizontal * 10,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                            palletList[index].imageList.first,
-                          ),
+                          image: CachedNetworkImageProvider(
+                              palletList[index].imageList.first),
+                          // AssetImage(
+                          //   palletList[index].imageList.first,
+                          // ),
                           fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 3,
@@ -133,25 +135,11 @@ class SlideStylesFrag extends GetView<PresentaionGeneratorController> {
                 ? Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                        margin: EdgeInsets.all(20),
-                        width: SizeConfig.blockSizeHorizontal * 5,
-                        height: SizeConfig.blockSizeHorizontal * 5,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: "${AppImages.vip}",
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: SizeConfig.blockSizeHorizontal * 6,
-                                vertical: SizeConfig.blockSizeVertical * 6),
-                            child: CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                        )
-                        // Image.asset(AppImages.vip),
-                        ),
+                      margin: EdgeInsets.all(20),
+                      width: SizeConfig.blockSizeHorizontal * 5,
+                      height: SizeConfig.blockSizeHorizontal * 5,
+                      child: Image.asset(AppImages.vip),
+                    ),
                   )
                 : Container())
           ],
