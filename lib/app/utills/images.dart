@@ -84,10 +84,15 @@ class AppImages {
   ];
 
   static const slidy_style1 = [
-    "assets/slidy/style1/1.png",
-    "assets/slidy/style1/2.png",
-    "assets/slidy/style1/3.png",
-    "assets/slidy/style1/4.png",
+    "https://firebasestorage.googleapis.com/v0/b/charecter-ai.appspot.com/o/styles%2F1.png?alt=media&token=2db65df5-5790-4315-8f9a-fb53d02f1fa6",
+    "https://firebasestorage.googleapis.com/v0/b/charecter-ai.appspot.com/o/styles%2F2.png?alt=media&token=b79e0723-f2e2-4450-b8ad-183162ad7512",
+    "https://firebasestorage.googleapis.com/v0/b/charecter-ai.appspot.com/o/styles%2F3.png?alt=media&token=cc9c1c67-0fc8-49a8-aeec-d2d6f3a93930",
+    "https://firebasestorage.googleapis.com/v0/b/charecter-ai.appspot.com/o/styles%2F4.png?alt=media&token=a46f17ab-1fe2-45cd-bb43-316e216aa601"
+
+    // "assets/slidy/style1/1.png",
+    // "assets/slidy/style1/2.png",
+    // "assets/slidy/style1/3.png",
+    // "assets/slidy/style1/4.png",
   ];
 
   static const slidy_style2 = [
