@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
@@ -132,11 +133,25 @@ class SlideStylesFrag extends GetView<PresentaionGeneratorController> {
                 ? Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                      margin: EdgeInsets.all(20),
-                      width: SizeConfig.blockSizeHorizontal * 5,
-                      height: SizeConfig.blockSizeHorizontal * 5,
-                      child: Image.asset(AppImages.vip),
-                    ),
+                        margin: EdgeInsets.all(20),
+                        width: SizeConfig.blockSizeHorizontal * 5,
+                        height: SizeConfig.blockSizeHorizontal * 5,
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: "${AppImages.vip}",
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.blockSizeHorizontal * 6,
+                                vertical: SizeConfig.blockSizeVertical * 6),
+                            child: CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        )
+                        // Image.asset(AppImages.vip),
+                        ),
                   )
                 : Container())
           ],

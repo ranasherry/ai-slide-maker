@@ -61,7 +61,6 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
       ),
     );
   }
-  
 
   Column inputTitle() {
     return Column(
