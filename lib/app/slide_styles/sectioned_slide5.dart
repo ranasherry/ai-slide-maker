@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:slide_maker/app/data/slide.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
@@ -42,13 +43,25 @@ class __SectionedSlide1State extends State<SectionedSlide5> {
       child: Stack(
         children: [
           Container(
-            width: widget.size.width,
-            height: widget.size.height,
-            child: Image.asset(
-              widget.slidePallet.imageList[bgIndex],
-              fit: BoxFit.fill,
-            ),
-          ),
+              width: widget.size.width,
+              height: widget.size.height,
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: "${widget.slidePallet.imageList[bgIndex]}",
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 6,
+                      vertical: SizeConfig.blockSizeVertical * 6),
+                  child: Container(),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              )
+              // Image.asset(
+              //   widget.slidePallet.imageList[bgIndex],
+              //   fit: BoxFit.fill,
+              // ),
+              ),
           Container(
             width: widget.size.width,
             height: widget.size.height,

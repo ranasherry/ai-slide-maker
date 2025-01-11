@@ -63,8 +63,21 @@ class __TitleSlide1State extends State<TitleSlide1> {
           Container(
             width: widget.size.width,
             height: widget.size.height,
-            child: Image.asset(widget.slidePallet.imageList[bgIndex],
-                fit: BoxFit.fill),
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: "${widget.slidePallet.imageList[bgIndex]}",
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 6,
+                    vertical: SizeConfig.blockSizeVertical * 6),
+                child: Container(),
+              ),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+
+            // Image.asset(widget.slidePallet.imageList[bgIndex],
+            //     fit: BoxFit.fill),
           ),
           Container(
             width: widget.size.width,

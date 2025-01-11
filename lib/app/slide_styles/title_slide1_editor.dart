@@ -52,23 +52,26 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
   late Worker resetPropertiesWorker;
   late Worker isSelectedCheckWorker;
 
-  Future<void> initializeSlideFontSize() async{
-    controller.slideTitlesTextProperties[widget.index].fontSize = widget.mySlide.slideSections[0].memoryImage != null ||
-        widget.mySlide.slideSections[0].imageReference != null ? 0.05 : 0.06;
-      controller.slideSectionContentsTextProperties[widget.index][0].fontSize = 0.02;
-      
-    // controller.slideSectionContentsTextProperties[widget.index][0].fontColor  = Color(widget.slidePallet.bigTitleTColor);
-    
-    // controller.slideTitlesTextProperties[widget.index].fontColor  = Color(widget.slidePallet.bigTitleTColor);
+  Future<void> initializeSlideFontSize() async {
+    controller.slideTitlesTextProperties[widget.index].fontSize =
+        widget.mySlide.slideSections[0].memoryImage != null ||
+                widget.mySlide.slideSections[0].imageReference != null
+            ? 0.05
+            : 0.06;
+    controller.slideSectionContentsTextProperties[widget.index][0].fontSize =
+        0.02;
 
+    // controller.slideSectionContentsTextProperties[widget.index][0].fontColor  = Color(widget.slidePallet.bigTitleTColor);
+
+    // controller.slideTitlesTextProperties[widget.index].fontColor  = Color(widget.slidePallet.bigTitleTColor);
   }
-  
+
   @override
   // ignore: must_call_super
- void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
     setState(() {
-    developer.log("init state run");
+      developer.log("init state run");
       initializeSlideFontSize();
       developer.log("on line 105: 1");
       controller.currentPallet = widget.slidePallet;
@@ -78,45 +81,42 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
       bgIndex = random.nextInt(widget.slidePallet.imageList.length);
     });
 
-    fontSizeWorker = ever(controller.currentFontSize, (_){
+    fontSizeWorker = ever(controller.currentFontSize, (_) {
       rebuild = true;
-      setState((){});
+      setState(() {});
     });
-    fontWeightWorker = ever(controller.currentFontWeightDouble, (_){
-      setState((){});
+    fontWeightWorker = ever(controller.currentFontWeightDouble, (_) {
+      setState(() {});
     });
-    fontColorWorker = ever(controller.currentFontColor, (_){
-      setState((){});
+    fontColorWorker = ever(controller.currentFontColor, (_) {
+      setState(() {});
     });
-     switchViewStateWorker = ever(controller.switchViewState, (_){
-      setState((){
-      developer.log("switch working");
+    switchViewStateWorker = ever(controller.switchViewState, (_) {
+      setState(() {
+        developer.log("switch working");
       });
     });
-    currentTextWorker = ever(controller.currentText, (_){
-      setState((){});
+    currentTextWorker = ever(controller.currentText, (_) {
+      setState(() {});
     });
-    isSelectedCheckWorker = ever(controller.isSelectedCheck, (_){
-      developer.log("clicked on the text ${controller.isSelectedSlideTitle[widget.index]}");
-      
-      setState((){});
+    isSelectedCheckWorker = ever(controller.isSelectedCheck, (_) {
+      developer.log(
+          "clicked on the text ${controller.isSelectedSlideTitle[widget.index]}");
+
+      setState(() {});
     });
-    resetPropertiesWorker = ever(controller.resetProperties, (_){
-      setState(()  {
+    resetPropertiesWorker = ever(controller.resetProperties, (_) {
+      setState(() {
         developer.log("resetProperties");
         initializeSlideFontSize();
-      developer.log("on line 151: 1");
-      controller.initializeSlidePalletAndController();
-      developer.log("on line 153: 3");
-
+        developer.log("on line 151: 1");
+        controller.initializeSlidePalletAndController();
+        developer.log("on line 153: 3");
       });
     });
-
-
   }
 
-
-      @override
+  @override
   void dispose() {
     // Dispose of the ever listeners when the widget is disposed
     fontSizeWorker.dispose();
@@ -131,18 +131,31 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
 
   @override
   Widget build(BuildContext context) {
-    controller.isEditViewOpen.value = widget.isEditViewOpen || controller.ignorePointer.value;
+    controller.isEditViewOpen.value =
+        widget.isEditViewOpen || controller.ignorePointer.value;
     titleFontSize.value = widget.mySlide.slideSections[0].memoryImage != null ||
-        widget.mySlide.slideSections[0].imageReference != null
-    ? widget.size.width * (controller.switchViewState.value ?  widget.slidePallet.slideTitlesTextProperties![widget.index].fontSize!: controller.slideTitlesTextProperties[widget.index].fontSize!)
-    : widget.size.width * controller.slideTitlesTextProperties[widget.index].fontSize!;
-    contentFontSize.value = widget.size.width * (controller.switchViewState.value ? widget.slidePallet.slideSectionContentsTextProperties![widget.index][0].fontSize!: controller.slideSectionContentsTextProperties[widget.index][0].fontSize!);
+            widget.mySlide.slideSections[0].imageReference != null
+        ? widget.size.width *
+            (controller.switchViewState.value
+                ? widget.slidePallet.slideTitlesTextProperties![widget.index]
+                    .fontSize!
+                : controller.slideTitlesTextProperties[widget.index].fontSize!)
+        : widget.size.width *
+            controller.slideTitlesTextProperties[widget.index].fontSize!;
+    contentFontSize.value = widget.size.width *
+        (controller.switchViewState.value
+            ? widget.slidePallet
+                .slideSectionContentsTextProperties![widget.index][0].fontSize!
+            : controller
+                .slideSectionContentsTextProperties[widget.index][0].fontSize!);
 
-  developer.log("This is index in title ${widget.index}");
-   developer.log(" This is the title color in title: ${controller.slideTitlesTextProperties[widget.index].fontColor!}");
-   developer.log(" This is the title Size in title: ${controller.slideTitlesTextProperties[widget.index].fontSize!}");
-   developer.log(" This is the title Weight in title: ${controller.slideTitlesTextProperties[widget.index].fontWeight!}");
-
+    developer.log("This is index in title ${widget.index}");
+    developer.log(
+        " This is the title color in title: ${controller.slideTitlesTextProperties[widget.index].fontColor!}");
+    developer.log(
+        " This is the title Size in title: ${controller.slideTitlesTextProperties[widget.index].fontSize!}");
+    developer.log(
+        " This is the title Weight in title: ${controller.slideTitlesTextProperties[widget.index].fontWeight!}");
 
     return Container(
       width: widget.size.width,
@@ -150,11 +163,23 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
       child: Stack(
         children: [
           Container(
-            width: widget.size.width,
-            height: widget.size.height,
-            child: Image.asset(widget.slidePallet.imageList[bgIndex],
-                fit: BoxFit.fill),
-          ),
+              width: widget.size.width,
+              height: widget.size.height,
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: "${widget.slidePallet.imageList[bgIndex]}",
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 6,
+                      vertical: SizeConfig.blockSizeVertical * 6),
+                  child: Container(),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              )
+              // Image.asset(widget.slidePallet.imageList[bgIndex],
+              //     fit: BoxFit.fill),
+              ),
           Container(
             width: widget.size.width,
             height: widget.size.height,
@@ -173,14 +198,22 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
                   child: Column(
                     children: [
                       verticalSpace(widget.size.height * 0.00),
-                     
-                        controller.textForTitleWithGestureDetector(controller.slideTitles, widget.index, controller.slideTitlesTextProperties, controller.myEditedPresentation, titleFontSize, widget.slidePallet),
-                        
-                      
+                      controller.textForTitleWithGestureDetector(
+                          controller.slideTitles,
+                          widget.index,
+                          controller.slideTitlesTextProperties,
+                          controller.myEditedPresentation,
+                          titleFontSize,
+                          widget.slidePallet),
                       verticalSpace(widget.size.width * 0.01),
-                      controller.textForSlideSectionContentWithGestureDetector(controller.slideSectionContents, widget.index, 0, controller.slideSectionContentsTextProperties, controller.myEditedPresentation, contentFontSize, widget.slidePallet),
-                      
-                      
+                      controller.textForSlideSectionContentWithGestureDetector(
+                          controller.slideSectionContents,
+                          widget.index,
+                          0,
+                          controller.slideSectionContentsTextProperties,
+                          controller.myEditedPresentation,
+                          contentFontSize,
+                          widget.slidePallet),
                     ],
                   ),
                 ),
@@ -208,9 +241,6 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
       ),
     );
   }
-
-
-  
 
   // Widget _ImageWidget() {
   //   return ClipPath(
@@ -256,4 +286,3 @@ class __TitleSlide1State extends State<TitleSlide1Editor> {
     }
   }
 }
-
