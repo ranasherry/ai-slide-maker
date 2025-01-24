@@ -100,7 +100,7 @@ class NewslideGeneratorController extends GetxController {
 
   void validate_user_input() async {
     if (userInput.isNotEmpty) {
-      bool result = await InternetConnectionChecker().hasConnection;
+      bool result = await InternetConnectionChecker.instance.hasConnection;
       if (result == true) {
         EasyLoading.show(status: "Generating Outlines..");
         generateOutlines(userInput.value);

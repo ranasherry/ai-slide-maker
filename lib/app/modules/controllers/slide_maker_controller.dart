@@ -384,7 +384,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
     currentModel = ModelType.Bard;
     if (userInput.isNotEmpty) {
       if (gems.value > 0) {
-        bool result = await InternetConnectionChecker().hasConnection;
+        bool result = await InternetConnectionChecker.instance.hasConnection;
         if (result == true) {
           // sendMessage(formattedJson);
           //  getImage(ImageSource);
@@ -948,7 +948,7 @@ class SlideMakerController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<String?> generateImage(String prompt) async {
-    bool result = await InternetConnectionChecker().hasConnection;
+    bool result = await InternetConnectionChecker.instance.hasConnection;
     if (prompt != "" && result == true) {
       print("inside: generate image if");
 

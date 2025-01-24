@@ -157,7 +157,7 @@ class MathsSolverController extends GetxController with WidgetsBindingObserver {
   }
 
   valid(ImageSource) async {
-    bool result = await InternetConnectionChecker().hasConnection;
+    bool result = await InternetConnectionChecker.instance.hasConnection;
     if (result == true) {
       // sendMessage(formattedJson);
       getImage(ImageSource);

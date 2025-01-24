@@ -422,7 +422,7 @@ class AiSlideAssistantCTL extends GetxController
 // ? Commented by jamal start
   Future sendMessage(String message, context) async {
     lastMessage.value = message;
-    bool result = await InternetConnectionChecker().hasConnection;
+    bool result = await InternetConnectionChecker.instance.hasConnection;
     // print("credits:${request_limit.value}");
 
     // if (RevenueCatService().currentEntitlement.value == Entitlement.free) {

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/network_connection_checker/check_network_connectivity.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class titleInputFragment extends GetView<PresentaionGeneratorController> {
@@ -772,7 +774,11 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      if(!await checkNetworkConnectivity()){
+                        EasyLoading.showError("No Internet Connection");
+                      }
+                      else{
                       FocusScope.of(context).unfocus();
 
                       if (!controller.isWaitingForTime.value ||
@@ -785,6 +791,7 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                         // controller.showWatchRewardPrompt();
                       }
                       // controller.switchToSlidesOutlines();
+                      }
                     },
                     child: Container(
                       height: SizeConfig.blockSizeVertical * 7,
