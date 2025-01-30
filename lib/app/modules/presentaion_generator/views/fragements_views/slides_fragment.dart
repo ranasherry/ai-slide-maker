@@ -20,6 +20,7 @@ import 'package:slide_maker/app/slide_styles/sectioned_slide7.dart';
 import 'package:slide_maker/app/slide_styles/title_slide1.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/colors.dart';
+import 'package:slide_maker/app/utills/feedback_widget.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/app/utills/slide_pallets.dart';
 
@@ -43,7 +44,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
             Container(
                 width: SizeConfig.screenWidth,
                 padding:
-                    EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.15),
+                    EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.1),
                 decoration: BoxDecoration(
                     color: AppColors.fragmantBGColor,
                     borderRadius: BorderRadius.only(
@@ -159,11 +160,11 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Card(
-        elevation: 5.0, // Set the elevation to the desired value
+        elevation: 4.0, // Set the elevation to the desired value
         margin: EdgeInsets.zero, // Remove default margins if needed
         child: Container(
           width: SizeConfig.screenWidth,
-          height: SizeConfig.screenHeight * 0.15,
+          height: SizeConfig.screenHeight * 0.16,
           decoration: BoxDecoration(
             color: AppColors.footerContainerColor,
             border: Border(
@@ -177,40 +178,47 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 6,
-                      vertical: SizeConfig.blockSizeVertical),
-                  width: SizeConfig.screenWidth * 0.4,
-                  height: SizeConfig.blockSizeVertical * 6.5,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors
-                              .buttonBGColor, // Button background color
-                          foregroundColor: Colors.white),
-                      onPressed: () async {
-                        // controller.RequestPresentationPlan();
-                        if (controller.isSlidesGenerated.value) {
-                          // controller.createPresentation();
-                          developer.log("Moving to home screen.");
-                          AppLovinProvider.instance.showInterstitial(() {});
+              Column(
+                children: [
+                  Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeHorizontal * 6,
+                          vertical: SizeConfig.blockSizeVertical * 1.5
+                          ),
+                      width: SizeConfig.screenWidth * 0.4,
+                      height: SizeConfig.blockSizeVertical * 6.5,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors
+                                  .buttonBGColor, // Button background color
+                              foregroundColor: Colors.white),
+                          onPressed: () async {
+                            // controller.RequestPresentationPlan();
+                            if (controller.isSlidesGenerated.value) {
+                              // controller.createPresentation();
+                              developer.log("Moving to home screen.");
+                              AppLovinProvider.instance.showInterstitial(() {});
+                  
+                              await controller.savePresentationonLocalDB();
+                  
+                              // await controller
+                              //     .showPostPresentationDialog(Get.context!);
+                              await ComFunction.GotoHomeThenPresHome();
+                  
+                              //! Uncomment below
+                              // await ComFunction.GotoHomeThenPresHome();
+                              // Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value, controller.selectedPallet.value]);
+                            } else {
+                              EasyLoading.showToast(
+                                  "Please Wait for remaining slides to be Generated..",
+                                  duration: Durations.extralong2);
+                            }
+                          },
+                          child: Text("Save"))),
+                          FeedbackWidget()
+                ],
+              ),
 
-                          await controller.savePresentationonLocalDB();
-
-                          // await controller
-                          //     .showPostPresentationDialog(Get.context!);
-                          await ComFunction.GotoHomeThenPresHome();
-
-                          //! Uncomment below
-                          // await ComFunction.GotoHomeThenPresHome();
-                          // Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value, controller.selectedPallet.value]);
-                        } else {
-                          EasyLoading.showToast(
-                              "Please Wait for remaining slides to be Generated..",
-                              duration: Durations.extralong2);
-                        }
-                      },
-                      child: Text("Save"))),
               //      Container(
               // margin: EdgeInsets.symmetric(
               //     horizontal: SizeConfig.blockSizeHorizontal * 6,

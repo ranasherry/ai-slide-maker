@@ -74,7 +74,7 @@ dependencies:
   firebase_crashlytics: ^3.4.3
   flutter_local_notifications: ^17.2.2
   # easy_audience_network: ^0.0.6
-
+  flutter_math_fork: ^0.7.3
   dotted_border: ^2.1.0
   im_animations: ^0.1.2
   shimmer: ^3.0.0

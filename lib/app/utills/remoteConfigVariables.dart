@@ -23,4 +23,6 @@ class RCVariables {
 
   static int interCounter = 1;
   static int interCounter1 = 2; //TODO:  Experimental
+
+  static String slidyStyles = "";
 }

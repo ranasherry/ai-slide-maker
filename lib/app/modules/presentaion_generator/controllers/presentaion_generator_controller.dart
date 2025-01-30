@@ -182,9 +182,9 @@ class PresentaionGeneratorController extends GetxController {
         });
   }
 
-  void RequestPresentationPlan() async {
-    bool result = await InternetConnectionChecker.instance.hasConnection;
-    if (result == true) {
+  void RequestPresentationPlan(bool isInternetConnected) async {
+    // bool result = await InternetConnectionChecker.instance.hasConnection;
+    if (isInternetConnected == true) {
       StartDownloadingImage(titleTextCTL.text);
       EasyLoading.show(status: "Generating Outlines..");
       plannedOutlines.value = await generateOutlines();
@@ -334,12 +334,15 @@ class PresentaionGeneratorController extends GetxController {
                           SchemaType.string,
                         ),
                       },
+                      requiredProperties: ["sectionHeader", "sectionContent"], // ✅ Required fields
                     ),
                   ),
                 },
+                requiredProperties: ["slideTitle", "slideSections"], // ✅ Required fields
               ),
             ),
           },
+          requiredProperties: ["response", "slides"], // ✅ Required fields at root level
         ),
       ),
       systemInstruction:
@@ -356,11 +359,24 @@ class PresentaionGeneratorController extends GetxController {
               .log("Tokens Count: ${response.usageMetadata!.totalTokenCount}");
           tokensConsumed += response.usageMetadata!.totalTokenCount ?? 0;
         }
-        String? generatedMessage = response.text;
-        geminiRequestCounter = 0;
-
-        developer.log("Gemini Response: $generatedMessage");
-        return generatedMessage;
+        try {
+            String? generatedMessage = response.text;
+            final jsonList = json.decode(generatedMessage!) as Map<String, dynamic>;
+            Map<String,dynamic> slides = jsonList['slides'][0] as Map<String, dynamic>;
+            MySlide slide = MySlide.fromMap(slides);
+            geminiRequestCounter = 0;
+            developer.log("Gemini Response: $generatedMessage");
+            return generatedMessage;
+        }
+        catch (e){
+          developer.log("Error in Gemini Response: invalid json: $e");
+          geminiRequestCounter++;
+          if(geminiRequestCounter <=2){
+          startGeneratingSlide();
+          }
+        }
+        
+       
       } else {
         if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
           geminiRequestCounter = 0;
@@ -572,9 +588,10 @@ Note: Sections for each slide must be 2 or 3.
 
         List<MySlide> slides = [];
         for (var item in originalList) {
-          MySlide slide = MySlide.fromMap(item);
-          slides.add(slide);
-          developer.log("Added Slide: ${slide.toMap()}");
+            MySlide slide = MySlide.fromMap(item);
+            slides.add(slide);
+            developer.log("Added Slide: ${slide.toMap()}");
+
         }
 
         // List<MySlide> slides =
@@ -776,9 +793,9 @@ Note: Sections for each slide must be 2 or 3.
     );
   }
 
-  void switchToSlidesOutlines() {
+  void switchToSlidesOutlines(bool isInternetConnected) {
     if (titleTextCTL.text.isNotEmpty) {
-      RequestPresentationPlan();
+      RequestPresentationPlan(isInternetConnected);
       currentIndex.value = 1;
       AppLovinProvider.instance.showInterstitial(() {});
     }

@@ -12,12 +12,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:language_picker/language_picker_dropdown.dart';
 import 'package:language_picker/languages.dart';
 import 'package:language_picker/languages.g.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
+import 'package:slide_maker/app/utills/network_checker/check_network_connectivity.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
-import 'package:slide_maker/app/utills/network_connection_checker/check_network_connectivity.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class titleInputFragment extends GetView<PresentaionGeneratorController> {
@@ -775,17 +776,21 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 child: Center(
                   child: GestureDetector(
                     onTap: () async{
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      EasyLoading.show(status: "Verifying internet connectivity..");
                       if(!await checkNetworkConnectivity()){
                         EasyLoading.showError("No Internet Connection");
                       }
                       else{
-                      FocusScope.of(context).unfocus();
+                      // FocusScope.of(context).unfocus();
+
 
                       if (!controller.isWaitingForTime.value ||
                           RevenueCatService().currentEntitlement.value ==
                               Entitlement.paid ||
                           kDebugMode) {
-                        controller.switchToSlidesOutlines();
+                            EasyLoading.dismiss();
+                        controller.switchToSlidesOutlines(true);
                       } else {
                         RevenueCatService().GoToPurchaseScreen();
                         // controller.showWatchRewardPrompt();

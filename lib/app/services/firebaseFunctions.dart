@@ -471,4 +471,16 @@ class FirestoreService {
       return false;
     }
   }
+
+  // Function to submit feedback to Firestore
+  Future<void> submitFeedback(String feedbackType, String feedbackOption) async {
+    await _firestore.collection('feedbackFromUser').add({
+      'feedbackType': feedbackType, // "thumbs_up" or "thumbs_down"
+      'feedbackOption': feedbackOption,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+   
+  }
+
 }

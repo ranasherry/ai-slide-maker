@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:slide_maker/app/data/slide_pallet.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'dart:developer' as developer;
 
+List<SlidePallet> palletList = [];
+
+void initializeSlidePallets(){
+  
 SlidePallet pallet1 = SlidePallet(
     palletId: 1,
     name: "purple",
@@ -128,14 +133,20 @@ SlidePallet pallet9 = SlidePallet(
     fadeColor: const Color.fromARGB(64, 187, 222, 251),
     isPaid: true);
 
-List<SlidePallet> palletList = [
-  pallet1,
-  pallet2,
-  pallet3,
-  pallet4,
-  pallet5,
-  pallet6,
-  pallet7,
-  pallet8,
-  pallet9,
-];
+palletList = [
+      pallet1,
+      pallet2,
+      pallet3,
+      pallet4,
+      pallet5,
+      pallet6,
+      pallet7,
+      pallet8,
+      pallet9,
+    ];
+  developer.log("initialized pallet list, palletList : ${palletList[0].imageList}");
+
+}
+
+
+

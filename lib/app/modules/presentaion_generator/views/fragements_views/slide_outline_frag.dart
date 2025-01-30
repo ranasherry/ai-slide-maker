@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_maker/app/modules/presentaion_generator/controllers/presentaion_generator_controller.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
+import 'package:slide_maker/app/utills/feedback_widget.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
@@ -205,7 +206,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
+                padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2, bottom: SizeConfig.blockSizeVertical * 1),
                 child: Center(
                   child: Obx(() => GestureDetector(
                         onTap: controller.isPlannedOutlinesGenerated.value
@@ -228,6 +229,7 @@ class SlidesOutlinesFrag extends GetView<PresentaionGeneratorController> {
                       )),
                 ),
               ),
+              FeedbackWidget()
               // Container(
               //   height: SizeConfig.blockSizeVertical * 4,
               //   width: SizeConfig.blockSizeHorizontal * 40,

@@ -29,7 +29,6 @@ class PresentationHomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     fetchAllPresentationHistory();
     fetchAllSlidePallet();
   }
