@@ -75,7 +75,7 @@ class PresentationHistoryDatabaseHandler {
   Future<int> insertPresentationHistory(
       MyPresentation presentationHistory) async {
     if (kReleaseMode) {
-      return 0;
+      // return 0;
     }
     try {
       print('inserting into database $presentationHistory');

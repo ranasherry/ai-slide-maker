@@ -775,28 +775,28 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () async{
+                    onTap: () async {
                       FocusManager.instance.primaryFocus?.unfocus();
-                      EasyLoading.show(status: "Verifying internet connectivity..");
-                      if(!await checkNetworkConnectivity()){
-                        EasyLoading.showError("No Internet Connection");
-                      }
-                      else{
                       // FocusScope.of(context).unfocus();
-
-
                       if (!controller.isWaitingForTime.value ||
                           RevenueCatService().currentEntitlement.value ==
                               Entitlement.paid ||
                           kDebugMode) {
-                            EasyLoading.dismiss();
-                        controller.switchToSlidesOutlines(true);
+                        EasyLoading.show(
+                            status: "Verifying internet connectivity..");
+                        if (!await checkNetworkConnectivity()) {
+                          EasyLoading.dismiss();
+                          EasyLoading.showError("No Internet Connection");
+                        } else {
+                          EasyLoading.dismiss();
+                          controller.switchToSlidesOutlines(true);
+                        }
                       } else {
+                        EasyLoading.dismiss();
                         RevenueCatService().GoToPurchaseScreen();
                         // controller.showWatchRewardPrompt();
                       }
                       // controller.switchToSlidesOutlines();
-                      }
                     },
                     child: Container(
                       height: SizeConfig.blockSizeVertical * 7,
