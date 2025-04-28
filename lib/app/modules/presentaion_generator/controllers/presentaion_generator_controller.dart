@@ -12,7 +12,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:language_picker/language_picker_cupertino.dart';
 import 'package:language_picker/language_picker_dropdown.dart';
-import 'package:language_picker/languages.dart';
+import 'package:language_picker/languages.dart' as Languages;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_maker/app/data/my_firebase_user.dart';
@@ -65,7 +65,8 @@ class PresentaionGeneratorController extends GetxController {
 
   RxBool isWaitingForTime = false.obs;
   RxString timerValue = "".obs;
-  Rx<Language> selectedDropdownLanguage = Languages.english.obs;
+  Rx<Languages.Language> selectedDropdownLanguage =
+      Languages.Languages.english.obs;
 
   //-----------------------------------------------------------------------------------//
 
@@ -173,7 +174,7 @@ class PresentaionGeneratorController extends GetxController {
         builder: (BuildContext context) {
           return LanguagePickerCupertino(
             pickerSheetHeight: 200.0,
-            onValuePicked: (Language language) {
+            onValuePicked: (Languages.Language language) {
               selectedDropdownLanguage.value = language;
               print(selectedDropdownLanguage.value.name);
               print(selectedDropdownLanguage.value.isoCode);
@@ -246,7 +247,7 @@ class PresentaionGeneratorController extends GetxController {
     developer.log("RequestCounter: $geminiRequestCounter");
     final apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
     final model = GenerativeModel(
-        model: 'gemini-1.5-flash',
+        model: RCVariables.geminiModel,
         apiKey: apiKey,
         generationConfig:
             GenerationConfig(maxOutputTokens: 50000, temperature: 1
@@ -300,7 +301,7 @@ class PresentaionGeneratorController extends GetxController {
     developer.log("RequestCounter: $geminiRequestCounter");
     final apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
     final model = GenerativeModel(
-      model: 'gemini-1.5-flash',
+      model: RCVariables.geminiModel,
       apiKey: apiKey,
       generationConfig: GenerationConfig(
         temperature: 1,
@@ -334,15 +335,24 @@ class PresentaionGeneratorController extends GetxController {
                           SchemaType.string,
                         ),
                       },
-                      requiredProperties: ["sectionHeader", "sectionContent"], // ✅ Required fields
+                      requiredProperties: [
+                        "sectionHeader",
+                        "sectionContent"
+                      ], // ✅ Required fields
                     ),
                   ),
                 },
-                requiredProperties: ["slideTitle", "slideSections"], // ✅ Required fields
+                requiredProperties: [
+                  "slideTitle",
+                  "slideSections"
+                ], // ✅ Required fields
               ),
             ),
           },
-          requiredProperties: ["response", "slides"], // ✅ Required fields at root level
+          requiredProperties: [
+            "response",
+            "slides"
+          ], // ✅ Required fields at root level
         ),
       ),
       systemInstruction:
@@ -360,23 +370,22 @@ class PresentaionGeneratorController extends GetxController {
           tokensConsumed += response.usageMetadata!.totalTokenCount ?? 0;
         }
         try {
-            String? generatedMessage = response.text;
-            final jsonList = json.decode(generatedMessage!) as Map<String, dynamic>;
-            Map<String,dynamic> slides = jsonList['slides'][0] as Map<String, dynamic>;
-            MySlide slide = MySlide.fromMap(slides);
-            geminiRequestCounter = 0;
-            developer.log("Gemini Response: $generatedMessage");
-            return generatedMessage;
-        }
-        catch (e){
+          String? generatedMessage = response.text;
+          final jsonList =
+              json.decode(generatedMessage!) as Map<String, dynamic>;
+          Map<String, dynamic> slides =
+              jsonList['slides'][0] as Map<String, dynamic>;
+          MySlide slide = MySlide.fromMap(slides);
+          geminiRequestCounter = 0;
+          developer.log("Gemini Response: $generatedMessage");
+          return generatedMessage;
+        } catch (e) {
           developer.log("Error in Gemini Response: invalid json: $e");
           geminiRequestCounter++;
-          if(geminiRequestCounter <=2){
-          startGeneratingSlide();
+          if (geminiRequestCounter <= 2) {
+            startGeneratingSlide();
           }
         }
-        
-       
       } else {
         if (geminiRequestCounter >= RCVariables.geminiAPIKeys.length - 1) {
           geminiRequestCounter = 0;
@@ -588,10 +597,9 @@ Note: Sections for each slide must be 2 or 3.
 
         List<MySlide> slides = [];
         for (var item in originalList) {
-            MySlide slide = MySlide.fromMap(item);
-            slides.add(slide);
-            developer.log("Added Slide: ${slide.toMap()}");
-
+          MySlide slide = MySlide.fromMap(item);
+          slides.add(slide);
+          developer.log("Added Slide: ${slide.toMap()}");
         }
 
         // List<MySlide> slides =

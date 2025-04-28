@@ -25,4 +25,5 @@ class RCVariables {
   static int interCounter1 = 2; //TODO:  Experimental
 
   static String slidyStyles = "";
+  static String geminiModel = "";
 }

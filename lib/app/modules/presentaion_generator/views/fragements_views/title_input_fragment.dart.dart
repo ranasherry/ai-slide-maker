@@ -775,27 +775,31 @@ class titleInputFragment extends GetView<PresentaionGeneratorController> {
                 padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () async{
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      EasyLoading.show(status: "Verifying internet connectivity..");
-                      if(!await checkNetworkConnectivity()){
-                        EasyLoading.showError("No Internet Connection");
-                      }
-                      else{
-                      // FocusScope.of(context).unfocus();
-
-
-                      if (!controller.isWaitingForTime.value ||
-                          RevenueCatService().currentEntitlement.value ==
-                              Entitlement.paid ||
-                          kDebugMode) {
-                            EasyLoading.dismiss();
-                        controller.switchToSlidesOutlines(true);
+                    onTap: () async {
+                      if (controller.titleTextCTL.text.isEmpty) {
+                        EasyLoading.showError("Please enter a title");
+                        return;
                       } else {
-                        RevenueCatService().GoToPurchaseScreen();
-                        // controller.showWatchRewardPrompt();
-                      }
-                      // controller.switchToSlidesOutlines();
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        EasyLoading.show(
+                            status: "Verifying internet connectivity..");
+                        if (!await checkNetworkConnectivity()) {
+                          EasyLoading.showError("No Internet Connection");
+                        } else {
+                          // FocusScope.of(context).unfocus();
+
+                          if (!controller.isWaitingForTime.value ||
+                              RevenueCatService().currentEntitlement.value ==
+                                  Entitlement.paid ||
+                              kDebugMode) {
+                            EasyLoading.dismiss();
+                            controller.switchToSlidesOutlines(true);
+                          } else {
+                            RevenueCatService().GoToPurchaseScreen();
+                            // controller.showWatchRewardPrompt();
+                          }
+                          // controller.switchToSlidesOutlines();
+                        }
                       }
                     },
                     child: Container(

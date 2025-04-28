@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -30,11 +31,12 @@ import 'package:slide_maker/app/utills/size_config.dart';
 import 'package:slide_maker/main.dart';
 import 'package:slide_rating_dialog/slide_rating_dialog.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'dart:developer' as developer;
 
 class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-
+  String? uniqueId;
   // TextEditingController feedback = TextEditingController();
 
   Rx<String> feedbackMessage = "".obs;
@@ -107,6 +109,21 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     // TODO: implement onClose
     super.onClose();
+  }
+
+  Future<void> assignUniqueId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    uniqueId = prefs.getString('uniqueId');
+
+    if (uniqueId == null) {
+      // Generate a random unique ID
+      uniqueId =
+          '${Random().nextInt(900000) + 100000}'; // 6-digit random number
+
+      print("UniqueID: $uniqueId");
+      // Persist the unique ID in SharedPreferences
+      await prefs.setString('uniqueId', uniqueId!);
+    }
   }
 
   Future<void> sendFeedBackEmail(String message) async {
@@ -333,7 +350,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
   int feedBackCount = 5;
 
   void ShowFeedbackBottomSheet({bool fromSettings = false}) {
-    log("ShowBottomSheetCalled..");
+    developer.log("ShowBottomSheetCalled..");
     if (feedBackCount >= 5 || fromSettings) {
       Future.delayed(Duration(seconds: fromSettings ? 0 : 2), () {
         Get.bottomSheet(Container(
@@ -515,7 +532,7 @@ class HomeViewCtl extends GetxController with WidgetsBindingObserver {
 
   Future<void> showReviewDialogue(BuildContext context,
       {bool isSettings = false}) async {
-    log("showReviewDialogue");
+    developer.log("showReviewDialogue");
     if (reviewCount < 3 && !isSettings) {
       reviewCount++;
       return;

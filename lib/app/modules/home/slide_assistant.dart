@@ -6,115 +6,149 @@ import 'package:get/get.dart';
 import 'package:markdown_widget/config/configs.dart';
 import 'package:markdown_widget/widget/blocks/leaf/code_block.dart';
 import 'package:markdown_widget/widget/markdown.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_maker/app/modules/controllers/slide_assistant_controller.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/provider/meta_ads_provider.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/nointernet_widget.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
+
+import '../../provider/connectivity_provider.dart';
 
 class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
   const AiSlideAssistant({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        log("backed");
-        final FocusScopeNode currentFocus = FocusScope.of(context);
+    final isConnected = context.watch<ConnectivityProvider>().isConnected;
 
-        if (!currentFocus.hasPrimaryFocus) {
-          // If no widget has focus, close the keyboard (optional)
-          FocusManager.instance.primaryFocus?.unfocus();
-          return true; // Allow back navigation
-        }
+    return isConnected
+        ? WillPopScope(
+            onWillPop: () async {
+              log("backed");
+              final FocusScopeNode currentFocus = FocusScope.of(context);
 
-        final bool isKeyboardVisible =
-            await KeyboardVisibilityController().isVisible;
+              if (!currentFocus.hasPrimaryFocus) {
+                // If no widget has focus, close the keyboard (optional)
+                FocusManager.instance.primaryFocus?.unfocus();
+                return true; // Allow back navigation
+              }
 
-        if (isKeyboardVisible) {
-          // Close the keyboard
-          currentFocus.unfocus();
-          return false; // Prevent immediate back navigation
-        } else {
-          log("backed");
-          return true; // Allow back navigation
-        }
-      },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              width: SizeConfig.screenWidth,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    0, SizeConfig.screenHeight * 0.04, 0, 0),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Obx(() => controller.chatList.length == 0
-                          ? Center(
-                              child: Container(
-                                child: Text(
-                                  "No Chat Yet!",
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                  // style: StyleSheet.Intro_heading,
-                                ),
-                              ),
-                            )
-                          :
-                          // controller.
-                          Container(
-                              margin: EdgeInsets.only(
-                                  top: SizeConfig.blockSizeVertical * 8),
-                              child: ListView.builder(
-                                reverse: true,
-                                itemCount: controller.isWaitingForResponse.value
-                                    ? controller.chatList.length + 1
-                                    : controller.chatList.length,
-                                itemBuilder: (context, index) {
-                                  String message = "";
-                                  if (controller.isWaitingForResponse.value) {
-                                    index -= 1;
-                                  }
-                                  bool isSender = true;
-                                  if (index == -1) {
-                                    isSender = false;
-                                  } else {
-                                    isSender =
-                                        controller.chatList[index].senderType ==
-                                            SenderType.User;
-                                    message =
-                                        controller.chatList[index].message;
-                                  }
+              final bool isKeyboardVisible =
+                  await KeyboardVisibilityController().isVisible;
 
-                                  return _MessageBubble(
-                                      isSender, message, index, context);
-                                },
-                              ),
-                            )),
+              if (isKeyboardVisible) {
+                // Close the keyboard
+                currentFocus.unfocus();
+                return false; // Prevent immediate back navigation
+              } else {
+                log("backed");
+                return true; // Allow back navigation
+              }
+            },
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  Container(
+                    width: SizeConfig.screenWidth,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                          0, SizeConfig.screenHeight * 0.04, 0, 0),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Obx(() => controller.chatList.length == 0
+                                ? Center(
+                                    child: Container(
+                                      child: Text(
+                                        "No Chat Yet!",
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    4,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                        // style: StyleSheet.Intro_heading,
+                                      ),
+                                    ),
+                                  )
+                                :
+                                // controller.
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        top: SizeConfig.blockSizeVertical * 8),
+                                    child: Obx(() => ListView.builder(
+                                          reverse: true,
+                                          itemCount: controller
+                                                  .isWaitingForResponse.value
+                                              ? controller.chatList.length + 1
+                                              : controller.chatList.length,
+                                          itemBuilder: (context, index) {
+                                            int adjustedIndex = controller
+                                                    .isWaitingForResponse.value
+                                                ? index - 1
+                                                : index;
+
+                                            String message = "";
+                                            bool isSender = true;
+                                            RxBool isFeedback = false.obs;
+                                            RxBool isGood = false.obs;
+
+                                            if (adjustedIndex == -1) {
+                                              // When waiting for response (show dummy loading bubble maybe)
+                                              isSender = false;
+                                              message =
+                                                  "Waiting for response...";
+                                            } else {
+                                              isSender = controller
+                                                      .chatList[adjustedIndex]
+                                                      .senderType ==
+                                                  SenderType.User;
+                                              message = controller
+                                                  .chatList[adjustedIndex]
+                                                  .message;
+                                              isFeedback.value = controller
+                                                  .chatList[adjustedIndex]
+                                                  .isFeedBack
+                                                  .value;
+                                              isGood.value = controller
+                                                  .chatList[adjustedIndex]
+                                                  .isGood
+                                                  .value;
+                                            }
+
+                                            return Obx(() => _MessageBubble(
+                                                  isSender,
+                                                  message,
+                                                  adjustedIndex,
+                                                  context,
+                                                  isFeedback.value,
+                                                  isGood.value,
+                                                ));
+                                          },
+                                        )),
+                                  )),
+                          ),
+                          _InputField(context),
+                          // SizedBox(
+                          //   height: SizeConfig.screenHeight * 0.01,
+                          // )
+                        ],
+                      ),
                     ),
-                    _InputField(context),
-                    // SizedBox(
-                    //   height: SizeConfig.screenHeight * 0.01,
-                    // )
-                  ],
-                ),
+                  ),
+                  Container(
+                      // color: Colors.black,
+                      height: SizeConfig.screenHeight * 20,
+                      child: _CustomeAppBar(context)),
+                ],
               ),
             ),
-            Container(
-                // color: Colors.black,
-                height: SizeConfig.screenHeight * 20,
-                child: _CustomeAppBar(context)),
-          ],
-        ),
-      ),
-    );
+          )
+        : NoInternetWidget();
   }
 
   Widget _CustomeAppBar(BuildContext context) {
@@ -297,8 +331,10 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
     );
   }
 
-  Widget _MessageBubble(
-      bool isSender, String message, int index, BuildContext context) {
+  Widget _MessageBubble(bool isSender, String message, int index,
+      BuildContext context, bool isFeedback, bool isGood) {
+    double iconSize = SizeConfig.blockSizeHorizontal * 5;
+
     return Container(
       width: SizeConfig.screenWidth,
       // color: Colors.black,
@@ -364,37 +400,96 @@ class AiSlideAssistant extends GetView<AiSlideAssistantCTL> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 5),
-                  child: Row(
-                    mainAxisAlignment: isSender
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      IconButton(
-                          padding: EdgeInsets.zero,
-                          color: Theme.of(context).colorScheme.primary,
-                          tooltip: "Share",
-                          onPressed: () {
-                            controller.ShareMessage(
-                                controller.chatList[index].message);
-                          },
-                          icon: Icon(Icons.share)),
-                      // horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
-                      IconButton(
-                          padding: EdgeInsets.zero,
-                          color: Theme.of(context).colorScheme.primary,
-                          tooltip: "Copy",
-                          onPressed: () {
-                            controller.CopyMessage(
-                                controller.chatList[index].message);
-                          },
-                          icon: Icon(Icons.copy_rounded)),
-                    ],
-                  ),
-                )
+                !(index == -1 && controller.isWaitingForResponse.value)
+                    ? Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.blockSizeHorizontal * 5),
+                        child: Row(
+                          mainAxisAlignment: isSender
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            IconButton(
+                                padding: EdgeInsets.zero,
+                                color: Theme.of(context).colorScheme.primary,
+                                tooltip: "Share",
+                                onPressed: () {
+                                  controller.ShareMessage(
+                                      controller.chatList[index].message);
+                                },
+                                icon: Icon(Icons.share)),
+                            // horizontalSpace(SizeConfig.blockSizeHorizontal * 2),
+                            IconButton(
+                                padding: EdgeInsets.zero,
+                                color: Theme.of(context).colorScheme.primary,
+                                tooltip: "Copy",
+                                onPressed: () {
+                                  controller.CopyMessage(
+                                      controller.chatList[index].message);
+                                },
+                                icon: Icon(Icons.copy_rounded)),
+                            Obx(() {
+                              bool feedbackGiven =
+                                  controller.chatList[index].isFeedBack.value;
+                              bool positive =
+                                  controller.chatList[index].isGood.value;
+
+                              return !isSender && !(feedbackGiven && !positive)
+                                  ? IconButton(
+                                      onPressed: () {
+                                        if (!feedbackGiven) {
+                                          controller.GoodResponse(
+                                              controller
+                                                  .chatList[index].message,
+                                              index);
+                                        }
+                                      },
+                                      icon: Icon(
+                                        feedbackGiven && positive
+                                            ? Icons.thumb_up
+                                            : Icons.thumb_up_alt_outlined,
+                                        size: iconSize,
+                                      ),
+                                    )
+                                  : Visibility(
+                                      visible: false, child: Container());
+                            }),
+
+                            Obx(() {
+                              bool feedbackGiven =
+                                  controller.chatList[index].isFeedBack.value;
+                              bool positive =
+                                  controller.chatList[index].isGood.value;
+
+                              return !isSender && !(feedbackGiven && positive)
+                                  ? IconButton(
+                                      onPressed: () {
+                                        if (!feedbackGiven) {
+                                          controller.reportMessage(
+                                              Get.context!,
+                                              controller
+                                                  .chatList[index].message,
+                                              index);
+                                        }
+                                      },
+                                      icon: Icon(
+                                        feedbackGiven && !positive
+                                            ? Icons.thumb_down
+                                            : Icons.thumb_down_alt_outlined,
+                                        size: iconSize,
+                                      ),
+                                    )
+                                  : Visibility(
+                                      visible: false, child: Container());
+                            }),
+                          ],
+                        ),
+                      )
+                    : Visibility(
+                        visible: false,
+                        child: Container(),
+                      ),
               ],
             ),
             if (isSender) ...[

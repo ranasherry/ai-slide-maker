@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_maker/app/notificationservice/local_notification_service.dart';
+import 'package:slide_maker/app/provider/connectivity_provider.dart';
 import 'package:slide_maker/app/utills/network_checker/check_network_connectivity.dart';
 import 'package:slide_maker/app/provider/creation_view_provider.dart';
 import 'package:slide_maker/app/provider/google_sign_in.dart';
@@ -155,6 +156,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
           ChangeNotifierProvider(create: (context) => CreationViewProvider()),
+          ChangeNotifierProvider(create: (context) => ConnectivityProvider()),
           ChangeNotifierProvider(
             create: (context) => UserdataProvider(),
             lazy: false,

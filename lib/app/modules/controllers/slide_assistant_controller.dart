@@ -9,13 +9,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
+// import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_maker/app/data/ai_model.dart';
 import 'package:slide_maker/app/data/firebase_chat_history.dart';
+import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/routes/app_pages.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -380,6 +382,138 @@ class AiSlideAssistantCTL extends GetxController
       var eventTime = DateTime.now().toIso8601String();
       debugPrint('$eventTime $eventDescription');
     }
+  }
+
+  void GoodResponse(String message, int index) {
+    print("GoodResponse reported..");
+    // feedbackMessages.add(message);
+    ScaffoldMessenger.of(
+      Get.context!,
+    ).showSnackBar(SnackBar(content: Text("Feedback saved successfully")));
+
+    chatList[index].isFeedBack.value = true;
+    chatList[index].isGood.value = true;
+    update();
+  }
+
+  void reportMessage(BuildContext context, String message, int index) {
+    final TextEditingController customReasonController =
+        TextEditingController();
+    List<String> reasons = [
+      "harmful/Unsafe",
+      "Sexual Explicit Content",
+      'Repetitive',
+      'Hate and harrasment',
+      'Misinformation',
+      'Frauds and scam',
+      "Spam",
+      "Other",
+    ];
+    RxString selectedReason = "".obs;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Report Inappropriate Message"),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Select a reason:"),
+                ...reasons.map((reason) {
+                  return Obx(
+                    () => RadioListTile(
+                      title: Text(reason),
+                      value: reason,
+                      groupValue: selectedReason.value,
+                      onChanged: (value) {
+                        selectedReason.value = value!;
+                        if (selectedReason != "Other") {
+                          customReasonController.clear();
+                        }
+                      },
+                    ),
+                  );
+                }).toList(),
+                Obx(
+                  () => selectedReason.value == "Other"
+                      ? TextField(
+                          controller: customReasonController,
+                          decoration: InputDecoration(
+                            labelText: "Enter custom reason",
+                          ),
+                        )
+                      : Container(),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text("Report"),
+              onPressed: () async {
+                String reportReason = selectedReason.value == "Other"
+                    ? customReasonController.text
+                    : selectedReason.value;
+
+                if (reportReason.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Please select or enter a reason.")),
+                  );
+                  return;
+                }
+
+                EasyLoading.show(status: "Please Wait...");
+                try {
+                  HomeViewCtl homeViewCTL = Get.find();
+                  // Save report in Firestore
+                  await FirebaseFirestore.instance
+                      .collection('reported_messages')
+                      .doc('${gender_title.value}_${homeViewCTL.uniqueId}')
+                      .set({
+                    'message': message,
+                    'senderId': homeViewCTL.uniqueId ?? "1234",
+                    'messageId': gender_title.value,
+                    'reason': reportReason,
+                    'reportedAt': DateTime.now(),
+                  });
+                  // await FirebaseFirestore.instance
+                  //     .collection('reported_messages')
+                  //     .add({
+                  //   'message': message,
+                  //   'senderId': homeViewCTL.uniqueId ?? "1234",
+                  //   'messageId': gender_title.value,
+                  //   'reason': reportReason,
+                  //   'reportedAt': DateTime.now(),
+                  // });
+
+                  Navigator.of(context).pop();
+                  EasyLoading.dismiss();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Message reported successfully.")),
+                  );
+                  chatList[index].isFeedBack.value = true;
+                  chatList[index].isGood.value = false;
+                } catch (e) {
+                  EasyLoading.dismiss();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Failed to report message: $e")),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+    update();
   }
 
   Future get_gender() async {
@@ -753,7 +887,8 @@ class AiSlideAssistantCTL extends GetxController
         String parts = list.first;
 
         Content trainingContent =
-            Content(parts: [Parts(text: parts)], role: role);
+            // Content( parts: [Parts(text: parts)], role: role);
+            Content.text(parts);
         chatHistorytContent.add(trainingContent);
       });
     } catch (e) {
@@ -763,14 +898,16 @@ class AiSlideAssistantCTL extends GetxController
     chatContent = chatHistorytContent;
     if (chatContent.isEmpty) {
       Content userInstruction =
-          Content(parts: [Parts(text: limit)], role: 'user');
+          // Content(parts: [Parts(text: limit)], role: 'user');
+          Content.text(limit);
       chatContent.add(userInstruction);
     }
 
     history.take(8).toList().reversed.forEach((element) {
       if (element.senderType == SenderType.Bot) {
         Content content =
-            Content(parts: [Parts(text: element.message)], role: 'model');
+            // Content(parts: [Parts(text: element.message)], role: 'model');
+            Content.text(element.message);
         chatContent.add(content);
 
         developer.log("Test Chat: ${element.message},   Sender: Model");
@@ -778,7 +915,8 @@ class AiSlideAssistantCTL extends GetxController
         String msg = element.message +
             "\nNote: Your response must be concise and should be under 30 words";
         Content content2 =
-            Content(parts: [Parts(text: element.message)], role: 'user');
+            // Content(parts: [Parts(text: element.message)], role: 'user');
+            Content.text(element.message);
         chatContent.add(content2);
         developer.log("Test Chat: ${element.message},   Sender: User");
       }
@@ -822,23 +960,31 @@ class AiSlideAssistantCTL extends GetxController
       final String apiKey =
           RCVariables.geminiAPIKeysSlideAssistant[geminiRequestCounter];
       print("This is api key. $apiKey");
-      Gemini.reInitialize(apiKey: apiKey, enableDebugging: kDebugMode);
+      // Gemini.reInitialize(
+      //   apiKey: apiKey,
+      //   enableDebugging: kDebugMode,
+      //   // version: RCVariables.geminiModel,
+      // );
 
-      final Gemini gemini = Gemini.instance;
+      // final Gemini gemini = Gemini.instance;
       List<SafetySetting>? safetySettings = <SafetySetting>[
-        SafetySetting(
-          category: SafetyCategory.sexuallyExplicit,
-          threshold: SafetyThreshold.blockOnlyHigh,
-        ),
+        SafetySetting(HarmCategory.sexuallyExplicit, HarmBlockThreshold.high),
       ];
 
       try {
-        var value = await gemini.chat(chatContent,
-            safetySettings: safetySettings,
-            generationConfig: GenerationConfig(
-              temperature: 0.5,
-            ));
-        generatedMessage = value?.output;
+        final model = GenerativeModel(
+          model: RCVariables.geminiModel,
+          apiKey: apiKey,
+        );
+        // var value = await gemini.chat(chatContent,
+        //     safetySettings: safetySettings,
+        //     generationConfig: GenerationConfig(
+        //       temperature: 0.5,
+        //     ));
+        // generatedMessage = value?.output;
+        final response = await model.generateContent(chatContent,
+            safetySettings: safetySettings);
+        generatedMessage = response.text;
         print("this is generated message $generatedMessage");
         if (generatedMessage != null) {
           geminiRequestCounter = 0;
@@ -957,7 +1103,14 @@ enum SenderType {
 class ChatMessage {
   SenderType senderType;
   String message;
-  // String input;
+  Rx<bool> isFeedBack;
+  Rx<bool> isGood;
 
-  ChatMessage({required this.senderType, required this.message});
+  ChatMessage({
+    required this.senderType,
+    required this.message,
+    Rx<bool>? isFeedBack,
+    Rx<bool>? isGood,
+  })  : isFeedBack = isFeedBack ?? false.obs,
+        isGood = isGood ?? false.obs;
 }

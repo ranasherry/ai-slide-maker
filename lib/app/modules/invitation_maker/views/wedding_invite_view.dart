@@ -17,7 +17,7 @@ import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
-import 'package:widget_screenshot/widget_screenshot.dart';
+// import 'package:widget_screenshot/widget_screenshot.dart';
 
 class WeddingInvitationView extends GetView<WeddingInvitationController> {
   const WeddingInvitationView({Key? key}) : super(key: key);
@@ -95,21 +95,22 @@ class WeddingInvitationView extends GetView<WeddingInvitationController> {
                   child: Column(
                     children: [
                       Container(
-                          height: SizeConfig.screenHeight * 0.7,
-                          child: WidgetShot(
-                            key: controller.shotKey,
-                            child: Obx(() => IndexedStack(
-                                  index: controller.selectedIndex.value,
-                                  children: [
-                                    Template1(controller: controller),
-                                    Template2(controller: controller),
-                                    Template3(controller: controller),
-                                    Template4(controller: controller),
-                                    Template5(controller: controller),
-                                    Template6(controller: controller),
-                                  ],
-                                )),
-                          )),
+                        height: SizeConfig.screenHeight * 0.7,
+                        // child: WidgetShot(
+                        //   key: controller.shotKey,
+                        //   child: Obx(() => IndexedStack(
+                        //         index: controller.selectedIndex.value,
+                        //         children: [
+                        //           Template1(controller: controller),
+                        //           Template2(controller: controller),
+                        //           Template3(controller: controller),
+                        //           Template4(controller: controller),
+                        //           Template5(controller: controller),
+                        //           Template6(controller: controller),
+                        //         ],
+                        //       )),
+                        // )
+                      ),
                       designSelector(),
                       verticalSpace(SizeConfig.blockSizeVertical * 2),
                       GestureDetector(

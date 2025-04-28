@@ -43,8 +43,8 @@ dependencies:
   chat_gpt_sdk: ^2.2.5
   pdf: ^3.10.4
   intro_slider: ^4.2.0
-  fluttertoast: ^8.2.2
-  open_file: ^3.3.2
+  fluttertoast: ^8.2.12
+  open_file: ^3.5.10
   internet_connection_checker: ^3.0.1
   # internet_connection_checker: ^1.0.0+1
   shared_preferences: ^2.0.15
@@ -84,14 +84,14 @@ dependencies:
   search_page: ^2.2.0
   flutter_pdfview: ^1.3.2
   recaptcha_enterprise_flutter: ^18.4.0
-  permission_handler: ^10.0.0
+  permission_handler: ^12.0.0+1
 
   # shared_storage: ^0.8.0
 
   path: ^1.8.2
 
   # open_filez: ^4.1.5
-  file_picker: ^5.2.5
+  file_picker: ^10.1.2
   sqflite: ^2.3.0
   # slick_slides: ^0.2.1
 
@@ -119,19 +119,19 @@ dependencies:
       ref: main
 
   flutter_screenutil: ^5.9.0
-  widget_screenshot: ^0.0.9
+  # widget_screenshot: ^0.0.9
   google_fonts: 6.1.0
   palette_generator: ^0.3.3+3
   omni_datetime_picker: ^1.0.9
-  facebook_app_events: ^0.19.0
-  speech_to_text: ^6.3.0
+  facebook_app_events: ^0.19.7
+  speech_to_text: ^7.0.0
   flutter_gemini: ^2.0.1
   markdown_widget: ^2.3.2+3
   markdown: ^7.2.2
   flutter_keyboard_visibility: ^6.0.0
   html_to_pdf: ^0.8.0
   checkbox_grouped: ^2.0.0
-  purchases_flutter: ^6.29.1
+  purchases_flutter: ^8.7.4
   google_generative_ai: ^0.4.2
   flutter_email_sender: ^6.0.3
   slide_rating_dialog: ^1.0.4

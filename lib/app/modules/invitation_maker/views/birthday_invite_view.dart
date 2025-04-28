@@ -4,7 +4,7 @@ import 'package:slide_maker/app/modules/invitation_maker/controllers/weddinginvi
 import 'package:slide_maker/app/modules/invitation_maker/views/b.templates/b_template1.dart';
 import 'package:slide_maker/app/modules/invitation_maker/views/templates/template6.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
-import 'package:widget_screenshot/widget_screenshot.dart';
+// import 'package:widget_screenshot/widget_screenshot.dart';
 
 class BirthdayInvitationView extends GetView<WeddingInvitationController> {
   const BirthdayInvitationView({Key? key}) : super(key: key);
@@ -57,10 +57,11 @@ class BirthdayInvitationView extends GetView<WeddingInvitationController> {
                 child: Column(
                   children: [
                     Container(
-                        height: SizeConfig.screenHeight * 0.7,
-                        child: WidgetShot(
-                            key: controller.shotKey,
-                            child: Template6(controller: controller))),
+                      height: SizeConfig.screenHeight * 0.7,
+                      // child: WidgetShot(
+                      //     key: controller.shotKey,
+                      //     child: Template6(controller: controller))
+                    ),
                     ElevatedButton.icon(
                         onPressed: () {
                           controller.saveCard();

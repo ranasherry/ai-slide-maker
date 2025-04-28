@@ -253,7 +253,7 @@ class NewslideGeneratorController extends GetxController {
     developer.log("RequestCounter: $geminiRequestCounter");
     final apiKey = RCVariables.geminiAPIKeys[geminiRequestCounter];
     final model = GenerativeModel(
-        model: 'gemini-1.5-flash',
+        model: RCVariables.geminiModel,
         apiKey: apiKey,
         generationConfig: GenerationConfig(
           maxOutputTokens: 200,

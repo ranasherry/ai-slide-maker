@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:widget_screenshot/widget_screenshot.dart';
+// import 'package:widget_screenshot/widget_screenshot.dart';
 
 class WeddingInvitationController extends GetxController {
   //TODO: Implement InvitationMakerController
@@ -74,12 +74,12 @@ class WeddingInvitationController extends GetxController {
   }
 
   void saveCard() async {
-    WidgetShotRenderRepaintBoundary repaintBoundary = shotKey.currentContext!
-        .findRenderObject() as WidgetShotRenderRepaintBoundary;
-    var resultImage = await repaintBoundary.screenshot(
-        // backgroundColor: Colors.amberAccent,
-        format: ShotFormat.png,
-        pixelRatio: 1);
+    // WidgetShotRenderRepaintBoundary repaintBoundary = shotKey.currentContext!
+    //     .findRenderObject() as WidgetShotRenderRepaintBoundary;
+    // var resultImage = await repaintBoundary.screenshot(
+    //     // backgroundColor: Colors.amberAccent,
+    //     format: ShotFormat.png,
+    //     pixelRatio: 1);
 
     try {
       /// 存储的文件的路径
@@ -89,7 +89,7 @@ class WeddingInvitationController extends GetxController {
       if (!file.existsSync()) {
         file.createSync();
       }
-      await file.writeAsBytes(resultImage!);
+      // await file.writeAsBytes(resultImage!);
       debugPrint("result = ${file.path}");
 
       Share.shareXFiles(

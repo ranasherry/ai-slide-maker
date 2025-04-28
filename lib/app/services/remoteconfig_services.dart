@@ -12,6 +12,7 @@ import 'package:slide_maker/app/utills/remoteConfigVariables.dart';
 import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/utills/slide_pallets.dart';
+
 class RemoteConfigService {
   static final RemoteConfigService _instance = RemoteConfigService._internal();
 
@@ -50,7 +51,8 @@ class RemoteConfigService {
         "discountPercentage": 50,
         "slotLeft": 8,
         "interCounter": 1,
-        "showCreations": false
+        "showCreations": false,
+        "geminiModel": 'gemini-2.0-flash'
       });
 
       await remoteConfig.fetchAndActivate();
@@ -80,11 +82,11 @@ class RemoteConfigService {
     RCVariables.delayMinutes = remoteConfig.getInt('delayMinutes');
     RCVariables.interCounter = remoteConfig.getInt('interCounter');
     RCVariables.slidyStyles = remoteConfig.getString("slidyStyles");
+    RCVariables.geminiModel = remoteConfig.getString("geminiModel");
 
     String jsonKeys = remoteConfig.getString('GeminiKeysList');
 
     String assitantKeys = remoteConfig.getString('geminiAPIKeysSlideAssistant');
-
 
     dp.log("discountTimeLeft: ${RCVariables.discountTimeLeft}");
     dp.log("discountTimeStamp: ${RCVariables.discountTimeStamp}");
@@ -137,8 +139,8 @@ class RemoteConfigService {
     RCVariables.geminiAPIKeysSlideAssistant = tempList;
   }
 
-  void setSlidyStyles(){
-    dynamic slidyStyles = jsonDecode(RCVariables.slidyStyles); 
+  void setSlidyStyles() {
+    dynamic slidyStyles = jsonDecode(RCVariables.slidyStyles);
     // Define a list of references to the properties in AppImages
     List<List<String>> slidyStyleProperties = [
       AppImages.slidy_style1,
@@ -152,22 +154,24 @@ class RemoteConfigService {
       AppImages.slidy_style9,
     ];
 
-    slidyStyleProperties.asMap().forEach((index, element){
+    slidyStyleProperties.asMap().forEach((index, element) {
       int slidyNumber = index + 1;
       String key = "slidy_style$slidyNumber"; // Correct key format
 
       // Check if the key exists in the map and assign the value
       if (slidyStyles.containsKey(key)) {
-        List<String> styleList = (slidyStyles[key] as List<dynamic>).map((element) => element.toString()).toList();
+        List<String> styleList = (slidyStyles[key] as List<dynamic>)
+            .map((element) => element.toString())
+            .toList();
         slidyStyleProperties[index] = styleList;
-        developer.log("Assisgning slidyStyles$slidyNumber : ${slidyStyles[key]}");
-     
+        developer
+            .log("Assisgning slidyStyles$slidyNumber : ${slidyStyles[key]}");
       } else {
         // Handle the case where the key does not exist
         print("Warning: Key '$key' not found in slidyStyles.");
         slidyStyleProperties[index] = []; // Assign an empty list as a fallback
       }
-      
+
       AppImages.slidy_style1 = slidyStyleProperties[0];
       AppImages.slidy_style2 = slidyStyleProperties[1];
       AppImages.slidy_style3 = slidyStyleProperties[2];
@@ -178,9 +182,6 @@ class RemoteConfigService {
       AppImages.slidy_style8 = slidyStyleProperties[7];
       AppImages.slidy_style9 = slidyStyleProperties[8];
       initializeSlidePallets();
-      
-  });
-
-   
+    });
   }
 }
