@@ -43,8 +43,8 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
           children: [
             Container(
                 width: SizeConfig.screenWidth,
-                padding:
-                    EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.1),
+                height: SizeConfig.blockSizeVertical * 59,
+                padding: EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.1),
                 decoration: BoxDecoration(
                     color: AppColors.fragmantBGColor,
                     borderRadius: BorderRadius.only(
@@ -120,39 +120,41 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
     Size size = Size(SizeConfig.blockSizeHorizontal * 90,
         SizeConfig.blockSizeHorizontal * 45);
 
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: SizeConfig.blockSizeHorizontal * 2,
-          vertical: SizeConfig.blockSizeVertical),
-      child: Builder(builder: (context) {
-        if (index == 0) {
-          return Obx(() => TitleSlide1(
-                mySlide: controller.myPresentation.value.slides[index],
-                slidePallet: controller.selectedPallet.value,
-                size: size,
-              ));
-        } else {
-          //? Sections
-          if (index == 1) {
-            return Obx(() => SectionedSlide7(
+    return Center(
+      child: Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 2,
+            vertical: SizeConfig.blockSizeVertical),
+        child: Builder(builder: (context) {
+          if (index == 0) {
+            return Obx(() => TitleSlide1(
                   mySlide: controller.myPresentation.value.slides[index],
                   slidePallet: controller.selectedPallet.value,
                   size: size,
                 ));
-            // return Obx(() => SectionedSlide2(
-            //       mySlide: controller.myPresentation.value.slides[index],
-            //       slidePallet: controller.selectedPallet.value,
-            //       size: size,
-            //     ));
           } else {
-            return Obx(() => SectionedSlide1(
-                  mySlide: controller.myPresentation.value.slides[index],
-                  slidePallet: controller.selectedPallet.value,
-                  size: size,
-                ));
+            //? Sections
+            if (index == 1) {
+              return Obx(() => SectionedSlide7(
+                    mySlide: controller.myPresentation.value.slides[index],
+                    slidePallet: controller.selectedPallet.value,
+                    size: size,
+                  ));
+              // return Obx(() => SectionedSlide2(
+              //       mySlide: controller.myPresentation.value.slides[index],
+              //       slidePallet: controller.selectedPallet.value,
+              //       size: size,
+              //     ));
+            } else {
+              return Obx(() => SectionedSlide1(
+                    mySlide: controller.myPresentation.value.slides[index],
+                    slidePallet: controller.selectedPallet.value,
+                    size: size,
+                  ));
+            }
           }
-        }
-      }),
+        }),
+      ),
     );
   }
 
@@ -183,8 +185,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                   Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: SizeConfig.blockSizeHorizontal * 6,
-                          vertical: SizeConfig.blockSizeVertical * 1.5
-                          ),
+                          vertical: SizeConfig.blockSizeVertical * 1.3),
                       width: SizeConfig.screenWidth * 0.4,
                       height: SizeConfig.blockSizeVertical * 6.5,
                       child: ElevatedButton(
@@ -198,13 +199,13 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                               // controller.createPresentation();
                               developer.log("Moving to home screen.");
                               AppLovinProvider.instance.showInterstitial(() {});
-                  
+
                               await controller.savePresentationonLocalDB();
-                  
+
                               // await controller
                               //     .showPostPresentationDialog(Get.context!);
                               await ComFunction.GotoHomeThenPresHome();
-                  
+
                               //! Uncomment below
                               // await ComFunction.GotoHomeThenPresHome();
                               // Get.toNamed(Routes.PresentationOpenView, arguments: [controller.myPresentation.value, controller.selectedPallet.value]);
@@ -215,7 +216,7 @@ class SlidesFragment extends GetView<PresentaionGeneratorController> {
                             }
                           },
                           child: Text("Save"))),
-                          FeedbackWidget()
+                  FeedbackWidget()
                 ],
               ),
 
