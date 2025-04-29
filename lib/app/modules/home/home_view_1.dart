@@ -198,9 +198,10 @@ class HomeView1 extends GetView<HomeViewCtl> {
                               onTap: () {
                                 // Book Writer Screen
                                 if (RevenueCatService()
-                                        .currentEntitlement
-                                        .value ==
-                                    Entitlement.paid) {
+                                            .currentEntitlement
+                                            .value ==
+                                        Entitlement.paid ||
+                                    kDebugMode) {
                                   Get.toNamed(Routes.BOOK_WRITER);
                                 } else {
                                   RevenueCatService().GoToPurchaseScreen();

@@ -6,12 +6,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
+import 'package:slide_maker/app/provider/connectivity_provider.dart';
 import 'package:slide_maker/app/services/revenuecat_service.dart';
 import 'package:slide_maker/app/utills/app_strings.dart';
 import 'package:slide_maker/app/utills/app_style.dart';
 import 'package:slide_maker/app/utills/colors.dart';
 import 'package:slide_maker/app/utills/images.dart';
+import 'package:slide_maker/app/utills/nointernet_widget.dart';
 import 'package:slide_maker/app/utills/size_config.dart';
 
 import '../controllers/book_writer_controller.dart';
@@ -20,44 +23,48 @@ class BookWriterView extends GetView<BookWriterController> {
   const BookWriterView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "AI Book Writer",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-            child: Container(
-              margin: EdgeInsets.only(
-                  right: SizeConfig.blockSizeHorizontal * 3,
-                  left: SizeConfig.blockSizeHorizontal * 3),
-              color: Theme.of(context).colorScheme.primary,
-              height: 1.5,
+    final isConnected = context.watch<ConnectivityProvider>().isConnected;
+
+    return isConnected
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "AI Book Writer",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              bottom: PreferredSize(
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        right: SizeConfig.blockSizeHorizontal * 3,
+                        left: SizeConfig.blockSizeHorizontal * 3),
+                    color: Theme.of(context).colorScheme.primary,
+                    height: 1.5,
+                  ),
+                  preferredSize: Size.fromHeight(6.0)),
+              centerTitle: true,
+              leading: GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(Icons.arrow_back_ios_new_rounded)),
             ),
-            preferredSize: Size.fromHeight(6.0)),
-        centerTitle: true,
-        leading: GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Icon(Icons.arrow_back_ios_new_rounded)),
-      ),
-      body: inputFormWidget(context),
-      //     Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     Center(
-      //       child: Container(
-      //           child: Image.asset(
-      //         AppImages.commingSoon,
-      //         scale: 3,
-      //       )),
-      //     )
-      //   ],
-      // ),
-    );
+            body: inputFormWidget(context),
+            //     Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Center(
+            //       child: Container(
+            //           child: Image.asset(
+            //         AppImages.commingSoon,
+            //         scale: 3,
+            //       )),
+            //     )
+            //   ],
+            // ),
+          )
+        : NoInternetWidget();
   }
 
   Widget inputFormWidget(BuildContext context) {

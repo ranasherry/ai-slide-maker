@@ -96,6 +96,7 @@ repositories {
 dependencies {
     // implementation 'com.applovin:applovin-sdk:+'
     implementation 'com.applovin.mediation:facebook-adapter:+'
+    implementation 'com.facebook.infer.annotation:infer-annotation:0.18.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     // implementation 'com.applovin.mediation:google-adapter:+'
 }

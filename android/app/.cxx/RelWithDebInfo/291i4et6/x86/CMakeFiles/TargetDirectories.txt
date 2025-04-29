@@ -1,0 +1,2 @@
+C:/Rizwan_laptop/Izzatech/ai-slide-maker/android/app/.cxx/RelWithDebInfo/291i4et6/x86/CMakeFiles/edit_cache.dir
+C:/Rizwan_laptop/Izzatech/ai-slide-maker/android/app/.cxx/RelWithDebInfo/291i4et6/x86/CMakeFiles/rebuild_cache.dir
