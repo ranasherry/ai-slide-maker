@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as mat;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:html_to_pdf/html_to_pdf.dart';
 import 'package:markdown/markdown.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,6 +17,7 @@ import 'dart:developer' as developer;
 
 import 'package:slide_maker/app/data/book_page_model.dart';
 import 'package:slide_maker/app/data/helping_enums.dart';
+import 'package:slide_maker/app/modules/controllers/home_view_ctl.dart';
 import 'package:slide_maker/app/provider/applovin_ads_provider.dart';
 import 'package:slide_maker/app/utills/CM.dart';
 import 'package:slide_maker/app/utills/images.dart';
@@ -31,6 +34,8 @@ class BookGeneratedCTL extends GetxController {
 
   RxString OutlinesinMarkdown = "".obs;
   RxString TitleMarkDown = "".obs;
+  var isFeedbackGiven = false.obs;
+  var isPositiveFeedback = false.obs;
 
   @override
   void onInit() {
@@ -142,26 +147,35 @@ class BookGeneratedCTL extends GetxController {
     final String apiKey =
         RCVariables.geminiAPIKeysSlideAssistant[geminiRequestCounter];
     print("This is api key. $apiKey");
-    Gemini.reInitialize(apiKey: apiKey, enableDebugging: kDebugMode);
-
-    final Gemini gemini = Gemini.instance;
     List<SafetySetting>? safetySettings = <SafetySetting>[
-      SafetySetting(
-        category: SafetyCategory.sexuallyExplicit,
-        threshold: SafetyThreshold.blockOnlyHigh,
-      ),
+      SafetySetting(HarmCategory.sexuallyExplicit, HarmBlockThreshold.high),
     ];
+    var model = GenerativeModel(
+        apiKey: apiKey,
+        model: RCVariables.geminiModel,
+        safetySettings: safetySettings);
+    // Gemini.reInitialize(apiKey: apiKey, enableDebugging: kDebugMode);
+
+    // final Gemini gemini = Gemini.instance;
+    // List<SafetySetting>? safetySettings = <SafetySetting>[
+    //   SafetySetting(
+    //     category: SafetyCategory.sexuallyExplicit,
+    //     threshold: SafetyThreshold.blockOnlyHigh,
+    //   ),
+    // ];
     List<Content> chatContent = [];
-    Content userInstruction =
-        Content(parts: [Parts(text: request)], role: 'user');
+    Content userInstruction = Content.text(request);
     chatContent.add(userInstruction);
     try {
-      var value = await gemini.chat(chatContent,
-          safetySettings: safetySettings,
-          generationConfig: GenerationConfig(
-            temperature: 0.5,
-          ));
-      generatedMessage = value?.output;
+      var response = await model.generateContent(chatContent,
+          generationConfig: GenerationConfig(temperature: 0.5));
+      generatedMessage = response.text;
+      // var value = await gemini.chat(chatContent,
+      //     safetySettings: safetySettings,
+      //     generationConfig: GenerationConfig(
+      //       temperature: 0.5,
+      //     ));
+      // generatedMessage = value?.output;
       print("this is generated message $generatedMessage");
       if (generatedMessage != null) {
         geminiRequestCounter = 0;
@@ -196,6 +210,138 @@ class BookGeneratedCTL extends GetxController {
         return generatedMessage;
       }
     }
+  }
+
+  void GoodResponse() {
+    print("GoodResponse reported..");
+    // feedbackMessages.add(message);
+    ScaffoldMessenger.of(
+      Get.context!,
+    ).showSnackBar(SnackBar(content: mat.Text("Feedback saved successfully")));
+    isFeedbackGiven.value = true;
+    isPositiveFeedback.value = true;
+    update();
+  }
+
+  void reportMessage(BuildContext context) {
+    final TextEditingController customReasonController =
+        TextEditingController();
+    List<String> reasons = [
+      "harmful/Unsafe",
+      "Sexual Explicit Content",
+      'Repetitive',
+      'Hate and harrasment',
+      'Misinformation',
+      'Frauds and scam',
+      "Spam",
+      "Other",
+    ];
+    RxString selectedReason = "".obs;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: mat.Text("Report Inappropriate Message"),
+          content: SingleChildScrollView(
+            child: mat.Column(
+              crossAxisAlignment: mat.CrossAxisAlignment.start,
+              children: [
+                mat.Text("Select a reason:"),
+                ...reasons.map((reason) {
+                  return Obx(
+                    () => RadioListTile(
+                      title: mat.Text(reason),
+                      value: reason,
+                      groupValue: selectedReason.value,
+                      onChanged: (value) {
+                        selectedReason.value = value!;
+                        if (selectedReason != "Other") {
+                          customReasonController.clear();
+                        }
+                      },
+                    ),
+                  );
+                }).toList(),
+                Obx(
+                  () => selectedReason.value == "Other"
+                      ? mat.TextField(
+                          controller: customReasonController,
+                          decoration: InputDecoration(
+                            labelText: "Enter custom reason",
+                          ),
+                        )
+                      : mat.Container(),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: mat.Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: mat.Text("Report"),
+              onPressed: () async {
+                isFeedbackGiven.value = true;
+                isPositiveFeedback.value = false;
+                String reportReason = selectedReason.value == "Other"
+                    ? customReasonController.text
+                    : selectedReason.value;
+
+                if (reportReason.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: mat.Text("Please select or enter a reason.")),
+                  );
+                  return;
+                }
+
+                EasyLoading.show(status: "Please Wait...");
+                try {
+                  HomeViewCtl homeViewCTL = Get.find();
+                  // Save report in Firestore
+                  await FirebaseFirestore.instance
+                      .collection('reported_messages')
+                      .doc()
+                      .set({
+                    'senderId': homeViewCTL.uniqueId ?? "1234",
+                    'reason': reportReason,
+                    'reportedAt': DateTime.now(),
+                  });
+                  // await FirebaseFirestore.instance
+                  //     .collection('reported_messages')
+                  //     .add({
+                  //   'message': message,
+                  //   'senderId': homeViewCTL.uniqueId ?? "1234",
+                  //   'messageId': gender_title.value,
+                  //   'reason': reportReason,
+                  //   'reportedAt': DateTime.now(),
+                  // });
+
+                  Navigator.of(context).pop();
+                  EasyLoading.dismiss();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: mat.Text("Message reported successfully.")),
+                  );
+                } catch (e) {
+                  EasyLoading.dismiss();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: mat.Text("Failed to report message: $e")),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    update();
   }
 
   List<String> parseStringToList(String text) {

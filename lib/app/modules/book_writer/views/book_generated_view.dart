@@ -187,13 +187,56 @@ class BookGeneratedView extends GetView<BookGeneratedCTL> {
                       //     })
 
                       ),
+                ),
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (controller.isFeedbackGiven.value &&
+                                  controller.isPositiveFeedback.value) ||
+                              !controller.isFeedbackGiven.value
+                          ? IconButton(
+                              onPressed: () {
+                                if (!controller.isFeedbackGiven.value) {
+                                  controller.GoodResponse();
+                                }
+                              },
+                              icon: Icon(
+                                controller.isFeedbackGiven.value &&
+                                        controller.isPositiveFeedback.value
+                                    ? Icons.thumb_up
+                                    : Icons.thumb_up_alt_outlined,
+                                size: SizeConfig.blockSizeHorizontal * 5,
+                              ),
+                            )
+                          : Container(),
+                      (controller.isFeedbackGiven.value &&
+                                  !controller.isPositiveFeedback.value) ||
+                              !controller.isFeedbackGiven.value
+                          ? IconButton(
+                              onPressed: () {
+                                if (!controller.isFeedbackGiven.value) {
+                                  controller.reportMessage(Get.context!);
+                                }
+                              },
+                              icon: Icon(
+                                controller.isFeedbackGiven.value &&
+                                        !controller.isPositiveFeedback.value
+                                    ? Icons.thumb_down
+                                    : Icons.thumb_down_alt_outlined,
+                                size: SizeConfig.blockSizeHorizontal * 5,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
                 )
               ],
             )),
     );
   }
 
-  Container buildMarkdown(BuildContext context, String data) {
+  Widget buildMarkdown(BuildContext context, String data) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final config =
         isDark ? MarkdownConfig.darkConfig : MarkdownConfig.defaultConfig;
@@ -201,22 +244,26 @@ class BookGeneratedView extends GetView<BookGeneratedCTL> {
         (child, text, language) => CodeWrapperWidget(child, text, language);
 
     // PreConfig(textStyle: );
-    return Container(
-      width: SizeConfig.screenWidth,
-      // height: SizeConfig.blockSizeVertical * 50,
-      child: MarkdownWidget(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        data: data,
-        config: config.copy(configs: [
-          isDark
-              ? PreConfig.darkConfig.copy(wrapper: codeWrapper)
-              : PreConfig(
-                      textStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary))
-                  .copy(wrapper: codeWrapper)
-        ]),
-      ),
+    return Column(
+      children: [
+        Container(
+          width: SizeConfig.screenWidth,
+          // height: SizeConfig.blockSizeVertical * 50,
+          child: MarkdownWidget(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            data: data,
+            config: config.copy(configs: [
+              isDark
+                  ? PreConfig.darkConfig.copy(wrapper: codeWrapper)
+                  : PreConfig(
+                          textStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary))
+                      .copy(wrapper: codeWrapper)
+            ]),
+          ),
+        ),
+      ],
     );
   }
 

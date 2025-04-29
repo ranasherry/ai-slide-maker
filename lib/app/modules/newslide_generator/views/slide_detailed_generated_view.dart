@@ -25,6 +25,8 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       bottomNavigationBar: Container(
         height: 60,
@@ -142,6 +144,49 @@ class SlideDetailedGeneratedView extends GetView<SlideDetailedGeneratedCTL> {
                           return _slideCardMethod(context, index);
                         }),
                       )),
+                ),
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (controller.isFeedbackGiven.value &&
+                                  controller.isPositiveFeedback.value) ||
+                              !controller.isFeedbackGiven.value
+                          ? IconButton(
+                              onPressed: () {
+                                if (!controller.isFeedbackGiven.value) {
+                                  controller.GoodResponse();
+                                }
+                              },
+                              icon: Icon(
+                                controller.isFeedbackGiven.value &&
+                                        controller.isPositiveFeedback.value
+                                    ? Icons.thumb_up
+                                    : Icons.thumb_up_alt_outlined,
+                                size: SizeConfig.blockSizeHorizontal * 5,
+                              ),
+                            )
+                          : Container(),
+                      (controller.isFeedbackGiven.value &&
+                                  !controller.isPositiveFeedback.value) ||
+                              !controller.isFeedbackGiven.value
+                          ? IconButton(
+                              onPressed: () {
+                                if (!controller.isFeedbackGiven.value) {
+                                  controller.reportMessage(Get.context!);
+                                }
+                              },
+                              icon: Icon(
+                                controller.isFeedbackGiven.value &&
+                                        !controller.isPositiveFeedback.value
+                                    ? Icons.thumb_down
+                                    : Icons.thumb_down_alt_outlined,
+                                size: SizeConfig.blockSizeHorizontal * 5,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
                 )
               ],
             )),
