@@ -1,0 +1,1 @@
+E:\ai-slide-maker\build\app\intermediates\cxx\RelWithDebInfo\736d5f6i\obj\arm64-v8a

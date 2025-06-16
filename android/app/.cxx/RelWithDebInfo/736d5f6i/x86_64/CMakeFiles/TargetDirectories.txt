@@ -1,0 +1,2 @@
+E:/ai-slide-maker/android/app/.cxx/RelWithDebInfo/736d5f6i/x86_64/CMakeFiles/edit_cache.dir
+E:/ai-slide-maker/android/app/.cxx/RelWithDebInfo/736d5f6i/x86_64/CMakeFiles/rebuild_cache.dir

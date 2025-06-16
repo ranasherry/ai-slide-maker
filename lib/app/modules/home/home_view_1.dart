@@ -200,8 +200,8 @@ class HomeView1 extends GetView<HomeViewCtl> {
                                 if (RevenueCatService()
                                             .currentEntitlement
                                             .value ==
-                                        Entitlement.paid ||
-                                    kDebugMode) {
+                                        Entitlement.paid
+                                    ) {
                                   Get.toNamed(Routes.BOOK_WRITER);
                                 } else {
                                   RevenueCatService().GoToPurchaseScreen();

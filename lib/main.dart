@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
       final ignoredRoutes = [
         Routes.SplashScreen,
         Routes.NEW_INTRO_SCREENS,
-        Routes.GenderAskingView,
+        Routes.GenderAskingView, 
         Routes.IN_APP_PURCHASES
       ];
       if (!ignoredRoutes.contains(route!.settings.name)) {
